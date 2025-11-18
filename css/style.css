@@ -536,6 +536,10 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: sticky;
+    top: 120px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
 }
 
 .quick-actions {
@@ -546,8 +550,6 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    position: sticky;
-    top: 120px;
 }
 
 .action-btn {
