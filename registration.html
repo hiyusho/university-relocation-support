@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録 | 大学赴任者家族帯同支援プログラム</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/registration.css">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="index.html" style="color: inherit; text-decoration: none;">大学赴任者家族帯同支援プログラム</a></h1>
+                    <p class="subtitle">ValueGlow - 新しい一歩を、共に</p>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">ホーム</a>
+                    <a href="index.html#about" class="nav-link">プログラムについて</a>
+                    <a href="#" class="btn btn-secondary" id="loginBtn">ログイン</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- パンくずリスト -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="index.html">ホーム</a> &gt; <span>新規登録</span>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="registration-main">
+        <div class="container">
+            <div class="registration-header">
+                <h2>新規登録</h2>
+                <p class="registration-intro">
+                    大学赴任者家族帯同支援プログラムへようこそ。<br>
+                    以下のフォームに必要事項をご記入ください。
+                </p>
+            </div>
+
+            <form id="registrationForm" class="registration-form">
+                <!-- 基本情報 -->
+                <section class="form-section">
+                    <h3 class="section-title">基本情報</h3>
+                    
+                    <div class="form-group">
+                        <label for="name" class="required">お名前</label>
+                        <input type="text" id="name" name="name" required placeholder="山田 太郎">
+                        <span class="error-message" id="nameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="required">メールアドレス</label>
+                        <input type="email" id="email" name="email" required placeholder="example@email.com">
+                        <span class="error-message" id="emailError"></span>
+                        <span class="help-text">登録確認のメールをお送りします</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required">電話番号</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="090-1234-5678">
+                        <span class="error-message" id="phoneError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">住所（任意）</label>
+                        <input type="text" id="address" name="address" placeholder="愛知県名古屋市〇〇区">
+                        <span class="help-text">おおよその地域で構いません</span>
+                    </div>
+                </section>
+
+                <!-- 所属情報 -->
+                <section class="form-section">
+                    <h3 class="section-title">所属情報</h3>
+                    
+                    <div class="form-group">
+                        <label for="university" class="required">所属大学</label>
+                        <select id="university" name="university" required>
+                            <option value="">選択してください</option>
+                            <option value="nagoya">名古屋大学</option>
+                            <option value="other">その他</option>
+                        </select>
+                        <span class="error-message" id="universityError"></span>
+                    </div>
+
+                    <div class="form-group" id="otherUniversityGroup" style="display: none;">
+                        <label for="otherUniversity">大学名をご記入ください</label>
+                        <input type="text" id="otherUniversity" name="otherUniversity" placeholder="〇〇大学">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occupation">現在の職業（任意）</label>
+                        <input type="text" id="occupation" name="occupation" placeholder="例：会社員、主婦、学生など">
+                    </div>
+                </section>
+
+                <!-- 利用目的 -->
+                <section class="form-section">
+                    <h3 class="section-title">利用目的</h3>
+                    <p class="section-description">該当するものを1つ以上選択してください（複数選択可）</p>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="job">
+                            <span class="checkbox-text">仕事を見つけたい</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="career">
+                            <span class="checkbox-text">キャリアについて相談したい</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="life">
+                            <span class="checkbox-text">生活情報を知りたい</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="community">
+                            <span class="checkbox-text">コミュニティに参加したい</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="skill">
+                            <span class="checkbox-text">スキルアップしたい</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="purpose" value="other">
+                            <span class="checkbox-text">その他</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="purposeError"></span>
+
+                    <div class="form-group" id="otherPurposeGroup" style="display: none;">
+                        <label for="otherPurpose">その他の利用目的をご記入ください</label>
+                        <textarea id="otherPurpose" name="otherPurpose" rows="3" placeholder="具体的にご記入ください"></textarea>
+                    </div>
+                </section>
+
+                <!-- 興味分野 -->
+                <section class="form-section">
+                    <h3 class="section-title">興味分野（任意）</h3>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="it">
+                            <span class="checkbox-text">IT・プログラミング</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="language">
+                            <span class="checkbox-text">語学</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="business">
+                            <span class="checkbox-text">ビジネススキル</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="design">
+                            <span class="checkbox-text">デザイン</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="education">
+                            <span class="checkbox-text">教育</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="interest" value="healthcare">
+                            <span class="checkbox-text">医療・福祉</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- 自己紹介 -->
+                <section class="form-section">
+                    <h3 class="section-title">自己紹介（任意）</h3>
+                    
+                    <div class="form-group">
+                        <label for="introduction">簡単な自己紹介をお願いします</label>
+                        <textarea id="introduction" name="introduction" rows="5" placeholder="ご自身の経歴、スキル、興味のあることなどをご記入ください"></textarea>
+                        <span class="help-text">より適切なサポートを提供するための参考にさせていただきます</span>
+                    </div>
+                </section>
+
+                <!-- 個人情報保護方針への同意 -->
+                <section class="form-section">
+                    <div class="consent-box">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
+                            <span class="checkbox-text">
+                                <a href="privacy-policy.html" target="_blank">個人情報保護方針</a>に同意します
+                            </span>
+                        </label>
+                        <span class="error-message" id="consentError"></span>
+                    </div>
+                </section>
+
+                <!-- 送信ボタン -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large">登録する</button>
+                    <a href="index.html" class="btn btn-secondary btn-large">キャンセル</a>
+                </div>
+
+                <!-- 注意事項 -->
+                <div class="form-notice">
+                    <p class="notice-title">⚠️ デモ版のお知らせ</p>
+                    <p>現在、このフォームはデモ版です。送信された情報は保存されません。実際のサービス開始時には、正式なシステムで運用いたします。</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>大学赴任者家族帯同支援プログラム</h3>
+                    <p>ValueGlow（株式会社バリューグロー）</p>
+                </div>
+                <div class="footer-section">
+                    <h4>リンク</h4>
+                    <ul>
+                        <li><a href="index.html">ホーム</a></li>
+                        <li><a href="index.html#about">プログラムについて</a></li>
+                        <li><a href="privacy-policy.html">個人情報保護方針</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ValueGlow. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 成功モーダル -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="success-icon">✓</div>
+            <h2>登録情報を受け付けました</h2>
+            <p>ご登録ありがとうございます。</p>
+            <p class="modal-note">※ これはデモ版のため、実際のメール送信やデータ保存は行われません。</p>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">ホームに戻る</button>
+        </div>
+    </div>
+
+    <!-- ログインモーダル -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>ログイン</h2>
+            <p class="note">※ ログイン機能は現在開発中です</p>
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="loginEmail">メールアドレス</label>
+                    <input type="email" id="loginEmail" name="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">パスワード</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">ログイン</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/registration.js"></script>
+</body>
+</html>
