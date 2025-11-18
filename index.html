@@ -3,411 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大学赴任者家族帯同支援プログラム | ValueGlow</title>
+    <title>大学赴任者家族帯同支援プログラム | パートナーとして、家族として。</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- ヘッダー -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>大学赴任者家族帯同支援プログラム</h1>
-                    <p class="subtitle">ValueGlow - 新しい一歩を、共に</p>
-                </div>
-                <nav class="main-nav">
-                    <a href="#about" class="nav-link">プログラムについて</a>
-                    <a href="#features" class="nav-link">特徴</a>
-                    <a href="#nagoya" class="nav-link">名古屋の魅力</a>
-                    <a href="registration.html" class="btn btn-primary">新規登録</a>
-                    <a href="#" class="btn btn-secondary" id="loginBtn">ログイン</a>
-                </nav>
-            </div>
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="大学ロゴ" class="university-logo" id="universityLogo">
+            <h1 class="site-title">家族帯同ポータルサイト</h1>
         </div>
     </header>
 
-    <!-- ヒーローセクション -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h2>研究者とそのご家族の<br>新しい生活をサポート</h2>
-                <p class="hero-description">
-                    大学に赴任する研究者とそのパートナーのキャリアと生活を、<br>
-                    包括的にサポートするプラットフォームです。
-                </p>
-                <div class="hero-features">
-                    <div class="hero-feature">
-                        <span class="icon">👥</span>
-                        <span class="text">キャリア支援</span>
+    <div class="container">
+        <!-- 左側ナビゲーション -->
+        <nav class="sidebar">
+            <h2 class="sidebar-title">家族帯同ポータルサイト</h2>
+            <ul class="nav-menu">
+                <li class="nav-item" data-tooltip="トップページへ戻ります">
+                    <a href="#top"><i class="fas fa-home"></i> Top</a>
+                </li>
+                <li class="nav-item" data-tooltip="名古屋での日常生活、住環境、生活コストなどの情報をご覧いただけます">
+                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-city"></i> 名古屋での暮らし <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="就職活動のサポート、求人情報、キャリアカウンセリングをご案内します">
+                    <a href="#job-search"><i class="fas fa-briefcase"></i> 仕事を見つけたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="スキルアップ・リスキリング講座、資格取得支援の情報を提供します">
+                    <a href="#skill-up"><i class="fas fa-graduation-cap"></i> スキルアップしたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="先輩家族の体験談、成功事例をご紹介します">
+                    <a href="https://network2010.org/series" target="_blank" rel="noopener noreferrer"><i class="fas fa-users"></i> ロールモデル紹介 <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="交流イベント、セミナー、ネットワーキングの機会をご案内します">
+                    <a href="https://network2010.org/category/%E3%81%8A%E7%A5%AD%E3%82%8A" target="_blank" rel="noopener noreferrer"><i class="fas fa-calendar-alt"></i> 参加してみたい <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="名古屋の魅力、文化、観光スポット、グルメ情報などをご紹介します">
+                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-heart"></i> 名古屋で暮らすことの魅力 <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="家族帯同に関する制度、手続き、サポート内容の詳細情報です">
+                    <a href="#family-support"><i class="fas fa-home"></i> 家族帯同について知りたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="ビザ、住居、保険など、必要な手続き情報をまとめています">
+                    <a href="#important-info"><i class="fas fa-info-circle"></i> 見ておきたい情報</a>
+                </li>
+                <li class="nav-item" data-tooltip="地域企業とのマッチング、ネットワーキングイベントをご案内します">
+                    <a href="#networking"><i class="fas fa-handshake"></i> 現地企業とつながりたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="医療機関、学校、保育施設などの情報を提供します">
+                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-hospital"></i> 医療・教育を知りたい <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="専門スタッフによる個別相談をご利用いただけます">
+                    <a href="#consultation"><i class="fas fa-comments"></i> 相談したい場合</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- ヒーローセクション -->
+            <section id="top" class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">パートナーとして、家族として。<br>「名古屋で暮らす」ことの魅力</h2>
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <i class="fas fa-building"></i>
+                            <h3>都市機能とのどかさの両立</h3>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-yen-sign"></i>
+                            <h3>物価・住宅費の安さ</h3>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-train"></i>
+                            <h3>交通アクセスの良さ</h3>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-child"></i>
+                            <h3>子育て・教育環境の充実</h3>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-palette"></i>
+                            <h3>文化と生活の豊かさ</h3>
+                        </div>
                     </div>
-                    <div class="hero-feature">
-                        <span class="icon">🏙️</span>
-                        <span class="text">生活情報</span>
-                    </div>
-                    <div class="hero-feature">
-                        <span class="icon">🤝</span>
-                        <span class="text">コミュニティ</span>
+                    <div class="video-container">
+                        <a href="https://www.youtube.com/channel/UCjgRr4MVUFnhjgqug5bWt0Q" target="_blank" rel="noopener noreferrer" class="video-placeholder">
+                            <i class="fas fa-play-circle"></i>
+                            <p>名古屋での生活紹介動画</p>
+                            <small style="font-size: 12px; opacity: 0.9; margin-top: 10px; display: block;">提供：Network2010</small>
+                        </a>
                     </div>
                 </div>
-                <div class="cta-buttons">
-                    <a href="registration.html" class="btn btn-primary btn-large">今すぐ登録</a>
-                    <a href="#about" class="btn btn-secondary btn-large">詳しく見る</a>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- メインコンテンツ -->
-    <div class="main-wrapper">
-        <!-- サイドバー -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <h3>メニュー</h3>
-                <ul>
-                    <li><a href="#about">プログラムについて</a></li>
-                    <li><a href="#target">対象者</a></li>
-                    <li><a href="#features">特徴</a></li>
-                    <li><a href="#career">キャリア支援</a></li>
-                    <li><a href="#life">生活支援</a></li>
-                    <li><a href="#community">コミュニティ</a></li>
-                    <li><a href="#nagoya">名古屋の魅力</a></li>
-                    <li><a href="#universities">参加大学</a></li>
-                    <li><a href="#events">イベント</a></li>
-                    <li><a href="#resources">リソース</a></li>
-                    <li><a href="#faq">よくある質問</a></li>
-                    <li><a href="#contact">お問い合わせ</a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- メインコンテンツエリア -->
-        <main class="content">
-            <!-- プログラムについて -->
+            <!-- About the Program -->
             <section id="about" class="section">
-                <div class="container">
-                    <h2 class="section-title">プログラムについて</h2>
-                    <div class="content-card">
-                        <p class="lead">
-                            大学赴任者家族帯同支援プログラムは、研究者とそのご家族が新しい環境でスムーズにキャリアと生活を築けるよう、総合的なサポートを提供するプラットフォームです。
-                        </p>
-                        <div class="features-grid">
-                            <div class="feature-item">
-                                <span class="feature-icon">💼</span>
-                                <h3>キャリアサポート</h3>
-                                <p>就職・転職支援、スキルアップ講座、キャリアカウンセリング</p>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">🏠</span>
-                                <h3>生活サポート</h3>
-                                <p>住まい探し、生活情報、地域コミュニティとの繋がり</p>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">👨‍👩‍👧‍👦</span>
-                                <h3>家族サポート</h3>
-                                <p>育児支援、教育情報、家族向けイベント</p>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">🌐</span>
-                                <h3>ネットワーク</h3>
-                                <p>同じ境遇の仲間との交流、先輩家族からのアドバイス</p>
-                            </div>
+                <h2 class="section-title">About the Program</h2>
+                <div class="program-intro">
+                    <h3>「名古屋デュアルキャリア支援」とは？</h3>
+                    <p>大学に赴任する研究者とそのパートナーの両方のキャリアを同時にサポートする、画期的な支援プログラムです。</p>
+                    <div class="support-pillars">
+                        <div class="pillar">
+                            <i class="fas fa-user-tie"></i>
+                            <h4>研究者・パートナーを同時サポート</h4>
+                            <p>家族・パートナーを同時に「働く」「暮らす」を包括的にサポート</p>
+                        </div>
+                        <div class="pillar">
+                            <i class="fas fa-users"></i>
+                            <h4>家族・研究者への総合支援</h4>
+                            <p>対象者・家族の生活、研究への適応を総合的にサポート</p>
+                        </div>
+                        <div class="pillar">
+                            <i class="fas fa-building"></i>
+                            <h4>企業・大学・地域を結ぶ</h4>
+                            <p>地域の企業、大学、支援機関が連携してサポート</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 対象者 -->
-            <section id="target" class="section section-gray">
-                <div class="container">
-                    <h2 class="section-title">対象者</h2>
+            <!-- Who We Support -->
+            <section id="support" class="section">
+                <h2 class="section-title">Who We Support</h2>
+                <div class="support-targets">
+                    <h3>こんな方をサポートします</h3>
                     <div class="target-grid">
                         <div class="target-card">
-                            <span class="target-icon">👥</span>
-                            <h3>研究者のパートナー</h3>
-                            <p>研究者と共に赴任されるパートナーの方</p>
+                            <i class="fas fa-plane-arrival"></i>
+                            <p>名古屋に転入してきた<strong>研究者・専門職パートナー</strong></p>
                         </div>
                         <div class="target-card">
-                            <span class="target-icon">🏘️</span>
-                            <h3>地域在住者</h3>
-                            <p>リアリティング・進路検討希望者</p>
+                            <i class="fas fa-search"></i>
+                            <p>地元に住んでいる<strong>リアリティング・進路検討を始めたい方</strong></p>
                         </div>
                         <div class="target-card">
-                            <span class="target-icon">👶</span>
-                            <h3>再就職希望者</h3>
-                            <p>妊娠・出産後のキャリア再開を目指す方</p>
+                            <i class="fas fa-baby"></i>
+                            <p>妊娠・出産後に<strong>再就職を希望する方</strong></p>
                         </div>
                         <div class="target-card">
-                            <span class="target-icon">💪</span>
-                            <h3>スキル活用希望者</h3>
-                            <p>これまでのスキルを活かしたい方</p>
+                            <i class="fas fa-star"></i>
+                            <p>多様な経験・<strong>スキルを活かしたい方</strong></p>
                         </div>
                         <div class="target-card">
-                            <span class="target-icon">📈</span>
-                            <h3>自己成長志向の方</h3>
-                            <p>新しいスキルを学び成長したい方</p>
+                            <i class="fas fa-chart-line"></i>
+                            <p><strong>自分を磨きたい方</strong></p>
                         </div>
                         <div class="target-card">
-                            <span class="target-icon">🌸</span>
-                            <h3>地域生活希望者</h3>
-                            <p>地域に馴染み、豊かな生活を送りたい方</p>
+                            <i class="fas fa-map-marked-alt"></i>
+                            <p><strong>地域での生活に慣れたい方</strong></p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 特徴 -->
-            <section id="features" class="section">
-                <div class="container">
-                    <h2 class="section-title">プログラムの特徴</h2>
-                    <div class="features-list">
-                        <div class="feature-card">
-                            <div class="feature-number">01</div>
-                            <h3>包括的なサポート</h3>
-                            <p>キャリア、生活、育児まで、あらゆる面でサポートします。一つのプラットフォームで必要な情報とサービスにアクセスできます。</p>
+            <!-- What We Offer -->
+            <section id="offer" class="section">
+                <h2 class="section-title">What We Offer</h2>
+                <div class="services">
+                    <h3>提供しているサポート</h3>
+                    <div class="service-list">
+                        <div class="service-item">
+                            <i class="fas fa-user-check"></i>
+                            <h4>キャリアカウンセリング・就職相談</h4>
+                            <p>専門カウンセラーがあなたのキャリアプランをサポートします</p>
                         </div>
-                        <div class="feature-card">
-                            <div class="feature-number">02</div>
-                            <h3>地域密着型</h3>
-                            <p>名古屋を中心とした東海地域の詳しい情報を提供。地域の魅力や生活情報をお届けします。</p>
+                        <div class="service-item">
+                            <i class="fas fa-handshake"></i>
+                            <h4>地域企業とのジョブマッチングサポート</h4>
+                            <p>名古屋地域の優良企業との出会いをコーディネートします</p>
                         </div>
-                        <div class="feature-card">
-                            <div class="feature-number">03</div>
-                            <h3>実績あるサポート</h3>
-                            <p>ValueGlowの豊富な経験とネットワークを活かした、実践的なサポートを提供します。</p>
+                        <div class="service-item">
+                            <i class="fas fa-book-open"></i>
+                            <h4>スキルアップ・リスキリング講座の紹介</h4>
+                            <p>最新のスキル習得をサポートする講座をご案内します</p>
                         </div>
-                        <div class="feature-card">
-                            <div class="feature-number">04</div>
-                            <h3>大学との連携</h3>
-                            <p>複数の大学と連携し、各大学の特色に合わせたサポートを提供します。</p>
+                        <div class="service-item">
+                            <i class="fas fa-home"></i>
+                            <h4>生活・育児・教育・医療など暮らし情報の提供</h4>
+                            <p>住まい、子育て、医療など生活に必要な情報を網羅的に提供</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <h4>パートナー・転入者同士の交流イベント</h4>
+                            <p>同じ立場の仲間と出会い、情報交換できる場を提供します</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 名古屋の魅力 -->
-            <section id="nagoya" class="section section-gray">
-                <div class="container">
-                    <h2 class="section-title">名古屋の魅力</h2>
-                    <p class="section-intro">名古屋100km圏内の豊かな歴史・文化・観光情報をご紹介します。</p>
-                    <div class="nagoya-grid">
-                        <a href="http://network2010.org/article/index.html" target="_blank" class="nagoya-card">
-                            <span class="nagoya-icon">🏛️</span>
-                            <h3>歴史</h3>
-                            <p>織田信長、豊臣秀吉、徳川家康ゆかりの地</p>
-                            <span class="external-link">詳しく見る →</span>
+            <!-- How to Get Started -->
+            <section id="get-started" class="section">
+                <h2 class="section-title">How to Get Started</h2>
+                <div class="steps">
+                    <h3>ご利用の流れ</h3>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h4>フォームからお問い合わせまたは登録</h4>
+                            <p>まずは簡単な登録フォームからご連絡ください</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h4>オリエンテーション面談（オンライン可）</h4>
+                            <p>専門スタッフが丁寧にヒアリングします</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h4>ニーズに応じた情報提供・サポート開始</h4>
+                            <p>あなたに最適なサポートをカスタマイズして提供</p>
+                        </div>
+                    </div>
+                    <div class="cta-button-container">
+                        <a href="registration.html" class="cta-button">
+                            <i class="fas fa-user-plus"></i> 新規登録はこちら
                         </a>
-                        <a href="http://network2010.org/article/bunka/bunka.html" target="_blank" class="nagoya-card">
-                            <span class="nagoya-icon">🎭</span>
-                            <h3>文化</h3>
-                            <p>伝統文化から現代アートまで</p>
-                            <span class="external-link">詳しく見る →</span>
-                        </a>
-                        <a href="http://network2010.org/article/kankou/kankou.html" target="_blank" class="nagoya-card">
-                            <span class="nagoya-icon">🗼</span>
-                            <h3>観光</h3>
-                            <p>名古屋城、熱田神宮など魅力的なスポット</p>
-                            <span class="external-link">詳しく見る →</span>
-                        </a>
-                        <a href="http://network2010.org/article/gourmet/gourmet.html" target="_blank" class="nagoya-card">
-                            <span class="nagoya-icon">🍜</span>
-                            <h3>グルメ</h3>
-                            <p>味噌カツ、ひつまぶし、手羽先など</p>
-                            <span class="external-link">詳しく見る →</span>
-                        </a>
-                        <a href="http://network2010.org/article/youtube_channel.html" target="_blank" class="nagoya-card">
-                            <span class="nagoya-icon">📺</span>
-                            <h3>動画で見る</h3>
-                            <p>名古屋の魅力を動画でご紹介</p>
-                            <span class="external-link">YouTubeチャンネル →</span>
-                        </a>
-                    </div>
-                    <div class="info-box">
-                        <p><strong>情報提供:</strong> <a href="http://network2010.org" target="_blank">network2010.org</a></p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 参加大学 -->
-            <section id="universities" class="section">
-                <div class="container">
-                    <h2 class="section-title">参加大学</h2>
-                    <div class="universities-grid">
-                        <div class="university-card">
-                            <div class="university-logo">🎓</div>
-                            <h3>名古屋大学</h3>
-                            <p class="university-color" style="background-color: #00447C;"></p>
-                        </div>
-                        <div class="university-card">
-                            <div class="university-logo">🎓</div>
-                            <h3>その他の大学</h3>
-                            <p class="coming-soon">準備中</p>
-                        </div>
-                    </div>
-                    <div class="info-box">
-                        <p>※ 各大学の公式ロゴとテーマカラーは、正式な提携後に更新されます。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- イベント -->
-            <section id="events" class="section section-gray">
-                <div class="container">
-                    <h2 class="section-title">イベント情報</h2>
-                    <div class="events-list">
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="month">準備中</span>
-                            </div>
-                            <div class="event-content">
-                                <h3>オリエンテーション</h3>
-                                <p>新規参加者向けのプログラム説明会</p>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="month">準備中</span>
-                            </div>
-                            <div class="event-content">
-                                <h3>キャリアセミナー</h3>
-                                <p>就職・転職に役立つスキルアップ講座</p>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="month">準備中</span>
-                            </div>
-                            <div class="event-content">
-                                <h3>交流会</h3>
-                                <p>参加者同士のネットワーキングイベント</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- リソース -->
-            <section id="resources" class="section">
-                <div class="container">
-                    <h2 class="section-title">リソース</h2>
-                    <div class="resources-grid">
-                        <div class="resource-card">
-                            <span class="resource-icon">📚</span>
-                            <h3>ガイドブック</h3>
-                            <p>赴任者向けの生活ガイド（準備中）</p>
-                        </div>
-                        <div class="resource-card">
-                            <span class="resource-icon">💡</span>
-                            <h3>ロールモデル</h3>
-                            <p>先輩家族の体験談（準備中）</p>
-                        </div>
-                        <div class="resource-card">
-                            <span class="resource-icon">🔗</span>
-                            <h3>リンク集</h3>
-                            <p>役立つウェブサイト一覧（準備中）</p>
-                        </div>
-                        <div class="resource-card">
-                            <span class="resource-icon">📹</span>
-                            <h3>動画</h3>
-                            <p>プログラム紹介動画（準備中）</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- よくある質問 -->
-            <section id="faq" class="section section-gray">
-                <div class="container">
-                    <h2 class="section-title">よくある質問</h2>
-                    <div class="faq-list">
-                        <div class="faq-item">
-                            <h3 class="faq-question">プログラムの参加費用はかかりますか？</h3>
-                            <p class="faq-answer">基本的なサービスは無料でご利用いただけます。一部の特別プログラムやイベントについては、別途費用が発生する場合があります。</p>
-                        </div>
-                        <div class="faq-item">
-                            <h3 class="faq-question">どのような支援を受けられますか？</h3>
-                            <p class="faq-answer">キャリア支援（就職・転職相談、スキルアップ講座）、生活支援（住まい探し、地域情報提供）、コミュニティ支援（交流会、ネットワーキング）など、多岐にわたるサポートを提供しています。</p>
-                        </div>
-                        <div class="faq-item">
-                            <h3 class="faq-question">研究者本人も利用できますか？</h3>
-                            <p class="faq-answer">はい、研究者ご本人もご利用いただけます。ただし、主な対象はパートナーとそのご家族となっています。</p>
-                        </div>
-                        <div class="faq-item">
-                            <h3 class="faq-question">オンラインでのサポートは受けられますか？</h3>
-                            <p class="faq-answer">はい、多くのサービスはオンラインでもご利用いただけます。対面でのサポートが必要な場合は、事前にご相談ください。</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- お問い合わせ -->
-            <section id="contact" class="section">
-                <div class="container">
-                    <h2 class="section-title">お問い合わせ</h2>
-                    <div class="contact-content">
-                        <div class="contact-info">
-                            <h3>ValueGlow（株式会社バリューグロー）</h3>
-                            <p>ご質問やご相談がございましたら、お気軽にお問い合わせください。</p>
-                            <div class="contact-details">
-                                <p><strong>メール:</strong> info@valueglow.com（例）</p>
-                                <p><strong>電話:</strong> 052-XXX-XXXX（例）</p>
-                                <p><strong>受付時間:</strong> 平日 9:00-17:00</p>
-                            </div>
-                        </div>
-                        <div class="contact-cta">
-                            <a href="registration.html" class="btn btn-primary btn-large">新規登録はこちら</a>
-                        </div>
                     </div>
                 </div>
             </section>
         </main>
+
+        <!-- 右側サイドバー -->
+        <aside class="right-sidebar">
+            <div class="quick-actions">
+                <a href="registration.html" class="action-btn register-btn">
+                    <i class="fas fa-user-plus"></i> 新規登録
+                </a>
+                <button class="action-btn login-btn" onclick="openLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> ログイン
+                </button>
+            </div>
+
+            <div class="widget video-widget">
+                <h3>名古屋の魅力動画</h3>
+                <div class="video-placeholder-small">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+
+            <div class="widget news-widget">
+                <h3>お知らせ</h3>
+                <ul class="news-list">
+                    <li>
+                        <span class="news-date">2025.11.15</span>
+                        <a href="#">キャリア相談会開催のお知らせ</a>
+                    </li>
+                    <li>
+                        <span class="news-date">2025.11.10</span>
+                        <a href="#">交流イベント参加者募集</a>
+                    </li>
+                    <li>
+                        <span class="news-date">2025.11.05</span>
+                        <a href="#">スキルアップ講座のご案内</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="widget info-widget">
+                <h3>運営情報</h3>
+                <ul class="info-links">
+                    <li><a href="#"><i class="fas fa-building"></i> 運営会社</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> 個人情報保護方針</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> お問い合わせ</a></li>
+                </ul>
+            </div>
+        </aside>
     </div>
 
     <!-- フッター -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>大学赴任者家族帯同支援プログラム</h3>
-                    <p>ValueGlow（株式会社バリューグロー）</p>
-                </div>
-                <div class="footer-section">
-                    <h4>リンク</h4>
-                    <ul>
-                        <li><a href="#about">プログラムについて</a></li>
-                        <li><a href="registration.html">新規登録</a></li>
-                        <li><a href="privacy-policy.html">個人情報保護方針</a></li>
-                        <li><a href="#contact">お問い合わせ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>外部リンク</h4>
-                    <ul>
-                        <li><a href="http://network2010.org" target="_blank">network2010.org</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 ValueGlow. All rights reserved.</p>
-            </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+            <p>※ 本プログラムは参加大学と地域企業の協力により運営されています</p>
+            <p style="margin-top: 15px; font-size: 13px;">名古屋地域情報提供：<a href="https://network2010.org/" target="_blank" rel="noopener noreferrer" style="color: #FF9F54; text-decoration: none;">Network2010 <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></a></p>
         </div>
     </footer>
+
+
 
     <!-- ログインモーダル -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" onclick="closeLoginModal()">&times;</span>
             <h2>ログイン</h2>
-            <p class="note">※ ログイン機能は現在開発中です</p>
             <form class="login-form">
                 <div class="form-group">
-                    <label for="email">メールアドレス</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="loginEmail">メールアドレス</label>
+                    <input type="email" id="loginEmail" name="loginEmail" required>
                 </div>
                 <div class="form-group">
                     <label for="password">パスワード</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">ログイン</button>
+                <button type="submit" class="submit-btn">ログイン</button>
+                <p class="form-note">パスワードをお忘れの方は<a href="#">こちら</a></p>
             </form>
         </div>
     </div>

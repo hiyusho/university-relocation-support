@@ -1,267 +1,494 @@
-/* =====================================
-   登録ページ専用スタイル
-   ===================================== */
+/* ========================================
+   新規登録ページ専用スタイル
+   ======================================== */
 
-/* パンくずリスト */
-.breadcrumb {
-    background-color: var(--bg-light);
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border-color);
+.registration-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-.breadcrumb a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.breadcrumb span {
-    color: var(--text-light);
-}
-
-/* メイン */
-.registration-main {
-    padding: 40px 0;
-    min-height: calc(100vh - 200px);
+.registration-card {
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--shadow);
+    overflow: hidden;
 }
 
 .registration-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.registration-header h2 {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.registration-intro {
-    color: var(--text-light);
-    font-size: 1.1rem;
-    line-height: 1.8;
-}
-
-/* フォーム */
-.registration-form {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: var(--bg-light);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.registration-header h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.registration-header h1 i {
+    margin-right: 15px;
+}
+
+.subtitle {
+    font-size: 16px;
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* ========================================
+   フォームスタイル
+   ======================================== */
+
+.detailed-registration-form {
+    padding: 50px;
 }
 
 .form-section {
-    margin-bottom: 40px;
-    padding-bottom: 30px;
+    margin-bottom: 50px;
+    padding-bottom: 40px;
     border-bottom: 2px solid var(--border-color);
 }
 
 .form-section:last-of-type {
-    border-bottom: none;
+    margin-bottom: 30px;
 }
 
-.section-title {
-    font-size: 1.5rem;
+.section-heading {
+    font-size: 22px;
     color: var(--primary-color);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
 }
 
-.section-description {
-    color: var(--text-light);
-    margin-bottom: 20px;
+.section-heading i {
+    font-size: 24px;
 }
 
-/* フォームグループ */
-.form-group {
+.form-row {
     margin-bottom: 25px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group.required label::before {
+    /* 必須バッジは別途表示するのでここでは不要 */
 }
 
 .form-group label {
     display: block;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
 }
 
-.required::after {
-    content: " *";
-    color: #E74C3C;
-    font-weight: bold;
+.required-badge {
+    display: inline-block;
+    background-color: #E74C3C;
+    color: var(--white);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 600;
+    vertical-align: middle;
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
-.form-group input[type="tel"],
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 12px;
+    padding: 14px 16px;
     border: 2px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    transition: border-color 0.3s;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    font-family: var(--font-main);
+    background-color: var(--white);
 }
 
-.form-group input:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(232, 119, 34, 0.1);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: var(--text-lighter);
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
 }
 
-/* ヘルプテキスト */
-.help-text {
+.form-hint {
     display: block;
-    font-size: 0.9rem;
+    margin-top: 8px;
+    font-size: 13px;
     color: var(--text-light);
-    margin-top: 5px;
 }
 
-/* エラーメッセージ */
-.error-message {
-    display: block;
-    color: #E74C3C;
-    font-size: 0.9rem;
-    margin-top: 5px;
+.other-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
 }
 
-.form-group input.error,
-.form-group select.error,
-.form-group textarea.error {
-    border-color: #E74C3C;
-}
+/* ========================================
+   チェックボックスグループ
+   ======================================== */
 
-/* チェックボックスグループ */
 .checkbox-group {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
+    margin-top: 15px;
 }
 
-.checkbox-label {
+.checkbox-item {
     display: flex;
     align-items: center;
-    padding: 12px;
-    background-color: var(--accent-color);
-    border-radius: 5px;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: var(--background-color);
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s;
-}
-
-.checkbox-label:hover {
-    background-color: #D8EEF8;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin-right: 12px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.checkbox-text {
-    font-size: 1rem;
-    color: var(--text-color);
-}
-
-/* 同意ボックス */
-.consent-box {
-    background-color: var(--accent-color);
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.consent-box .checkbox-label {
-    background-color: transparent;
-}
-
-.consent-box a {
-    color: var(--primary-color);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
     font-weight: 500;
 }
 
-/* フォームアクション */
+.checkbox-item:hover {
+    background-color: #FFE8D6;
+    border-color: var(--primary-light);
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-item input[type="checkbox"]:checked + span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.consent-checkbox {
+    background-color: #FFF3E0;
+    border: 2px solid var(--primary-light);
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.consent-checkbox input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+}
+
+/* ========================================
+   個人情報セクション
+   ======================================== */
+
+.privacy-section {
+    background-color: #F8F9FA;
+    padding: 30px;
+    border-radius: 15px;
+    border: none;
+}
+
+.privacy-box {
+    background-color: var(--white);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+.privacy-box h3 {
+    font-size: 18px;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.privacy-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+.privacy-content ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.privacy-content li {
+    margin-bottom: 8px;
+}
+
+.privacy-link {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.privacy-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.privacy-link a:hover {
+    text-decoration: underline;
+}
+
+/* ========================================
+   ボタンエリア
+   ======================================== */
+
 .form-actions {
     display: flex;
     gap: 20px;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid var(--border-color);
 }
 
-/* 注意事項 */
-.form-notice {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #FFF3CD;
-    border: 1px solid #FFE69C;
-    border-radius: 5px;
+.btn {
+    padding: 16px 40px;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px var(--shadow);
 }
 
-.notice-title {
-    font-weight: bold;
-    color: #856404;
-    margin-bottom: 10px;
+.btn i {
+    font-size: 18px;
 }
 
-.form-notice p {
-    color: #856404;
+.btn-cancel {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 2px solid var(--border-color);
+}
+
+.btn-cancel:hover {
+    background-color: #F5F5F5;
+    border-color: var(--text-light);
+}
+
+.btn-submit {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(232, 119, 34, 0.4);
+}
+
+.btn-submit:disabled {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 16px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232, 119, 34, 0.4);
+}
+
+/* ========================================
+   登録完了モーダル
+   ======================================== */
+
+.success-modal {
+    text-align: center;
+    padding: 50px 40px;
+    max-width: 500px;
+}
+
+.success-icon {
+    font-size: 80px;
+    color: #27AE60;
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-modal h2 {
+    font-size: 28px;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.success-modal p {
+    font-size: 16px;
+    color: var(--text-light);
+    margin-bottom: 15px;
     line-height: 1.6;
 }
 
-/* 成功モーダル */
-.success-icon {
-    font-size: 4rem;
-    color: var(--secondary-color);
-    text-align: center;
-    margin-bottom: 20px;
+.success-note {
+    background-color: var(--background-color);
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
-.modal-note {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 15px;
-}
+/* ========================================
+   レスポンシブデザイン
+   ======================================== */
 
-/* レスポンシブデザイン */
 @media (max-width: 768px) {
-    .registration-form {
-        padding: 25px;
+    .registration-container {
+        margin: 20px auto;
+        padding: 0 10px;
     }
-    
-    .registration-header h2 {
-        font-size: 1.5rem;
+
+    .registration-header {
+        padding: 30px 20px;
     }
-    
-    .section-title {
-        font-size: 1.3rem;
+
+    .registration-header h1 {
+        font-size: 24px;
     }
-    
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .detailed-registration-form {
+        padding: 30px 20px;
+    }
+
+    .form-section {
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+    }
+
+    .section-heading {
+        font-size: 20px;
+    }
+
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+
     .form-actions {
         flex-direction: column;
+        gap: 15px;
     }
-    
-    .form-actions .btn {
+
+    .btn {
         width: 100%;
+        justify-content: center;
+    }
+
+    .privacy-section {
+        padding: 20px 15px;
+    }
+
+    .privacy-box {
+        padding: 20px 15px;
+    }
+
+    .success-modal {
+        padding: 40px 20px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+    }
+
+    .success-modal h2 {
+        font-size: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .registration-form {
-        padding: 20px;
+    .registration-header h1 {
+        font-size: 20px;
     }
-    
-    .form-group input,
+
+    .section-heading {
+        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
     .form-group select,
     .form-group textarea {
-        font-size: 16px; /* iOS のズームを防ぐ */
+        font-size: 16px; /* iOS Safariのズーム防止 */
+    }
+}
+
+/* ========================================
+   プリントスタイル
+   ======================================== */
+
+@media print {
+    .header,
+    .footer,
+    .form-actions {
+        display: none;
+    }
+
+    .registration-card {
+        box-shadow: none;
+        border: 1px solid #000;
     }
 }

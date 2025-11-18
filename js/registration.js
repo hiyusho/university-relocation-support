@@ -1,184 +1,408 @@
-// =====================================
-// 登録フォーム処理
-// =====================================
+// ========================================
+// 新規登録ページ専用JavaScript
+// ========================================
 
-// 大学選択の処理
-const universitySelect = document.getElementById('university');
-const otherUniversityGroup = document.getElementById('otherUniversityGroup');
-const otherUniversityInput = document.getElementById('otherUniversity');
-
-universitySelect.addEventListener('change', function() {
-    if (this.value === 'other') {
-        otherUniversityGroup.style.display = 'block';
-        otherUniversityInput.required = true;
-    } else {
-        otherUniversityGroup.style.display = 'none';
-        otherUniversityInput.required = false;
-        otherUniversityInput.value = '';
-    }
+// ページ読み込み時の初期化
+document.addEventListener('DOMContentLoaded', function() {
+    // メールアドレスの自動入力
+    autoFillEmailAddress();
+    
+    // 「その他」チェックボックスの制御
+    setupOtherCheckboxHandlers();
+    
+    // フォーム送信処理
+    setupFormSubmission();
+    
+    // 個人情報同意チェックボックスの制御
+    setupPrivacyConsentHandler();
 });
 
-// 利用目的の「その他」選択時の処理
-const purposeCheckboxes = document.querySelectorAll('input[name="purpose"]');
-const otherPurposeGroup = document.getElementById('otherPurposeGroup');
-const otherPurposeTextarea = document.getElementById('otherPurpose');
+// ========================================
+// メールアドレス自動入力
+// ========================================
 
-purposeCheckboxes.forEach(checkbox => {
-    if (checkbox.value === 'other') {
-        checkbox.addEventListener('change', function() {
+function autoFillEmailAddress() {
+    // URLパラメータからメールアドレスを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    
+    if (email) {
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.value = decodeURIComponent(email);
+        }
+    }
+    
+    // ローカルストレージやセッションストレージから取得する場合
+    const storedEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+    if (storedEmail && !email) {
+        const emailInput = document.getElementById('email');
+        if (emailInput && !emailInput.value) {
+            emailInput.value = storedEmail;
+        }
+    }
+}
+
+// ========================================
+// 「その他」チェックボックスの制御
+// ========================================
+
+function setupOtherCheckboxHandlers() {
+    // 希望職種の「その他」
+    const jobTypeOtherCheckbox = document.getElementById('jobTypeOther');
+    const jobTypeOtherTextArea = document.getElementById('jobTypeOtherTextArea');
+    
+    if (jobTypeOtherCheckbox && jobTypeOtherTextArea) {
+        jobTypeOtherCheckbox.addEventListener('change', function() {
             if (this.checked) {
-                otherPurposeGroup.style.display = 'block';
+                jobTypeOtherTextArea.style.display = 'block';
+                document.getElementById('jobTypeOtherText').focus();
             } else {
-                otherPurposeGroup.style.display = 'none';
-                otherPurposeTextarea.value = '';
+                jobTypeOtherTextArea.style.display = 'none';
+                document.getElementById('jobTypeOtherText').value = '';
             }
         });
     }
+    
+    // 登録の目的の「その他」
+    const purposeOtherCheckbox = document.getElementById('purposeOther');
+    const purposeOtherTextArea = document.getElementById('purposeOtherTextArea');
+    
+    if (purposeOtherCheckbox && purposeOtherTextArea) {
+        purposeOtherCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                purposeOtherTextArea.style.display = 'block';
+                document.getElementById('purposeOtherText').focus();
+            } else {
+                purposeOtherTextArea.style.display = 'none';
+                document.getElementById('purposeOtherText').value = '';
+            }
+        });
+    }
+}
+
+// ========================================
+// 個人情報同意チェックボックスの制御
+// ========================================
+
+function setupPrivacyConsentHandler() {
+    const privacyConsent = document.getElementById('privacyConsent');
+    const submitButton = document.getElementById('submitButton');
+    
+    if (privacyConsent && submitButton) {
+        // 初期状態：同意していない場合はボタンを無効化
+        submitButton.disabled = !privacyConsent.checked;
+        
+        privacyConsent.addEventListener('change', function() {
+            submitButton.disabled = !this.checked;
+            
+            if (this.checked) {
+                submitButton.style.opacity = '1';
+            } else {
+                submitButton.style.opacity = '0.5';
+            }
+        });
+    }
+}
+
+// ========================================
+// フォーム送信処理
+// ========================================
+
+function setupFormSubmission() {
+    const form = document.getElementById('registrationForm');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // バリデーション
+            if (!validateForm()) {
+                return;
+            }
+            
+            // フォームデータの収集
+            const formData = collectFormData();
+            
+            // データの送信（実際の実装ではサーバーに送信）
+            submitRegistrationData(formData);
+        });
+    }
+}
+
+// ========================================
+// フォームバリデーション
+// ========================================
+
+function validateForm() {
+    // 必須項目のチェック
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const university = document.getElementById('university').value.trim();
+    const workStyle = document.getElementById('workStyle').value;
+    const privacyConsent = document.getElementById('privacyConsent').checked;
+    
+    // 登録の目的（少なくとも1つチェック）
+    const purposeCheckboxes = document.querySelectorAll('input[name="purpose"]:checked');
+    
+    if (!fullName) {
+        alert('氏名を入力してください。');
+        document.getElementById('fullName').focus();
+        return false;
+    }
+    
+    if (!email) {
+        alert('メールアドレスを入力してください。');
+        document.getElementById('email').focus();
+        return false;
+    }
+    
+    // メールアドレスの形式チェック
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        alert('正しいメールアドレスの形式で入力してください。');
+        document.getElementById('email').focus();
+        return false;
+    }
+    
+    if (!university) {
+        alert('ご家族の勤務先大学名を入力してください。');
+        document.getElementById('university').focus();
+        return false;
+    }
+    
+    if (!workStyle) {
+        alert('ご希望の働き方を選択してください。');
+        document.getElementById('workStyle').focus();
+        return false;
+    }
+    
+    if (purposeCheckboxes.length === 0) {
+        alert('登録の目的を少なくとも1つ選択してください。');
+        return false;
+    }
+    
+    if (!privacyConsent) {
+        alert('個人情報の取り扱いに同意いただく必要があります。');
+        document.getElementById('privacyConsent').focus();
+        return false;
+    }
+    
+    return true;
+}
+
+// ========================================
+// フォームデータの収集
+// ========================================
+
+function collectFormData() {
+    // 基本情報
+    const fullName = document.getElementById('fullName').value.trim();
+    const furigana = document.getElementById('furigana').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const ageRange = document.getElementById('ageRange').value;
+    const university = document.getElementById('university').value.trim();
+    
+    // 希望する働き方
+    const workStyle = document.getElementById('workStyle').value;
+    
+    // 希望職種（複数選択）
+    const jobTypes = [];
+    document.querySelectorAll('input[name="jobType"]:checked').forEach(checkbox => {
+        jobTypes.push(checkbox.value);
+    });
+    const jobTypeOtherText = document.getElementById('jobTypeOtherText').value.trim();
+    if (jobTypeOtherText) {
+        jobTypes.push(`その他: ${jobTypeOtherText}`);
+    }
+    
+    // 経験・スキル
+    const experience = document.getElementById('experience').value.trim();
+    
+    // 登録の目的（複数選択）
+    const purposes = [];
+    document.querySelectorAll('input[name="purpose"]:checked').forEach(checkbox => {
+        purposes.push(checkbox.value);
+    });
+    const purposeOtherText = document.getElementById('purposeOtherText').value.trim();
+    if (purposeOtherText) {
+        purposes.push(`その他: ${purposeOtherText}`);
+    }
+    
+    // 自由記述
+    const freeText = document.getElementById('freeText').value.trim();
+    
+    // 登録日時
+    const registrationDate = new Date().toISOString();
+    
+    return {
+        fullName,
+        furigana,
+        email,
+        ageRange,
+        university,
+        workStyle,
+        jobTypes,
+        experience,
+        purposes,
+        freeText,
+        registrationDate
+    };
+}
+
+// ========================================
+// 登録データの送信
+// ========================================
+
+function submitRegistrationData(formData) {
+    // ローディング表示（オプション）
+    const submitButton = document.getElementById('submitButton');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+    submitButton.disabled = true;
+    
+    // 実際の実装では、ここでサーバーにデータを送信
+    // 例：fetch APIを使用
+    /*
+    fetch('/api/registration', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccessModal();
+        } else {
+            alert('登録に失敗しました。もう一度お試しください。');
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('エラーが発生しました。もう一度お試しください。');
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+    });
+    */
+    
+    // デモ用：2秒後に成功モーダルを表示
+    console.log('登録データ:', formData);
+    
+    setTimeout(() => {
+        showSuccessModal();
+        
+        // ローカルストレージにメールアドレスを保存（次回の自動入力用）
+        localStorage.setItem('userEmail', formData.email);
+    }, 2000);
+}
+
+// ========================================
+// 成功モーダルの表示
+// ========================================
+
+function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// ========================================
+// キャンセルボタンの処理
+// ========================================
+
+function cancelRegistration() {
+    if (confirm('入力内容が失われますが、よろしいですか？')) {
+        window.location.href = 'index.html';
+    }
+}
+
+// ========================================
+// ブラウザの戻るボタン対策
+// ========================================
+
+window.addEventListener('beforeunload', function(e) {
+    const form = document.getElementById('registrationForm');
+    
+    // フォームに何か入力されている場合のみ警告
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], textarea, select');
+    let hasValue = false;
+    
+    inputs.forEach(input => {
+        if (input.value.trim() !== '' && input.id !== 'email') { // emailは自動入力の可能性があるので除外
+            hasValue = true;
+        }
+    });
+    
+    if (hasValue) {
+        e.preventDefault();
+        e.returnValue = '入力内容が失われますが、よろしいですか？';
+    }
 });
 
-// =====================================
-// フォームバリデーション
-// =====================================
-const registrationForm = document.getElementById('registrationForm');
+// ========================================
+// フォーム自動保存機能（オプション）
+// ========================================
 
-registrationForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+// ユーザーが入力中のデータを一時的に保存
+function setupAutoSave() {
+    const form = document.getElementById('registrationForm');
+    const inputs = form.querySelectorAll('input, textarea, select');
     
-    // エラーメッセージをクリア
-    clearErrors();
+    inputs.forEach(input => {
+        input.addEventListener('input', debounce(function() {
+            saveFormDataToLocalStorage();
+        }, 1000));
+    });
     
-    let isValid = true;
-    
-    // 名前のバリデーション
-    const name = document.getElementById('name');
-    if (name.value.trim() === '') {
-        showError('nameError', 'お名前を入力してください');
-        name.classList.add('error');
-        isValid = false;
-    }
-    
-    // メールアドレスのバリデーション
-    const email = document.getElementById('email');
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email.value.trim() === '') {
-        showError('emailError', 'メールアドレスを入力してください');
-        email.classList.add('error');
-        isValid = false;
-    } else if (!emailPattern.test(email.value)) {
-        showError('emailError', '有効なメールアドレスを入力してください');
-        email.classList.add('error');
-        isValid = false;
-    }
-    
-    // 電話番号のバリデーション
-    const phone = document.getElementById('phone');
-    const phonePattern = /^[0-9\-]+$/;
-    if (phone.value.trim() === '') {
-        showError('phoneError', '電話番号を入力してください');
-        phone.classList.add('error');
-        isValid = false;
-    } else if (!phonePattern.test(phone.value)) {
-        showError('phoneError', '有効な電話番号を入力してください（数字とハイフンのみ）');
-        phone.classList.add('error');
-        isValid = false;
-    }
-    
-    // 所属大学のバリデーション
-    const university = document.getElementById('university');
-    if (university.value === '') {
-        showError('universityError', '所属大学を選択してください');
-        university.classList.add('error');
-        isValid = false;
-    }
-    
-    // 「その他」選択時の大学名入力チェック
-    if (university.value === 'other' && otherUniversityInput.value.trim() === '') {
-        showError('universityError', '大学名を入力してください');
-        otherUniversityInput.classList.add('error');
-        isValid = false;
-    }
-    
-    // 利用目的のバリデーション（1つ以上選択必須）
-    const checkedPurposes = document.querySelectorAll('input[name="purpose"]:checked');
-    if (checkedPurposes.length === 0) {
-        showError('purposeError', '利用目的を1つ以上選択してください');
-        isValid = false;
-    }
-    
-    // 「その他」選択時の詳細入力チェック
-    const otherPurposeChecked = Array.from(checkedPurposes).some(cb => cb.value === 'other');
-    if (otherPurposeChecked && otherPurposeTextarea.value.trim() === '') {
-        showError('purposeError', '「その他」を選択した場合は、詳細を入力してください');
-        otherPurposeTextarea.classList.add('error');
-        isValid = false;
-    }
-    
-    // 個人情報保護方針への同意チェック
-    const privacyConsent = document.getElementById('privacyConsent');
-    if (!privacyConsent.checked) {
-        showError('consentError', '個人情報保護方針に同意していただく必要があります');
-        isValid = false;
-    }
-    
-    // バリデーション成功時
-    if (isValid) {
-        // 成功モーダルを表示
-        const successModal = document.getElementById('successModal');
-        successModal.style.display = 'block';
+    // ページ読み込み時に保存データを復元
+    restoreFormDataFromLocalStorage();
+}
+
+function saveFormDataToLocalStorage() {
+    const formData = collectFormData();
+    localStorage.setItem('registrationFormDraft', JSON.stringify(formData));
+}
+
+function restoreFormDataFromLocalStorage() {
+    const savedData = localStorage.getItem('registrationFormDraft');
+    if (savedData) {
+        const formData = JSON.parse(savedData);
         
-        // フォームをリセット
-        registrationForm.reset();
-        otherUniversityGroup.style.display = 'none';
-        otherPurposeGroup.style.display = 'none';
-    } else {
-        // エラーがある場合は最初のエラー位置までスクロール
-        const firstError = document.querySelector('.error');
-        if (firstError) {
-            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // 確認してから復元
+        if (confirm('前回入力途中のデータがあります。復元しますか？')) {
+            // データを各フィールドに復元
+            if (formData.fullName) document.getElementById('fullName').value = formData.fullName;
+            if (formData.furigana) document.getElementById('furigana').value = formData.furigana;
+            if (formData.email) document.getElementById('email').value = formData.email;
+            if (formData.ageRange) document.getElementById('ageRange').value = formData.ageRange;
+            if (formData.university) document.getElementById('university').value = formData.university;
+            if (formData.workStyle) document.getElementById('workStyle').value = formData.workStyle;
+            if (formData.experience) document.getElementById('experience').value = formData.experience;
+            if (formData.freeText) document.getElementById('freeText').value = formData.freeText;
+        } else {
+            localStorage.removeItem('registrationFormDraft');
         }
     }
-});
-
-// エラーメッセージを表示
-function showError(elementId, message) {
-    const errorElement = document.getElementById(elementId);
-    if (errorElement) {
-        errorElement.textContent = message;
-    }
 }
 
-// エラーメッセージをクリア
-function clearErrors() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(error => {
-        error.textContent = '';
-    });
-    
-    const errorInputs = document.querySelectorAll('.error');
-    errorInputs.forEach(input => {
-        input.classList.remove('error');
-    });
+// デバウンス関数（連続入力時の処理を制限）
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
-// 入力時にエラースタイルを削除
-const inputs = document.querySelectorAll('input, select, textarea');
-inputs.forEach(input => {
-    input.addEventListener('input', function() {
-        this.classList.remove('error');
-    });
-});
-
-// =====================================
-// メールアドレスの自動入力（デモ用）
-// =====================================
-const nameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
-
-nameInput.addEventListener('blur', function() {
-    // 名前が入力されていて、メールアドレスが空の場合
-    if (this.value.trim() !== '' && emailInput.value.trim() === '') {
-        // デモ用のメールアドレスを提案（実際には使用しない）
-        const suggestion = 'example@email.com';
-        emailInput.placeholder = `例: ${suggestion}`;
-    }
-});
+// 自動保存機能を有効にする場合はコメント解除
+// setupAutoSave();

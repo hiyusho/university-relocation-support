@@ -1,142 +1,273 @@
-/* =====================================
+/* ========================================
    個人情報保護方針ページ専用スタイル
-   ===================================== */
+   ======================================== */
 
-.privacy-main {
-    padding: 40px 0;
-    min-height: calc(100vh - 200px);
+.privacy-page-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
+
+.privacy-card {
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--shadow);
+    overflow: hidden;
+}
+
+/* ========================================
+   パンくずリスト
+   ======================================== */
+
+.breadcrumb {
+    padding: 20px 40px;
+    background-color: var(--background-color);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.breadcrumb .separator {
+    color: var(--text-light);
+}
+
+.breadcrumb .current {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+/* ========================================
+   ヘッダー
+   ======================================== */
 
 .privacy-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 50px 40px;
     text-align: center;
-    margin-bottom: 40px;
 }
 
-.privacy-header h2 {
-    font-size: 2.5rem;
-    color: var(--primary-color);
+.privacy-header h1 {
+    font-size: 32px;
     margin-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
 }
 
-.last-updated {
-    color: var(--text-light);
-    font-size: 0.9rem;
+.privacy-header h1 i {
+    font-size: 36px;
 }
 
-/* コンテンツ */
+.privacy-header .subtitle {
+    font-size: 18px;
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* ========================================
+   本文コンテンツ
+   ======================================== */
+
 .privacy-content {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: var(--bg-light);
     padding: 50px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-md);
-}
-
-.privacy-intro {
-    font-size: 1.1rem;
     line-height: 1.8;
-    margin-bottom: 40px;
-    padding: 20px;
-    background-color: var(--accent-color);
-    border-radius: 5px;
 }
 
-/* セクション */
-.privacy-section {
+.intro-section {
+    background-color: var(--background-color);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.intro-section p {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+/* ========================================
+   セクション
+   ======================================== */
+
+.policy-section {
     margin-bottom: 40px;
     padding-bottom: 30px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.privacy-section:last-of-type {
+.policy-section:last-of-type {
     border-bottom: none;
 }
 
-.privacy-section h3 {
-    font-size: 1.5rem;
-    color: var(--primary-color);
+.policy-section h2 {
+    font-size: 22px;
+    color: var(--text-dark);
     margin-bottom: 20px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
 .section-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     width: 35px;
     height: 35px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--white);
     border-radius: 50%;
-    font-size: 1rem;
-    font-weight: bold;
+    text-align: center;
+    line-height: 35px;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
-.privacy-section p {
-    line-height: 1.8;
+.policy-section p {
     margin-bottom: 15px;
-    color: var(--text-color);
+    color: var(--text-dark);
+    font-size: 15px;
 }
 
-.privacy-section ul {
-    margin-left: 20px;
-    margin-bottom: 15px;
+/* ========================================
+   リスト
+   ======================================== */
+
+.policy-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 20px 0;
 }
 
-.privacy-section ul li {
-    line-height: 1.8;
+.policy-list li {
+    padding: 12px 20px 12px 45px;
     margin-bottom: 10px;
-    color: var(--text-color);
+    background-color: var(--background-color);
+    border-radius: 8px;
+    position: relative;
+    color: var(--text-dark);
+    font-size: 15px;
 }
 
-/* 注意ボックス */
+.policy-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 18px;
+    top: 12px;
+    color: var(--primary-color);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* ========================================
+   注意ボックス
+   ======================================== */
+
 .notice-box {
-    background-color: #FFF3CD;
-    border-left: 4px solid #FFC107;
-    padding: 20px;
+    background-color: #FFF3E0;
+    border: 2px solid var(--primary-light);
+    border-radius: 10px;
+    padding: 15px 20px;
     margin-top: 20px;
-    border-radius: 5px;
 }
 
 .notice-box p {
-    margin-bottom: 10px;
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.notice-box p:last-child {
-    margin-bottom: 0;
+.notice-box i {
+    color: var(--primary-color);
+    font-size: 20px;
 }
 
-.notice-box strong {
-    color: #856404;
+/* ========================================
+   お問い合わせセクション
+   ======================================== */
+
+.contact-note {
+    background-color: var(--background-color);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-weight: 600;
 }
 
-/* お問い合わせボックス */
-.contact-box {
-    background-color: var(--accent-color);
+.contact-info {
+    background-color: var(--background-color);
     padding: 25px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-top: 20px;
 }
 
-.contact-box p {
-    margin-bottom: 8px;
-    line-height: 1.8;
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.contact-box p:first-child {
-    font-weight: bold;
+.contact-item:last-child {
+    margin-bottom: 0;
+}
+
+.contact-item i {
+    font-size: 24px;
     color: var(--primary-color);
-    margin-bottom: 15px;
+    min-width: 30px;
+    margin-top: 5px;
 }
 
-.contact-box strong {
-    color: var(--text-color);
+.contact-item strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 5px;
 }
 
-/* フッター */
+.contact-item p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+.contact-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+/* ========================================
+   フッター情報
+   ======================================== */
+
 .policy-footer {
     margin-top: 50px;
     padding-top: 30px;
@@ -144,55 +275,144 @@
     text-align: center;
 }
 
-.policy-footer p {
+.last-updated {
     color: var(--text-light);
-    margin-bottom: 5px;
+    font-size: 14px;
+    margin-bottom: 25px;
 }
 
-/* 戻るボタン */
 .back-button-container {
-    max-width: 900px;
-    margin: 30px auto 0;
     display: flex;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* レスポンシブデザイン */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.btn-back {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-back:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-home {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-home:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232, 119, 34, 0.4);
+}
+
+/* ========================================
+   レスポンシブデザイン
+   ======================================== */
+
 @media (max-width: 768px) {
+    .privacy-page-container {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    .breadcrumb {
+        padding: 15px 20px;
+        font-size: 13px;
+    }
+
+    .privacy-header {
+        padding: 40px 20px;
+    }
+
+    .privacy-header h1 {
+        font-size: 24px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .privacy-header h1 i {
+        font-size: 32px;
+    }
+
+    .privacy-header .subtitle {
+        font-size: 16px;
+    }
+
     .privacy-content {
-        padding: 30px;
+        padding: 30px 20px;
     }
-    
-    .privacy-header h2 {
-        font-size: 1.8rem;
+
+    .intro-section {
+        padding: 20px 15px;
     }
-    
-    .privacy-section h3 {
-        font-size: 1.3rem;
+
+    .policy-section h2 {
+        font-size: 20px;
+        flex-wrap: wrap;
     }
-    
+
+    .section-number {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 16px;
+    }
+
+    .policy-list li {
+        padding: 10px 15px 10px 40px;
+        font-size: 14px;
+    }
+
+    .policy-list li::before {
+        left: 15px;
+        font-size: 16px;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .back-button-container {
         flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
-    .privacy-content {
-        padding: 20px;
+    .privacy-header h1 {
+        font-size: 20px;
     }
-    
-    .privacy-header h2 {
-        font-size: 1.5rem;
+
+    .policy-section h2 {
+        font-size: 18px;
     }
-    
-    .privacy-section h3 {
-        font-size: 1.2rem;
-    }
-    
-    .section-number {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
+
+    .notice-box p {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
