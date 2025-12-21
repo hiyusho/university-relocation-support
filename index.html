@@ -24,8 +24,14 @@
                 <li class="nav-item" data-tooltip="トップページへ戻ります">
                     <a href="#top"><i class="fas fa-home"></i> Top</a>
                 </li>
-                <li class="nav-item" data-tooltip="名古屋での日常生活、住環境、生活コストなどの情報をご覧いただけます">
-                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-city"></i> 名古屋での暮らし <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                <li class="nav-item nav-item-parent" data-tooltip="名古屋市、尾張、西三河、東三河の居住地情報をご案内します">
+                    <a href="#residence-guide"><i class="fas fa-map-marked-alt"></i> 住む場所を知る</a>
+                    <ul class="nav-submenu">
+                        <li class="nav-subitem"><a href="nagoya-city.html"><i class="fas fa-city"></i> 名古屋市</a></li>
+                        <li class="nav-subitem"><a href="owari.html"><i class="fas fa-torii-gate"></i> 尾張地区</a></li>
+                        <li class="nav-subitem"><a href="nishi-mikawa.html"><i class="fas fa-industry"></i> 西三河地区</a></li>
+                        <li class="nav-subitem"><a href="higashi-mikawa.html"><i class="fas fa-water"></i> 東三河地区</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item" data-tooltip="就職活動のサポート、求人情報、キャリアカウンセリングをご案内します">
                     <a href="#job-search"><i class="fas fa-briefcase"></i> 仕事を見つけたい</a>
@@ -35,12 +41,6 @@
                 </li>
                 <li class="nav-item" data-tooltip="先輩家族の体験談、成功事例をご紹介します">
                     <a href="https://network2010.org/series" target="_blank" rel="noopener noreferrer"><i class="fas fa-users"></i> ロールモデル紹介 <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
-                </li>
-                <li class="nav-item" data-tooltip="交流イベント、セミナー、ネットワーキングの機会をご案内します">
-                    <a href="https://network2010.org/category/%E3%81%8A%E7%A5%AD%E3%82%8A" target="_blank" rel="noopener noreferrer"><i class="fas fa-calendar-alt"></i> 参加してみたい <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
-                </li>
-                <li class="nav-item" data-tooltip="名古屋の魅力、文化、観光スポット、グルメ情報などをご紹介します">
-                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-heart"></i> 名古屋で暮らすことの魅力 <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
                 </li>
                 <li class="nav-item" data-tooltip="家族帯同に関する制度、手続き、サポート内容の詳細情報です">
                     <a href="#family-support"><i class="fas fa-home"></i> 家族帯同について知りたい</a>
@@ -281,8 +281,6 @@
             <p style="margin-top: 15px; font-size: 13px;">名古屋地域情報提供：<a href="https://network2010.org/" target="_blank" rel="noopener noreferrer" style="color: #FF9F54; text-decoration: none;">Network2010 <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></a></p>
         </div>
     </footer>
-
-
 
     <!-- ログインモーダル -->
     <div id="loginModal" class="modal">
