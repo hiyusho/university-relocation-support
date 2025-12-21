@@ -33,15 +33,16 @@
     margin-bottom: 25px;
     color: var(--text-light);
 }
-Add overview-text and overview-image styles
+
 .overview-text {
     flex: 1;
 }
 
 .overview-image {
-    width: 300px;
+    width: 250px; /* 300px から 250px に変更 */
     flex-shrink: 0;
 }
+Fix CSS syntax error and adjust image size
 
 .image-placeholder {
     background-color: #FFF8F0;
