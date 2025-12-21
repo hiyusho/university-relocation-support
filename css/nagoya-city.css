@@ -39,7 +39,7 @@
 }
 
 .overview-image {
-    width: 250px; /* 300px から 250px に変更 */
+    width: 200px; /* 300px から 250px に変更 */
     flex-shrink: 0;
 }
 Fix CSS syntax error and adjust image size
