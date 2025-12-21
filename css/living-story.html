@@ -1,0 +1,334 @@
+1	<!DOCTYPE html>
+     2	<html lang="ja">
+     3	<head>
+     4	    <meta charset="UTF-8">
+     5	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6	    <title>15分で変わる、二つの顔 - 大学赴任者家族帯同支援プログラム</title>
+     7	    <link rel="stylesheet" href="css/style.css">
+     8	    <link rel="stylesheet" href="css/story.css">
+     9	    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    10	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    11	</head>
+    12	<body>
+    13	    <!-- ヘッダー -->
+    14	    <header class="site-header">
+    15	        <div class="header-container">
+    16	            <div class="logo-area">
+    17	                <img src="https://via.placeholder.com/150x60/4A90E2/ffffff?text=大学ロゴ" alt="大学ロゴ" class="university-logo">
+    18	                <h1 class="site-title">大学赴任者家族帯同支援プログラム</h1>
+    19	            </div>
+    20	            <nav class="header-nav">
+    21	                <a href="index.html" class="btn-back-home"><i class="fas fa-home"></i> トップに戻る</a>
+    22	            </nav>
+    23	        </div>
+    24	    </header>
+    25	
+    26	    <!-- 読み上げコントロール -->
+    27	    <div id="speech-controls" class="speech-controls">
+    28	        <div class="speech-main-controls">
+    29	            <button id="speech-play-btn" class="speech-btn speech-btn-primary" title="読み上げ開始">
+    30	                <i class="fas fa-play"></i> 読み上げ
+    31	            </button>
+    32	            <button id="speech-pause-btn" class="speech-btn" title="一時停止" style="display: none;">
+    33	                <i class="fas fa-pause"></i> 一時停止
+    34	            </button>
+    35	            <button id="speech-resume-btn" class="speech-btn speech-btn-primary" title="再開" style="display: none;">
+    36	                <i class="fas fa-play"></i> 再開
+    37	            </button>
+    38	            <button id="speech-stop-btn" class="speech-btn speech-btn-danger" title="停止" style="display: none;">
+    39	                <i class="fas fa-stop"></i> 停止
+    40	            </button>
+    41	            
+    42	            <div class="speech-divider"></div>
+    43	            
+    44	            <button id="speech-highlight-btn" class="speech-btn speech-btn-icon active" title="ハイライト表示">
+    45	                <i class="fas fa-highlighter"></i>
+    46	            </button>
+    47	            
+    48	            <div class="speech-rate-control">
+    49	                <button id="speech-slower-btn" class="speech-btn speech-btn-small" title="遅く">
+    50	                    <i class="fas fa-minus"></i>
+    51	                </button>
+    52	                <span class="speech-rate-label">速度: <span id="speech-rate-display">1.0x</span></span>
+    53	                <button id="speech-faster-btn" class="speech-btn speech-btn-small" title="速く">
+    54	                    <i class="fas fa-plus"></i>
+    55	                </button>
+    56	            </div>
+    57	        </div>
+    58	        
+    59	        <div class="speech-advanced-controls">
+    60	            <div class="speech-voice-control">
+    61	                <label for="speech-voice-selector" class="speech-label">
+    62	                    <i class="fas fa-microphone"></i> 音声:
+    63	                </label>
+    64	                <select id="speech-voice-selector" class="speech-select">
+    65	                    <option>読み込み中...</option>
+    66	                </select>
+    67	            </div>
+    68	            
+    69	            <div class="speech-bookmark-controls">
+    70	                <button id="speech-bookmark-save" class="speech-btn speech-btn-small" title="現在位置を保存">
+    71	                    <i class="fas fa-bookmark"></i> 保存
+    72	                </button>
+    73	                <button id="speech-bookmark-load" class="speech-btn speech-btn-small" title="保存位置から再開">
+    74	                    <i class="fas fa-book-open"></i> 再開
+    75	                </button>
+    76	                <button id="speech-bookmark-clear" class="speech-btn speech-btn-small speech-btn-subtle" title="ブックマーク削除">
+    77	                    <i class="fas fa-trash-alt"></i>
+    78	                </button>
+    79	            </div>
+    80	        </div>
+    81	    </div>
+    82	
+    83	    <!-- メインコンテンツ -->
+    84	    <main class="story-main">
+    85	        <div class="story-hero">
+    86	            <div class="story-hero-content">
+    87	                <span class="story-category">都市機能とのどかさの両立</span>
+    88	                <h1 class="story-title">15分で変わる、二つの顔</h1>
+    89	                <p class="story-subtitle">名古屋で見つけた、キャリアと暮らしやすさの調和</p>
+    90	            </div>
+    91	        </div>
+    92	
+    93	        <div class="story-container">
+    94	            <!-- イントロダクション -->
+    95	            <section class="story-intro">
+    96	                <div class="intro-profile">
+    97	                    <div class="profile-image">
+    98	                        <i class="fas fa-user-circle"></i>
+    99	                    </div>
+   100	                    <div class="profile-info">
+   101	                        <h3><ruby>Emily<rt>エミリー</rt></ruby>さん（35歳）</h3>
+   102	                        <p class="profile-detail">IT<ruby>企業<rt>きぎょう</rt></ruby><ruby>勤務<rt>きんむ</rt></ruby>（リモートワーク）/ 5歳の娘・さくらちゃんのママ</p>
+   103	                        <p class="profile-location"><i class="fas fa-map-marker-alt"></i> <ruby>東京<rt>とうきょう</rt></ruby>から<ruby>名古屋<rt>なごや</rt></ruby>へ<ruby>移住<rt>いじゅう</rt></ruby>（2024年4月）</p>
+   104	                    </div>
+   105	                </div>
+   106	                <div class="intro-text">
+   107	                    <p class="intro-quote">「最初は正直、不安でした。東京の便利さを手放すことへの抵抗もあったし、地方都市での仕事やキャリアも心配でした」</p>
+   108	                    <p>夫の大学<ruby>赴任<rt>ふにん</rt></ruby>に伴い、昨年4月に<ruby>東京<rt>とうきょう</rt></ruby>から<ruby>名古屋<rt>なごや</rt></ruby>へ<ruby>移住<rt>いじゅう</rt></ruby>した<ruby>Emily<rt>エミリー</rt></ruby>さん。しかし、<ruby>名古屋<rt>なごや</rt></ruby>での生活が始まって半年。彼女の予想は良い意味で裏切られた。</p>
+   109	                </div>
+   110	            </section>
+   111	
+   112	            <!-- タイムラインストーリー -->
+   113	            <section class="story-timeline">
+   114	                <h2 class="timeline-title">ある日の名古屋生活</h2>
+   115	                
+   116	                <!-- 朝7:30 -->
+   117	                <div class="timeline-item">
+   118	                    <div class="timeline-time">
+   119	                        <span class="time-icon morning"><i class="fas fa-sun"></i></span>
+   120	                        <span class="time-text">07:30</span>
+   121	                    </div>
+   122	                    <div class="timeline-content">
+   123	                        <h3><ruby>名古屋駅前<rt>なごやえきまえ</rt></ruby>のタワーズ</h3>
+   124	                        <div class="timeline-image">
+   125	                            <i class="fas fa-building"></i>
+   126	                            <span>名古屋駅前の高層ビル街</span>
+   127	                        </div>
+   128	                        <p><ruby>Emily<rt>エミリー</rt></ruby>さんの一日は、<ruby>名古屋駅前<rt>なごやえきまえ</rt></ruby>のタワーズから始まる。<ruby>東京<rt>とうきょう</rt></ruby>と変わらない洗練された都市空間。</p>
+   129	                        <blockquote>
+   130	                            「<ruby>WiFi<rt>ワイファイ</rt></ruby>も速いし、席も広い。<ruby>東京<rt>とうきょう</rt></ruby>より混雑していないから、集中できるんです」
+   131	                        </blockquote>
+   132	                    </div>
+   133	                </div>
+   134	
+   135	                <!-- 午前8:00 -->
+   136	                <div class="timeline-item">
+   137	                    <div class="timeline-time">
+   138	                        <span class="time-icon morning"><i class="fas fa-coffee"></i></span>
+   139	                        <span class="time-text">08:00</span>
+   140	                    </div>
+   141	                    <div class="timeline-content">
+   142	                        <h3><ruby>駅前<rt>えきまえ</rt></ruby>のカフェで朝のミーティング</h3>
+   143	                        <div class="timeline-image">
+   144	                            <i class="fas fa-laptop"></i>
+   145	                            <span>快適なワークスペース</span>
+   146	                        </div>
+   147	                        <p><ruby>名古屋駅<rt>なごやえき</rt></ruby>周辺には、<ruby>東京<rt>とうきょう</rt></ruby>と変わらない洗練されたカフェやコワーキングスペースが揃っている。週に2〜3回、ここで朝のオンラインミーティングをこなす。</p>
+   148	                    </div>
+   149	                </div>
+   150	
+   151	                <!-- 午前10:00 -->
+   152	                <div class="timeline-item highlight">
+   153	                    <div class="timeline-time">
+   154	                        <span class="time-icon nature"><i class="fas fa-leaf"></i></span>
+   155	                        <span class="time-text">10:00</span>
+   156	                    </div>
+   157	                    <div class="timeline-content">
+   158	                        <h3><ruby>鶴舞公園<rt>つるまこうえん</rt></ruby>でのんびり散歩</h3>
+   159	                        <div class="timeline-distance">
+   160	                            <i class="fas fa-subway"></i> 地下鉄で15分
+   161	                        </div>
+   162	                        <div class="timeline-image nature">
+   163	                            <i class="fas fa-tree"></i>
+   164	                            <span>広々とした緑豊かな公園</span>
+   165	                        </div>
+   166	                        <p>保育園の送りを終えた<ruby>Emily<rt>エミリー</rt></ruby>さんは、自宅近くの<ruby>鶴舞公園<rt>つるまこうえん</rt></ruby>へ。広々とした芝生、美しい桜並木、静かな池。平日の午前中は人も少なく、深呼吸できる空間が広がる。</p>
+   167	                        <blockquote class="highlight-quote">
+   168	                            「<ruby>東京<rt>とうきょう</rt></ruby>では考えられなかった贅沢です。朝は都会でバリバリ仕事をして、午前中にこんな緑豊かな公園を散歩できるなんて」
+   169	                        </blockquote>
+   170	                        <p class="detail-text">公園のベンチでノートパソコンを開き、穏やかな風を感じながらメールチェック。「仕事と暮らしの境界線が、いい意味で曖昧になった」と彼女は笑う。</p>
+   171	                    </div>
+   172	                </div>
+   173	
+   174	                <!-- 午後1:00 -->
+   175	                <div class="timeline-item">
+   176	                    <div class="timeline-time">
+   177	                        <span class="time-icon afternoon"><i class="fas fa-utensils"></i></span>
+   178	                        <span class="time-text">13:00</span>
+   179	                    </div>
+   180	                    <div class="timeline-content">
+   181	                        <h3><ruby>覚王山<rt>かくおうざん</rt></ruby>の古民家カフェでランチミーティング</h3>
+   182	                        <div class="timeline-image">
+   183	                            <i class="fas fa-home"></i>
+   184	                            <span>地元に愛される隠れ家スポット</span>
+   185	                        </div>
+   186	                        <p>同じように<ruby>名古屋<rt>なごや</rt></ruby>に<ruby>移住<rt>いじゅう</rt></ruby>してきたママ友と、<ruby>覚王山<rt>かくおうざん</rt></ruby>の古民家カフェで待ち合わせ。ここは地元の人に愛される、隠れ家的なスポット。</p>
+   187	                        <blockquote>
+   188	                            「<ruby>名古屋<rt>なごや</rt></ruby>って、『ちょうどいい』んです。都会すぎず、田舎すぎず。子育てにも仕事にも優しい街」
+   189	                        </blockquote>
+   190	                    </div>
+   191	                </div>
+   192	
+   193	                <!-- 午後3:00 -->
+   194	                <div class="timeline-item">
+   195	                    <div class="timeline-time">
+   196	                        <span class="time-icon afternoon"><i class="fas fa-shopping-basket"></i></span>
+   197	                        <span class="time-text">15:00</span>
+   198	                    </div>
+   199	                    <div class="timeline-content">
+   200	                        <h3>娘のお迎えと買い物</h3>
+   201	                        <div class="timeline-image">
+   202	                            <i class="fas fa-store"></i>
+   203	                            <span>温かい商店街の交流</span>
+   204	                        </div>
+   205	                        <p>さくらちゃんを保育園に迎えに行き、近所の商店街で夕食の買い物。八百屋のおじさんが「今日はこれ、サービスしとくわ」と旬の野菜をくれる。</p>
+   206	                        <blockquote>
+   207	                            「<ruby>東京<rt>とうきょう</rt></ruby>では味わえなかった、人との距離の近さがあります。でも田舎特有の窮屈さはない。このバランスが絶妙なんです」
+   208	                        </blockquote>
+   209	                    </div>
+   210	                </div>
+   211	
+   212	                <!-- 午後5:00 -->
+   213	                <div class="timeline-item">
+   214	                    <div class="timeline-time">
+   215	                        <span class="time-icon evening"><i class="fas fa-home"></i></span>
+   216	                        <span class="time-text">17:00</span>
+   217	                    </div>
+   218	                    <div class="timeline-content">
+   219	                        <h3>自宅でリモートワーク再開</h3>
+   220	                        <div class="timeline-image">
+   221	                            <i class="fas fa-desktop"></i>
+   222	                            <span>穏やかな住宅街の風景</span>
+   223	                        </div>
+   224	                        <p>娘が遊んでいる隣で、夕方の仕事を再開。窓からは夕日に照らされた住宅街の穏やかな風景が見える。</p>
+   225	                        <blockquote>
+   226	                            「<ruby>名古屋<rt>なごや</rt></ruby>に来てから、生活の質が上がりました。<ruby>東京<rt>とうきょう</rt></ruby>と同じ仕事を続けながら、時間にも心にも余裕が生まれた」
+   227	                        </blockquote>
+   228	                    </div>
+   229	                </div>
+   230	
+   231	                <!-- 夜7:00 -->
+   232	                <div class="timeline-item">
+   233	                    <div class="timeline-time">
+   234	                        <span class="time-icon evening"><i class="fas fa-moon"></i></span>
+   235	                        <span class="time-text">19:00</span>
+   236	                    </div>
+   237	                    <div class="timeline-content">
+   238	                        <h3>家族で夕食</h3>
+   239	                        <div class="timeline-image">
+   240	                            <i class="fas fa-users"></i>
+   241	                            <span>笑顔が絶えない家族の時間</span>
+   242	                        </div>
+   243	                        <p>大学から帰宅した夫と、3人で食卓を囲む。今日あった出来事を話しながら、笑顔が絶えない時間。</p>
+   244	                    </div>
+   245	                </div>
+   246	            </section>
+   247	
+   248	            <!-- まとめ -->
+   249	            <section class="story-conclusion">
+   250	                <div class="conclusion-box">
+   251	                    <h2>エミリーさんが見つけた、名古屋の魅力</h2>
+   252	                    <blockquote class="main-quote">
+   253	                        「<ruby>名古屋<rt>なごや</rt></ruby>は『働く』と『暮らす』が自然に調和している街。ここでなら、キャリアも家族も、両方を大切にできる。それが一番の魅力です」
+   254	                    </blockquote>
+   255	                    <p class="conclusion-text">
+   256	                        <ruby>Emily<rt>エミリー</rt></ruby>さんの一日。それは、都市機能とのどかさが<strong><ruby>15分<rt>じゅうごふん</rt></ruby>で切り替わる</strong>、<ruby>名古屋<rt>なごや</rt></ruby>ならではのライフスタイル。
+   257	                    </p>
+   258	                </div>
+   259	
+   260	                <div class="key-points">
+   261	                    <h3>名古屋で実現できること</h3>
+   262	                    <div class="points-grid">
+   263	                        <div class="point-item">
+   264	                            <i class="fas fa-check-circle"></i>
+   265	                            <div>
+   266	                                <h4>都会の刺激</h4>
+   267	                                <p>最先端のビジネス<ruby>環境<rt>かんきょう</rt></ruby>とカフェ文化</p>
+   268	                            </div>
+   269	                        </div>
+   270	                        <div class="point-item">
+   271	                            <i class="fas fa-check-circle"></i>
+   272	                            <div>
+   273	                                <h4>自然の癒し</h4>
+   274	                                <p><ruby>15分<rt>じゅうごふん</rt></ruby>で行ける緑豊かな公園</p>
+   275	                            </div>
+   276	                        </div>
+   277	                        <div class="point-item">
+   278	                            <i class="fas fa-check-circle"></i>
+   279	                            <div>
+   280	                                <h4>人との温かさ</h4>
+   281	                                <p>適度な距離感のコミュニティ</p>
+   282	                            </div>
+   283	                        </div>
+   284	                        <div class="point-item">
+   285	                            <i class="fas fa-check-circle"></i>
+   286	                            <div>
+   287	                                <h4>時間のゆとり</h4>
+   288	                                <p>通勤時間の短縮と生活の質向上</p>
+   289	                            </div>
+   290	                        </div>
+   291	                    </div>
+   292	                </div>
+   293	            </section>
+   294	
+   295	            <!-- CTA -->
+   296	            <section class="story-cta">
+   297	                <h2>あなたも、こんな暮らしを始めてみませんか？</h2>
+   298	                <p><ruby>名古屋<rt>なごや</rt></ruby>では、キャリアと暮らしやすさ、両方を手に入れることができます。<br>
+   299	                <ruby>東京<rt>とうきょう</rt></ruby>の便利さを保ちながら、時間と心のゆとりを得られる生活。<br>
+   300	                それが、<ruby>名古屋<rt>なごや</rt></ruby>で待っています。</p>
+   301	                <div class="cta-buttons">
+   302	                    <a href="index.html#contact" class="btn-cta-primary">
+   303	                        <i class="fas fa-paper-plane"></i> 新規登録して相談する
+   304	                    </a>
+   305	                    <a href="index.html" class="btn-cta-secondary">
+   306	                        <i class="fas fa-arrow-left"></i> トップページに戻る
+   307	                    </a>
+   308	                </div>
+   309	            </section>
+   310	        </div>
+   311	    </main>
+   312	
+   313	    <!-- フッター -->
+   314	    <footer class="site-footer">
+   315	        <div class="footer-content">
+   316	            <div class="footer-links-bottom">
+   317	                <a href="privacy.html">個人情報保護方針</a>
+   318	                <span class="separator">|</span>
+   319	                <a href="#">利用規約</a>
+   320	                <span class="separator">|</span>
+   321	                <a href="#">運営会社</a>
+   322	            </div>
+   323	            <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All Rights Reserved.</p>
+   324	            <p class="footer-note">本プログラムは、名古屋地域の大学と地域企業が連携して運営しています。</p>
+   325	        </div>
+   326	    </footer>
+   327	
+   328	    <script src="js/main.js"></script>
+   329	    <script src="js/speech-reader.js"></script>
+   330	    <!-- スクロールアニメーション（必要に応じてコメント解除）
+   331	    <script src="js/scroll-animations.js"></script>
+   332	    -->
+   333	</body>
+   334	</html>
