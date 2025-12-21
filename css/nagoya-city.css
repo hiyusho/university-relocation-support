@@ -33,6 +33,42 @@
     margin-bottom: 25px;
     color: var(--text-light);
 }
+.overview-text {
+    flex: 1;
+}
+
+.overview-image {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.image-placeholder {
+    background-color: #FFF8F0;
+    border: 2px dashed #E87722;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    color: #999;
+}
+
+.image-placeholder i {
+    font-size: 3rem;
+    color: #E87722;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.image-placeholder p {
+    font-size: 1rem;
+    color: #333;
+    margin: 10px 0 5px;
+    font-weight: 600;
+}
+
+.image-placeholder small {
+    font-size: 0.85rem;
+    color: #999;
+}
 
 .feature-list {
     display: grid;
