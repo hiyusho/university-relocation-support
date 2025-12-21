@@ -33,6 +33,7 @@
     margin-bottom: 25px;
     color: var(--text-light);
 }
+Add overview-text and overview-image styles
 .overview-text {
     flex: 1;
 }
