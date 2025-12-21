@@ -104,38 +104,6 @@ Add overview-text and overview-image styles
     margin: 0;
 }
 
-.overview-image {
-    display: flex;
-    align-items: center;
-}
-
-.image-placeholder {
-    background-color: var(--background-color);
-    border-radius: 10px;
-    padding: 60px 30px;
-    text-align: center;
-    width: 100%;
-    border: 2px dashed var(--border-color);
-}
-
-.image-placeholder i {
-    font-size: 48px;
-    color: var(--primary-light);
-    margin-bottom: 10px;
-}
-
-.image-placeholder p {
-    font-size: 14px;
-    color: var(--text-light);
-    margin: 10px 0 5px;
-}
-
-.image-placeholder small {
-    font-size: 12px;
-    color: var(--text-light);
-    opacity: 0.7;
-}
-
 .climate-info {
     background-color: var(--background-color);
     padding: 25px;
