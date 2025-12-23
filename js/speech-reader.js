@@ -1,664 +1,395 @@
-/**
- * 拡張版 Web Speech API 読み上げ機能
- * - 音声選択機能
- * - リアルタイムハイライト
- * - ブックマーク機能
- */
-
+// 音声読み上げ機能
 class SpeechReader {
     constructor() {
         this.synth = window.speechSynthesis;
         this.utterance = null;
-        this.isPaused = false;
-        this.isReading = false;
-        this.rate = 1.0;
-        this.currentVoiceIndex = 0;
-        
-        // コンテンツ管理
         this.paragraphs = [];
-        this.currentParagraphIndex = 0;
-        this.currentCharIndex = 0;
+        this.currentIndex = 0;
+        this.isPaused = false;
+        this.rate = 1.0;
         
-        // ハイライト管理
-        this.highlightEnabled = true;
-        this.originalStyles = new Map();
-        
-        // ブックマーク管理
-        this.bookmarkKey = 'speech-reader-bookmark';
-        
-        // 音声リスト
-        this.voices = [];
-        this.japaneseVoices = [];
-        this.loadVoices();
-        
-        // 音声リスト変更イベント
-        if (this.synth.onvoiceschanged !== undefined) {
-            this.synth.onvoiceschanged = () => this.loadVoices();
+        this.initializeElements();
+        this.loadParagraphs();
+        this.attachEventListeners();
+        this.checkBrowserSupport();
+    }
+
+    initializeElements() {
+        this.playBtn = document.getElementById('play-btn');
+        this.pauseBtn = document.getElementById('pause-btn');
+        this.resumeBtn = document.getElementById('resume-btn');
+        this.stopBtn = document.getElementById('stop-btn');
+        this.rateInput = document.getElementById('speech-rate');
+        this.rateValue = document.getElementById('rate-value');
+    }
+
+    checkBrowserSupport() {
+        if (!('speechSynthesis' in window)) {
+            alert('お使いのブラウザは音声読み上げ機能に対応していません。');
+            this.playBtn.disabled = true;
         }
     }
-    
-    /**
-     * 利用可能な音声をロード
-     */
-    loadVoices() {
-        this.voices = this.synth.getVoices();
-        
-        // 日本語音声のみをフィルタリング
-        this.japaneseVoices = this.voices.filter(voice => 
-            voice.lang.startsWith('ja')
-        );
-        
-        // 音声選択UIを更新
-        this.updateVoiceSelector();
-        
-        console.log(`利用可能な日本語音声: ${this.japaneseVoices.length}個`);
-    }
-    
-    /**
-     * 音声選択UIを更新
-     */
-    updateVoiceSelector() {
-        const selector = document.getElementById('speech-voice-selector');
-        if (!selector || this.japaneseVoices.length === 0) return;
-        
-        selector.innerHTML = '';
-        
-        this.japaneseVoices.forEach((voice, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = voice.name;
-            if (index === this.currentVoiceIndex) {
-                option.selected = true;
-            }
-            selector.appendChild(option);
-        });
-    }
-    
-    /**
-     * 音声を変更
-     */
-    changeVoice(index) {
-        this.currentVoiceIndex = parseInt(index);
-        
-        // 読み上げ中の場合は再スタート
-        if (this.isReading) {
-            const wasPlaying = !this.isPaused;
-            const currentIndex = this.currentParagraphIndex;
-            this.stop();
-            if (wasPlaying) {
-                this.readFromParagraph(currentIndex);
-            }
+
+    loadParagraphs() {
+        // ストーリーのすべてのテキスト要素を取得
+        const storyContainer = document.querySelector('.story-container') || document.querySelector('.story-content');
+        if (!storyContainer) {
+            console.warn('ストーリーコンテナが見つかりません');
+            return;
         }
-    }
-    
-    /**
-     * 要素からrubyタグを考慮してテキストを取得
-     */
-    getReadableText(element) {
-        const clone = element.cloneNode(true);
-        
-        // rubyタグを処理：読み仮名（rt）を使用し、漢字は削除
-        const rubyElements = clone.querySelectorAll('ruby');
-        rubyElements.forEach(ruby => {
-            const rt = ruby.querySelector('rt');
-            if (rt) {
-                // 読み仮名だけを残す
-                ruby.replaceWith(document.createTextNode(rt.textContent));
-            } else {
-                // rtがない場合は元のテキストを使用
-                ruby.replaceWith(document.createTextNode(ruby.textContent));
+
+        // ストーリータイトルを読み込む
+        const storyTitle = document.querySelector('.story-title');
+        if (storyTitle) {
+            this.paragraphs.push({
+                element: storyTitle,
+                text: storyTitle.textContent.trim()
+            });
+        }
+
+        // イントロダクションセクション
+        const introSection = storyContainer.querySelector('.story-intro');
+        if (introSection) {
+            const introParagraphs = introSection.querySelectorAll('p');
+            introParagraphs.forEach(p => {
+                const text = p.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: p,
+                        text: text
+                    });
+                }
+            });
+        }
+
+        // タイムラインタイトル
+        const timelineTitle = storyContainer.querySelector('.timeline-title');
+        if (timelineTitle) {
+            this.paragraphs.push({
+                element: timelineTitle,
+                text: timelineTitle.textContent.trim()
+            });
+        }
+
+        // タイムラインアイテム
+        const timelineItems = storyContainer.querySelectorAll('.timeline-item');
+        timelineItems.forEach(item => {
+            // h3タイトル
+            const h3 = item.querySelector('h3');
+            if (h3) {
+                this.paragraphs.push({
+                    element: h3,
+                    text: h3.textContent.trim()
+                });
             }
+
+            // timeline-content内の段落
+            const contentParagraphs = item.querySelectorAll('.timeline-content p');
+            contentParagraphs.forEach(p => {
+                const text = p.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: p,
+                        text: text
+                    });
+                }
+            });
+
+            // blockquote
+            const blockquotes = item.querySelectorAll('blockquote');
+            blockquotes.forEach(bq => {
+                const text = bq.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: bq,
+                        text: text
+                    });
+                }
+            });
         });
-        
-        return clone.textContent.trim();
-    }
-    
-    /**
-     * ページのメインコンテンツを段落単位で取得
-     */
-    getPageParagraphs() {
-        const paragraphs = [];
-        
-        // ストーリーページの場合
-        const storyMain = document.querySelector('.story-main');
-        if (storyMain) {
-            // タイトル
-            const title = document.querySelector('.story-title');
-            if (title) {
-                paragraphs.push({
-                    element: title,
-                    text: this.getReadableText(title)
+
+        // セクションごとに段落を読み込む（他のストーリーページ用）
+        const sections = storyContainer.querySelectorAll('.story-section');
+        sections.forEach(section => {
+            // セクションタイトル
+            const sectionTitle = section.querySelector('.section-title');
+            if (sectionTitle) {
+                this.paragraphs.push({
+                    element: sectionTitle,
+                    text: sectionTitle.textContent.trim()
                 });
             }
-            
-            const subtitle = document.querySelector('.story-subtitle');
-            if (subtitle) {
-                paragraphs.push({
-                    element: subtitle,
-                    text: this.getReadableText(subtitle)
-                });
-            }
-            
-            // イントロダクション
-            const introText = document.querySelector('.intro-text');
-            if (introText) {
-                const introParagraphs = introText.querySelectorAll('p');
-                introParagraphs.forEach(p => {
-                    const text = this.getReadableText(p);
-                    if (text.length > 10) {
-                        paragraphs.push({
-                            element: p,
-                            text: text
-                        });
-                    }
-                });
-            }
-            
-            // タイムラインアイテム
-            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            // story-text内の段落
+            const storyTexts = section.querySelectorAll('.story-text p');
+            storyTexts.forEach(p => {
+                const text = p.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: p,
+                        text: text
+                    });
+                }
+            });
+
+            // timeline-item内の段落
+            const timelineItems = section.querySelectorAll('.timeline-item');
             timelineItems.forEach(item => {
-                const time = item.querySelector('.time-text');
-                const heading = item.querySelector('h3');
-                const contentParagraphs = item.querySelectorAll('.timeline-content > p');
-                const blockquote = item.querySelector('blockquote');
-                
-                if (time) {
-                    paragraphs.push({
-                        element: time,
-                        text: this.getReadableText(time)
+                // タイムタイトル
+                const timeTitle = item.querySelector('.timeline-title');
+                if (timeTitle) {
+                    this.paragraphs.push({
+                        element: timeTitle,
+                        text: timeTitle.textContent.trim()
                     });
                 }
-                
-                if (heading) {
-                    paragraphs.push({
-                        element: heading,
-                        text: this.getReadableText(heading)
-                    });
-                }
-                
-                contentParagraphs.forEach(p => {
-                    const text = this.getReadableText(p);
-                    if (text.length > 10) {
-                        paragraphs.push({
-                            element: p,
-                            text: text
-                        });
-                    }
-                });
-                
-                if (blockquote) {
-                    paragraphs.push({
-                        element: blockquote,
-                        text: this.getReadableText(blockquote)
-                    });
-                }
-            });
-            
-            // まとめ
-            const conclusion = document.querySelector('.conclusion-box');
-            if (conclusion) {
-                const conclusionElements = conclusion.querySelectorAll('p, blockquote, h2');
-                conclusionElements.forEach(el => {
-                    const text = this.getReadableText(el);
-                    if (text.length > 10) {
-                        paragraphs.push({
-                            element: el,
-                            text: text
-                        });
-                    }
-                });
-            }
-            
-            return paragraphs;
-        }
-        
-        // 通常ページの場合（index.html等）
-        const mainContentArea = document.querySelector('.main-content');
-        if (mainContentArea) {
-            // ヒーローセクション
-            const heroTitle = document.querySelector('.hero-title');
-            if (heroTitle) {
-                paragraphs.push({
-                    element: heroTitle,
-                    text: this.getReadableText(heroTitle)
-                });
-            }
-            
-            // セクションごとにテキストを取得
-            const sections = mainContentArea.querySelectorAll('section');
-            sections.forEach(section => {
-                const sectionTitle = section.querySelector('.section-title, h2, h3');
-                if (sectionTitle) {
-                    paragraphs.push({
-                        element: sectionTitle,
-                        text: this.getReadableText(sectionTitle)
-                    });
-                }
-                
-                const sectionParagraphs = section.querySelectorAll('p:not(.video-placeholder p)');
-                sectionParagraphs.forEach(p => {
-                    const text = this.getReadableText(p);
-                    if (text.length > 10) {
-                        paragraphs.push({
+
+                // タイムライン内の段落
+                const timelineParagraphs = item.querySelectorAll('.timeline-text p, .timeline-content p');
+                timelineParagraphs.forEach(p => {
+                    const text = p.textContent.trim();
+                    if (text) {
+                        this.paragraphs.push({
                             element: p,
                             text: text
                         });
                     }
                 });
             });
+
+            // highlight-box内のテキスト
+            const highlightBoxes = section.querySelectorAll('.highlight-box');
+            highlightBoxes.forEach(box => {
+                const h4 = box.querySelector('h4');
+                if (h4) {
+                    this.paragraphs.push({
+                        element: h4,
+                        text: h4.textContent.trim()
+                    });
+                }
+                const paragraphs = box.querySelectorAll('p');
+                paragraphs.forEach(p => {
+                    const text = p.textContent.trim();
+                    if (text) {
+                        this.paragraphs.push({
+                            element: p,
+                            text: text
+                        });
+                    }
+                });
+            });
+
+            // data-stats内のテキスト
+            const dataStats = section.querySelectorAll('.data-stats');
+            dataStats.forEach(stat => {
+                const h4 = stat.querySelector('h4');
+                if (h4) {
+                    this.paragraphs.push({
+                        element: h4,
+                        text: h4.textContent.trim()
+                    });
+                }
+                const paragraphs = stat.querySelectorAll('p');
+                paragraphs.forEach(p => {
+                    const text = p.textContent.trim();
+                    if (text) {
+                        this.paragraphs.push({
+                            element: p,
+                            text: text
+                        });
+                    }
+                });
+            });
+        });
+
+        // コンクルージョンボックス（まとめ）
+        const conclusionBox = storyContainer.querySelector('.conclusion-box');
+        if (conclusionBox) {
+            const conclusionH3 = conclusionBox.querySelector('h3');
+            if (conclusionH3) {
+                this.paragraphs.push({
+                    element: conclusionH3,
+                    text: conclusionH3.textContent.trim()
+                });
+            }
+            const conclusionParagraphs = conclusionBox.querySelectorAll('p');
+            conclusionParagraphs.forEach(p => {
+                const text = p.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: p,
+                        text: text
+                    });
+                }
+            });
         }
-        
-        return paragraphs;
+
+        // エピローグセクション
+        const epilogue = storyContainer.querySelector('.epilogue-section');
+        if (epilogue) {
+            const epilogueTitle = epilogue.querySelector('.section-title');
+            if (epilogueTitle) {
+                this.paragraphs.push({
+                    element: epilogueTitle,
+                    text: epilogueTitle.textContent.trim()
+                });
+            }
+            const epilogueParagraphs = epilogue.querySelectorAll('p');
+            epilogueParagraphs.forEach(p => {
+                const text = p.textContent.trim();
+                if (text) {
+                    this.paragraphs.push({
+                        element: p,
+                        text: text
+                    });
+                }
+            });
+        }
+
+        console.log(`読み込んだ段落数: ${this.paragraphs.length}`);
     }
-    
-    /**
-     * ページ全体を読み上げ
-     */
-    readPage() {
-        this.paragraphs = this.getPageParagraphs();
+
+    attachEventListeners() {
+        this.playBtn.addEventListener('click', () => this.start());
+        this.pauseBtn.addEventListener('click', () => this.pause());
+        this.resumeBtn.addEventListener('click', () => this.resume());
+        this.stopBtn.addEventListener('click', () => this.stop());
         
+        this.rateInput.addEventListener('input', (e) => {
+            this.rate = parseFloat(e.target.value);
+            this.rateValue.textContent = this.rate.toFixed(1) + 'x';
+            if (this.utterance) {
+                this.utterance.rate = this.rate;
+            }
+        });
+    }
+
+    start() {
         if (this.paragraphs.length === 0) {
-            alert('読み上げるテキストが見つかりませんでした。');
+            alert('読み上げるテキストがありません。');
             return;
         }
-        
-        this.currentParagraphIndex = 0;
-        this.readFromParagraph(0);
+
+        this.currentIndex = 0;
+        this.updateButtons('playing');
+        this.speak();
     }
-    
-    /**
-     * 指定した段落から読み上げ開始
-     */
-    readFromParagraph(index) {
-        if (index >= this.paragraphs.length) {
-            this.onReadingComplete();
+
+    speak() {
+        if (this.currentIndex >= this.paragraphs.length) {
+            this.stop();
             return;
         }
+
+        const current = this.paragraphs[this.currentIndex];
         
-        this.currentParagraphIndex = index;
-        const paragraph = this.paragraphs[index];
+        // 前のハイライトを削除
+        document.querySelectorAll('.reading-highlight').forEach(el => {
+            el.classList.remove('reading-highlight');
+        });
+
+        // 現在の要素をハイライト
+        current.element.classList.add('reading-highlight');
         
-        // ハイライト表示
-        if (this.highlightEnabled) {
-            this.highlightParagraph(paragraph.element);
-        }
-        
-        // 読み上げ設定
-        this.utterance = new SpeechSynthesisUtterance(paragraph.text);
-        
-        // 音声設定
-        if (this.japaneseVoices.length > 0 && this.currentVoiceIndex < this.japaneseVoices.length) {
-            this.utterance.voice = this.japaneseVoices[this.currentVoiceIndex];
-        }
+        // スクロール
+        this.scrollToElement(current.element);
+
+        // 音声読み上げ
+        this.utterance = new SpeechSynthesisUtterance(current.text);
         this.utterance.lang = 'ja-JP';
         this.utterance.rate = this.rate;
         this.utterance.pitch = 1.0;
         this.utterance.volume = 1.0;
-        
-        // イベントリスナー
-        this.utterance.onstart = () => {
-            this.isReading = true;
-            this.isPaused = false;
-            this.updateUI();
-        };
-        
+
         this.utterance.onend = () => {
-            // 次の段落へ
-            this.readFromParagraph(this.currentParagraphIndex + 1);
+            current.element.classList.remove('reading-highlight');
+            this.currentIndex++;
+            
+            if (this.currentIndex < this.paragraphs.length && !this.isPaused) {
+                // 次の段落まで少し待つ
+                setTimeout(() => {
+                    if (!this.isPaused) {
+                        this.speak();
+                    }
+                }, 500);
+            } else if (this.currentIndex >= this.paragraphs.length) {
+                this.stop();
+            }
         };
-        
+
         this.utterance.onerror = (event) => {
-            console.error('Speech synthesis error:', event);
-            this.stop();
+            console.error('音声読み上げエラー:', event);
         };
-        
-        // 読み上げ開始
+
         this.synth.speak(this.utterance);
     }
-    
-    /**
-     * 段落をハイライト
-     */
-    highlightParagraph(element) {
-        // 前のハイライトを削除
-        this.removeAllHighlights();
+
+    scrollToElement(element) {
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.pageYOffset;
+        const middle = absoluteElementTop - (window.innerHeight / 2);
         
-        if (!element) return;
-        
-        // 元のスタイルを保存
-        this.originalStyles.set(element, {
-            backgroundColor: element.style.backgroundColor,
-            transition: element.style.transition,
-            outline: element.style.outline
-        });
-        
-        // ハイライトを適用
-        element.style.transition = 'all 0.3s ease';
-        element.style.backgroundColor = '#fff9e6';
-        element.style.outline = '3px solid #FFD700';
-        element.style.outlineOffset = '5px';
-        
-        // 要素をビューポートにスクロール
-        element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
+        window.scrollTo({
+            top: middle,
+            behavior: 'smooth'
         });
     }
-    
-    /**
-     * すべてのハイライトを削除
-     */
-    removeAllHighlights() {
-        this.originalStyles.forEach((styles, element) => {
-            element.style.backgroundColor = styles.backgroundColor;
-            element.style.transition = styles.transition;
-            element.style.outline = styles.outline;
-        });
-        this.originalStyles.clear();
-    }
-    
-    /**
-     * ハイライトの有効/無効を切り替え
-     */
-    toggleHighlight() {
-        this.highlightEnabled = !this.highlightEnabled;
-        
-        if (!this.highlightEnabled) {
-            this.removeAllHighlights();
-        }
-        
-        this.updateUI();
-    }
-    
-    /**
-     * 読み上げ完了時の処理
-     */
-    onReadingComplete() {
-        this.isReading = false;
-        this.isPaused = false;
-        this.removeAllHighlights();
-        this.updateUI();
-        
-        // 完了通知
-        console.log('読み上げが完了しました。');
-    }
-    
-    /**
-     * 一時停止
-     */
+
     pause() {
-        if (this.isReading && !this.isPaused) {
+        if (this.synth.speaking && !this.synth.paused) {
             this.synth.pause();
             this.isPaused = true;
-            this.updateUI();
+            this.updateButtons('paused');
         }
     }
-    
-    /**
-     * 再開
-     */
+
     resume() {
-        if (this.isReading && this.isPaused) {
+        if (this.synth.paused) {
             this.synth.resume();
             this.isPaused = false;
-            this.updateUI();
+            this.updateButtons('playing');
         }
     }
-    
-    /**
-     * 停止
-     */
+
     stop() {
         this.synth.cancel();
-        this.isReading = false;
         this.isPaused = false;
-        this.removeAllHighlights();
-        this.updateUI();
+        this.currentIndex = 0;
+        
+        // すべてのハイライトを削除
+        document.querySelectorAll('.reading-highlight').forEach(el => {
+            el.classList.remove('reading-highlight');
+        });
+        
+        this.updateButtons('stopped');
     }
-    
-    /**
-     * 読み上げ速度を変更
-     */
-    setRate(rate) {
-        this.rate = Math.max(0.5, Math.min(2.0, rate));
-        
-        // 読み上げ中の場合は再スタート
-        if (this.isReading) {
-            const wasPlaying = !this.isPaused;
-            const currentIndex = this.currentParagraphIndex;
-            this.stop();
-            if (wasPlaying) {
-                this.readFromParagraph(currentIndex);
-            }
-        }
-        
-        this.updateUI();
-    }
-    
-    /**
-     * ブックマークを保存
-     */
-    saveBookmark() {
-        if (!this.isReading) {
-            alert('読み上げ中のみブックマークを保存できます。');
-            return;
-        }
-        
-        const bookmark = {
-            url: window.location.pathname,
-            paragraphIndex: this.currentParagraphIndex,
-            timestamp: new Date().toISOString()
-        };
-        
-        localStorage.setItem(this.bookmarkKey, JSON.stringify(bookmark));
-        
-        // フィードバック表示
-        this.showFeedback('📚 ブックマークを保存しました', 'success');
-    }
-    
-    /**
-     * ブックマークから復元
-     */
-    loadBookmark() {
-        const bookmarkData = localStorage.getItem(this.bookmarkKey);
-        
-        if (!bookmarkData) {
-            alert('保存されたブックマークがありません。');
-            return;
-        }
-        
-        try {
-            const bookmark = JSON.parse(bookmarkData);
-            
-            // 同じページかチェック
-            if (bookmark.url !== window.location.pathname) {
-                alert('このブックマークは別のページのものです。');
-                return;
-            }
-            
-            // 段落を取得
-            this.paragraphs = this.getPageParagraphs();
-            
-            if (bookmark.paragraphIndex >= this.paragraphs.length) {
-                alert('ブックマークの位置が見つかりませんでした。');
-                return;
-            }
-            
-            // ブックマーク位置から再生
-            this.readFromParagraph(bookmark.paragraphIndex);
-            
-            // フィードバック表示
-            this.showFeedback('📖 ブックマークから再開しました', 'success');
-            
-        } catch (error) {
-            console.error('ブックマーク読み込みエラー:', error);
-            alert('ブックマークの読み込みに失敗しました。');
-        }
-    }
-    
-    /**
-     * ブックマークを削除
-     */
-    clearBookmark() {
-        localStorage.removeItem(this.bookmarkKey);
-        this.showFeedback('🗑️ ブックマークを削除しました', 'info');
-    }
-    
-    /**
-     * フィードバックメッセージを表示
-     */
-    showFeedback(message, type = 'info') {
-        // 既存のフィードバックを削除
-        const existing = document.querySelector('.speech-feedback');
-        if (existing) {
-            existing.remove();
-        }
-        
-        const feedback = document.createElement('div');
-        feedback.className = `speech-feedback speech-feedback-${type}`;
-        feedback.textContent = message;
-        document.body.appendChild(feedback);
-        
-        // アニメーション
-        setTimeout(() => feedback.classList.add('show'), 10);
-        
-        // 3秒後に削除
-        setTimeout(() => {
-            feedback.classList.remove('show');
-            setTimeout(() => feedback.remove(), 300);
-        }, 3000);
-    }
-    
-    /**
-     * UIを更新
-     */
-    updateUI() {
-        const playBtn = document.getElementById('speech-play-btn');
-        const pauseBtn = document.getElementById('speech-pause-btn');
-        const resumeBtn = document.getElementById('speech-resume-btn');
-        const stopBtn = document.getElementById('speech-stop-btn');
-        const rateDisplay = document.getElementById('speech-rate-display');
-        const highlightBtn = document.getElementById('speech-highlight-btn');
-        
-        if (playBtn) playBtn.style.display = this.isReading ? 'none' : 'inline-flex';
-        if (stopBtn) stopBtn.style.display = this.isReading ? 'inline-flex' : 'none';
-        
-        if (pauseBtn) pauseBtn.style.display = (this.isReading && !this.isPaused) ? 'inline-flex' : 'none';
-        if (resumeBtn) resumeBtn.style.display = (this.isReading && this.isPaused) ? 'inline-flex' : 'none';
-        
-        if (rateDisplay) rateDisplay.textContent = `${this.rate.toFixed(1)}x`;
-        
-        // ハイライトボタンの状態
-        if (highlightBtn) {
-            if (this.highlightEnabled) {
-                highlightBtn.classList.add('active');
-                highlightBtn.innerHTML = '<i class="fas fa-highlighter"></i>';
-            } else {
-                highlightBtn.classList.remove('active');
-                highlightBtn.innerHTML = '<i class="far fa-lightbulb"></i>';
-            }
+
+    updateButtons(state) {
+        switch(state) {
+            case 'playing':
+                this.playBtn.style.display = 'none';
+                this.pauseBtn.style.display = 'flex';
+                this.resumeBtn.style.display = 'none';
+                this.stopBtn.style.display = 'flex';
+                break;
+            case 'paused':
+                this.playBtn.style.display = 'none';
+                this.pauseBtn.style.display = 'none';
+                this.resumeBtn.style.display = 'flex';
+                this.stopBtn.style.display = 'flex';
+                break;
+            case 'stopped':
+                this.playBtn.style.display = 'flex';
+                this.pauseBtn.style.display = 'none';
+                this.resumeBtn.style.display = 'none';
+                this.stopBtn.style.display = 'none';
+                break;
         }
     }
 }
 
-// グローバルインスタンスを作成
-let speechReader = null;
-
-// ページ読み込み完了後に初期化
-window.addEventListener('DOMContentLoaded', () => {
-    // Web Speech API のサポート確認
-    if (!('speechSynthesis' in window)) {
-        console.warn('お使いのブラウザは音声読み上げ機能に対応していません。');
-        const controls = document.getElementById('speech-controls');
-        if (controls) {
-            controls.style.display = 'none';
-        }
-        return;
-    }
-    
-    speechReader = new SpeechReader();
-    
-    // ボタンのイベントリスナー設定
-    const playBtn = document.getElementById('speech-play-btn');
-    const pauseBtn = document.getElementById('speech-pause-btn');
-    const resumeBtn = document.getElementById('speech-resume-btn');
-    const stopBtn = document.getElementById('speech-stop-btn');
-    const slowerBtn = document.getElementById('speech-slower-btn');
-    const fasterBtn = document.getElementById('speech-faster-btn');
-    const voiceSelector = document.getElementById('speech-voice-selector');
-    const highlightBtn = document.getElementById('speech-highlight-btn');
-    const bookmarkSaveBtn = document.getElementById('speech-bookmark-save');
-    const bookmarkLoadBtn = document.getElementById('speech-bookmark-load');
-    const bookmarkClearBtn = document.getElementById('speech-bookmark-clear');
-    
-    if (playBtn) {
-        playBtn.addEventListener('click', () => {
-            speechReader.readPage();
-        });
-    }
-    
-    if (pauseBtn) {
-        pauseBtn.addEventListener('click', () => {
-            speechReader.pause();
-        });
-    }
-    
-    if (resumeBtn) {
-        resumeBtn.addEventListener('click', () => {
-            speechReader.resume();
-        });
-    }
-    
-    if (stopBtn) {
-        stopBtn.addEventListener('click', () => {
-            speechReader.stop();
-        });
-    }
-    
-    if (slowerBtn) {
-        slowerBtn.addEventListener('click', () => {
-            speechReader.setRate(speechReader.rate - 0.1);
-        });
-    }
-    
-    if (fasterBtn) {
-        fasterBtn.addEventListener('click', () => {
-            speechReader.setRate(speechReader.rate + 0.1);
-        });
-    }
-    
-    if (voiceSelector) {
-        voiceSelector.addEventListener('change', (e) => {
-            speechReader.changeVoice(e.target.value);
-        });
-    }
-    
-    if (highlightBtn) {
-        highlightBtn.addEventListener('click', () => {
-            speechReader.toggleHighlight();
-        });
-    }
-    
-    if (bookmarkSaveBtn) {
-        bookmarkSaveBtn.addEventListener('click', () => {
-            speechReader.saveBookmark();
-        });
-    }
-    
-    if (bookmarkLoadBtn) {
-        bookmarkLoadBtn.addEventListener('click', () => {
-            speechReader.loadBookmark();
-        });
-    }
-    
-    if (bookmarkClearBtn) {
-        bookmarkClearBtn.addEventListener('click', () => {
-            if (confirm('保存されたブックマークを削除しますか？')) {
-                speechReader.clearBookmark();
-            }
-        });
-    }
-    
-    // 初期UI更新
-    speechReader.updateUI();
+// ページ読み込み後に初期化
+document.addEventListener('DOMContentLoaded', () => {
+    new SpeechReader();
 });
+
