@@ -3,454 +3,524 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>名古屋市居住ガイド | 大学赴任者家族帯同支援プログラム</title>
+    <title>名古屋市で暮らす - 大学赴任者家族帯同支援プログラム</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/nagoya-city.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- ヘッダー -->
     <header class="header">
         <div class="logo-container">
-            <img src="logo.png" alt="大学ロゴ" class="university-logo" id="universityLogo">
+            <img src="logo.png" alt="大学ロゴ" class="university-logo">
             <h1 class="site-title">家族帯同ポータルサイト</h1>
         </div>
+        <nav class="header-nav">
+            <a href="index.html" class="btn-back-home">
+                <i class="fas fa-arrow-left"></i> トップに戻る
+            </a>
+        </nav>
     </header>
 
-    <div class="container">
-        <!-- 左側ナビゲーション -->
-        <nav class="sidebar">
-            <h2 class="sidebar-title">名古屋市居住ガイド</h2>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html"><i class="fas fa-arrow-left"></i> トップに戻る</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#overview"><i class="fas fa-info-circle"></i> 名古屋市について</a>
-                </li>
-                <li class="nav-item nav-item-parent active">
-                    <a href="#areas"><i class="fas fa-map"></i> エリア別ガイド</a>
-                    <ul class="nav-submenu">
-                        <li class="nav-subitem"><a href="#area-central"><i class="fas fa-building"></i> 都心エリア</a></li>
-                        <li class="nav-subitem"><a href="#area-east"><i class="fas fa-tree"></i> 東部エリア</a></li>
-                        <li class="nav-subitem"><a href="#area-north"><i class="fas fa-mountain"></i> 北部エリア</a></li>
-                        <li class="nav-subitem"><a href="#area-west"><i class="fas fa-home"></i> 西部エリア</a></li>
-                        <li class="nav-subitem"><a href="#area-south"><i class="fas fa-leaf"></i> 南部エリア</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#universities"><i class="fas fa-university"></i> 大学別アクセス</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#living-info"><i class="fas fa-home"></i> 生活お役立ち情報</a>
-                </li>
-            </ul>
-        </nav>
+    <!-- ヒーローセクション -->
+    <section class="nagoya-hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">名古屋市で暮らす</h1>
+                <p class="hero-subtitle">大都市の利便性と、ゆとりある生活が両立できる街</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- メインコンテンツ -->
-        <main class="main-content">
-            <!-- ヒーローセクション -->
-            <section class="hero-section">
-                <div class="hero-content">
-                    <h1 class="hero-title">名古屋市居住ガイド</h1>
-                    <p class="hero-subtitle">あなたに最適な居住エリアを見つけましょう</p>
-                </div>
-            </section>
-
-            <!-- 名古屋市について -->
-            <section id="overview" class="section">
-                <h2 class="section-title">名古屋市について</h2>
-                <div class="overview-content">
-                    <div class="overview-text">
-                        <h3>日本第3の都市で快適な生活を</h3>
-                        <p>名古屋市は人口約230万人を擁する中部地方最大の都市です。東京・大阪間のほぼ中央に位置し、都市機能と自然環境が調和した住みやすい街として知られています。</p>
-                    </div>
-                    <div class="overview-image">
-                        <div class="image-placeholder">
-                            <i class="fas fa-image"></i>
-                            <p>名古屋市の風景</p>
-                            <small>画像提供:Network2010</small>
+    <!-- メインコンテンツ -->
+    <main class="nagoya-main">
+        <div class="content-container">
+            <!-- 名古屋市の基本情報 -->
+            <section class="section-basic-info">
+                <h2 class="section-title">名古屋市の基本情報</h2>
+                <div class="basic-info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-users"></i>
                         </div>
+                        <h3>人口</h3>
+                        <p class="info-value">約233万人</p>
+                        <p class="info-desc">政令指定都市</p>
                     </div>
-                    </div>
-                        
-                    <div class="feature-list">
-                        <div class="feature-box">
-                            <i class="fas fa-yen-sign"></i>
-                            <h4>生活コスト</h4>
-                            <p>東京比で住居費約70%、物価も比較的安価</p>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map"></i>
                         </div>
-                        <div class="feature-box">
+                        <h3>面積</h3>
+                        <p class="info-value">326.5 km²</p>
+                        <p class="info-desc">16区で構成</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
                             <i class="fas fa-train"></i>
-                            <h4>交通アクセス</h4>
-                            <p>地下鉄・バス網が充実、車での移動も便利</p>
                         </div>
-                        <div class="feature-box">
+                        <h3>アクセス</h3>
+                        <p class="info-value">東京・大阪間</p>
+                        <p class="info-desc">中間地点</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3>空港</h3>
+                        <p class="info-value">電車28分</p>
+                        <p class="info-desc">中部国際空港</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 名古屋市の5つの魅力 -->
+            <section class="section-attractions">
+                <h2 class="section-title">名古屋市の5つの魅力</h2>
+                <div class="attractions-grid">
+                    <div class="attraction-card">
+                        <div class="attraction-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h3>都市機能とのどかさの両立</h3>
+                        <p>都心部は商業・ビジネス施設が充実しながら、15分圏内に自然豊かな公園や住宅地が広がります。緑被率が政令市トップクラスで、都会と自然の両方を楽しめます。</p>
+                        <a href="urban-nature-story.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-book-open"></i> ストーリーを読む
+                        </a>
+                    </div>
+                    <div class="attraction-card">
+                        <div class="attraction-icon">
+                            <i class="fas fa-yen-sign"></i>
+                        </div>
+                        <h3>生活コストの安さ</h3>
+                        <p>東京比で家賃が約40-50%安く、食費や交通費も割安。同じ予算でより広い住居に住め、生活にゆとりが生まれます。貯蓄や趣味に回せる余裕ができます。</p>
+                        <div class="cost-example">
+                            <div class="cost-comparison">
+                                <span class="cost-label">3LDK（70㎡）家賃</span>
+                                <div class="cost-values">
+                                    <div class="cost-item nagoya">
+                                        <span class="city">名古屋（千種区）</span>
+                                        <span class="price">10-12万円</span>
+                                    </div>
+                                    <div class="cost-item tokyo">
+                                        <span class="city">東京（目黒区）</span>
+                                        <span class="price">20-25万円</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="cost-living-story.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-book-open"></i> ストーリーを読む
+                        </a>
+                    </div>
+                    <div class="attraction-card">
+                        <div class="attraction-icon">
+                            <i class="fas fa-subway"></i>
+                        </div>
+                        <h3>交通アクセスの良さ</h3>
+                        <p>地下鉄6路線、市バス網が充実。名古屋駅から東京まで新幹線1時間40分、大阪まで50分。中部国際空港まで電車28分と、国内外へのアクセスが抜群です。</p>
+                        <ul class="access-list">
+                            <li><i class="fas fa-check-circle"></i> 東京まで新幹線1時間40分</li>
+                            <li><i class="fas fa-check-circle"></i> 大阪まで新幹線50分</li>
+                            <li><i class="fas fa-check-circle"></i> 中部国際空港まで電車28分</li>
+                        </ul>
+                        <a href="transport-access-story.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-book-open"></i> ストーリーを読む
+                        </a>
+                    </div>
+                    <div class="attraction-card">
+                        <div class="attraction-icon">
                             <i class="fas fa-child"></i>
-                            <h4>子育て環境</h4>
-                            <p>待機児童対策進行中、教育施設も充実</p>
                         </div>
-                        <div class="feature-box">
-                            <i class="fas fa-hospital"></i>
-                            <h4>医療体制</h4>
-                            <p>大学病院・総合病院が多数、医療機関充実</p>
-                        </div>
-                        <div class="feature-box">
-                            <i class="fas fa-landmark"></i>
-                            <h4>名古屋の歴史</h4>
-                            <p><a href="https://www.youtube.com/watch?v=hCDoWQvEQeA&t=1253s" target="_blank" rel="noopener noreferrer" style="color: #E87722; text-decoration: none;">動画で学ぶ名古屋の歴史 <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></a></p>
-                        </div>
+                        <h3>子育て・教育環境</h3>
+                        <p>保育所・幼稚園の待機児童が少なく、公立小中学校の教育水準も高い。医療費助成制度が充実しており、安心して子育てができる環境です。</p>
+                        <ul class="access-list">
+                            <li><i class="fas fa-check-circle"></i> 待機児童が少ない</li>
+                            <li><i class="fas fa-check-circle"></i> 教育水準が高い</li>
+                            <li><i class="fas fa-check-circle"></i> 医療費助成が充実</li>
+                        </ul>
+                        <a href="childcare-education-story.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-book-open"></i> ストーリーを読む
+                        </a>
                     </div>
-                </div>
-
-                <div class="climate-info">
-                    <h3>気候と四季</h3>
-                    <p>名古屋は温暖な気候で、四季の変化がはっきりしています。夏は暑く湿度が高めですが、冬は比較的温暖で雪はほとんど降りません。</p>
-                </div>
-            </section>
-
-            <!-- エリア選択 -->
-            <section id="areas" class="section">
-                <h2 class="section-title">エリア別ガイド</h2>
-                <p class="section-intro">名古屋市内を5つのエリアに分けてご紹介します。あなたのライフスタイルに合ったエリアを見つけてください。</p>
-
-                <div class="area-grid">
-                    <!-- 都心エリア -->
-                    <div class="area-card" id="area-central">
-                        <div class="area-header">
-                            <i class="fas fa-building"></i>
-                            <h3>都心エリア</h3>
-                            <span class="area-badge">名駅・栄周辺</span>
+                    <div class="attraction-card">
+                        <div class="attraction-icon">
+                            <i class="fas fa-utensils"></i>
                         </div>
-                        <div class="area-image">
-                            <div class="image-placeholder-small">
-                                <i class="fas fa-image"></i>
-                                <p>都心の街並み</p>
-                            </div>
-                        </div>
-                        <div class="area-description">
-                            <p><strong>特徴：</strong>ビジネス・ショッピングの中心地。都市生活を満喫したい方に最適。</p>
-                            <p><strong>こんな方におすすめ：</strong>都会的な生活を好む方、徒歩や地下鉄で完結させたい方</p>
-                        </div>
-                        <div class="area-details">
-                            <h4>🏘️ 主な居住エリア</h4>
-                            <ul>
-                                <li>名駅東（中村区）- マンション中心</li>
-                                <li>栄周辺（中区）- 都心のタワーマンション</li>
-                                <li>丸の内（中区）- オフィス街、利便性抜群</li>
-                            </ul>
-                            
-                            <h4>🛒 買い物</h4>
-                            <p>駅ビル、百貨店、大型商業施設が徒歩圏内に多数。24時間営業のスーパーも充実。</p>
-                            
-                            <h4>👶 子育て</h4>
-                            <p>保育園・幼稚園は限られますが、都心部ならではの教育施設や習い事教室が豊富。</p>
-                            
-                            <h4>🚃 通勤</h4>
-                            <p>地下鉄でどの大学へもアクセス良好。名古屋大学まで20-25分、名工大まで15-20分。</p>
-                            
-                            <h4>💰 家賃相場</h4>
-                            <p>3LDK: 15-25万円（マンション中心）</p>
-                            
-                            <a href="#" class="area-detail-btn">詳細を見る <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- 東部エリア -->
-                    <div class="area-card highlight" id="area-east">
-                        <div class="area-header">
-                            <i class="fas fa-tree"></i>
-                            <h3>東部エリア</h3>
-                            <span class="area-badge recommended">おすすめ</span>
-                        </div>
-                        <div class="area-image">
-                            <div class="image-placeholder-small">
-                                <i class="fas fa-image"></i>
-                                <p>東部の住宅街</p>
-                            </div>
-                        </div>
-                        <div class="area-description">
-                            <p><strong>特徴：</strong>名古屋大学に最も近い文教地区。緑豊かで子育て環境が良好。</p>
-                            <p><strong>こんな方におすすめ：</strong>名古屋大学赴任者、子育て世帯、落ち着いた環境を好む方</p>
-                        </div>
-                        <div class="area-details">
-                            <h4>🏘️ 主な居住エリア</h4>
-                            <ul>
-                                <li>東山公園周辺（千種区）- 名大に最も近い</li>
-                                <li>本山・覚王山（千種区）- 人気の文教地区</li>
-                                <li>一社・上社（名東区）- ファミリー層に人気</li>
-                                <li>八事・いりなか（昭和区）- 高級住宅街、教育環境良好</li>
-                            </ul>
-                            
-                            <h4>🛒 買い物</h4>
-                            <p>イオンタウン、アピタ、各種スーパーマーケットが充実。星ヶ丘三越などの商業施設も。</p>
-                            
-                            <h4>👶 子育て</h4>
-                            <p>評判の良い小学校・中学校が多数。東山動植物園、平和公園など大型公園が近い。保育園も比較的入りやすい。</p>
-                            
-                            <h4>🚃 通勤</h4>
-                            <p><strong>名古屋大学まで：</strong>自転車10-20分、地下鉄5-15分と非常に便利。</p>
-                            
-                            <h4>💰 家賃相場</h4>
-                            <p>3LDK: 12-18万円（マンション）、10-15万円（戸建て賃貸）</p>
-                            
-                            <a href="#" class="area-detail-btn">詳細を見る <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- 北部エリア -->
-                    <div class="area-card" id="area-north">
-                        <div class="area-header">
-                            <i class="fas fa-mountain"></i>
-                            <h3>北部エリア</h3>
-                            <span class="area-badge">守山・北区</span>
-                        </div>
-                        <div class="area-image">
-                            <div class="image-placeholder-small">
-                                <i class="fas fa-image"></i>
-                                <p>北部の自然</p>
-                            </div>
-                        </div>
-                        <div class="area-description">
-                            <p><strong>特徴：</strong>自然豊かで広い住宅。のびのびとした生活を送りたい方向け。</p>
-                            <p><strong>こんな方におすすめ：</strong>広い家に住みたい方、自然環境を重視する方、車での移動が中心の方</p>
-                        </div>
-                        <div class="area-details">
-                            <h4>🏘️ 主な居住エリア</h4>
-                            <ul>
-                                <li>守山区 - 戸建て中心、緑豊か</li>
-                                <li>北区 - 比較的新しい住宅地</li>
-                            </ul>
-                            
-                            <h4>🛒 買い物</h4>
-                            <p>大型ショッピングモール（イオンモール守山など）、地域密着型スーパー多数。</p>
-                            
-                            <h4>👶 子育て</h4>
-                            <p>広い公園、自然環境が充実。のびのび育てたい家庭に最適。</p>
-                            
-                            <h4>🚃 通勤</h4>
-                            <p>名古屋大学まで地下鉄で30-40分。車通勤も可能なエリア。</p>
-                            
-                            <h4>💰 家賃相場</h4>
-                            <p>3LDK: 8-12万円（戸建て賃貸が中心）</p>
-                            
-                            <a href="#" class="area-detail-btn">詳細を見る <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- 西部エリア -->
-                    <div class="area-card" id="area-west">
-                        <div class="area-header">
-                            <i class="fas fa-home"></i>
-                            <h3>西部エリア</h3>
-                            <span class="area-badge">中村・西・中川区</span>
-                        </div>
-                        <div class="area-image">
-                            <div class="image-placeholder-small">
-                                <i class="fas fa-image"></i>
-                                <p>西部の商店街</p>
-                            </div>
-                        </div>
-                        <div class="area-description">
-                            <p><strong>特徴：</strong>下町情緒があり、物価が安い。庶民的な生活を楽しみたい方に。</p>
-                            <p><strong>こんな方におすすめ：</strong>生活コストを抑えたい方、地域コミュニティを大切にする方</p>
-                        </div>
-                        <div class="area-details">
-                            <h4>🏘️ 主な居住エリア</h4>
-                            <ul>
-                                <li>中村区 - 名駅に近いエリアも</li>
-                                <li>西区 - 住宅地と工場が混在</li>
-                                <li>中川区 - 庶民的な雰囲気</li>
-                            </ul>
-                            
-                            <h4>🛒 買い物</h4>
-                            <p>地域密着型の商店街、格安スーパーが多数。生活コストを抑えやすい。</p>
-                            
-                            <h4>👶 子育て</h4>
-                            <p>地域のつながりが強く、下町育児の良さがある。公園も点在。</p>
-                            
-                            <h4>🚃 通勤</h4>
-                            <p>名古屋駅経由で各大学へ。地下鉄・JRを利用。</p>
-                            
-                            <h4>💰 家賃相場</h4>
-                            <p>3LDK: 7-11万円（最も安価なエリア）</p>
-                            
-                            <a href="#" class="area-detail-btn">詳細を見る <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- 南部エリア -->
-                    <div class="area-card" id="area-south">
-                        <div class="area-header">
-                            <i class="fas fa-leaf"></i>
-                            <h3>南部エリア</h3>
-                            <span class="area-badge">天白・瑞穂・緑区</span>
-                        </div>
-                        <div class="area-image">
-                            <div class="image-placeholder-small">
-                                <i class="fas fa-image"></i>
-                                <p>南部の住宅街</p>
-                            </div>
-                        </div>
-                        <div class="area-description">
-                            <p><strong>特徴：</strong>バランスの取れた住環境。名城大学・中京大学に近い。</p>
-                            <p><strong>こんな方におすすめ：</strong>名城大・中京大赴任者、バランス重視の方</p>
-                        </div>
-                        <div class="area-details">
-                            <h4>🏘️ 主な居住エリア</h4>
-                            <ul>
-                                <li>天白区 - 名城大・中京大に近い</li>
-                                <li>瑞穂区 - 名古屋大医学部に近い</li>
-                                <li>緑区 - 新興住宅地、ファミリー向け</li>
-                            </ul>
-                            
-                            <h4>🛒 買い物</h4>
-                            <p>大型ショッピングセンター、地域スーパーがバランス良く配置。</p>
-                            
-                            <h4>👶 子育て</h4>
-                            <p>公園・緑地が多く、子育て世帯に人気。教育施設も充実。</p>
-                            
-                            <h4>🚃 通勤</h4>
-                            <p>名城大・中京大まで自転車・バス圏内。名古屋大学へは地下鉄で20-30分。</p>
-                            
-                            <h4>💰 家賃相場</h4>
-                            <p>3LDK: 9-14万円（バランス型）</p>
-                            
-                            <a href="#" class="area-detail-btn">詳細を見る <i class="fas fa-arrow-right"></i></a>
-                        </div>
+                        <h3>独自の食文化</h3>
+                        <p>味噌カツ、ひつまぶし、手羽先など独自のグルメが豊富。喫茶店のモーニング文化も根付いており、外食コストは東京より2-3割安く、気軽にグルメを楽しめます。</p>
+                        <a href="food-culture-story.html" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #2563eb; color: white; text-decoration: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fas fa-book-open"></i> ストーリーを読む
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- 大学別アクセス -->
-            <section id="universities" class="section">
-                <h2 class="section-title">大学別アクセスガイド</h2>
-                <div class="university-grid">
-                    <div class="university-card">
-                        <h3><i class="fas fa-university"></i> 名古屋大学</h3>
-                        <p><strong>最寄り駅：</strong>地下鉄名城線「名古屋大学」駅</p>
-                        <p><strong>おすすめ居住エリア：</strong></p>
+            <!-- 区別ガイド -->
+            <section class="section-districts">
+                <h2 class="section-title">おすすめエリアガイド</h2>
+                <p class="section-intro">研究者・家族帯同におすすめの区を紹介します</p>
+                
+                <div class="districts-grid">
+                    <!-- 千種区 -->
+                    <div class="district-card featured">
+                        <div class="district-header">
+                            <h3><i class="fas fa-star"></i> 千種区</h3>
+                            <span class="district-tag">おすすめ</span>
+                        </div>
+                        <div class="district-body">
+                            <h4>おすすめポイント</h4>
+                            <ul class="district-points">
+                                <li><i class="fas fa-check"></i> 名古屋大学に近い</li>
+                                <li><i class="fas fa-check"></i> 文教地区で教育環境良好</li>
+                                <li><i class="fas fa-check"></i> 地下鉄東山線・桜通線が利用可能</li>
+                                <li><i class="fas fa-check"></i> 東山動植物園、平和公園など緑が豊富</li>
+                            </ul>
+                            <div class="district-info">
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-home"></i> 家賃相場（3LDK）</span>
+                                    <span class="info-value">10-13万円</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-school"></i> 学校</span>
+                                    <span class="info-value">小学校18校、中学校9校</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-hospital"></i> 医療</span>
+                                    <span class="info-value">名古屋大学医学部附属病院、他多数</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 昭和区 -->
+                    <div class="district-card featured">
+                        <div class="district-header">
+                            <h3><i class="fas fa-star"></i> 昭和区</h3>
+                            <span class="district-tag">おすすめ</span>
+                        </div>
+                        <div class="district-body">
+                            <h4>おすすめポイント</h4>
+                            <ul class="district-points">
+                                <li><i class="fas fa-check"></i> 名古屋大学医学部に隣接</li>
+                                <li><i class="fas fa-check"></i> 閑静な住宅街</li>
+                                <li><i class="fas fa-check"></i> 鶴舞公園、山崎川など自然豊か</li>
+                                <li><i class="fas fa-check"></i> 地下鉄鶴舞線・桜通線が利用可能</li>
+                            </ul>
+                            <div class="district-info">
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-home"></i> 家賃相場（3LDK）</span>
+                                    <span class="info-value">9-12万円</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-school"></i> 学校</span>
+                                    <span class="info-value">小学校11校、中学校5校</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 名東区 -->
+                    <div class="district-card">
+                        <div class="district-header">
+                            <h3>名東区</h3>
+                        </div>
+                        <div class="district-body">
+                            <h4>おすすめポイント</h4>
+                            <ul class="district-points">
+                                <li><i class="fas fa-check"></i> ファミリー層に人気</li>
+                                <li><i class="fas fa-check"></i> 大型商業施設が充実</li>
+                                <li><i class="fas fa-check"></i> 地下鉄東山線沿線</li>
+                                <li><i class="fas fa-check"></i> 比較的新しい住宅街</li>
+                            </ul>
+                            <div class="district-info">
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-home"></i> 家賃相場（3LDK）</span>
+                                    <span class="info-value">8-11万円</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-school"></i> 学校</span>
+                                    <span class="info-value">小学校12校、中学校6校</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 天白区 -->
+                    <div class="district-card">
+                        <div class="district-header">
+                            <h3>天白区</h3>
+                        </div>
+                        <div class="district-body">
+                            <h4>おすすめポイント</h4>
+                            <ul class="district-points">
+                                <li><i class="fas fa-check"></i> 緑豊かな住環境</li>
+                                <li><i class="fas fa-check"></i> 名古屋大学までバス・地下鉄で15-20分</li>
+                                <li><i class="fas fa-check"></i> 家賃が比較的リーズナブル</li>
+                                <li><i class="fas fa-check"></i> 農業公園など自然体験施設</li>
+                            </ul>
+                            <div class="district-info">
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-home"></i> 家賃相場（3LDK）</span>
+                                    <span class="info-value">7-10万円</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label"><i class="fas fa-school"></i> 学校</span>
+                                    <span class="info-value">小学校13校、中学校6校</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- その他の区 -->
+                <div class="other-districts">
+                    <h3>その他の区</h3>
+                    <div class="district-tags">
+                        <span class="district-tag-item">中区（都心）</span>
+                        <span class="district-tag-item">東区</span>
+                        <span class="district-tag-item">中村区（名古屋駅周辺）</span>
+                        <span class="district-tag-item">中川区</span>
+                        <span class="district-tag-item">港区</span>
+                        <span class="district-tag-item">南区</span>
+                        <span class="district-tag-item">守山区</span>
+                        <span class="district-tag-item">緑区</span>
+                        <span class="district-tag-item">西区</span>
+                        <span class="district-tag-item">北区</span>
+                        <span class="district-tag-item">瑞穂区</span>
+                        <span class="district-tag-item">熱田区</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 住居の探し方ガイド -->
+            <section class="section-housing-guide">
+                <h2 class="section-title">住居の探し方ガイド</h2>
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <h3>エリアを決める</h3>
                         <ul>
-                            <li>第1候補：東部エリア（千種区・名東区）</li>
-                            <li>第2候補：南部エリア（瑞穂区 - 医学部の場合）</li>
+                            <li>大学・職場への通勤時間</li>
+                            <li>子どもの学校</li>
+                            <li>生活環境（静か/賑やか）</li>
                         </ul>
                     </div>
-                    
-                    <div class="university-card">
-                        <h3><i class="fas fa-university"></i> 名古屋工業大学</h3>
-                        <p><strong>最寄り駅：</strong>地下鉄鶴舞線「鶴舞」駅</p>
-                        <p><strong>おすすめ居住エリア：</strong></p>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <h3>予算を決める</h3>
                         <ul>
-                            <li>第1候補：都心エリア</li>
-                            <li>第2候補：東部エリア（千種区）</li>
+                            <li>家賃相場を確認</li>
+                            <li>初期費用を準備</li>
+                            <li>敷金・礼金・仲介手数料</li>
                         </ul>
                     </div>
-                    
-                    <div class="university-card">
-                        <h3><i class="fas fa-university"></i> 名城大学</h3>
-                        <p><strong>キャンパス：</strong>天白・八事キャンパス</p>
-                        <p><strong>おすすめ居住エリア：</strong></p>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <h3>物件検索</h3>
                         <ul>
-                            <li>第1候補：南部エリア（天白区）</li>
-                            <li>第2候補：東部エリア（昭和区）</li>
+                            <li>物件情報サイトで検索</li>
+                            <li>不動産会社に相談</li>
+                            <li>条件を絞り込む</li>
                         </ul>
                     </div>
-                    
-                    <div class="university-card">
-                        <h3><i class="fas fa-university"></i> 中京大学</h3>
-                        <p><strong>キャンパス：</strong>八事キャンパス</p>
-                        <p><strong>おすすめ居住エリア：</strong></p>
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <h3>内見・契約</h3>
                         <ul>
-                            <li>第1候補：南部エリア（天白区・昭和区）</li>
-                            <li>第2候補：東部エリア（昭和区）</li>
+                            <li>実際に現地を見る</li>
+                            <li>周辺環境をチェック</li>
+                            <li>契約手続き</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="housing-resources">
+                    <h3><i class="fas fa-link"></i> 主要不動産サイト</h3>
+                    <div class="resource-links">
+                        <a href="https://suumo.jp/" target="_blank" rel="noopener noreferrer" class="resource-link">
+                            <i class="fas fa-external-link-alt"></i> SUUMO
+                        </a>
+                        <a href="https://www.homes.co.jp/" target="_blank" rel="noopener noreferrer" class="resource-link">
+                            <i class="fas fa-external-link-alt"></i> HOME'S
+                        </a>
+                        <a href="https://www.athome.co.jp/" target="_blank" rel="noopener noreferrer" class="resource-link">
+                            <i class="fas fa-external-link-alt"></i> at home
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 生活に必要な施設情報 -->
+            <section class="section-facilities">
+                <h2 class="section-title">生活に必要な施設情報</h2>
+                <div class="facilities-grid">
+                    <div class="facility-card">
+                        <h3><i class="fas fa-hospital"></i> 主要病院</h3>
+                        <ul class="facility-list">
+                            <li>名古屋大学医学部附属病院</li>
+                            <li>名古屋市立大学病院</li>
+                            <li>藤田医科大学病院</li>
+                            <li>愛知医科大学病院</li>
+                        </ul>
+                    </div>
+                    <div class="facility-card">
+                        <h3><i class="fas fa-shopping-bag"></i> ショッピング</h3>
+                        <ul class="facility-list">
+                            <li><strong>名古屋駅周辺</strong><br>高島屋、名鉄百貨店、JRゲートタワー</li>
+                            <li><strong>栄地区</strong><br>三越、松坂屋、LACHIC</li>
+                            <li><strong>郊外型</strong><br>イオンモール、アピタ</li>
+                        </ul>
+                    </div>
+                    <div class="facility-card">
+                        <h3><i class="fas fa-tree"></i> 公園・レジャー</h3>
+                        <ul class="facility-list">
+                            <li>東山動植物園</li>
+                            <li>名城公園</li>
+                            <li>鶴舞公園</li>
+                            <li>徳川園</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- 生活お役立ち情報 -->
-            <section id="living-info" class="section">
-                <h2 class="section-title">生活お役立ち情報</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <i class="fas fa-home"></i>
-                        <h3>住宅探しガイド</h3>
-                        <p>賃貸物件の探し方、契約時の注意点、引越しのコツなどをご案内します。</p>
-                        <a href="#" class="info-link">詳しく見る <i class="fas fa-arrow-right"></i></a>
+            <!-- 実際の声（体験談） -->
+            <section class="section-testimonials">
+                <h2 class="section-title">実際に住んでいる方の声</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="testimonial-info">
+                                <h3>千種区在住・研究者家族</h3>
+                                <p class="testimonial-meta">4人家族（夫婦+子ども2人）</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-body">
+                            <p>「東京から転入して2年。家賃が半額になり、部屋も広くなって生活にゆとりができました。子どもの保育園もすぐに決まり、助かりました。地下鉄で大学まで15分、とても便利です。週末は東山動植物園や平和公園で子どもたちと過ごしています。」</p>
+                        </div>
                     </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-baby"></i>
-                        <h3>子育て支援制度</h3>
-                        <p>保育園入園、児童手当、医療費助成など、名古屋市の子育て支援制度を解説します。</p>
-                        <a href="#" class="info-link">詳しく見る <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-globe"></i>
-                        <h3>外国人向けサポート</h3>
-                        <p>在留手続き、日本語教室、国際交流イベントなどの情報をまとめています。</p>
-                        <a href="#" class="info-link">詳しく見る <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <h3>生活マップ</h3>
-                        <p>スーパー、病院、学校などの生活施設をマップで確認できます。</p>
-                        <a href="#" class="info-link">詳しく見る <i class="fas fa-arrow-right"></i></a>
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="testimonial-info">
+                                <h3>昭和区在住・パートナー</h3>
+                                <p class="testimonial-meta">夫婦2人</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-body">
+                            <p>「静かで落ち着いた環境が気に入っています。スーパーや病院も近く、生活しやすいです。名古屋駅まで15分なので、買い物や外食も気軽に楽しめます。山崎川沿いの桜は本当に美しく、春が楽しみです。喫茶店のモーニング文化も気に入っています。」</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CTA -->
-            <section class="cta-section">
-                <h2>住まい探しのご相談</h2>
-                <p>専門スタッフがあなたに最適な居住エリアをご提案します</p>
-                <a href="registration.html" class="cta-button">
-                    <i class="fas fa-user-plus"></i> 相談・登録はこちら
-                </a>
+            <!-- よくある質問 -->
+            <section class="section-faq">
+                <h2 class="section-title">よくある質問</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>車は必要ですか？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>名古屋市内は地下鉄・バスが充実しているため、都心部なら車なしでも生活可能です。ただし、郊外や休日のお出かけには車があると便利です。駐車場代は月1万円前後が相場です。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>冬は寒いですか？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>東京とほぼ同じ気候です。冬は寒いですが、雪はほとんど降りません。年に数回、雪が積もることがありますが、すぐに溶けます。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>方言は強いですか？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>名古屋弁はありますが、標準語も普通に通じます。職場や学校では標準語が使われることが多いです。独特のイントネーションに最初は驚くかもしれませんが、すぐに慣れます。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>転入手続きはどうすればいいですか？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>引っ越し後14日以内に、住む区の区役所で転入届を提出してください。</p>
+                            <p><strong>必要書類：</strong></p>
+                            <ul>
+                                <li>転出証明書（前住所地で発行）</li>
+                                <li>本人確認書類（運転免許証、パスポートなど）</li>
+                                <li>マイナンバーカード（持っている場合）</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </section>
-        </main>
 
-        <!-- 右側サイドバー -->
-        <aside class="right-sidebar">
-            <div class="quick-actions">
-                <a href="registration.html" class="action-btn register-btn">
-                    <i class="fas fa-user-plus"></i> 新規登録
-                </a>
-                <button class="action-btn login-btn" onclick="openLoginModal()">
-                    <i class="fas fa-sign-in-alt"></i> ログイン
-                </button>
-            </div>
+            <!-- 関連リンク -->
+            <section class="section-links">
+                <h2 class="section-title">関連リンク</h2>
+                <div class="links-grid">
+                    <a href="https://www.city.nagoya.jp/" target="_blank" rel="noopener noreferrer" class="link-card">
+                        <i class="fas fa-external-link-alt"></i>
+                        <h3>名古屋市公式ウェブサイト</h3>
+                        <p>市政情報、生活情報などの総合サイト</p>
+                    </a>
+                    <a href="https://www.city.nagoya.jp/jutakutoshi/" target="_blank" rel="noopener noreferrer" class="link-card">
+                        <i class="fas fa-external-link-alt"></i>
+                        <h3>名古屋市住宅情報</h3>
+                        <p>市営住宅、住まいに関する情報</p>
+                    </a>
+                    <a href="https://www.city.nagoya.jp/kodomoseishonen/" target="_blank" rel="noopener noreferrer" class="link-card">
+                        <i class="fas fa-external-link-alt"></i>
+                        <h3>名古屋市子育て支援</h3>
+                        <p>子育て支援、保育園情報など</p>
+                    </a>
+                    <a href="https://www.nagoya-info.jp/" target="_blank" rel="noopener noreferrer" class="link-card">
+                        <i class="fas fa-external-link-alt"></i>
+                        <h3>名古屋観光情報</h3>
+                        <p>観光スポット、イベント情報</p>
+                    </a>
+                </div>
+            </section>
 
-            <div class="widget">
-                <h3>エリア比較ツール</h3>
-                <p style="font-size: 14px; line-height: 1.6;">各エリアの特徴を比較して、あなたに最適な場所を見つけましょう。</p>
-                <button class="action-btn register-btn" style="width: 100%; margin-top: 10px;">
-                    <i class="fas fa-balance-scale"></i> 比較する
-                </button>
-            </div>
-
-            <div class="widget">
-                <h3>関連リンク</h3>
-                <ul class="info-links">
-                    <li><a href="owari.html"><i class="fas fa-map-marker-alt"></i> 尾張地区</a></li>
-                    <li><a href="nishi-mikawa.html"><i class="fas fa-map-marker-alt"></i> 西三河地区</a></li>
-                    <li><a href="higashi-mikawa.html"><i class="fas fa-map-marker-alt"></i> 東三河地区</a></li>
-                    <li><a href="https://network2010.org/" target="_blank"><i class="fas fa-external-link-alt"></i> Network2010</a></li>
-                </ul>
-            </div>
-        </aside>
-    </div>
+            <!-- CTAセクション -->
+            <section class="section-cta">
+                <div class="cta-box">
+                    <h2><i class="fas fa-phone-alt"></i> 住居に関する相談はこちら</h2>
+                    <p>「どのエリアが自分に合っているか分からない」「具体的な物件情報が欲しい」など、お気軽にご相談ください。</p>
+                    <a href="index.html#consultation" class="cta-button">
+                        <i class="fas fa-comments"></i> 相談予約はこちら
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
 
     <!-- フッター -->
     <footer class="footer">
         <div class="footer-content">
             <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
-            <p style="margin-top: 15px; font-size: 13px;">地域情報・画像提供：<a href="https://network2010.org/" target="_blank" rel="noopener noreferrer" style="color: #FF9F54; text-decoration: none;">Network2010 <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></a></p>
+            <p>※ 本プログラムは参加大学と地域企業の協力により運営されています</p>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
 </body>
 </html>
+
