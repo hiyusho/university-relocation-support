@@ -6,535 +6,483 @@
     <title>味噌カツだけじゃない、多様な食文化 - 食文化ストーリー</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/story.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>大学赴任者家族帯同支援プログラム</h1>
-            <nav>
-                <a href="index.html">ホーム</a>
-                <a href="index.html#features">サービス内容</a>
-                <a href="index.html#consultation">無料相談</a>
-                <a href="registration.html">新規登録</a>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <img src="logo.png" alt="大学ロゴ" class="header-logo">
+                <h1 class="site-title">家族帯同ポータルサイト</h1>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html" class="nav-link">ホーム</a>
+                <a href="index.html#features" class="nav-link">サービス</a>
+                <a href="index.html#consultation" class="nav-link">無料相談</a>
+                <a href="registration.html" class="nav-link nav-link-primary">新規登録</a>
             </nav>
         </div>
     </header>
 
-    <main class="story-page">
-        <div class="story-hero">
-            <div class="container">
-                <span class="story-category">食文化</span>
-                <h1 class="story-title">味噌カツだけじゃない、<br>多様な食文化</h1>
-                <p class="story-subtitle">「偏見」が「感動」に変わった、名古屋グルメの日々</p>
-            </div>
-        </div>
+    <!-- 名古屋市ページに戻るボタン -->
+    <div class="back-button-container">
+        <a href="nagoya-city.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> 名古屋市ページに戻る
+        </a>
+    </div>
 
-        <div class="container">
+    <!-- 音声読み上げコントロール -->
+    <div id="speech-controls" class="speech-controls">
+        <button id="play-btn" class="control-btn" aria-label="読み上げ開始">
+            <i class="fas fa-play"></i>
+            <span>読み上げ開始</span>
+        </button>
+        <button id="pause-btn" class="control-btn" aria-label="一時停止" style="display: none;">
+            <i class="fas fa-pause"></i>
+            <span>一時停止</span>
+        </button>
+        <button id="resume-btn" class="control-btn" aria-label="再開" style="display: none;">
+            <i class="fas fa-play"></i>
+            <span>再開</span>
+        </button>
+        <button id="stop-btn" class="control-btn" aria-label="停止" style="display: none;">
+            <i class="fas fa-stop"></i>
+            <span>停止</span>
+        </button>
+        <div class="speed-control">
+            <label for="speech-rate">速度:</label>
+            <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1">
+            <span id="rate-value">1.0x</span>
+        </div>
+    </div>
+
+    <!-- ストーリーヒーロー -->
+    <section class="story-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-category">独自の食文化</div>
+            <h1 class="hero-title">味噌カツだけじゃない<br>多様な食文化</h1>
+            <p class="hero-subtitle">偏見が愛に変わる、ある家族の食体験</p>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="story-main">
+        <div class="story-container">
             <article class="story-content">
                 <!-- プロローグ -->
-                <section class="story-section">
-                    <h2>「名古屋めしって、本当に美味しいの？」</h2>
-                    <p class="story-lead">
-                        名古屋大学に赴任した高橋教授（43歳）の妻・美穂さん（40歳）は、移住前、正直なところ名古屋の食文化に不安を抱えていた。
-                    </p>
-                    <p>
-                        「味噌カツ、手羽先、きしめん...濃い味ばかりで、毎日食べられるのかな？　東京のような多様な食文化はないんじゃないか？」
-                    </p>
-                    <p>
-                        夫の赴任に伴い、大学生の長女・彩花さんと高校生の次女・愛美さんを連れて名古屋に移住した高橋家。しかし、住み始めて3ヶ月、美穂さんの「偏見」は完全に覆された。名古屋の食文化は、想像をはるかに超えて多様で、奥深く、そして美味しかった。
-                    </p>
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">プロローグ</h2>
+                    <div class="story-text" data-speech-text>
+                        <p class="story-paragraph lead-paragraph">
+                            「名古屋の食べ物って、味噌カツとか…正直、苦手なんです」
+                        </p>
+                        <p class="story-paragraph">
+                            名古屋大学に赴任が決まった高橋誠さん（仮名・42歳）の妻・由美さん（仮名・40歳）は、名古屋の食文化に強い偏見を持っていました。「味噌カツ、手羽先、きしめん…全部、味が濃くて甘いイメージ。毎日食べるなんて無理」
+                        </p>
+                        <p class="story-paragraph">
+                            しかし、名古屋での生活が始まると、由美さんの「名古屋の食」に対するイメージは180度変わりました。
+                        </p>
+                        <p class="story-paragraph">
+                            「名古屋って、実は日本で一番グルメな街かもしれない…」由美さんは、名古屋に来て1年後、そう確信するようになりました。
+                        </p>
+                    </div>
                 </section>
 
-                <!-- セクション1: 名古屋めしの再発見 -->
-                <section class="story-section">
-                    <h2>第一章：「名古屋めしは、毎日食べられる」</h2>
-                    
-                    <div class="story-highlight">
-                        <h3>🍽️ 名古屋めしの代表選手</h3>
-                        
-                        <div class="food-grid">
-                            <div class="food-card">
-                                <h4>🍖 味噌カツ</h4>
-                                <p class="description">サクサクのトンカツに、甘めの赤味噌ダレ。一度食べたらクセになる。</p>
-                                <p class="recommend">おすすめ店: 矢場とん、とんかつマ・メゾン</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🐔 手羽先唐揚げ</h4>
-                                <p class="description">甘辛いタレと胡椒が効いた、パリパリの手羽先。ビールに最高。</p>
-                                <p class="recommend">おすすめ店: 世界の山ちゃん、風来坊</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍜 きしめん</h4>
-                                <p class="description">平たい麺に、あっさりとした出汁。名古屋駅でも気軽に食べられる。</p>
-                                <p class="recommend">おすすめ店: よしだ（エスカ店）、宮きしめん</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍝 あんかけスパゲティ</h4>
-                                <p class="description">もっちり太麺に、スパイシーなあんかけソース。名古屋独自の洋食。</p>
-                                <p class="recommend">おすすめ店: ヨコイ、チャオ</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍢 味噌煮込みうどん</h4>
-                                <p class="description">赤味噌ベースの濃厚スープに、コシの強い麺。寒い日に最高。</p>
-                                <p class="recommend">おすすめ店: 山本屋総本家、山本屋本店</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍙 天むす</h4>
-                                <p class="description">小ぶりなおにぎりに海老天。もともと三重発祥だが、名古屋でも人気。</p>
-                                <p class="recommend">おすすめ店: 地雷也、千寿</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍢 どて煮</h4>
-                                <p class="description">牛すじを赤味噌で煮込んだ、コクのある一品。居酒屋の定番。</p>
-                                <p class="recommend">おすすめ店: 大須の居酒屋、柳橋市場</p>
-                            </div>
-                            
-                            <div class="food-card">
-                                <h4>🍱 ひつまぶし</h4>
-                                <p class="description">うなぎの蒲焼きを刻んでご飯に載せ、3つの食べ方で楽しむ名古屋の名物。</p>
-                                <p class="recommend">おすすめ店: あつた蓬莱軒、まるや本店</p>
-                            </div>
+                <!-- 第一章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第一章：名古屋めしは、毎日食べるものじゃない</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">誤解が解けた瞬間</h3>
+                        <p class="story-paragraph">
+                            名古屋に引っ越した初日、由美さんは近所の定食屋に入りました。メニューには「味噌カツ定食」「手羽先唐揚げ定食」「きしめん」などが並んでいます。
+                        </p>
+                        <p class="story-paragraph">
+                            「やっぱり、名古屋めししかないのかな…」そう思いながら店員さんに聞いてみました。「この辺り、普通の和食や洋食のお店はありますか？」
+                        </p>
+                        <p class="story-paragraph">
+                            すると、店員さんは笑って答えました。「お客さん、名古屋めしは、たまに食べるものですよ。私たちも毎日は食べません（笑）。普通のお店なら、この通りにたくさんありますよ」
+                        </p>
+                        <p class="story-paragraph quote-box">
+                            「その瞬間、『ああ、私は名古屋のことを全く知らなかったんだ』と気づきました。名古屋めしは観光客向けの特別な料理で、地元の人は普通に和食・洋食・中華を食べているんです」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">名古屋めしの魅力を再発見</h3>
+                        <p class="story-paragraph">
+                            「毎日食べるものじゃない」と知った由美さんは、逆に名古屋めしに興味を持ち始めました。週に1回、家族で名古屋めしを食べに行くのが習慣になりました。
+                        </p>
+
+                        <div class="food-list">
+                            <h4>由美さん家族が好きになった名古屋めし</h4>
+                            <ul>
+                                <li>
+                                    <strong>味噌カツ：</strong>矢場とん本店で食べた味噌カツは、想像以上にあっさり。「味噌が甘くて、カツとの相性が抜群！」
+                                </li>
+                                <li>
+                                    <strong>手羽先唐揚げ：</strong>世界の山ちゃんの手羽先は、スパイシーでビールに合う。「これ、東京でも流行るはず」
+                                </li>
+                                <li>
+                                    <strong>きしめん：</strong>平打ち麺のツルツル食感が癖になる。「うどんとそばの中間みたいで、新鮮」
+                                </li>
+                                <li>
+                                    <strong>あんかけスパゲティ：</strong>そーれのあんかけスパは、ボリューム満点。「B級グルメの最高峰！」
+                                </li>
+                                <li>
+                                    <strong>味噌煮込みうどん：</strong>山本屋総本家の味噌煮込みは、寒い日に体が温まる。「これは家でも作りたい」
+                                </li>
+                                <li>
+                                    <strong>天むす：</strong>地雷也の天むすは、ふわふわのご飯にプリプリのエビ天。「おにぎりなのに、ちゃんとした料理」
+                                </li>
+                                <li>
+                                    <strong>どて煮：</strong>島正の豚モツどて煮は、味噌の甘辛い味がたまらない。「これは日本酒に合う」
+                                </li>
+                                <li>
+                                    <strong>ひつまぶし：</strong>あつた蓬莱軒のひつまぶしは、3通りの食べ方で楽しめる。「ウナギの最高の食べ方だと思う」
+                                </li>
+                            </ul>
                         </div>
+
+                        <p class="story-paragraph quote-box">
+                            「名古屋めしって、全部美味しい。でも、毎日食べるものじゃなくて、たまに食べるからこそ美味しい。この『たまに感』が、名古屋めしの魅力なんだと気づきました」（由美さん）
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「最初は『濃い味』のイメージだったけど、実際に食べてみると、どれも計算された美味しさ。味噌カツは甘めの味噌が絶妙だし、手羽先は病みつきになる。毎日食べても飽きない多様性があるんです」
-                        <cite>— 美穂さん（40歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        高橋家が最初に訪れたのは、矢場とんの味噌カツ。「東京で食べた味噌カツとは全然違う！」と長女・彩花さんは驚いた。サクサクの衣、柔らかい肉、そして甘めの赤味噌ダレ。想像以上の美味しさに、家族全員が笑顔になった。
-                    </p>
-
-                    <p>
-                        「名古屋めしは、毎日食べても飽きない。むしろ、週に1回は食べたくなる。それくらい、クセになる美味しさです」と美穂さんは語る。
-                    </p>
                 </section>
 
-                <!-- セクション2: 多様な食文化 -->
-                <section class="story-section">
-                    <h2>第二章：「名古屋は、グルメの宝庫」</h2>
-                    
-                    <div class="story-data">
-                        <h3>🌍 名古屋めし以外の食文化も充実</h3>
-                        
-                        <div class="cuisine-categories">
-                            <div class="cuisine-card">
-                                <h4>🍣 和食・寿司</h4>
-                                <p>名古屋港から直送の新鮮な魚介類。回転寿司から高級寿司まで、選択肢豊富。</p>
-                                <ul class="restaurant-examples">
-                                    <li>まるは食堂（名物エビフライ）</li>
-                                    <li>鮨 なか田（ミシュラン掲載）</li>
-                                    <li>スシロー・くら寿司（回転寿司）</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="cuisine-card">
-                                <h4>🍜 ラーメン</h4>
-                                <p>台湾ラーメン発祥の地。濃厚豚骨から淡麗醤油まで、多様なラーメン店が集結。</p>
-                                <ul class="restaurant-examples">
-                                    <li>味仙（台湾ラーメン発祥店）</li>
-                                    <li>すがきや（名古屋のソウルフード）</li>
-                                    <li>一蘭・一風堂（全国チェーンも充実）</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="cuisine-card">
-                                <h4>🍕 イタリアン・フレンチ</h4>
-                                <p>栄・名駅エリアに、本格イタリアン・フレンチの名店が多数。</p>
-                                <ul class="restaurant-examples">
-                                    <li>La Bisboccia（ミシュラン掲載）</li>
-                                    <li>リストランテ ホンダ</li>
-                                    <li>カジュアルイタリアンも充実</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="cuisine-card">
-                                <h4>🥘 中華料理</h4>
-                                <p>台湾料理から広東料理、四川料理まで、本格中華が揃う。</p>
-                                <ul class="restaurant-examples">
-                                    <li>状元樓（横浜中華街の名店）</li>
-                                    <li>中国料理 桃花林</li>
-                                    <li>町中華も充実</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="cuisine-card">
-                                <h4>🍛 エスニック</h4>
-                                <p>タイ料理、ベトナム料理、インド料理など、多国籍料理も豊富。</p>
-                                <ul class="restaurant-examples">
-                                    <li>タイ料理バル TAWAN</li>
-                                    <li>ベトナム料理 フォー専門店</li>
-                                    <li>インドカレー 各種専門店</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="cuisine-card">
-                                <h4>🍔 カフェ・洋食</h4>
-                                <p>おしゃれなカフェから老舗喫茶店まで、名古屋は喫茶文化の街。</p>
-                                <ul class="restaurant-examples">
-                                    <li>コメダ��里子（モーニング文化）</li>
-                                    <li>星乃珈琲店</li>
-                                    <li>個性派カフェ多数</li>
-                                </ul>
-                            </div>
+                <!-- 第二章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第二章：名古屋は、グルメの宝庫だった</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">ミシュランガイド愛知2019</h3>
+                        <p class="story-paragraph">
+                            由美さんが驚いたのは、名古屋にミシュラン星付きレストランが多数あることでした。「ミシュランガイド愛知2019」では、名古屋市内に星付きレストランが20店以上掲載されています。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>名古屋のミシュラン星付きレストラン（一例）</h4>
+                            <ul>
+                                <li><strong>日本料理：</strong>なだ万、河文、鮨 さわ田、など</li>
+                                <li><strong>フレンチ：</strong>オ・プレジール、ラ・グランターブル、など</li>
+                                <li><strong>イタリアン：</strong>ラ・ボッテガ・ディ・アンジェロ、など</li>
+                                <li><strong>中華：</strong>桃花林、など</li>
+                            </ul>
+                        </div>
+
+                        <p class="story-paragraph">
+                            「名古屋にミシュラン星付きレストランがこんなにあるなんて、知らなかった。しかも、東京より予約が取りやすいし、価格も良心的」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">和食・寿司の名店</h3>
+                        <p class="story-paragraph">
+                            名古屋は、和食や寿司の名店も多数あります。特に、名古屋は海に近いため、新鮮な魚介類が手に入りやすいのも魅力です。
+                        </p>
+
+                        <div class="restaurant-example">
+                            <h4>由美さんが通う和食・寿司店</h4>
+                            <ul>
+                                <li><strong>鮨 さわ田：</strong>ミシュラン一つ星。カウンター8席のみの予約困難店</li>
+                                <li><strong>すし処 海味：</strong>地元で人気の寿司店。新鮮なネタが自慢</li>
+                                <li><strong>日本料理 なだ万：</strong>名古屋駅直結。接待にも使える高級店</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="subsection-title">ラーメン激戦区</h3>
+                        <p class="story-paragraph">
+                            名古屋は、実はラーメン激戦区でもあります。台湾ラーメン、名古屋コーチン塩ラーメン、味噌ラーメンなど、独自のラーメン文化が根付いています。
+                        </p>
+
+                        <div class="restaurant-example">
+                            <h4>由美さんのおすすめラーメン店</h4>
+                            <ul>
+                                <li><strong>麺屋はなび：</strong>台湾まぜそば発祥の店。濃厚な味わいが癖になる</li>
+                                <li><strong>らーめん松田家：</strong>地元で人気。醤油ラーメンが絶品</li>
+                                <li><strong>なごやのしお：</strong>名古屋コーチンの塩ラーメン。あっさりしていて女性に人気</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="subsection-title">イタリアン・フレンチも充実</h3>
+                        <p class="story-paragraph">
+                            名古屋には、本格的なイタリアンやフレンチのレストランも多数あります。しかも、東京と比べて価格が2〜3割安いのも魅力です。
+                        </p>
+
+                        <div class="restaurant-example">
+                            <h4>由美さんが好きなイタリアン・フレンチ</h4>
+                            <ul>
+                                <li><strong>ラ・グランターブル：</strong>ミシュラン一つ星。本格フレンチが楽しめる</li>
+                                <li><strong>オステリア・エノテカ・ダ・サスィーノ：</strong>名古屋で人気のイタリアン。パスタが絶品</li>
+                                <li><strong>IL GHIOTTONE：</strong>カジュアルイタリアン。ランチがコスパ最高</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="subsection-title">中華・エスニック料理</h3>
+                        <p class="story-paragraph">
+                            名古屋には、本格的な中華料理やエスニック料理のレストランも多数あります。特に、名古屋はベトナム人コミュニティが大きいため、本場のベトナム料理が楽しめます。
+                        </p>
+
+                        <div class="restaurant-example">
+                            <h4>由美さんが通う中華・エスニック料理店</h4>
+                            <ul>
+                                <li><strong>桃花林：</strong>ミシュラン一つ星。広東料理の名店</li>
+                                <li><strong>フォーハノイ：</strong>本場のベトナム料理。フォーが絶品</li>
+                                <li><strong>タイ料理 バンコク：</strong>本格タイ料理。スパイシーで美味しい</li>
+                            </ul>
+                        </div>
+
+                        <h3 class="subsection-title">カフェ・洋食</h3>
+                        <p class="story-paragraph">
+                            名古屋は、カフェ文化も盛んです。特に、モーニング文化が根付いており、朝からしっかり食べる習慣があります。
+                        </p>
+
+                        <div class="restaurant-example">
+                            <h4>由美さんが好きなカフェ・洋食店</h4>
+                            <ul>
+                                <li><strong>コメダ珈琲店：</strong>名古屋発祥。モーニングが充実</li>
+                                <li><strong>珈琲所 コメダ珈琲店：</strong>シロノワールが絶品</li>
+                                <li><strong>グリル満天星：</strong>昔ながらの洋食店。ハンバーグが人気</li>
+                            </ul>
                         </div>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「名古屋めしだけじゃなく、和食、イタリアン、フレンチ、中華、エスニック...何でも揃っています。しかも、東京より安い。家族4人で外食しても、7,000〜8,000円で満足できます。東京なら1万円は超えていました」
-                        <cite>— 美穂さん（40歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        次女・愛美さんのお気に入りは、栄のイタリアンレストラン。「本格的なパスタとピザが、1人1,500円くらいで食べられる。東京だと2,500円はする」と驚いている。
-                    </p>
-
-                    <p>
-                        高橋家は週末、毎回違うジャンルのレストランに出かける。先週は寿司、今週はイタリアン、来週はフレンチ。「名古屋は、食の選択肢が本当に豊富。飽きることがありません」と美穂さんは満足している。
-                    </p>
                 </section>
 
-                <!-- セクション3: モーニング文化 -->
-                <section class="story-section">
-                    <h2>第三章：「モーニング文化に感動」</h2>
-                    
-                    <div class="story-highlight">
-                        <h3>☕ 名古屋独自の「モーニング文化」</h3>
-                        
-                        <div class="morning-explanation">
-                            <p class="lead-text">
-                                名古屋の喫茶店では、コーヒー1杯（400〜500円）を注文すると、<strong>トースト、ゆで卵、サラダなどが無料でついてくる</strong>「モーニングサービス」が定番。一部の店では、11時まで提供している。
-                            </p>
-                            
-                            <div class="morning-examples">
-                                <div class="morning-shop">
-                                    <h4>☕ コメダ珈琲店</h4>
-                                    <p class="menu">コーヒー注文で、トースト＋ゆで卵 or 手作りたまごペースト</p>
-                                    <p class="price">モーニング価格: 約500円</p>
-                                </div>
-                                
-                                <div class="morning-shop">
-                                    <h4>☕ 喫茶リヨン</h4>
-                                    <p class="menu">コーヒー注文で、トースト、ゆで卵、サラダ、フルーツ、小倉あん</p>
-                                    <p class="price">モーニング価格: 約450円</p>
-                                </div>
-                                
-                                <div class="morning-shop">
-                                    <h4>☕ 星乃珈琲店</h4>
-                                    <p class="menu">コーヒー注文で、厚切りトースト＋ゆで卵</p>
-                                    <p class="price">モーニング価格: 約600円</p>
-                                </div>
-                                
-                                <div class="morning-shop">
-                                    <h4>☕ 個人経営の喫茶店</h4>
-                                    <p class="menu">コーヒー注文で、トースト、ゆで卵、サラダ、ヨーグルト、フルーツ</p>
-                                    <p class="price">モーニング価格: 約400〜500円</p>
-                                </div>
-                            </div>
+                <!-- 第三章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第三章：モーニング文化に感動</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">コーヒー1杯で朝食がついてくる</h3>
+                        <p class="story-paragraph">
+                            名古屋に来て由美さんが一番驚いたのは、「モーニング文化」でした。喫茶店でコーヒーを注文すると、トースト・ゆで卵・サラダなどが無料でついてくるのです。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>名古屋のモーニング（一例）</h4>
+                            <ul>
+                                <li><strong>コメダ珈琲店：</strong>コーヒー（450円）+ トースト・ゆで卵が無料</li>
+                                <li><strong>カフェ・ド・クリエ：</strong>コーヒー（400円）+ トースト・ミニサラダが無料</li>
+                                <li><strong>喫茶マウンテン：</strong>コーヒー（500円）+ 甘口抹茶小倉トーストが無料（※超有名店）</li>
+                            </ul>
                         </div>
 
-                        <div class="morning-comparison">
-                            <h4>📊 東京との朝食費用比較</h4>
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>項目</th>
-                                        <th>名古屋（モーニング）</th>
-                                        <th>東京（カフェ朝食）</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>コーヒー＋トースト＋卵</td>
-                                        <td class="highlight">約500円</td>
-                                        <td>約900〜1,200円</td>
-                                    </tr>
-                                    <tr>
-                                        <td>週1回利用（年間）</td>
-                                        <td class="highlight">約26,000円</td>
-                                        <td>約54,000円</td>
-                                    </tr>
-                                    <tr class="total-row">
-                                        <td><strong>年間節約額</strong></td>
-                                        <td colspan="2" class="save"><strong>約28,000円</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <p class="story-paragraph">
+                            「東京では、トーストセットで700〜800円かかるのに、名古屋ではコーヒー代だけで朝食が食べられる。これは革命的です」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">モーニングで節約</h3>
+                        <p class="story-paragraph">
+                            由美さんは、週末の朝はモーニングに行くのが習慣になりました。家で朝食を作る手間が省けて、しかも外食気分を味わえます。
+                        </p>
+
+                        <div class="savings-box">
+                            <h4>モーニングでの節約効果</h4>
+                            <p>東京のカフェ朝食: 約700円/人 × 4人 = 2,800円</p>
+                            <p>名古屋のモーニング: 約500円/人 × 4人 = 2,000円</p>
+                            <p class="savings-amount">1回あたり800円の節約 × 月4回 = 月3,200円、年間約38,400円の節約</p>
                         </div>
+
+                        <p class="story-paragraph quote-box">
+                            「モーニング文化は、名古屋の最高の発明だと思います。コーヒー1杯で朝食がついてくるなんて、他の地域では考えられない。しかも、お店の人との会話も楽しい。地域コミュニティの場にもなっています」（由美さん）
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「最初にモーニングを体験したとき、『これ、本当に無料なの？』って驚きました。トーストもゆで卵も、全部ついてきて、コーヒー代だけ。しかも、ゆったりとした雰囲気で、朝からリラックスできる。名古屋のモーニング文化、最高です」
-                        <cite>— 美穂さん（40歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        高橋家は、毎週土曜日の朝、近所の喫茶店でモーニングを楽しむのが定番になった。「家族4人で2,000円。東京なら4,000円はかかる。しかも、ゆっくりできて、朝から幸せな気分になれます」
-                    </p>
-
-                    <p>
-                        長女・彩花さんは、友人とのモーニングデートが趣味になった。「名古屋の喫茶店は、どこもレトロで落ち着く雰囲気。モーニングを食べながらおしゃべりするのが、週末の楽しみです」
-                    </p>
                 </section>
 
-                <!-- セクション4: 市場・商店街 -->
-                <section class="story-section">
-                    <h2>第四章：「市場と商店街が、食卓を豊かに」</h2>
-                    
-                    <div class="story-data">
-                        <h3>🏪 名古屋の市場・商店街</h3>
-                        
-                        <div class="market-grid">
-                            <div class="market-card">
-                                <h4>🐟 柳橋中央市場</h4>
-                                <p class="description">名古屋港直送の新鮮な魚介類が手頃な価格で手に入る。プロの料理人も通う市場。</p>
-                                <ul class="features">
-                                    <li>新鮮な魚が東京の7割程度の価格</li>
-                                    <li>刺身盛り合わせも格安</li>
-                                    <li>市場食堂で朝食も楽しめる</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="market-card">
-                                <h4>🥬 大須商店街</h4>
-                                <p class="description">400年の歴史を持つ商店街。食材から雑貨まで何でも揃う。</p>
-                                <ul class="features">
-                                    <li>新鮮野菜・果物が安い</li>
-                                    <li>食べ歩きグルメも充実</li>
-                                    <li>個性的な店が多数</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="market-card">
-                                <h4>🍖 名古屋市中央卸売市場</h4>
-                                <p class="description">一般開放日には、新鮮な食材が市場価格で購入可能。</p>
-                                <ul class="features">
-                                    <li>マグロ解体ショーなどイベント開催</li>
-                                    <li>プロ御用達の品質</li>
-                                    <li>市場食堂も人気</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="market-card">
-                                <h4>🌾 朝市・直売所</h4>
-                                <p class="description">市内各地で開催される朝市や、農家直営の直売所も充実。</p>
-                                <ul class="features">
-                                    <li>採れたて野菜が格安</li>
-                                    <li>生産者と直接話せる</li>
-                                    <li>地元の味を発見できる</li>
-                                </ul>
-                            </div>
+                <!-- 第四章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第四章：市場・商店街で新鮮食材</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">柳橋中央市場</h3>
+                        <p class="story-paragraph">
+                            由美さんが週に1回必ず行くのが、柳橋中央市場です。名古屋駅から徒歩15分の場所にある、一般客も利用できる市場です。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>柳橋中央市場</h4>
+                            <ul>
+                                <li><strong>営業時間：</strong>早朝4:00〜13:00頃（店舗により異なる）</li>
+                                <li><strong>取扱商品：</strong>鮮魚、青果、精肉、乾物など</li>
+                                <li><strong>価格：</strong>スーパーの約70%</li>
+                                <li><strong>特徴：</strong>プロの料理人も仕入れに来る</li>
+                            </ul>
                         </div>
 
-                        <div class="price-comparison">
-                            <h4>💰 市場・商店街での食材費（週1回の買い物）</h4>
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>食材</th>
-                                        <th>東京（スーパー）</th>
-                                        <th>名古屋（市場）</th>
-                                        <th>差額</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>刺身盛り合わせ（4人分）</td>
-                                        <td>2,500円</td>
-                                        <td>1,500円</td>
-                                        <td class="save">-1,000円</td>
-                                    </tr>
-                                    <tr>
-                                        <td>野菜セット</td>
-                                        <td>1,500円</td>
-                                        <td>1,000円</td>
-                                        <td class="save">-500円</td>
-                                    </tr>
-                                    <tr>
-                                        <td>肉類（牛・豚・鶏）</td>
-                                        <td>3,000円</td>
-                                        <td>2,200円</td>
-                                        <td class="save">-800円</td>
-                                    </tr>
-                                    <tr class="total-row">
-                                        <td><strong>合計</strong></td>
-                                        <td><strong>7,000円</strong></td>
-                                        <td><strong>4,700円</strong></td>
-                                        <td class="save"><strong>-2,300円</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p class="saving-note">💰 週1回の市場利用で、年間約12万円の節約！</p>
+                        <p class="story-paragraph">
+                            「柳橋市場の刺身は、スーパーと比べて鮮度も品質も段違い。しかも安い。4人分の刺身盛り合わせが1,500円で買えます」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">大須商店街</h3>
+                        <p class="story-paragraph">
+                            大須商店街は、名古屋最大の商店街で、約1,200店舗が軒を連ねます。食材だけでなく、雑貨や衣料品も揃います。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>大須商店街</h4>
+                            <ul>
+                                <li><strong>店舗数：</strong>約1,200店舗</li>
+                                <li><strong>営業時間：</strong>10:00〜19:00頃（店舗により異なる）</li>
+                                <li><strong>特徴：</strong>食べ歩きグルメが充実</li>
+                                <li><strong>アクセス：</strong>地下鉄「大須観音駅」下車すぐ</li>
+                            </ul>
+                        </div>
+
+                        <p class="story-paragraph">
+                            「大須商店街は、歩いているだけで楽しい。食材を買うだけでなく、食べ歩きも楽しめます。たこ焼き、唐揚げ、タピオカ…子どもたちも大喜びです」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">名古屋市中央卸売市場</h3>
+                        <p class="story-paragraph">
+                            月に1回、由美さんは名古屋市中央卸売市場の一般開放日に行きます。プロの仲卸業者が使う市場で、一般客も買い物ができます。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>名古屋市中央卸売市場</h4>
+                            <ul>
+                                <li><strong>一般開放日：</strong>毎月第1・第3土曜日</li>
+                                <li><strong>営業時間：</strong>9:00〜12:00</li>
+                                <li><strong>取扱商品：</strong>鮮魚、青果、花卉など</li>
+                                <li><strong>価格：</strong>スーパーの約60%</li>
+                            </ul>
+                        </div>
+
+                        <p class="story-paragraph quote-box">
+                            「中央卸売市場では、まとめ買いをします。刺身用のマグロが1kg 3,000円で買えたり、野菜も箱単位で安く買えます。冷凍保存して、1ヶ月分の食材をまとめて確保しています」（由美さん）
+                        </p>
+
+                        <h3 class="subsection-title">市場での買い物で年間12万円節約</h3>
+                        <p class="story-paragraph">
+                            由美さんは、週1回の市場での買い物で、年間約12万円の食費を節約しています。
+                        </p>
+
+                        <div class="savings-box">
+                            <h4>市場での買い物による節約効果</h4>
+                            <p>スーパーでの買い物（4人家族・週1回）: 約15,000円</p>
+                            <p>市場での買い物（4人家族・週1回）: 約10,000円</p>
+                            <p class="savings-amount">週5,000円の節約 × 52週 = 年間約26万円の節約</p>
+                            <p class="note">※市場は週1回、残りはスーパーで買い物した場合、年間約12万円の節約</p>
                         </div>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「柳橋市場で初めて買い物したとき、魚の新鮮さと安さに驚きました。東京のスーパーで買っていた魚より、明らかに美味しい。しかも、半額近い。今では、週1回、市場に通うのが楽しみです」
-                        <cite>— 美穂さん（40歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        美穂さんのお気に入りは、土曜日の朝の柳橋市場巡り。新鮮な魚介類を買い込み、その日の夜は家族で刺身パーティー。「市場のおじさんたちが、魚の食べ方や調理法を教えてくれる。これも、市場の魅力です」
-                    </p>
                 </section>
 
-                <!-- セクション5: 総まとめ -->
-                <section class="story-section">
-                    <h2>第五章：「名古屋は、食の楽園だった」</h2>
-                    
-                    <div class="story-highlight final-summary">
-                        <h3>🌟 名古屋の食文化まとめ</h3>
-                        
-                        <div class="summary-grid">
-                            <div class="summary-item">
-                                <span class="icon">🍽️</span>
-                                <h4>名古屋めしの魅力</h4>
-                                <p>味噌カツ、手羽先、ひつまぶしなど、個性的で美味しいご当地グルメ。</p>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span class="icon">🌍</span>
-                                <h4>多様な食文化</h4>
-                                <p>和食、イタリアン、中華、エスニックなど、あらゆるジャンルが揃う。</p>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span class="icon">☕</span>
-                                <h4>モーニング文化</h4>
-                                <p>コーヒー1杯で朝食がついてくる、名古屋独自の喫茶文化。</p>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span class="icon">🏪</span>
-                                <h4>市場・商店街</h4>
-                                <p>新鮮で安い食材が手に入る、活気ある市場が充実。</p>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span class="icon">💰</span>
-                                <h4>コスパの良さ</h4>
-                                <p>東京の7〜8割程度の価格で、同等以上の品質を楽しめる。</p>
-                            </div>
-                            
-                            <div class="summary-item">
-                                <span class="icon">🎉</span>
-                                <h4>食の楽しみ</h4>
-                                <p>毎週末、新しいレストランや喫茶店を開拓する楽しみ。</p>
-                            </div>
+                <!-- 第五章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第五章：名古屋は、食の楽園だった</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">偏見が愛に変わった</h3>
+                        <p class="story-paragraph">
+                            名古屋に来て2年。由美さんの「名古屋の食」に対する見方は、完全に変わりました。
+                        </p>
+
+                        <div class="conclusion-box">
+                            <h4>由美さんが気づいた名古屋の食文化の魅力</h4>
+                            <ol>
+                                <li><strong>名古屋めしは、たまに食べるもの：</strong>毎日食べるわけではなく、特別な時に楽しむ料理</li>
+                                <li><strong>グルメの宝庫：</strong>和食・洋食・中華・エスニックなど、あらゆるジャンルの名店が揃う</li>
+                                <li><strong>ミシュラン星付き店が多い：</strong>しかも、東京より予約が取りやすく、価格も良心的</li>
+                                <li><strong>モーニング文化：</strong>コーヒー1杯で朝食がついてくる、革命的なサービス</li>
+                                <li><strong>市場・商店街が充実：</strong>新鮮な食材が安く手に入る</li>
+                                <li><strong>食費が安い：</strong>外食も食材も、東京より2〜3割安い</li>
+                            </ol>
                         </div>
+
+                        <p class="story-paragraph quote-box">
+                            「名古屋に来る前は、『名古屋の食べ物は苦手』と思っていました。でも、実際に暮らしてみると、名古屋は日本で一番グルメな街だと感じています。名古屋めしも美味しいし、和食・洋食・中華も充実している。しかも、食費が安い。名古屋の食文化、大好きです！」（由美さん）
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「移住前は『名古屋の食文化』に不安がありました。でも今では、名古屋の食の豊かさに感動しています。名古屋めしも美味しいし、イタリアンもフレンチも充実している。しかも、東京より安い。家族全員、名古屋の食文化が大好きになりました」
-                        <cite>— 美穂さん（40歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        高橋家にとって、名古屋での生活は「食の冒険」の連続だった。週末のたびに新しいレストランを開拓し、市場で新鮮な食材を買い、家族で料理を楽しむ。食を通じて、名古屋という街を深く知ることができた。
-                    </p>
                 </section>
 
                 <!-- エピローグ -->
-                <section class="story-section epilogue">
-                    <h2>エピローグ：「『偏見』が『愛』に変わった」</h2>
-                    
-                    <p>
-                        「名古屋に来る前は、『味噌カツとかきしめんばかり食べることになるのかな』って心配していました。でも実際は、毎日違う美味しいものに出会える、食の楽園でした」
-                    </p>
-
-                    <p>
-                        日曜日の朝、高橋家は近所の喫茶店でモーニング。昼は大須商店街で食べ歩き。夜は柳橋市場で買った新鮮な刺身で家族団らん。名古屋の食文化は、家族の会話を豊かにし、笑顔を増やしてくれた。
-                    </p>
-
-                    <p>
-                        「名古屋の食文化、最高です。もう、東京には戻れません」と美穂さんは笑顔で語る。
-                    </p>
-
-                    <div class="story-cta">
-                        <h3>🍽️ あなたも、名古屋の食文化を楽しみませんか？</h3>
-                        <p>
-                            名古屋めし、レストラン情報、市場・商店街...あなたの疑問に、専門スタッフが無料でお答えします。
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">エピローグ</h2>
+                    <div class="story-text" data-speech-text>
+                        <p class="story-paragraph">
+                            名古屋に来て2年。高橋家は、この街の「食文化」を存分に楽しんでいます。
                         </p>
-                        <div class="cta-buttons">
-                            <a href="nagoya-city.html" class="btn btn-secondary">名古屋市の詳細を見る</a>
-                            <a href="index.html#consultation" class="btn btn-primary">無料相談を申し込む</a>
-                        </div>
+                        <p class="story-paragraph">
+                            週末は家族で名古屋めしを食べに行き、平日はモーニングやランチを楽しみ、週1回は市場で新鮮な食材を買い込む。食を通じて、家族の会話が増え、名古屋という街への愛着が深まりました。
+                        </p>
+                        <p class="story-paragraph">
+                            子どもたちも、味噌カツや手羽先が大好きになり、「将来は名古屋めしのお店を開きたい」と夢を語るようになりました。
+                        </p>
+                        <p class="story-paragraph quote-box">
+                            「偏見が愛に変わる。それが、名古屋の食文化でした。名古屋に来て、私たちの食生活は豊かになり、家族の絆も深まりました。名古屋、最高です！」（由美さん）
+                        </p>
+                        <p class="story-paragraph lead-paragraph">
+                            味噌カツだけじゃない。名古屋は、あなたの食の可能性を広げる街です。
+                        </p>
                     </div>
                 </section>
 
-                <!-- データ補足セクション -->
-                <section class="story-section data-appendix">
-                    <h2>📊 データで見る名古屋の食文化</h2>
-                    
+                <!-- データ補足 -->
+                <section class="story-section data-supplement">
+                    <h2 class="section-title">データで見る名古屋の食文化</h2>
                     <div class="data-grid">
-                        <div class="data-card">
-                            <h4>外食費（家族4人）</h4>
-                            <p class="data-main">7,000〜8,000円</p>
-                            <p class="data-note">ファミリーレストラン<br>東京比: <strong>約70%</strong></p>
+                        <div class="data-item">
+                            <h4>外食費（4人家族）</h4>
+                            <p class="data-value">7,000〜8,000円</p>
+                            <p class="data-note">東京: 10,000〜12,000円</p>
+                            <p class="data-source">出典: 食べログ・ぐるなび</p>
                         </div>
-                        
-                        <div class="data-card">
-                            <h4>モーニング</h4>
-                            <p class="data-main">約500円</p>
-                            <p class="data-note">コーヒー＋トースト＋卵<br>東京比: <strong>約55%</strong></p>
+                        <div class="data-item">
+                            <h4>モーニング（1人）</h4>
+                            <p class="data-value">約500円</p>
+                            <p class="data-note">トースト・ゆで卵付き</p>
+                            <p class="data-source">出典: コメダ珈琲店等</p>
                         </div>
-                        
-                        <div class="data-card">
+                        <div class="data-item">
                             <h4>市場の魚介類</h4>
-                            <p class="data-main">刺身1,500円〜</p>
-                            <p class="data-note">4人分盛り合わせ<br>東京比: <strong>約60%</strong></p>
+                            <p class="data-value">刺身1,500円〜</p>
+                            <p class="data-note">スーパーの約70%</p>
+                            <p class="data-source">出典: 柳橋中央市場</p>
                         </div>
-                        
-                        <div class="data-card">
-                            <h4>喫茶店数</h4>
-                            <p class="data-main">全国トップクラス</p>
-                            <p class="data-note">人口あたりの喫茶店数<br>モーニング文化が根付く</p>
+                        <div class="data-item">
+                            <h4>喫茶店数（人口比）</h4>
+                            <p class="data-value">全国1位</p>
+                            <p class="data-note">人口当たりの喫茶店数</p>
+                            <p class="data-source">出典: 総務省統計</p>
                         </div>
                     </div>
-
-                    <p class="data-source">
-                        ※2024年12月時点のデータ。価格は店舗・時期により変動します。<br>
-                        出典: 食べログ、各種グルメサイト、市場関係者への取材、公開情報
-                    </p>
                 </section>
 
-            </article>
+                <!-- 関連ストーリー -->
+                <section class="related-stories">
+                    <h2 class="section-title">関連するストーリー</h2>
+                    <div class="story-cards">
+                        <a href="cost-living-story.html" class="story-card">
+                            <div class="card-icon">💰</div>
+                            <h3>生活コストの安さ</h3>
+                            <p>東京と比べて月17万円の差</p>
+                        </a>
+                        <a href="urban-nature-story.html" class="story-card">
+                            <div class="card-icon">🌳</div>
+                            <h3>都市機能とのどかさの両立</h3>
+                            <p>15分で変わる、二つの顔</p>
+                        </a>
+                        <a href="transport-access-story.html" class="story-card">
+                            <div class="card-icon">🚄</div>
+                            <h3>交通アクセスの良さ</h3>
+                            <p>新幹線で東京・大阪へ約1.5時間</p>
+                        </a>
+                    </div>
+                </section>
 
-            <!-- 関連ストーリー -->
-            <aside class="related-stories">
-                <h3>関連するストーリー</h3>
-                <div class="story-cards">
-                    <a href="cost-living-story.html" class="story-card">
-                        <span class="card-category">生活コスト</span>
-                        <h4>これが名古屋の『普通』</h4>
-                        <p>ゆとりある暮らしストーリー</p>
-                    </a>
-                    <a href="urban-nature-story.html" class="story-card">
-                        <span class="card-category">都市機能</span>
-                        <h4>15分で変わる、二つの顔</h4>
-                        <p>都市機能とのどかさの両立ストーリー</p>
-                    </a>
-                    <a href="transport-access-story.html" class="story-card">
-                        <span class="card-category">交通アクセス</span>
-                        <h4>日本の真ん中から、世界へ</h4>
-                        <p>抜群の交通利便性ストーリー</p>
-                    </a>
-                </div>
-            </aside>
+                <!-- CTA -->
+                <section class="story-cta">
+                    <h2>名古屋での新生活をサポートします</h2>
+                    <p>住居探しから生活立ち上げまで、専門スタッフが無料でサポート</p>
+                    <div class="cta-buttons">
+                        <a href="nagoya-city.html" class="btn btn-primary">名古屋市の詳細を見る</a>
+                        <a href="index.html#consultation" class="btn btn-secondary">無料相談を申し込む</a>
+                    </div>
+                </section>
+            </article>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.</p>
-            <p><a href="privacy-policy.html">プライバシーポリシー</a></p>
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+            <nav class="footer-nav">
+                <a href="privacy-policy.html">プライバシーポリシー</a>
+            </nav>
         </div>
     </footer>
 
@@ -542,3 +490,4 @@
     <script src="js/speech-reader.js"></script>
 </body>
 </html>
+
