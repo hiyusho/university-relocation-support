@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15分で変わる、二つの顔 - 都市機能とのどかさの両立ストーリー</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/story.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="大学ロゴ" class="university-logo">
+            <h1 class="site-title">家族帯同ポータルサイト</h1>
+        </div>
+        <nav class="header-nav">
+            <a href="nagoya-city.html" class="btn-back-home">
+                <i class="fas fa-arrow-left"></i> 名古屋市ページに戻る
+            </a>
+        </nav>
+    </header>
+
+    <!-- 音声読み上げコントロール -->
+    <div id="speech-controls" class="speech-controls">
+        <button id="play-btn" class="speech-btn primary-btn">
+            <i class="fas fa-play"></i> 読み上げ開始
+        </button>
+        <button id="pause-btn" class="speech-btn" style="display: none;">
+            <i class="fas fa-pause"></i> 一時停止
+        </button>
+        <button id="resume-btn" class="speech-btn primary-btn" style="display: none;">
+            <i class="fas fa-play"></i> 再開
+        </button>
+        <button id="stop-btn" class="speech-btn danger-btn" style="display: none;">
+            <i class="fas fa-stop"></i> 停止
+        </button>
+        <div class="speech-settings">
+            <label for="speech-rate">速度:</label>
+            <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1">
+            <span id="rate-value">1.0x</span>
+        </div>
+    </div>
+
+    <!-- ストーリーヒーロー -->
+    <section class="story-hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <span class="story-category">都市機能とのどかさの両立</span>
+                <h1 class="story-title">15分で変わる、二つの顔</h1>
+                <p class="story-subtitle">朝は森、昼は都会、夜は静寂。名古屋が教えてくれたバランスの取れた暮らし</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="story-main">
+        <div class="story-container">
+            <!-- イントロダクション -->
+            <section class="story-intro">
+                <div class="intro-profile">
+                    <div class="profile-image">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3>エミリーさんの名古屋生活</h3>
+                        <p class="profile-detail">カナダ出身の環境科学研究者（32歳）</p>
+                        <p class="profile-location"><i class="fas fa-map-marker-alt"></i> 東京都港区 → 名古屋市千種区覚王山（1年前に転入）</p>
+                    </div>
+                </div>
+                <div class="intro-quote">
+                    「都会と自然、どちらかを選ぶ必要はなかった。名古屋では、両方が15分圏内にある」
+                </div>
+                <div class="intro-text">
+                    <p>カナダ出身の環境科学研究者、エミリーさん（32歳）。夫のケンジさんの名古屋大学赴任に伴い、東京から名古屋へ移住しました。</p>
+                    <p>東京では、仕事の便利さと引き換えに自然との触れ合いを諦めていました。しかし名古屋での暮らしは、その常識を覆すものでした。朝は森でジョギング、昼は都心でビジネス、午後は公園でリラックス。すべてが15分圏内で実現できる、驚きの日々が始まります。</p>
+                </div>
+            </section>
+
+            <!-- ストーリータイムライン -->
+            <section class="story-timeline">
+                <h2 class="timeline-title">エミリーさんのある1日</h2>
+
+                <!-- プロローグ：東京での葛藤 -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon tokyo">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span class="time-text">1年前：東京</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>プロローグ：東京での葛藤</h3>
+                        <p>東京・港区。高層ビルに囲まれたオフィス街。エミリーさんは窓の外を見つめていました。コンクリートとガラスばかり。緑は、ほんの少しの街路樹だけ。</p>
+                        <blockquote>「週末に自然に触れたい。そう思うと、電車で1時間以上かかる。仕事帰りにジョギング？人混みと車通りで、とても走れない」</blockquote>
+                        <p>都会の便利さと、自然。どちらかを諦めなきゃいけないの？そんな疑問を抱えながら、日々を過ごしていました。</p>
+                    </div>
+                </div>
+
+                <!-- 第1章：朝のジョギング -->
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">
+                        <div class="time-icon morning">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <span class="time-text">7:00 AM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第1章：朝のジョギング - 平和公園へ</h3>
+                        <span class="timeline-distance"><i class="fas fa-walking"></i> 自宅から徒歩15分</span>
+                        <p>朝7時。エミリーさんは覚王山の自宅を出ました。「今日は平和公園まで走ろう」</p>
+                        <p>自宅から徒歩5分で、緑道に入ります。木々に囲まれた静かな道。鳥のさえずり、木漏れ日、澄んだ空気。</p>
+                        <blockquote>「ここ、本当に都市の中なの？」</blockquote>
+                        
+                        <div class="timeline-image nature">
+                            <i class="fas fa-tree"></i>
+                            <span>平和公園：146万㎡（東京ドーム31個分）</span>
+                        </div>
+
+                        <p>10分走ると、平和公園に到着。146万㎡の広大な緑地。桜並木、メタセコイアの森。誰もいない静かな朝。</p>
+                        <blockquote class="highlight-quote">「東京では考えられない...たった15分で、こんな自然に囲まれるなんて」</blockquote>
+                        
+                        <p class="detail-text">※名古屋市の緑被率は23.8%で、政令指定都市の中で2位。1人当たりの公園面積も11.7㎡と充実しています。</p>
+                    </div>
+                </div>
+
+                <!-- カフェでモーニング -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon morning">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <span class="time-text">8:30 AM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>カフェでモーニング - 覚王山</h3>
+                        <span class="timeline-distance"><i class="fas fa-walking"></i> 公園から徒歩10分</span>
+                        <p>ジョギングの後、覚王山のカフェへ。「モーニングセット、お願いします」</p>
+                        <p>コーヒー450円で、トースト、ゆで卵、サラダ、ヨーグルトが付いてきます。窓の外は、静かな住宅街。木々の緑が見える。</p>
+                        <blockquote>「東京なら、1,200円はする内容だわ。地元の常連さんたちとおばあちゃんが話している。ここには、時間がゆっくり流れている」</blockquote>
+                    </div>
+                </div>
+
+                <!-- 第2章：都心へ -->
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">
+                        <div class="time-icon afternoon">
+                            <i class="fas fa-subway"></i>
+                        </div>
+                        <span class="time-text">10:00 AM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第2章：都心へ - 名古屋駅</h3>
+                        <span class="timeline-distance"><i class="fas fa-subway"></i> 地下鉄12分</span>
+                        <p>「そろそろ行かないと」地下鉄東山線で、覚王山駅から名古屋駅へ。たった12分。</p>
+                        <p>エスカレーターを上がると、そこは別世界。高層ビル、ショッピングモール、国際会議場、美術館。</p>
+                        <blockquote class="highlight-quote">「15分前まで森の中にいたのに...名古屋駅前は、東京にも負けない都会」</blockquote>
+                        
+                        <div class="timeline-image">
+                            <i class="fas fa-city"></i>
+                            <span>名古屋駅：高さ200m超の高層ビル群</span>
+                        </div>
+
+                        <p>JRゲートタワー、ミッドランドスクエア。でも、人混みは東京ほどではない。歩きやすい。快適。</p>
+                        <p>大学の打ち合わせ、書店での専門書購入、デパートでのショッピング。必要なものは全部ここで揃います。東京と変わらない都市機能。でも、混雑していない。</p>
+                    </div>
+                </div>
+
+                <!-- 第3章：鶴舞公園 -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon afternoon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <span class="time-text">3:00 PM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第3章：午後の休息 - 鶴舞公園</h3>
+                        <span class="timeline-distance"><i class="fas fa-subway"></i> 栄から地下鉄5分</span>
+                        <p>午後、少し時間ができました。「鶴舞公園に行こう」</p>
+                        <p>地下鉄で栄から鶴舞駅へ。たった2駅、5分。公園に入ると、都会の喧騒が消えます。</p>
+                        
+                        <div class="timeline-image nature">
+                            <i class="fas fa-tree"></i>
+                            <span>鶴舞公園：24万㎡、日本さくら名所100選</span>
+                        </div>
+
+                        <p>広大な芝生、噴水、バラ園。ベンチに座って、本を読みます。風が心地よい。</p>
+                        <blockquote>「15分前まで、都心のど真ん中にいたのに。この切り替えの早さが、名古屋の魅力なのね」</blockquote>
+                    </div>
+                </div>
+
+                <!-- 第4章：徳川園 -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon evening">
+                            <i class="fas fa-torii-gate"></i>
+                        </div>
+                        <span class="time-text">5:00 PM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第4章：夕方の散策 - 徳川園</h3>
+                        <span class="timeline-distance"><i class="fas fa-subway"></i> 地下鉄+徒歩15分</span>
+                        <p>夕方、徳川園へ。「日本庭園を見たかったの」</p>
+                        <p>地下鉄で鶴舞から大曽根へ。そこから徒歩10分。池、滝、木々。美しく手入れされた日本庭園。夕日が池に反射しています。</p>
+                        <blockquote>「ここが都市の中にあるなんて...東京では、こういう場所に行くのに1時間以上かかった。名古屋では、15分」</blockquote>
+                    </div>
+                </div>
+
+                <!-- 帰宅 -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon evening">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span class="time-text">7:00 PM</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>帰宅 - 覚王山の自宅</h3>
+                        <p>夜、覚王山の自宅へ。静かな住宅街。木々に囲まれた道。</p>
+                        <p>「ただいま」夫のケンジさんが夕食を作っています。</p>
+                        <blockquote class="highlight-quote">
+                            「今日はどうだった？」<br><br>
+                            「最高だったわ。朝は森でジョギング、昼は都会で仕事、午後は公園で読書、夕方は日本庭園。全部、15分圏内。これが、名古屋の『普通』なのね」
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- 第5章：15分で変わる世界 -->
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">
+                        <div class="time-icon nature">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <span class="time-text">データ比較</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第5章：15分で変わる世界</h3>
+                        <p>エミリーさんが実感した、名古屋と東京のアクセス時間の違い。</p>
+
+                        <!-- アクセス時間比較 -->
+                        <div class="price-comparison-table">
+                            <h4><i class="fas fa-clock"></i> 都心から自然へのアクセス時間</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>目的地</th>
+                                        <th>東京（港区から）</th>
+                                        <th>名古屋（千種区から）</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>大規模公園</td>
+                                        <td class="tokyo-col">20-35分</td>
+                                        <td class="nagoya-col">7-15分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>都心（主要駅）</td>
+                                        <td class="tokyo-col">10-15分</td>
+                                        <td class="nagoya-col">10-12分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ショッピング</td>
+                                        <td class="tokyo-col">10-20分</td>
+                                        <td class="nagoya-col">10-15分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>空港</td>
+                                        <td class="tokyo-col">60分</td>
+                                        <td class="nagoya-col">28分</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 名古屋の主要緑地 -->
+                        <div class="childcare-comparison">
+                            <h4><i class="fas fa-tree"></i> 名古屋市の主要緑地トップ5</h4>
+                            <div class="cost-tables" style="grid-template-columns: 1fr;">
+                                <div class="cost-table-wrapper">
+                                    <div class="cost-table-header nagoya">豊かな緑地環境</div>
+                                    <table class="cost-table">
+                                        <tr>
+                                            <td>東山公園</td>
+                                            <td>158万㎡</td>
+                                        </tr>
+                                        <tr>
+                                            <td>平和公園</td>
+                                            <td>146万㎡</td>
+                                        </tr>
+                                        <tr>
+                                            <td>大高緑地</td>
+                                            <td>120万㎡</td>
+                                        </tr>
+                                        <tr>
+                                            <td>名城公園</td>
+                                            <td>80万㎡</td>
+                                        </tr>
+                                        <tr>
+                                            <td>小幡緑地</td>
+                                            <td>66万㎡</td>
+                                        </tr>
+                                        <tr class="total">
+                                            <td>緑被率</td>
+                                            <td>23.8%（政令市2位）</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="savings-highlight">
+                            <i class="fas fa-check-circle"></i>
+                            <span>名古屋の公園・緑地総数：<strong>150箇所以上</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第6章：四季を感じる暮らし -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon nature">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <span class="time-text">四季折々</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>第6章：四季を感じる暮らし</h3>
+                        <p>名古屋では、都市にいながら四季の移ろいを身近に感じられます。</p>
+
+                        <!-- 四季の楽しみ方 -->
+                        <div class="money-allocation">
+                            <h4><i class="fas fa-leaf"></i> 季節ごとの楽しみ</h4>
+                            <div class="allocation-grid">
+                                <div class="allocation-item">
+                                    <div class="allocation-icon" style="background: linear-gradient(135deg, #FFB5E8, #FF9CEE);">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="allocation-details">
+                                        <h5>春：桜</h5>
+                                        <div class="allocation-amount" style="font-size: 16px; font-weight: 500;">鶴舞公園1,000本</div>
+                                        <div class="allocation-percent">山崎川の桜並木</div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <div class="allocation-icon" style="background: linear-gradient(135deg, #52B788, #66bb6a);">
+                                        <i class="fas fa-tree"></i>
+                                    </div>
+                                    <div class="allocation-details">
+                                        <h5>夏：緑</h5>
+                                        <div class="allocation-amount" style="font-size: 16px; font-weight: 500;">東山の森</div>
+                                        <div class="allocation-percent">名城公園ランニング</div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <div class="allocation-icon" style="background: linear-gradient(135deg, #FFA500, #FF8C00);">
+                                        <i class="fas fa-maple-leaf"></i>
+                                    </div>
+                                    <div class="allocation-details">
+                                        <h5>秋：紅葉</h5>
+                                        <div class="allocation-amount" style="font-size: 16px; font-weight: 500;">東山動植物園</div>
+                                        <div class="allocation-percent">徳川園</div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <div class="allocation-icon" style="background: linear-gradient(135deg, #B0C4DE, #87CEEB);">
+                                        <i class="fas fa-snowflake"></i>
+                                    </div>
+                                    <div class="allocation-details">
+                                        <h5>冬：静寂</h5>
+                                        <div class="allocation-amount" style="font-size: 16px; font-weight: 500;">平和公園の朝</div>
+                                        <div class="allocation-percent">名城公園の雪景色</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <blockquote>「毎日、季節を感じられる。都市にいながら、自然のリズムを忘れない。これが名古屋の暮らし」</blockquote>
+                    </div>
+                </div>
+
+                <!-- エピローグ -->
+                <div class="timeline-item">
+                    <div class="timeline-time">
+                        <div class="time-icon evening">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span class="time-text">現在（1年後）</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>エピローグ：バランスの取れた暮らし</h3>
+                        <p>名古屋に来て1年。エミリーさんは、自分の選択が正しかったと確信しています。</p>
+
+                        <!-- 15分マップ -->
+                        <div class="total-savings-box">
+                            <h4><i class="fas fa-map-marker-alt"></i> 覚王山から15分圏内</h4>
+                            <div class="savings-breakdown">
+                                <div class="savings-item">
+                                    <i class="fas fa-tree"></i>
+                                    <span class="item-label">北：平和公園</span>
+                                    <span class="item-value">徒歩15分</span>
+                                </div>
+                                <div class="savings-item">
+                                    <i class="fas fa-paw"></i>
+                                    <span class="item-label">東：東山動植物園</span>
+                                    <span class="item-value">地下鉄7分</span>
+                                </div>
+                                <div class="savings-item">
+                                    <i class="fas fa-building"></i>
+                                    <span class="item-label">西：名古屋駅</span>
+                                    <span class="item-value">地下鉄12分</span>
+                                </div>
+                                <div class="savings-item">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <span class="item-label">南：栄・鶴舞公園</span>
+                                    <span class="item-value">地下鉄10分</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <blockquote class="highlight-quote">
+                            「都会と自然、どちらかを選ぶ必要はなかった。名古屋では、両方手に入る。仕事も、自然も、買い物も。すべてが15分圏内。これが、名古屋のバランス」
+                        </blockquote>
+
+                        <p>窓の外を見ます。木々の緑、鳥のさえずり。でも、地下鉄に乗れば15分で、高層ビルの立ち並ぶ都会。</p>
+                        <p>朝のジョギングも、都心でのビジネスも、公園でのリラックスも。すべてが自然に、無理なく、日常に溶け込んでいます。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- まとめセクション -->
+            <section class="story-conclusion">
+                <div class="conclusion-box">
+                    <h2>名古屋が教えてくれたこと</h2>
+                    <p class="main-quote">「都会か、自然か」多くの人が、どちらかを選ばなければならないと思っています。でも、名古屋では違います。朝は森でジョギング。昼は都心でビジネス。午後は公園でリラックス。すべてが15分圏内。</p>
+                    <p class="conclusion-text">これが、名古屋の<strong>「都市機能とのどかさの両立」</strong>です。</p>
+                </div>
+
+                <!-- キーポイント -->
+                <div class="key-points">
+                    <h3>名古屋の「15分生活圏」</h3>
+                    <div class="points-grid">
+                        <div class="point-item">
+                            <i class="fas fa-tree"></i>
+                            <div>
+                                <h4>緑地へ15分</h4>
+                                <p>150箇所以上の公園・緑地が身近に</p>
+                            </div>
+                        </div>
+                        <div class="point-item">
+                            <i class="fas fa-city"></i>
+                            <div>
+                                <h4>都心へ15分</h4>
+                                <p>高層ビル、ショッピング、ビジネス</p>
+                            </div>
+                        </div>
+                        <div class="point-item">
+                            <i class="fas fa-balance-scale"></i>
+                            <div>
+                                <h4>バランスの良さ</h4>
+                                <p>混雑せず、でも充実した都市機能</p>
+                            </div>
+                        </div>
+                        <div class="point-item">
+                            <i class="fas fa-leaf"></i>
+                            <div>
+                                <h4>緑被率23.8%</h4>
+                                <p>政令市トップクラスの緑豊かさ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTAセクション -->
+            <section class="story-cta">
+                <h2>あなたも名古屋で、バランスの取れた暮らしを</h2>
+                <p>エミリーさんのように、都会と自然の両方を楽しむ生活を、あなたも始めませんか？<br>名古屋での新生活について、お気軽にご相談ください。</p>
+                <div class="cta-buttons">
+                    <a href="nagoya-city.html" class="btn-cta-primary">
+                        <i class="fas fa-map-marked-alt"></i> 名古屋市の詳細を見る
+                    </a>
+                    <a href="index.html#consultation" class="btn-cta-secondary">
+                        <i class="fas fa-comments"></i> 相談予約をする
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/speech-reader.js"></script>
+</body>
+</html>
