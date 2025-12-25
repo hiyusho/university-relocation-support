@@ -3,535 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本の真ん中から、世界へ - 交通アクセスストーリー</title>
+    <title>日本の真ん中から、世界へ - 交通アクセスの良さストーリー</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/story.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>大学赴任者家族帯同支援プログラム</h1>
-            <nav>
-                <a href="index.html">ホーム</a>
-                <a href="index.html#features">サービス内容</a>
-                <a href="index.html#consultation">無料相談</a>
-                <a href="registration.html">新規登録</a>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <img src="logo.png" alt="大学ロゴ" class="header-logo">
+                <h1 class="site-title">家族帯同ポータルサイト</h1>
+            </div>
+            <nav class="header-nav">
+                <a href="index.html" class="nav-link">ホーム</a>
+                <a href="index.html#features" class="nav-link">サービス</a>
+                <a href="index.html#consultation" class="nav-link">無料相談</a>
+                <a href="registration.html" class="nav-link nav-link-primary">新規登録</a>
             </nav>
         </div>
     </header>
 
-    <main class="story-page">
-        <div class="story-hero">
-            <div class="container">
-                <span class="story-category">交通アクセス</span>
-                <h1 class="story-title">日本の真ん中から、世界へ</h1>
-                <p class="story-subtitle">「どこへでも行ける」自由が、家族の可能性を広げた</p>
-            </div>
-        </div>
+    <!-- 名古屋市ページに戻るボタン -->
+    <div class="back-button-container">
+        <a href="nagoya-city.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> 名古屋市ページに戻る
+        </a>
+    </div>
 
-        <div class="container">
+    <!-- 音声読み上げコントロール -->
+    <div id="speech-controls" class="speech-controls">
+        <button id="play-btn" class="control-btn" aria-label="読み上げ開始">
+            <i class="fas fa-play"></i>
+            <span>読み上げ開始</span>
+        </button>
+        <button id="pause-btn" class="control-btn" aria-label="一時停止" style="display: none;">
+            <i class="fas fa-pause"></i>
+            <span>一時停止</span>
+        </button>
+        <button id="resume-btn" class="control-btn" aria-label="再開" style="display: none;">
+            <i class="fas fa-play"></i>
+            <span>再開</span>
+        </button>
+        <button id="stop-btn" class="control-btn" aria-label="停止" style="display: none;">
+            <i class="fas fa-stop"></i>
+            <span>停止</span>
+        </button>
+        <div class="speed-control">
+            <label for="speech-rate">速度:</label>
+            <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1">
+            <span id="rate-value">1.0x</span>
+        </div>
+    </div>
+
+    <!-- ストーリーヒーロー -->
+    <section class="story-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-category">交通アクセスの便利さ</div>
+            <h1 class="hero-title">日本の真ん中から、世界へ</h1>
+            <p class="hero-subtitle">新幹線1.5時間、飛行機28分。驚異の移動利便性</p>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="story-main">
+        <div class="story-container">
             <article class="story-content">
                 <!-- プロローグ -->
-                <section class="story-section">
-                    <h2>「まるで、日本の中心にいるみたい」</h2>
-                    <p class="story-lead">
-                        名古屋大学に赴任した山田教授（45歳）の妻・由紀さん（42歳）は、初めて名古屋駅に降り立ったとき、その巨大さに圧倒された。
-                    </p>
-                    <p>
-                        「東京駅や大阪駅に負けないくらい大きくて、新幹線、在来線、地下鉄、近鉄、名鉄...あらゆる路線が集まっている。そして何より、東京へも大阪へも、こんなに近いなんて」
-                    </p>
-                    <p>
-                        夫の赴任に伴い、高校2年生の長男・拓海くんと中学1年生の長女・美咲ちゃんを連れて名古屋に移住した山田家。当初は「名古屋は地方都市」というイメージで、交通の不便さを心配していた。しかし、住み始めてすぐに、その心配は完全に杞憂だったと気づく。
-                    </p>
-                </section>
-
-                <!-- セクション1: 新幹線アクセス -->
-                <section class="story-section">
-                    <h2>第一章：「新幹線で、東京も大阪も日帰り圏内」</h2>
-                    
-                    <div class="story-highlight">
-                        <h3>🚄 新幹線で広がる行動範囲</h3>
-                        <div class="access-grid">
-                            <div class="access-item">
-                                <div class="destination">
-                                    <span class="icon">🗼</span>
-                                    <h4>東京</h4>
-                                </div>
-                                <p class="travel-time"><strong>最速 1時間30分</strong></p>
-                                <p class="detail">のぞみ利用・片道10,560円</p>
-                                <p class="use-case">💼 ビジネス会議・学会参加・週末観光に最適</p>
-                            </div>
-                            
-                            <div class="access-item">
-                                <div class="destination">
-                                    <span class="icon">🏯</span>
-                                    <h4>大阪</h4>
-                                </div>
-                                <p class="travel-time"><strong>最速 50分</strong></p>
-                                <p class="detail">のぞみ利用・片道6,680円</p>
-                                <p class="use-case">🎡 ユニバーサル・スタジオ・買い物に日帰り可能</p>
-                            </div>
-                            
-                            <div class="access-item">
-                                <div class="destination">
-                                    <span class="icon">🗾</span>
-                                    <h4>京都</h4>
-                                </div>
-                                <p class="travel-time"><strong>最速 35分</strong></p>
-                                <p class="detail">のぞみ利用・片道5,170円</p>
-                                <p class="use-case">🍵 週末の文化体験・寺社巡りが気軽に</p>
-                            </div>
-                        </div>
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">プロローグ</h2>
+                    <div class="story-text" data-speech-text>
+                        <p class="story-paragraph lead-paragraph">
+                            「東京にも大阪にも、こんなに近いなんて…」
+                        </p>
+                        <p class="story-paragraph">
+                            名古屋大学に赴任した田中健一さん（仮名・40歳）は、名古屋駅の新幹線ホームに立ちながら驚きを隠せませんでした。東京から新幹線で1時間40分。大阪からは50分。しかも、中部国際空港へは電車でわずか28分。
+                        </p>
+                        <p class="story-paragraph">
+                            「名古屋って、『地方都市』というイメージがあったけど、実際は日本の真ん中にある『超アクセス都市』なんだ」
+                        </p>
+                        <p class="story-paragraph">
+                            妻の恵子さん（仮名・38歳）も、この便利さに驚いていました。「実家が東京だから、気軽に帰れるのは本当に助かる。しかも、関西にも日帰りで行けるなんて！」
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「長男の拓海が、東京の大学のオープンキャンパスに行きたいと言い出したとき、『日帰りで行けるよ』と即答できたんです。朝7時に家を出て、9時には東京。夕方4時に東京を出れば、6時には名古屋。これが本当に便利で」
-                        <cite>— 由紀さん（42歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        山田家は移住後の最初の週末、家族4人で京都に日帰り旅行をした。朝9時に名古屋を出発し、10時前には京都駅。清水寺、金閣寺を巡り、夕食を食べて帰宅したのは夜8時。「東京から熱海に行くより近い」と拓海くんは驚いた。
-                    </p>
                 </section>
 
-                <!-- セクション2: 空港アクセス -->
-                <section class="story-section">
-                    <h2>第二章：「空港まで28分。世界が近くなった」</h2>
-                    
-                    <div class="story-data">
-                        <h3>✈️ 中部国際空港セントレアへのアクセス</h3>
-                        <div class="airport-access">
-                            <div class="route-info">
-                                <h4>🚄 名鉄特急「ミュースカイ」</h4>
-                                <ul>
-                                    <li><strong>所要時間:</strong> 最速28分（名古屋駅→空港）</li>
-                                    <li><strong>運賃:</strong> 1,250円（特別車両は+360円）</li>
-                                    <li><strong>運行間隔:</strong> 30分間隔（朝夕は15分間隔）</li>
-                                    <li><strong>特徴:</strong> 全席指定・荷物スペース充実・Wi-Fi完備</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="comparison-table">
-                                <h4>📊 他都市との空港アクセス比較</h4>
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>都市</th>
-                                            <th>主要空港</th>
-                                            <th>所要時間</th>
-                                            <th>運賃</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="highlight-row">
-                                            <td><strong>名古屋</strong></td>
-                                            <td><strong>セントレア</strong></td>
-                                            <td><strong>28分</strong></td>
-                                            <td><strong>1,250円</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>東京</td>
-                                            <td>成田空港</td>
-                                            <td>60〜90分</td>
-                                            <td>1,260〜3,070円</td>
-                                        </tr>
-                                        <tr>
-                                            <td>東京</td>
-                                            <td>羽田空港</td>
-                                            <td>30〜45分</td>
-                                            <td>500〜1,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td>大阪</td>
-                                            <td>関西空港</td>
-                                            <td>45〜60分</td>
-                                            <td>920〜1,450円</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                <!-- 第一章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第一章：新幹線で東京・大阪へ</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">東京への出張が日帰りで可能</h3>
+                        <p class="story-paragraph">
+                            健一さんは、月に1〜2回、東京での研究会議に参加します。名古屋に来る前は「出張のたびに前泊が必要だろう」と思っていましたが、実際はまったく違いました。
+                        </p>
+
+                        <div class="access-example">
+                            <h4>ある日の東京出張スケジュール</h4>
+                            <ul class="timeline">
+                                <li><strong>7:00</strong> 名古屋駅から新幹線のぞみに乗車</li>
+                                <li><strong>8:40</strong> 品川駅到着（所要時間: 1時間40分）</li>
+                                <li><strong>9:30〜17:00</strong> 東京で会議・研究活動</li>
+                                <li><strong>18:00</strong> 品川駅から新幹線のぞみに乗車</li>
+                                <li><strong>19:40</strong> 名古屋駅到着</li>
+                                <li><strong>20:30</strong> 自宅で家族と夕食</li>
+                            </ul>
                         </div>
 
-                        <div class="airport-destinations">
-                            <h4>🌏 セントレアから行ける主要都市（直行便）</h4>
-                            <div class="destination-grid">
-                                <div class="dest-region">
-                                    <h5>国内線</h5>
-                                    <ul>
-                                        <li>札幌（新千歳）</li>
-                                        <li>仙台</li>
-                                        <li>新潟</li>
-                                        <li>福岡</li>
-                                        <li>沖縄（那覇）</li>
-                                        <li>鹿児島</li>
-                                        <li>他多数</li>
-                                    </ul>
-                                </div>
-                                <div class="dest-region">
-                                    <h5>アジア</h5>
-                                    <ul>
-                                        <li>ソウル</li>
-                                        <li>台北</li>
-                                        <li>香港</li>
-                                        <li>バンコク</li>
-                                        <li>シンガポール</li>
-                                        <li>上海・北京</li>
-                                        <li>マニラ</li>
-                                    </ul>
-                                </div>
-                                <div class="dest-region">
-                                    <h5>その他</h5>
-                                    <ul>
-                                        <li>ホノルル</li>
-                                        <li>グアム</li>
-                                        <li>ヘルシンキ</li>
-                                        <li>デトロイト</li>
-                                        <li>フランクフルト</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <p class="story-paragraph quote-box">
+                            「東京での会議が終わった後、その日のうちに自宅に帰れる。家族との夕食も普通に食べられる。これが名古屋の最大のメリットです」（健一さん）
+                        </p>
+
+                        <h3 class="subsection-title">大阪・京都も日帰り圏内</h3>
+                        <p class="story-paragraph">
+                            恵子さんは、趣味で関西の美術館巡りを楽しんでいます。名古屋からなら、大阪・京都も気軽に日帰りで行けます。
+                        </p>
+
+                        <div class="access-example">
+                            <h4>恵子さんの京都日帰り旅行</h4>
+                            <ul class="timeline">
+                                <li><strong>9:00</strong> 名古屋駅から新幹線のぞみに乗車</li>
+                                <li><strong>9:35</strong> 京都駅到着（所要時間: 35分）</li>
+                                <li><strong>10:00〜17:00</strong> 京都で美術館・カフェ巡り</li>
+                                <li><strong>17:30</strong> 京都駅から新幹線のぞみに乗車</li>
+                                <li><strong>18:05</strong> 名古屋駅到着</li>
+                            </ul>
                         </div>
+
+                        <p class="story-paragraph">
+                            「京都まで35分なんて、東京から横浜に行くより近い！朝ゆっくり出発して、夕方には名古屋に帰れる。これなら、子どもを保育園に預けて、週末にリフレッシュできます」（恵子さん）
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「夫が国際学会で年に数回海外に行くのですが、『セントレアは本当に便利』といつも言っています。空港が小さいから、チェックインから搭乗ゲートまで迷わない。そして、名古屋駅から30分以内という近さ。羽田や成田に比べて、ストレスが全然違うそうです」
-                        <cite>— 由紀さん（42歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        山田家にとって印象的だったのは、長女・美咲ちゃんの修学旅行。沖縄への修学旅行当日、朝7時に名古屋駅を出発し、8時にはセントレアに到着。9時半のフライトに余裕で間に合った。「東京だと、成田まで2時間見ないといけない。名古屋は本当に楽」と美咲ちゃんも喜んだ。
-                    </p>
                 </section>
 
-                <!-- セクション3: 市内交通 -->
-                <section class="story-section">
-                    <h2>第三章：「市内も、車も、どちらも快適」</h2>
-                    
-                    <div class="story-highlight">
-                        <h3>🚇 名古屋市内の交通網</h3>
-                        
-                        <div class="transport-options">
-                            <div class="transport-card">
-                                <h4>🚇 地下鉄（6路線）</h4>
-                                <ul>
-                                    <li>東山線（藤が丘↔高畑）</li>
-                                    <li>名城線（環状線）</li>
-                                    <li>名港線</li>
-                                    <li>鶴舞線</li>
-                                    <li>桜通線</li>
-                                    <li>上飯田線</li>
-                                </ul>
-                                <p class="feature">✅ 市内主要地点を網羅・定時運行・冬も快適</p>
-                            </div>
-                            
-                            <div class="transport-card">
-                                <h4>🚌 市バス（約100路線）</h4>
-                                <ul>
-                                    <li>地下鉄を補完する充実の路線網</li>
-                                    <li>均一運賃: 大人210円・小児100円</li>
-                                    <li>1日乗車券: 大人870円</li>
-                                </ul>
-                                <p class="feature">✅ 観光にも便利・ICカード対応</p>
-                            </div>
-                            
-                            <div class="transport-card">
-                                <h4>🚗 自家用車</h4>
-                                <ul>
-                                    <li>道路が広くて運転しやすい</li>
-                                    <li>駐車場が豊富で安い</li>
-                                    <li>郊外の大型商業施設へのアクセス良好</li>
-                                </ul>
-                                <p class="feature">✅ 名古屋は「車社会」・週末のレジャーに最適</p>
-                            </div>
-                        </div>
+                <!-- 第二章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第二章：中部国際空港が近い</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">電車で28分、車でも40分</h3>
+                        <p class="story-paragraph">
+                            田中家が特に気に入っているのは、中部国際空港（セントレア）へのアクセスの良さです。名古屋駅から名鉄特急で28分。しかも、本数も多く、ストレスなく利用できます。
+                        </p>
 
-                        <div class="commute-example">
-                            <h4>🏠 山田家の日常移動例</h4>
-                            <table class="data-table">
+                        <div class="comparison-table">
+                            <h4>主要都市から空港へのアクセス比較</h4>
+                            <table>
                                 <thead>
                                     <tr>
-                                        <th>目的</th>
-                                        <th>出発地</th>
-                                        <th>目的地</th>
-                                        <th>手段</th>
-                                        <th>所要時間</th>
+                                        <th>都市</th>
+                                        <th>空港名</th>
+                                        <th>市中心部からの所要時間</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>夫の通勤</td>
-                                        <td>千種駅</td>
-                                        <td>名古屋大学</td>
-                                        <td>地下鉄</td>
-                                        <td>15分</td>
+                                        <td>名古屋</td>
+                                        <td>中部国際空港</td>
+                                        <td class="highlight"><strong>28分</strong>（名鉄特急）</td>
                                     </tr>
                                     <tr>
-                                        <td>長男の通学</td>
-                                        <td>自宅</td>
-                                        <td>栄の高校</td>
-                                        <td>地下鉄</td>
-                                        <td>20分</td>
+                                        <td>東京</td>
+                                        <td>羽田空港</td>
+                                        <td>約60分（品川駅から）</td>
                                     </tr>
                                     <tr>
-                                        <td>長女の通学</td>
-                                        <td>自宅</td>
-                                        <td>近隣中学</td>
-                                        <td>徒歩</td>
-                                        <td>10分</td>
-                                    </tr>
-                                    <tr>
-                                        <td>週末買い物</td>
-                                        <td>自宅</td>
-                                        <td>イオンモール</td>
-                                        <td>車</td>
-                                        <td>15分</td>
-                                    </tr>
-                                    <tr>
-                                        <td>家族旅行</td>
-                                        <td>自宅</td>
-                                        <td>伊勢志摩</td>
-                                        <td>車</td>
-                                        <td>90分</td>
+                                        <td>大阪</td>
+                                        <td>関西国際空港</td>
+                                        <td>約50分（なんば駅から）</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <p>
-                        由紀さんが特に気に入っているのは、地下鉄と車の使い分けができること。「平日は地下鉄で快適通勤。週末は車で郊外の大型ショッピングモールへ。東京では車を持つこと自体が贅沢でしたが、名古屋では駐車場代も安く、週末のレジャーに大活躍です」
-                    </p>
-                </section>
+                        <p class="story-paragraph">
+                            「東京に住んでいた時は、羽田空港まで1時間かかっていました。名古屋なら28分。しかも、名鉄特急は座席指定もできるから、快適そのものです」（恵子さん）
+                        </p>
 
-                <!-- セクション4: 高速道路網 -->
-                <section class="story-section">
-                    <h2>第四章：「週末は、家族でどこへでも」</h2>
-                    
-                    <div class="story-data">
-                        <h3>🛣️ 名古屋から車で行ける観光地</h3>
-                        
-                        <div class="drive-destinations">
-                            <div class="drive-card">
-                                <h4>🏔️ 山エリア</h4>
-                                <ul>
-                                    <li><strong>白川郷:</strong> 約2時間30分</li>
-                                    <li><strong>高山:</strong> 約2時間</li>
-                                    <li><strong>長野（軽井沢）:</strong> 約3時間</li>
-                                    <li><strong>富士山（富士五湖）:</strong> 約3時間</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="drive-card">
-                                <h4>🌊 海エリア</h4>
-                                <ul>
-                                    <li><strong>伊勢志摩:</strong> 約1時間30分</li>
-                                    <li><strong>鳥羽水族館:</strong> 約1時間40分</li>
-                                    <li><strong>南知多:</strong> 約1時間</li>
-                                    <li><strong>渥美半島:</strong> 約1時間30分</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="drive-card">
-                                <h4>🎡 テーマパーク</h4>
-                                <ul>
-                                    <li><strong>ナガシマスパーランド:</strong> 約40分</li>
-                                    <li><strong>レゴランド:</strong> 市内（車で20分）</li>
-                                    <li><strong>ラグーナテンボス:</strong> 約50分</li>
-                                    <li><strong>富士急ハイランド:</strong> 約3時間</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="drive-card">
-                                <h4>🏛️ 文化・歴史</h4>
-                                <ul>
-                                    <li><strong>京都:</strong> 約2時間</li>
-                                    <li><strong>奈良:</strong> 約2時間30分</li>
-                                    <li><strong>金沢:</strong> 約3時間</li>
-                                    <li><strong>伊勢神宮:</strong> 約1時間30分</li>
-                                </ul>
-                            </div>
-                        </div>
+                        <h3 class="subsection-title">国内線・国際線が充実</h3>
+                        <p class="story-paragraph">
+                            中部国際空港は、国内線・国際線ともに充実しています。健一さんは、海外の国際会議にもよく参加しますが、名古屋からのアクセスの良さに満足しています。
+                        </p>
 
-                        <div class="highway-network">
-                            <h4>🛣️ 充実の高速道路網</h4>
-                            <ul class="highway-list">
-                                <li><strong>東名高速道路:</strong> 東京・静岡方面へ</li>
-                                <li><strong>名神高速道路:</strong> 京都・大阪方面へ</li>
-                                <li><strong>中央自動車道:</strong> 長野・山梨方面へ</li>
-                                <li><strong>東海北陸自動車道:</strong> 高山・白川郷方面へ</li>
-                                <li><strong>伊勢湾岸自動車道:</strong> 三重・四日市方面へ</li>
-                                <li><strong>新東名高速道路:</strong> 静岡・浜松方面へ</li>
+                        <div class="data-box">
+                            <h4>中部国際空港の主な就航先</h4>
+                            <ul>
+                                <li><strong>国内線：</strong>札幌、仙台、新潟、福岡、鹿児島、沖縄など</li>
+                                <li><strong>国際線（アジア）：</strong>ソウル、台北、香港、上海、シンガポール、バンコクなど</li>
+                                <li><strong>国際線（欧米）：</strong>ロサンゼルス、サンフランシスコ、フランクフルト、ヘルシンキなど</li>
                             </ul>
-                            <p class="note">※名古屋は「高速道路の結節点」として、日本中に繋がっています</p>
                         </div>
+
+                        <p class="story-paragraph quote-box">
+                            「アジア各国へのフライトが充実しているのは、研究者にとって大きなメリット。国際会議に参加する際も、乗り継ぎが少なくて済むので、移動の疲労が少ないです」（健一さん）
+                        </p>
                     </div>
-
-                    <blockquote class="story-quote">
-                        「移住前は『名古屋って何があるの？』と思っていました。でも実際は、名古屋から1〜2時間で、山も海もテーマパークも温泉も全部行けるんです。週末のたびに、家族で新しい場所に出かけるのが楽しみになりました」
-                        <cite>— 由紀さん（42歳）</cite>
-                    </blockquote>
-
-                    <p>
-                        山田家は移住後の1年間で、伊勢志摩、高山、白川郷、京都、軽井沢、富士山、南知多と、7つの観光地を訪れた。すべて週末の日帰りまたは1泊2日。「東京にいたときは、週末に遠出するなんて考えられなかった。名古屋は、本当にどこへでも行ける」と拓海くんも満足している。
-                    </p>
                 </section>
 
-                <!-- セクション5: 総まとめ -->
-                <section class="story-section">
-                    <h2>第五章：「『日本の真ん中』は、家族の中心になった」</h2>
-                    
-                    <div class="story-highlight final-summary">
-                        <h3>🌟 名古屋の交通利便性まとめ</h3>
-                        
-                        <div class="summary-grid">
-                            <div class="summary-card">
-                                <span class="icon">🚄</span>
-                                <h4>新幹線</h4>
-                                <p>東京1h30m・大阪50m・京都35m</p>
-                                <p class="benefit">→ ビジネスも観光も日帰り圏内</p>
-                            </div>
-                            
-                            <div class="summary-card">
-                                <span class="icon">✈️</span>
-                                <h4>空港</h4>
-                                <p>セントレアまで特急で28分</p>
-                                <p class="benefit">→ 国内外への旅行が気軽に</p>
-                            </div>
-                            
-                            <div class="summary-card">
-                                <span class="icon">🚇</span>
-                                <h4>市内交通</h4>
-                                <p>地下鉄6路線・バス約100路線</p>
-                                <p class="benefit">→ 通勤・通学が快適</p>
-                            </div>
-                            
-                            <div class="summary-card">
-                                <span class="icon">🚗</span>
-                                <h4>車社会</h4>
-                                <p>駐車場充実・道路が広い</p>
-                                <p class="benefit">→ 週末のレジャーが充実</p>
-                            </div>
-                            
-                            <div class="summary-card">
-                                <span class="icon">🛣️</span>
-                                <h4>高速道路</h4>
-                                <p>6路線が集結する結節点</p>
-                                <p class="benefit">→ 日本中どこへでもアクセス</p>
-                            </div>
-                            
-                            <div class="summary-card">
-                                <span class="icon">🗾</span>
-                                <h4>立地</h4>
-                                <p>東京↔大阪のちょうど中間</p>
-                                <p class="benefit">→ 両都市へのアクセス最高</p>
-                            </div>
+                <!-- 第三章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第三章：実家への帰省が楽になった</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">恵子さんの東京の実家</h3>
+                        <p class="story-paragraph">
+                            恵子さんの実家は東京にあります。以前、健一さんが地方大学に勤務していた時は、実家への帰省が一大イベントでした。
+                        </p>
+
+                        <div class="comparison-box tokyo">
+                            <h4>以前の勤務地（広島）から東京の実家へ</h4>
+                            <ul>
+                                <li>新幹線で約4時間</li>
+                                <li>交通費: 往復約35,000円/人</li>
+                                <li>帰省頻度: 年2〜3回が限界</li>
+                            </ul>
                         </div>
+
+                        <div class="comparison-box nagoya">
+                            <h4>名古屋から東京の実家へ</h4>
+                            <ul>
+                                <li>新幹線で約1時間40分</li>
+                                <li>交通費: 往復約22,000円/人</li>
+                                <li>帰省頻度: 月1回でも負担にならない</li>
+                            </ul>
+                        </div>
+
+                        <p class="story-paragraph">
+                            「名古屋に来てから、実家への帰省が本当に楽になりました。月1回は帰れるようになったので、両親も孫に会えて喜んでいます」（恵子さん）
+                        </p>
+
+                        <h3 class="subsection-title">健一さんの関西の実家</h3>
+                        <p class="story-paragraph">
+                            健一さんの実家は大阪にあります。名古屋からなら、新幹線でわずか50分。気軽に日帰りで帰省できます。
+                        </p>
+
+                        <p class="story-paragraph quote-box">
+                            「大阪の実家まで50分。『ちょっと顔を出してくる』という感覚で帰省できるのは、本当にありがたいです。両親も高齢になってきたので、頻繁に様子を見に行けるのは安心です」（健一さん）
+                        </p>
                     </div>
+                </section>
 
-                    <blockquote class="story-quote">
-                        「名古屋に住んでから、『日本って狭いんだな』と感じるようになりました。新幹線で1〜2時間あれば、東京にも大阪にも行ける。車で2〜3時間あれば、山にも海にも行ける。この『どこへでも行ける自由』が、家族の可能性を広げてくれたと思います」
-                        <cite>— 由紀さん（42歳）</cite>
-                    </blockquote>
+                <!-- 第四章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第四章：子どもの成長にもプラス</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">週末の小旅行が気軽に</h3>
+                        <p class="story-paragraph">
+                            田中家には、7歳と5歳の2人の子どもがいます。名古屋に来てから、週末の小旅行が家族の恒例行事になりました。
+                        </p>
 
-                    <p>
-                        長男・拓海くんは、将来は東京の大学に進学したいと考えている。「でも、名古屋から新幹線で1時間半なら、実家に帰るのも楽。逆に、名古屋を拠点にして、東京の大学に通うこともできるかも」と冗談交じりに話す。
-                    </p>
+                        <div class="family-trips">
+                            <h4>田中家の週末旅行リスト</h4>
+                            <ul>
+                                <li><strong>京都：</strong>新幹線35分 → 清水寺・金閣寺</li>
+                                <li><strong>大阪：</strong>新幹線50分 → USJ・海遊館</li>
+                                <li><strong>静岡：</strong>新幹線40分 → 富士サファリパーク</li>
+                                <li><strong>金沢：</strong>特急2時間30分 → 兼六園・21世紀美術館</li>
+                                <li><strong>伊勢：</strong>近鉄特急1時間30分 → 伊勢神宮・おかげ横丁</li>
+                            </ul>
+                        </div>
 
-                    <p>
-                        名古屋での生活は、山田家に「移動の自由」を与えた。それは単に物理的な移動だけでなく、心の自由、選択肢の広がり、家族の絆を深める時間にもつながっている。
-                    </p>
+                        <p class="story-paragraph">
+                            「名古屋からなら、どこに行くにも近い。週末に『今日はどこ行く？』って家族で相談するのが楽しみになりました」（恵子さん）
+                        </p>
+
+                        <h3 class="subsection-title">子どもの視野が広がる</h3>
+                        <p class="story-paragraph">
+                            頻繁に旅行に行けることで、子どもたちの視野も広がりました。
+                        </p>
+
+                        <p class="story-paragraph quote-box">
+                            「京都で歴史を学んだり、大阪で都会の文化を体験したり、伊勢で日本の伝統に触れたり…。名古屋を拠点に、日本のいろんな地域を体験できる。これは、子どもの成長にとって本当に貴重な経験です」（健一さん）
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 第五章 -->
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">第五章：研究者にとっての理想の立地</h2>
+                    <div class="story-text" data-speech-text>
+                        <h3 class="subsection-title">国内外の研究者との交流</h3>
+                        <p class="story-paragraph">
+                            健一さんにとって、名古屋の立地は研究活動にも大きなメリットをもたらしています。
+                        </p>
+
+                        <div class="data-box">
+                            <h4>研究者にとってのメリット</h4>
+                            <ul>
+                                <li><strong>東京の学会・研究会：</strong>日帰り参加が可能</li>
+                                <li><strong>関西の大学との共同研究：</strong>頻繁な往来が容易</li>
+                                <li><strong>国際会議：</strong>中部国際空港から直行便が多数</li>
+                                <li><strong>海外の研究者：</strong>名古屋を訪問しやすい（空港アクセス良好）</li>
+                            </ul>
+                        </div>
+
+                        <p class="story-paragraph">
+                            「名古屋は、国内外の研究者とのネットワークを築きやすい立地です。東京・大阪へのアクセスが良いだけでなく、海外からの研究者も『名古屋は便利』と言ってくれます」（健一さん）
+                        </p>
+
+                        <h3 class="subsection-title">時間を有効活用できる</h3>
+                        <p class="story-paragraph">
+                            移動時間が短いことで、研究時間をより確保できるようになりました。
+                        </p>
+
+                        <p class="story-paragraph quote-box">
+                            「以前は、東京への出張で丸2日かかっていました。前泊して、翌日会議に出て、そのまま宿泊。でも、名古屋からなら日帰りできる。移動時間が大幅に減って、研究に集中できる時間が増えました」（健一さん）
+                        </p>
+                    </div>
                 </section>
 
                 <!-- エピローグ -->
-                <section class="story-section epilogue">
-                    <h2>エピローグ：「『真ん中』だからこそ、どこへでも」</h2>
-                    
-                    <p>
-                        「名古屋は『地味』って言われることもあるけど、私たちにとっては『最高の立地』です。東京にも大阪にも近く、空港も近く、山にも海にも近い。この『真ん中』という立ち位置が、私たち家族の生活を豊かにしてくれています」
-                    </p>
-
-                    <p>
-                        週末、山田家は名古屋駅の新幹線ホームに立つ。今日は京都に日帰り旅行。来週は伊勢志摩に車で1泊旅行。来月は拓海くんの東京の大学見学。「どこへでも行ける」自由が、家族の未来を明るく照らしている。
-                    </p>
-
-                    <div class="story-cta">
-                        <h3>🚄 あなたも、名古屋から世界へ繋がりませんか？</h3>
-                        <p>
-                            交通アクセス、通勤・通学、週末のレジャー...あなたの疑問に、専門スタッフが無料でお答えします。
+                <section class="story-section" data-speech-section>
+                    <h2 class="section-title">エピローグ</h2>
+                    <div class="story-text" data-speech-text>
+                        <p class="story-paragraph">
+                            名古屋に来て3年。田中家は、この街の「交通利便性」を存分に活用しています。
                         </p>
-                        <div class="cta-buttons">
-                            <a href="nagoya-city.html" class="btn btn-secondary">名古屋市の詳細を見る</a>
-                            <a href="index.html#consultation" class="btn btn-primary">無料相談を申し込む</a>
-                        </div>
+                        <p class="story-paragraph">
+                            「名古屋は、日本の真ん中にある『超アクセス都市』。東京にも大阪にも、新幹線で1.5時間。空港へは28分。国内外どこへ行くにも便利。この立地の良さは、名古屋の最大の魅力です」（健一さん）
+                        </p>
+                        <p class="story-paragraph">
+                            恵子さんも、名古屋での暮らしを楽しんでいます。
+                        </p>
+                        <p class="story-paragraph quote-box">
+                            「実家への帰省が楽になったし、週末の小旅行も気軽にできる。子どもたちも、いろんな場所を体験できて嬉しそう。名古屋に来て、私たち家族の世界が広がりました」（恵子さん）
+                        </p>
+                        <p class="story-paragraph lead-paragraph">
+                            日本の真ん中から、世界へ。名古屋は、あなたの可能性を広げる街です。
+                        </p>
                     </div>
                 </section>
 
-                <!-- データ補足セクション -->
-                <section class="story-section data-appendix">
-                    <h2>📊 データで見る名古屋の交通利便性</h2>
-                    
+                <!-- データ補足 -->
+                <section class="story-section data-supplement">
+                    <h2 class="section-title">データで見る名古屋の交通アクセス</h2>
                     <div class="data-grid">
-                        <div class="data-card">
-                            <h4>新幹線</h4>
-                            <p class="data-main">東海道新幹線</p>
-                            <p class="data-note">のぞみ・ひかり・こだま<br>1時間あたり最大10本</p>
+                        <div class="data-item">
+                            <h4>名古屋駅→東京駅</h4>
+                            <p class="data-value">1時間40分</p>
+                            <p class="data-note">新幹線のぞみ</p>
+                            <p class="data-source">出典: JR東海</p>
                         </div>
-                        
-                        <div class="data-card">
-                            <h4>空港アクセス</h4>
-                            <p class="data-main">最速28分</p>
-                            <p class="data-note">名鉄特急ミュースカイ<br>全国トップクラスの速さ</p>
+                        <div class="data-item">
+                            <h4>名古屋駅→新大阪駅</h4>
+                            <p class="data-value">50分</p>
+                            <p class="data-note">新幹線のぞみ</p>
+                            <p class="data-source">出典: JR東海</p>
                         </div>
-                        
-                        <div class="data-card">
-                            <h4>地下鉄路線</h4>
-                            <p class="data-main">6路線・93駅</p>
-                            <p class="data-note">総延長93.3km<br>市内主要地点を網羅</p>
+                        <div class="data-item">
+                            <h4>名古屋駅→中部国際空港</h4>
+                            <p class="data-value">28分</p>
+                            <p class="data-note">名鉄特急</p>
+                            <p class="data-source">出典: 名古屋鉄道</p>
                         </div>
-                        
-                        <div class="data-card">
-                            <h4>高速道路IC</h4>
-                            <p class="data-main">市内20箇所以上</p>
-                            <p class="data-note">6つの高速道路が集結<br>日本の交通結節点</p>
+                        <div class="data-item">
+                            <h4>国際線就航都市</h4>
+                            <p class="data-value">約40都市</p>
+                            <p class="data-note">アジア・欧米など</p>
+                            <p class="data-source">出典: 中部国際空港</p>
                         </div>
                     </div>
-
-                    <p class="data-source">
-                        ※2024年12月時点のデータ。運賃・所要時間は時期・条件により変動します。<br>
-                        出典: JR東海、名古屋鉄道、名古屋市交通局、各種公開情報
-                    </p>
                 </section>
 
-            </article>
+                <!-- 関連ストーリー -->
+                <section class="related-stories">
+                    <h2 class="section-title">関連するストーリー</h2>
+                    <div class="story-cards">
+                        <a href="urban-nature-story.html" class="story-card">
+                            <div class="card-icon">🌳</div>
+                            <h3>都市機能とのどかさの両立</h3>
+                            <p>15分で変わる、二つの顔</p>
+                        </a>
+                        <a href="cost-living-story.html" class="story-card">
+                            <div class="card-icon">💰</div>
+                            <h3>生活コストの安さ</h3>
+                            <p>東京と比べて月17万円の差</p>
+                        </a>
+                        <a href="childcare-education-story.html" class="story-card">
+                            <div class="card-icon">🎓</div>
+                            <h3>子育て・教育環境</h3>
+                            <p>待機児童ゼロ、充実した教育</p>
+                        </a>
+                    </div>
+                </section>
 
-            <!-- 関連ストーリー -->
-            <aside class="related-stories">
-                <h3>関連するストーリー</h3>
-                <div class="story-cards">
-                    <a href="cost-living-story.html" class="story-card">
-                        <span class="card-category">生活コスト</span>
-                        <h4>これが名古屋の『普通』</h4>
-                        <p>ゆとりある暮らしストーリー</p>
-                    </a>
-                    <a href="childcare-education-story.html" class="story-card">
-                        <span class="card-category">子育て・教育</span>
-                        <h4>子どもの可能性が広がる街</h4>
-                        <p>充実した教育環境ストーリー</p>
-                    </a>
-                    <a href="food-culture-story.html" class="story-card">
-                        <span class="card-category">食文化</span>
-                        <h4>味噌カツだけじゃない</h4>
-                        <p>多様な食文化ストーリー</p>
-                    </a>
-                </div>
-            </aside>
+                <!-- CTA -->
+                <section class="story-cta">
+                    <h2>名古屋での新生活をサポートします</h2>
+                    <p>住居探しから生活立ち上げまで、専門スタッフが無料でサポート</p>
+                    <div class="cta-buttons">
+                        <a href="nagoya-city.html" class="btn btn-primary">名古屋市の詳細を見る</a>
+                        <a href="index.html#consultation" class="btn btn-secondary">無料相談を申し込む</a>
+                    </div>
+                </section>
+            </article>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.</p>
-            <p><a href="privacy-policy.html">プライバシーポリシー</a></p>
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+            <nav class="footer-nav">
+                <a href="privacy-policy.html">プライバシーポリシー</a>
+            </nav>
         </div>
     </footer>
 
@@ -539,3 +414,4 @@
     <script src="js/speech-reader.js"></script>
 </body>
 </html>
+
