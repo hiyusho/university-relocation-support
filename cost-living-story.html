@@ -3,678 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>これが名古屋の『普通』、ゆとりある暮らし - 大学赴任者家族帯同支援プログラム</title>
+    <title>これが名古屋の『普通』、ゆとりある暮らし - 生活コストストーリー</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/story.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- 読み上げコントロール -->
-    <div id="speech-controls" class="speech-controls">
-        <div class="speech-main-controls">
-            <button id="speech-play-btn" class="speech-btn speech-btn-primary" title="読み上げ開始">
-                <i class="fas fa-play"></i> 読み上げ
-            </button>
-            <button id="speech-pause-btn" class="speech-btn" title="一時停止" style="display: none;">
-                <i class="fas fa-pause"></i> 一時停止
-            </button>
-            <button id="speech-resume-btn" class="speech-btn speech-btn-primary" title="再開" style="display: none;">
-                <i class="fas fa-play"></i> 再開
-            </button>
-            <button id="speech-stop-btn" class="speech-btn speech-btn-danger" title="停止" style="display: none;">
-                <i class="fas fa-stop"></i> 停止
-            </button>
-            
-            <div class="speech-divider"></div>
-            
-            <button id="speech-highlight-btn" class="speech-btn speech-btn-icon active" title="ハイライト表示">
-                <i class="fas fa-highlighter"></i>
-            </button>
-            
-            <div class="speech-rate-control">
-                <button id="speech-slower-btn" class="speech-btn speech-btn-small" title="遅く">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <span class="speech-rate-label">速度: <span id="speech-rate-display">1.0x</span></span>
-                <button id="speech-faster-btn" class="speech-btn speech-btn-small" title="速く">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-        </div>
-        
-        <div class="speech-advanced-controls">
-            <div class="speech-voice-control">
-                <label for="speech-voice-selector" class="speech-label">
-                    <i class="fas fa-microphone"></i> 音声:
-                </label>
-                <select id="speech-voice-selector" class="speech-select">
-                    <option>読み込み中...</option>
-                </select>
-            </div>
-            
-            <div class="speech-bookmark-controls">
-                <button id="speech-bookmark-save" class="speech-btn speech-btn-small" title="現在位置を保存">
-                    <i class="fas fa-bookmark"></i> 保存
-                </button>
-                <button id="speech-bookmark-load" class="speech-btn speech-btn-small" title="保存位置から再開">
-                    <i class="fas fa-book-open"></i> 再開
-                </button>
-                <button id="speech-bookmark-clear" class="speech-btn speech-btn-small speech-btn-subtle" title="ブックマーク削除">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ヘッダー -->
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo-area">
-                <img src="https://via.placeholder.com/150x60/4A90E2/ffffff?text=大学ロゴ" alt="大学ロゴ" class="university-logo">
-                <h1 class="site-title">大学赴任者家族帯同支援プログラム</h1>
-            </div>
-            <nav class="header-nav">
-                <a href="index.html" class="btn-back-home"><i class="fas fa-home"></i> トップに戻る</a>
+    <header>
+        <div class="container">
+            <h1>大学赴任者家族帯同支援プログラム</h1>
+            <nav>
+                <a href="index.html">ホーム</a>
+                <a href="index.html#features">サービス内容</a>
+                <a href="index.html#consultation">無料相談</a>
+                <a href="registration.html">新規登録</a>
             </nav>
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
-    <main class="story-main">
+    <main class="story-page">
         <div class="story-hero">
-            <div class="story-hero-content">
-                <span class="story-category">物価・住宅費の安さ</span>
-                <h1 class="story-title">これが名古屋の『普通』<br>ゆとりある暮らし</h1>
-                <p class="story-subtitle">月17万円の差が生んだ、家族の笑顔と未来への安心</p>
+            <div class="container">
+                <span class="story-category">生活コスト</span>
+                <h1 class="story-title">これが名古屋の『普通』、<br>ゆとりある暮らし</h1>
+                <p class="story-subtitle">東京から名古屋に移り住んだ家族の、驚きと発見の日々</p>
             </div>
         </div>
 
-        <div class="story-container">
-            <!-- イントロダクション -->
-            <section class="story-intro">
-                <div class="intro-profile">
-                    <div class="profile-image">
-                        <i class="fas fa-user-friends"></i>
-                    </div>
-                    <div class="profile-info">
-                        <h3>ユウスケさん一家（4人家族）</h3>
-                        <p class="profile-detail">ユウスケさん（36歳・IT企業）/ アヤさん（34歳・Webデザイナー）<br>リコちゃん（6歳・小学1年）/ ハルくん（3歳・保育園）</p>
-                        <p class="profile-location"><i class="fas fa-map-marker-alt"></i> 東京・世田谷区 → 名古屋・千種区へ移住（2年前）</p>
-                    </div>
-                </div>
-                <div class="intro-text">
-                    <p class="intro-quote">「東京では生活するだけで精一杯だった。でも名古屋では、家族の時間を楽しめる。経済的な余裕が、心の余裕を生んだ」</p>
-                    <p>東京・世田谷区で月24万円の2LDK（65㎡）に4人で暮らしていたユウスケさん一家。子供部屋はなく、アヤさんの仕事スペースはダイニングテーブルの片隅だった。夫の大学赴任をきっかけに名古屋へ移住。そこで待っていたのは、想像以上の「ゆとりある暮らし」だった。</p>
-                </div>
-            </section>
-
-            <!-- タイムラインストーリー -->
-            <section class="story-timeline">
-                <h2 class="timeline-title">ユウスケ一家の名古屋生活</h2>
-                
-                <!-- プロローグ：住宅比較 -->
-                <div class="timeline-item highlight">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #FF9A56 0%, #F4A261 100%);">
-                            <i class="fas fa-home"></i>
-                        </span>
-                        <span class="time-text">第1章</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>広い空間、半分の家賃</h3>
-                        
-                        <div class="comparison-box">
-                            <div class="comparison-item">
-                                <div class="comparison-header tokyo">
-                                    <i class="fas fa-building"></i> 東京・世田谷区
-                                </div>
-                                <div class="comparison-body">
-                                    <div class="floor-plan">
-                                        <div class="plan-icon sad"><i class="fas fa-sad-tear"></i></div>
-                                        <div class="plan-details">
-                                            <p class="plan-type">2LDK</p>
-                                            <p class="plan-size">65㎡</p>
-                                            <p class="plan-rent">月24万円</p>
-                                        </div>
-                                    </div>
-                                    <ul class="plan-features">
-                                        <li><i class="fas fa-times-circle"></i> 子供部屋なし</li>
-                                        <li><i class="fas fa-times-circle"></i> 仕事スペースなし</li>
-                                        <li><i class="fas fa-times-circle"></i> 窮屈な生活</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="comparison-arrow">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
-                            
-                            <div class="comparison-item">
-                                <div class="comparison-header nagoya">
-                                    <i class="fas fa-home"></i> 名古屋・千種区
-                                </div>
-                                <div class="comparison-body">
-                                    <div class="floor-plan">
-                                        <div class="plan-icon happy"><i class="fas fa-smile-beam"></i></div>
-                                        <div class="plan-details">
-                                            <p class="plan-type">3LDK</p>
-                                            <p class="plan-size">90㎡</p>
-                                            <p class="plan-rent">月12万円</p>
-                                        </div>
-                                    </div>
-                                    <ul class="plan-features">
-                                        <li><i class="fas fa-check-circle"></i> 各自の部屋あり</li>
-                                        <li><i class="fas fa-check-circle"></i> 専用ワークスペース</li>
-                                        <li><i class="fas fa-check-circle"></i> ゆとりある生活</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="savings-highlight">
-                            <i class="fas fa-piggy-bank"></i>
-                            <span class="savings-text">家賃の差額：<strong>月12万円</strong> → 年間<strong>144万円</strong>の節約！</span>
-                        </div>
-                        
-                        <p>名古屋市・千種区。月12万円の3LDK（90㎡）に引っ越し。家賃は半額、広さは1.4倍。リコちゃんには自分の勉強部屋、ハルくんには遊び場、アヤさんには仕事専用のスペースが誕生した。</p>
-                        
-                        <blockquote class="highlight-quote">
-                            「これ、本当に月12万円？信じられない！東京の友人に間取り図を見せたら、みんな驚いていました」
-                        </blockquote>
-                    </div>
-                </div>
-
-                <!-- 第2章：食費の削減 -->
-                <div class="timeline-item">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #52B788 0%, #66bb6a 100%);">
-                            <i class="fas fa-shopping-basket"></i>
-                        </span>
-                        <span class="time-text">第2章</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>スーパーでの発見</h3>
-                        
-                        <div class="price-comparison-table">
-                            <h4><i class="fas fa-receipt"></i> 食材の価格比較</h4>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>商品名</th>
-                                        <th class="tokyo-col">東京</th>
-                                        <th class="nagoya-col">名古屋</th>
-                                        <th class="diff-col">差額</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i class="fas fa-leaf"></i> キャベツ（1個）</td>
-                                        <td class="tokyo-col">250円</td>
-                                        <td class="nagoya-col">150円</td>
-                                        <td class="diff-col">-100円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-drumstick-bite"></i> 豚肉（100g）</td>
-                                        <td class="tokyo-col">200円</td>
-                                        <td class="nagoya-col">130円</td>
-                                        <td class="diff-col">-70円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-fish"></i> お刺身（3人前）</td>
-                                        <td class="tokyo-col">1,200円</td>
-                                        <td class="nagoya-col">800円</td>
-                                        <td class="diff-col">-400円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-wine-bottle"></i> 牛乳（1L）</td>
-                                        <td class="tokyo-col">250円</td>
-                                        <td class="nagoya-col">180円</td>
-                                        <td class="diff-col">-70円</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="monthly-savings">
-                            <div class="savings-bar">
-                                <div class="bar-label">月々の食費</div>
-                                <div class="bar-tokyo">
-                                    <span class="bar-text">東京：7万円</span>
-                                    <div class="bar-fill" style="width: 100%;"></div>
-                                </div>
-                                <div class="bar-nagoya">
-                                    <span class="bar-text">名古屋：5万円</span>
-                                    <div class="bar-fill" style="width: 71.4%;"></div>
-                                </div>
-                            </div>
-                            <div class="savings-result">
-                                <i class="fas fa-arrow-down"></i> 月2万円の節約
-                            </div>
-                        </div>
-                        
-                        <p>近所のスーパーでの買い物。アヤさんはレシートを二度見した。「野菜が安い！お魚も新鮮で安い！」東京では月7万円だった食費が、名古屋では月5万円に。それなのに、食卓はより豊かになった。</p>
-                        
-                        <blockquote>
-                            「週末には家族で外食も楽しめるようになりました。東京では考えられなかったことです」
-                        </blockquote>
-                    </div>
-                </div>
-
-                <!-- 第3章：外食の幸せ -->
-                <div class="timeline-item">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #F4A261 0%, #FFB884 100%);">
-                            <i class="fas fa-utensils"></i>
-                        </span>
-                        <span class="time-text">第3章</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>ランチの幸せ、外食の余裕</h3>
-                        
-                        <div class="dining-comparison">
-                            <div class="dining-item">
-                                <div class="dining-type">
-                                    <i class="fas fa-coffee"></i> カフェランチ
-                                </div>
-                                <div class="dining-prices">
-                                    <div class="price tokyo">東京：1,500円</div>
-                                    <div class="price nagoya">名古屋：850円</div>
-                                    <div class="price-diff">650円お得！</div>
-                                </div>
-                            </div>
-                            
-                            <div class="dining-item">
-                                <div class="dining-type">
-                                    <i class="fas fa-utensils"></i> 家族ディナー（4人）
-                                </div>
-                                <div class="dining-prices">
-                                    <div class="price tokyo">東京：8,000円</div>
-                                    <div class="price nagoya">名古屋：6,000円</div>
-                                    <div class="price-diff">2,000円お得！</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <p>名古屋駅周辺のカフェでランチミーティング。パスタセット850円、デザート付き。「東京なら1500円は確実。しかもこのボリューム！」とアヤさん。</p>
-                        
-                        <p>栄のレストランで家族4人ディナー。6000円で大満足。東京では8000円以上かかっていた。</p>
-                        
-                        <blockquote class="highlight-quote">
-                            「名古屋では『贅沢』が『普通の暮らし』になった。これが一番の驚きです」
-                        </blockquote>
-                    </div>
-                </div>
-
-                <!-- 第4章：子育て費用 -->
-                <div class="timeline-item highlight">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #7BB3F0 0%, #4A90E2 100%);">
-                            <i class="fas fa-child"></i>
-                        </span>
-                        <span class="time-text">第4章</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>子育てにやさしい街</h3>
-                        
-                        <div class="childcare-comparison">
-                            <h4><i class="fas fa-graduation-cap"></i> 習い事＆保育料の比較</h4>
-                            
-                            <div class="cost-tables">
-                                <div class="cost-table-wrapper">
-                                    <div class="cost-table-header tokyo">東京での費用</div>
-                                    <table class="cost-table">
-                                        <tr>
-                                            <td><i class="fas fa-swimmer"></i> スイミング</td>
-                                            <td>12,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-language"></i> 英語教室</td>
-                                            <td>15,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-music"></i> ピアノ</td>
-                                            <td>-</td>
-                                        </tr>
-                                        <tr class="subtotal">
-                                            <td>習い事 計</td>
-                                            <td>27,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-school"></i> 保育料</td>
-                                            <td>50,000円</td>
-                                        </tr>
-                                        <tr class="total">
-                                            <td>合計</td>
-                                            <td>77,000円</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                
-                                <div class="cost-table-wrapper">
-                                    <div class="cost-table-header nagoya">名古屋での費用</div>
-                                    <table class="cost-table">
-                                        <tr>
-                                            <td><i class="fas fa-swimmer"></i> スイミング</td>
-                                            <td>7,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-language"></i> 英語教室</td>
-                                            <td>9,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-music"></i> ピアノ</td>
-                                            <td>8,000円</td>
-                                        </tr>
-                                        <tr class="subtotal">
-                                            <td>習い事 計</td>
-                                            <td>24,000円</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fas fa-school"></i> 保育料</td>
-                                            <td>35,000円</td>
-                                        </tr>
-                                        <tr class="total">
-                                            <td>合計</td>
-                                            <td>59,000円</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <div class="savings-highlight">
-                                <i class="fas fa-hand-holding-usd"></i>
-                                <span class="savings-text">子育て費用の差額：<strong>月1.8万円</strong>の節約！しかも習い事は3つに増加</span>
-                            </div>
-                        </div>
-                        
-                        <p>リコちゃんの習い事を増やした。東京では2つで月2万7千円。名古屋では3つで月2万4千円。ハルくんの保育園も月5万円から月3万5千円に。しかも保育の質は変わらず、園庭が広くてのびのび遊べる。</p>
-                        
-                        <blockquote class="highlight-quote">
-                            「子供たちに、やりたいことを全部やらせてあげられる。これが親として一番嬉しいことです」
-                        </blockquote>
-                    </div>
-                </div>
-
-                <!-- 第5章：貯蓄と投資 -->
-                <div class="timeline-item">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);">
-                            <i class="fas fa-chart-line"></i>
-                        </span>
-                        <span class="time-text">第5章</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>貯蓄と投資、未来への安心</h3>
-                        
-                        <div class="total-savings-box">
-                            <h4><i class="fas fa-calculator"></i> 月々の節約額</h4>
-                            <div class="savings-breakdown">
-                                <div class="savings-item">
-                                    <i class="fas fa-home"></i>
-                                    <span class="item-label">家賃</span>
-                                    <span class="item-value">12万円</span>
-                                </div>
-                                <div class="savings-item">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <span class="item-label">食費</span>
-                                    <span class="item-value">2万円</span>
-                                </div>
-                                <div class="savings-item">
-                                    <i class="fas fa-child"></i>
-                                    <span class="item-label">子育て</span>
-                                    <span class="item-value">1.8万円</span>
-                                </div>
-                                <div class="savings-item">
-                                    <i class="fas fa-car"></i>
-                                    <span class="item-label">交通費他</span>
-                                    <span class="item-value">1.5万円</span>
-                                </div>
-                            </div>
-                            <div class="total-savings">
-                                <span class="total-label">合計節約額</span>
-                                <span class="total-value">月17.3万円</span>
-                                <span class="yearly-value">年間207.6万円！</span>
-                            </div>
-                        </div>
-                        
-                        <div class="money-allocation">
-                            <h4><i class="fas fa-coins"></i> 浮いたお金の使い道</h4>
-                            <div class="allocation-grid">
-                                <div class="allocation-item">
-                                    <div class="allocation-icon education">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="allocation-details">
-                                        <h5>教育資金積立</h5>
-                                        <p class="allocation-amount">月5万円</p>
-                                        <p class="allocation-percent">29%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="allocation-item">
-                                    <div class="allocation-icon travel">
-                                        <i class="fas fa-plane"></i>
-                                    </div>
-                                    <div class="allocation-details">
-                                        <h5>旅行積立</h5>
-                                        <p class="allocation-amount">月3万円</p>
-                                        <p class="allocation-percent">18%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="allocation-item">
-                                    <div class="allocation-icon investment">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <div class="allocation-details">
-                                        <h5>投資</h5>
-                                        <p class="allocation-amount">月4万円</p>
-                                        <p class="allocation-percent">24%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="allocation-item">
-                                    <div class="allocation-icon leisure">
-                                        <i class="fas fa-utensils"></i>
-                                    </div>
-                                    <div class="allocation-details">
-                                        <h5>外食・レジャー</h5>
-                                        <p class="allocation-amount">月3万円</p>
-                                        <p class="allocation-percent">18%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="allocation-item">
-                                    <div class="allocation-icon emergency">
-                                        <i class="fas fa-shield-alt"></i>
-                                    </div>
-                                    <div class="allocation-details">
-                                        <h5>緊急資金</h5>
-                                        <p class="allocation-amount">月2万円</p>
-                                        <p class="allocation-percent">11%</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="future-projection">
-                            <h4><i class="fas fa-university"></i> 15年後の教育資金</h4>
-                            <div class="projection-content">
-                                <div class="projection-calc">
-                                    <p class="calc-line">月5万円 × 12ヶ月 × 15年 = <strong>900万円</strong></p>
-                                    <p class="calc-line">2人分（リコ＋ハル）= <strong>1,800万円</strong></p>
-                                </div>
-                                <div class="projection-result">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>私立大学でも安心！</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <p>月々の節約額を計算すると、合計17.3万円。アヤさんは新しい家計プランを立てた。教育資金積立に月5万円、旅行積立に月3万円、投資に月4万円。</p>
-                        
-                        <blockquote>
-                            「東京では生活するだけで精一杯だったが、名古屋では未来を考える余裕ができた。15年後、2人とも安心して大学に通わせられます」
-                        </blockquote>
-                    </div>
-                </div>
-
-                <!-- エピローグ：心のゆとり -->
-                <div class="timeline-item">
-                    <div class="timeline-time">
-                        <span class="time-icon" style="background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);">
-                            <i class="fas fa-heart"></i>
-                        </span>
-                        <span class="time-text">エピローグ</span>
-                    </div>
-                    <div class="timeline-content">
-                        <h3>心のゆとり、家族の笑顔</h3>
-                        
-                        <div class="final-comparison">
-                            <h4><i class="fas fa-balance-scale"></i> 生活費総合比較</h4>
-                            <table class="final-table">
-                                <thead>
-                                    <tr>
-                                        <th>項目</th>
-                                        <th class="tokyo-col">東京</th>
-                                        <th class="nagoya-col">名古屋</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><i class="fas fa-home"></i> 家賃</td>
-                                        <td class="tokyo-col">24万円</td>
-                                        <td class="nagoya-col">12万円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-shopping-basket"></i> 食費</td>
-                                        <td class="tokyo-col">7万円</td>
-                                        <td class="nagoya-col">5万円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-child"></i> 子育て費</td>
-                                        <td class="tokyo-col">7.7万円</td>
-                                        <td class="nagoya-col">5.9万円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-bus"></i> 交通費</td>
-                                        <td class="tokyo-col">2万円</td>
-                                        <td class="nagoya-col">1万円</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fas fa-bolt"></i> 光熱費</td>
-                                        <td class="tokyo-col">2.5万円</td>
-                                        <td class="nagoya-col">2万円</td>
-                                    </tr>
-                                    <tr class="total-row">
-                                        <td><strong>合計</strong></td>
-                                        <td class="tokyo-col"><strong>43.2万円</strong></td>
-                                        <td class="nagoya-col"><strong>25.9万円</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="final-savings">
-                                <i class="fas fa-arrow-down"></i>
-                                <span>月17.3万円の差額 = 年間207.6万円の節約</span>
-                            </div>
-                        </div>
-                        
-                        <p>週末、家族4人で徳川園を散歩。入園料は大人300円、子供無料。リコちゃんとハルくんは広い庭で駆け回る。</p>
-                        
-                        <blockquote class="highlight-quote">
-                            「東京では、お金のことばかり考えていた。でも名古屋では、家族の時間を楽しめる。経済的な余裕が、心の余裕を生んだ。これが私たちの新しい『普通』です」
-                        </blockquote>
-                        
-                        <p class="detail-text">その笑顔を見て、ユウスケさんとアヤさんは確信した。「名古屋に来て、本当に良かった」。</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- まとめ -->
-            <section class="story-conclusion">
-                <div class="conclusion-box">
-                    <h2>ユウスケ一家が見つけた、名古屋の魅力</h2>
-                    <blockquote class="main-quote">
-                        「月17万円の差が、私たちの未来を変えた。広い家、豊かな食卓、子供たちの笑顔、そして貯蓄。名古屋では『ゆとりある暮らし』が『普通』になりました」
-                    </blockquote>
-                    <p class="conclusion-text">
-                        ユウスケ一家の選択。それは、<strong>経済的な豊かさ</strong>と<strong>心の豊かさ</strong>を同時に手に入れる、名古屋ならではのライフスタイル。
+        <div class="container">
+            <article class="story-content">
+                <!-- プロローグ -->
+                <section class="story-section">
+                    <h2>「えっ、これが普通なんですか？」</h2>
+                    <p class="story-lead">
+                        東京から名古屋大学に赴任した佐藤教授（42歳）の妻・麻衣さん（38歳）は、初めて名古屋のスーパーで買い物をしたとき、レシートを二度見した。
                     </p>
-                </div>
+                    <p>
+                        「野菜、肉、魚...どれも東京より2〜3割安い。でも、品質は変わらない。むしろ、朝市で買った野菜の方が新鮮で美味しい」
+                    </p>
+                    <p>
+                        夫の赴任に伴い、小学3年生の長男・蓮くんと年長の長女・さくらちゃんを連れて名古屋に移住した佐藤家。当初は「地方都市での生活」に不安を抱えていたが、住み始めて3ヶ月、彼らの生活は予想外の方向に変化していった。
+                    </p>
+                </section>
 
-                <div class="key-points">
-                    <h3>名古屋で実現できること</h3>
-                    <div class="points-grid">
-                        <div class="point-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4>家賃が半額</h4>
-                                <p>広い住まいで快適な生活空間</p>
+                <!-- セクション1: 住まいのコスト -->
+                <section class="story-section">
+                    <h2>第一章：「同じ家賃で、こんなに広い？」</h2>
+                    
+                    <div class="story-highlight">
+                        <h3>🏠 住まいの比較</h3>
+                        <div class="comparison-grid">
+                            <div class="comparison-item">
+                                <h4>東京（世田谷区）</h4>
+                                <ul>
+                                    <li><strong>間取り:</strong> 2LDK（65㎡）</li>
+                                    <li><strong>家賃:</strong> 24万円/月</li>
+                                    <li><strong>駅徒歩:</strong> 10分</li>
+                                    <li><strong>築年数:</strong> 15年</li>
+                                </ul>
+                            </div>
+                            <div class="comparison-arrow">→</div>
+                            <div class="comparison-item highlight">
+                                <h4>名古屋（千種区）</h4>
+                                <ul>
+                                    <li><strong>間取り:</strong> 3LDK（90㎡）</li>
+                                    <li><strong>家賃:</strong> 12万円/月</li>
+                                    <li><strong>駅徒歩:</strong> 7分</li>
+                                    <li><strong>築年数:</strong> 5年</li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="point-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4>生活費が低い</h4>
-                                <p>食費・交通費・光熱費の削減</p>
+                        <p class="saving-amount">💰 <strong>月々12万円の節約</strong>（年間144万円）</p>
+                    </div>
+
+                    <p>
+                        「子どもたちそれぞれに部屋を与えられて、私も初めて自分の書斎を持つことができました。東京では考えられなかった贅沢です」と麻衣さんは笑顔で語る。
+                    </p>
+
+                    <p>
+                        さらに驚いたのは、駐車場代も家賃に含まれていたこと。東京では別途3万円かかっていた駐車場が無料。週末のレジャーに車を使う余裕が生まれた。
+                    </p>
+                </section>
+
+                <!-- セクション2: 食費・日常の買い物 -->
+                <section class="story-section">
+                    <h2>第二章：「毎日が特売日みたい」</h2>
+                    
+                    <div class="story-data">
+                        <h3>📊 食費の比較（4人家族・1ヶ月）</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>東京</th>
+                                    <th>名古屋</th>
+                                    <th>差額</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>食材（自炊）</td>
+                                    <td>7万円</td>
+                                    <td>5万円</td>
+                                    <td class="save">-2万円</td>
+                                </tr>
+                                <tr>
+                                    <td>外食</td>
+                                    <td>4万円</td>
+                                    <td>3万円</td>
+                                    <td class="save">-1万円</td>
+                                </tr>
+                                <tr>
+                                    <td>お弁当・惣菜</td>
+                                    <td>2万円</td>
+                                    <td>1.5万円</td>
+                                    <td class="save">-0.5万円</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>合計</strong></td>
+                                    <td><strong>13万円</strong></td>
+                                    <td><strong>9.5万円</strong></td>
+                                    <td class="save"><strong>-3.5万円</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <blockquote class="story-quote">
+                        「カフェのランチが850円、家族4人での外食が6,000円で済む。東京なら、ランチ1,500円、家族の夕食8,000円は当たり前でした。しかも、味は全く遜色ない。むしろ、名古屋めしの個性的な味に子どもたちも大喜びです」
+                        <cite>— 麻衣さん（38歳）</cite>
+                    </blockquote>
+
+                    <p>
+                        特に驚いたのは、地元の商店街の活気。毎週土曜日の朝市では、農家直送の新鮮野菜が東京の半額以下。魚も名古屋港から直送の鮮魚が手頃な価格で手に入る。
+                    </p>
+                </section>
+
+                <!-- セクション3: 子育て・教育費 -->
+                <section class="story-section">
+                    <h2>第三章：「習い事、全部続けられる」</h2>
+                    
+                    <div class="story-highlight">
+                        <h3>👶 子育て関連費用の比較（月額）</h3>
+                        <div class="cost-breakdown">
+                            <div class="cost-item">
+                                <h4>長男・蓮くん（小3）</h4>
+                                <ul>
+                                    <li>スイミング: 6,000円 <span class="price-note">（東京: 9,000円）</span></li>
+                                    <li>英会話: 8,000円 <span class="price-note">（東京: 12,000円）</span></li>
+                                    <li>学習塾: 12,000円 <span class="price-note">（東京: 18,000円）</span></li>
+                                </ul>
+                                <p class="subtotal">小計: 26,000円 <span class="save">（東京比 -13,000円）</span></p>
+                            </div>
+                            <div class="cost-item">
+                                <h4>長女・さくらちゃん（年長）</h4>
+                                <ul>
+                                    <li>ピアノ: 6,500円 <span class="price-note">（東京: 9,000円）</span></li>
+                                    <li>バレエ: 7,500円 <span class="price-note">（東京: 11,000円）</span></li>
+                                    <li>保育料: 19,000円 <span class="price-note">（東京: 28,000円）</span></li>
+                                </ul>
+                                <p class="subtotal">小計: 33,000円 <span class="save">（東京比 -15,000円）</span></p>
                             </div>
                         </div>
-                        <div class="point-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4>子育て支援充実</h4>
-                                <p>習い事・保育料が安く質も高い</p>
+                        <p class="saving-amount">💰 <strong>月々2.8万円の節約</strong>（年間33.6万円）</p>
+                    </div>
+
+                    <p>
+                        「東京では、習い事を続けるか悩んでいました。でも名古屋では、全部続けられる上に、新しく学習塾にも通わせることができました」
+                    </p>
+
+                    <p>
+                        さらに嬉しいのは、習い事の送迎時間。東京では片道30分かかっていたスイミングスクールが、名古屋では車で10分。時間的にも精神的にもゆとりが生まれた。
+                    </p>
+                </section>
+
+                <!-- セクション4: 交通費・光熱費 -->
+                <section class="story-section">
+                    <h2>第四章：「細かいところで、さらに差が出る」</h2>
+                    
+                    <div class="story-data">
+                        <h3>🚗 その他の生活費比較（月額）</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>東京</th>
+                                    <th>名古屋</th>
+                                    <th>差額</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>交通費（通勤・通学）</td>
+                                    <td>2.5万円</td>
+                                    <td>1万円</td>
+                                    <td class="save">-1.5万円</td>
+                                </tr>
+                                <tr>
+                                    <td>駐車場代</td>
+                                    <td>3万円</td>
+                                    <td>0円</td>
+                                    <td class="save">-3万円</td>
+                                </tr>
+                                <tr>
+                                    <td>光熱費</td>
+                                    <td>2.2万円</td>
+                                    <td>1.8万円</td>
+                                    <td class="save">-0.4万円</td>
+                                </tr>
+                                <tr>
+                                    <td>通信費</td>
+                                    <td>1.8万円</td>
+                                    <td>1.5万円</td>
+                                    <td class="save">-0.3万円</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>合計</strong></td>
+                                    <td><strong>9.5万円</strong></td>
+                                    <td><strong>4.3万円</strong></td>
+                                    <td class="save"><strong>-5.2万円</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        麻衣さんが特に驚いたのは、駐車場が無料だったこと。「東京では、駐車場代だけで月3万円。名古屋では家賃に含まれているか、無料の物件が多い。これだけで年間36万円の節約です」
+                    </p>
+                </section>
+
+                <!-- セクション5: 総まとめ -->
+                <section class="story-section">
+                    <h2>第五章：「お金だけじゃない、心のゆとり」</h2>
+                    
+                    <div class="story-highlight final-summary">
+                        <h3>💡 佐藤家の生活費総まとめ</h3>
+                        
+                        <div class="total-comparison">
+                            <div class="comparison-column">
+                                <h4>東京での月々の支出</h4>
+                                <ul class="expense-list">
+                                    <li>家賃: 24万円</li>
+                                    <li>駐車場: 3万円</li>
+                                    <li>食費: 13万円</li>
+                                    <li>子育て費: 5.9万円</li>
+                                    <li>交通費: 2.5万円</li>
+                                    <li>光熱費・通信費: 4万円</li>
+                                </ul>
+                                <p class="total-amount">合計: <strong>52.4万円</strong></p>
+                            </div>
+                            
+                            <div class="comparison-arrow-large">→</div>
+                            
+                            <div class="comparison-column highlight">
+                                <h4>名古屋での月々の支出</h4>
+                                <ul class="expense-list">
+                                    <li>家賃: 12万円 <span class="diff">(-12万円)</span></li>
+                                    <li>駐車場: 0円 <span class="diff">(-3万円)</span></li>
+                                    <li>食費: 9.5万円 <span class="diff">(-3.5万円)</span></li>
+                                    <li>子育て費: 5.9万円 <span class="diff">(-2.8万円)</span></li>
+                                    <li>交通費: 1万円 <span class="diff">(-1.5万円)</span></li>
+                                    <li>光熱費・通信費: 3.3万円 <span class="diff">(-0.7万円)</span></li>
+                                </ul>
+                                <p class="total-amount">合計: <strong>31.7万円</strong></p>
                             </div>
                         </div>
-                        <div class="point-item">
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <h4>未来への安心</h4>
-                                <p>教育資金・貯蓄の余裕が生まれる</p>
-                            </div>
+
+                        <div class="savings-highlight">
+                            <p class="mega-saving">
+                                ✨ <strong>月々20.7万円の節約</strong> ✨<br>
+                                <span class="annual-saving">（年間 約248万円！）</span>
+                            </p>
+                        </div>
+
+                        <div class="money-allocation">
+                            <h4>💰 浮いたお金の使い道</h4>
+                            <ul>
+                                <li><strong>教育資金:</strong> 月5万円を積立（15年で900万円＋運用益）</li>
+                                <li><strong>旅行・レジャー:</strong> 年2回の家族旅行（国内・海外）</li>
+                                <li><strong>自己投資:</strong> 麻衣さんの資格取得費用</li>
+                                <li><strong>緊急予備費:</strong> 月3万円を貯蓄</li>
+                                <li><strong>趣味・娯楽:</strong> 家族それぞれの趣味に月2万円</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- CTA -->
-            <section class="story-cta">
-                <h2>あなたも、ゆとりある暮らしを始めてみませんか？</h2>
-                <p>名古屋では、経済的な余裕と心の豊かさを同時に手に入れることができます。<br>
-                月17万円の差が生む、新しい生活。<br>
-                それが、名古屋で待っています。</p>
-                <div class="cta-buttons">
-                    <a href="index.html#contact" class="btn-cta-primary">
-                        <i class="fas fa-paper-plane"></i> 新規登録して相談する
+                    <blockquote class="story-quote">
+                        「最初は夫の赴任に『仕方なく』ついてきた名古屋。でも今では、この決断が家族にとって最高の選択だったと心から思います。お金のゆとりは、心のゆとり。子どもたちの笑顔が増えました」
+                        <cite>— 麻衣さん（38歳）</cite>
+                    </blockquote>
+
+                    <p>
+                        移住から1年。佐藤家は、教育資金として貯めた60万円で、長男の蓮くんを夏休みの海外短期留学に送り出した。「東京にいたら、絶対に無理だった」と麻衣さんは語る。
+                    </p>
+
+                    <p>
+                        名古屋での生活は、単に「コストが安い」だけではない。時間的ゆとり、精神的ゆとり、そして家族との時間。佐藤家が手に入れたのは、お金では測れない豊かさだった。
+                    </p>
+                </section>
+
+                <!-- エピローグ -->
+                <section class="story-section epilogue">
+                    <h2>エピローグ：「名古屋の『普通』が、私たちの『幸せ』」</h2>
+                    
+                    <p>
+                        「名古屋の人は『普通だよ』って言うんです。この家賃で、この広さで、この生活費で。でも、東京から来た私たちにとって、それは『普通』じゃない。『贅沢』なんです」
+                    </p>
+
+                    <p>
+                        週末、佐藤家は近所の公園でピクニックをする。東京では考えられなかった、何気ない日常。お金のゆとりが、時間のゆとりを生み、心のゆとりを育てる。
+                    </p>
+
+                    <p>
+                        「もし、同じように悩んでいる方がいたら、伝えたい。名古屋は、家族が幸せに暮らせる街です。『普通』の生活が、こんなに豊かだって、来てみないと分からないから」
+                    </p>
+
+                    <div class="story-cta">
+                        <h3>🌸 あなたも、名古屋でゆとりある暮らしを始めませんか？</h3>
+                        <p>
+                            生活コスト、住まい、子育て環境...あなたの不安や疑問に、専門スタッフが無料でお答えします。
+                        </p>
+                        <div class="cta-buttons">
+                            <a href="nagoya-city.html" class="btn btn-secondary">名古屋市の詳細を見る</a>
+                            <a href="index.html#consultation" class="btn btn-primary">無料相談を申し込む</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- データ補足セクション -->
+                <section class="story-section data-appendix">
+                    <h2>📊 データで見る名古屋の生活コスト</h2>
+                    
+                    <div class="data-grid">
+                        <div class="data-card">
+                            <h4>家賃相場（3LDK）</h4>
+                            <p class="data-main">10〜13万円</p>
+                            <p class="data-note">千種区・昭和区エリア<br>東京23区比: <strong>約50%</strong></p>
+                        </div>
+                        
+                        <div class="data-card">
+                            <h4>食費（4人家族）</h4>
+                            <p class="data-main">9〜10万円/月</p>
+                            <p class="data-note">外食費込み<br>東京比: <strong>約73%</strong></p>
+                        </div>
+                        
+                        <div class="data-card">
+                            <h4>習い事（1人あたり）</h4>
+                            <p class="data-main">6,000〜8,000円</p>
+                            <p class="data-note">スイミング・英会話等<br>東京比: <strong>約67%</strong></p>
+                        </div>
+                        
+                        <div class="data-card">
+                            <h4>通勤交通費</h4>
+                            <p class="data-main">1〜1.5万円/月</p>
+                            <p class="data-note">地下鉄定期券<br>東京比: <strong>約40%</strong></p>
+                        </div>
+                    </div>
+
+                    <p class="data-source">
+                        ※2024年12月時点のデータ。物価や家賃相場は地域・時期により変動します。<br>
+                        出典: 総務省統計局「小売物価統計調査」、SUUMO「家賃相場データ」、各種公開情報
+                    </p>
+                </section>
+
+            </article>
+
+            <!-- 関連ストーリー -->
+            <aside class="related-stories">
+                <h3>関連するストーリー</h3>
+                <div class="story-cards">
+                    <a href="urban-nature-story.html" class="story-card">
+                        <span class="card-category">都市機能</span>
+                        <h4>15分で変わる、二つの顔</h4>
+                        <p>都市機能とのどかさの両立ストーリー</p>
                     </a>
-                    <a href="index.html" class="btn-cta-secondary">
-                        <i class="fas fa-arrow-left"></i> トップページに戻る
+                    <a href="transport-access-story.html" class="story-card">
+                        <span class="card-category">交通アクセス</span>
+                        <h4>日本の真ん中から、世界へ</h4>
+                        <p>抜群の交通利便性ストーリー</p>
+                    </a>
+                    <a href="childcare-education-story.html" class="story-card">
+                        <span class="card-category">子育て・教育</span>
+                        <h4>子どもの可能性が広がる街</h4>
+                        <p>充実した教育環境ストーリー</p>
                     </a>
                 </div>
-            </section>
+            </aside>
         </div>
     </main>
 
-    <!-- フッター -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-links-bottom">
-                <a href="privacy.html">個人情報保護方針</a>
-                <span class="separator">|</span>
-                <a href="#">利用規約</a>
-                <span class="separator">|</span>
-                <a href="#">運営会社</a>
-            </div>
-            <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All Rights Reserved.</p>
-            <p class="footer-note">本プログラムは、名古屋地域の大学と地域企業が連携して運営しています。</p>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.</p>
+            <p><a href="privacy-policy.html">プライバシーポリシー</a></p>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
     <script src="js/speech-reader.js"></script>
-    <!-- スクロールアニメーション（必要に応じてコメント解除）
-    <script src="js/scroll-animations.js"></script>
-    -->
 </body>
 </html>
+
