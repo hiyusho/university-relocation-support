@@ -2,7 +2,8 @@
 <Files "admin-*.html">
     AuthType Basic
     AuthName "管理画面アクセス制限"
-    AuthUserFile /absolute/path/to/.htpasswd
+    AuthUserFile /home/hiyusho/university-relocation-support/.htpasswd
     Require valid-user
 </Files>
+htpasswd -c .htpasswd admin
 
