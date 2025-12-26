@@ -124,7 +124,7 @@ function setupFormSubmission() {
             // フォームデータの収集
             const formData = collectFormData();
             
-            // データの送信（実際の実装ではサーバーに送信）
+            // データの送信
             submitRegistrationData(formData);
         });
     }
@@ -255,7 +255,7 @@ function collectFormData() {
 // ========================================
 
 function submitRegistrationData(formData) {
-    // ローディング表示（オプション）
+    // ローディング表示
     const submitButton = document.getElementById('submitButton');
     const originalButtonText = submitButton.innerHTML;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
