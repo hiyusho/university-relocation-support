@@ -311,7 +311,7 @@ function submitRegistrationData(formData) {
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
     });
-
+}
 
 // ========================================
 // 成功モーダルの表示
@@ -322,6 +322,26 @@ function showSuccessModal() {
     if (modal) {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
+        
+        // カウントダウン表示
+        let countdown = 3;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdownElement) {
+                countdownElement.textContent = countdown;
+            }
+            
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+        
+        // 3秒後に自動的にトップページに戻る
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 3000);
     }
 }
 
@@ -347,7 +367,7 @@ window.addEventListener('beforeunload', function(e) {
     let hasValue = false;
     
     inputs.forEach(input => {
-        if (input.value.trim() !== '' && input.id !== 'email') { // emailは自動入力の可能性があるので除外
+        if (input.value.trim() !== '' && input.id !== 'email') {
             hasValue = true;
         }
     });
@@ -362,7 +382,6 @@ window.addEventListener('beforeunload', function(e) {
 // フォーム自動保存機能（オプション）
 // ========================================
 
-// ユーザーが入力中のデータを一時的に保存
 function setupAutoSave() {
     const form = document.getElementById('registrationForm');
     const inputs = form.querySelectorAll('input, textarea, select');
@@ -373,7 +392,6 @@ function setupAutoSave() {
         }, 1000));
     });
     
-    // ページ読み込み時に保存データを復元
     restoreFormDataFromLocalStorage();
 }
 
@@ -387,9 +405,7 @@ function restoreFormDataFromLocalStorage() {
     if (savedData) {
         const formData = JSON.parse(savedData);
         
-        // 確認してから復元
         if (confirm('前回入力途中のデータがあります。復元しますか？')) {
-            // データを各フィールドに復元
             if (formData.fullName) document.getElementById('fullName').value = formData.fullName;
             if (formData.furigana) document.getElementById('furigana').value = formData.furigana;
             if (formData.email) document.getElementById('email').value = formData.email;
@@ -404,7 +420,6 @@ function restoreFormDataFromLocalStorage() {
     }
 }
 
-// デバウンス関数（連続入力時の処理を制限）
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -417,5 +432,4 @@ function debounce(func, wait) {
     };
 }
 
-// 自動保存機能を有効にする場合はコメント解除
 // setupAutoSave();
