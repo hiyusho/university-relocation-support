@@ -261,44 +261,57 @@ function submitRegistrationData(formData) {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
     submitButton.disabled = true;
     
-    // 実際の実装では、ここでサーバーにデータを送信
-    // 例：fetch APIを使用
-    /*
-    fetch('/api/registration', {
+    // Airtable API の設定
+    const AIRTABLE_API_TOKEN = 'patOnPRhiWIQ8HcU5.c40ccad44380653ebe386635bf7a5ac785acec43bf43a5dabd93f005dcbb6a36';
+    const AIRTABLE_BASE_ID = 'appb0XRjUEQ8gxO3V';
+    const AIRTABLE_TABLE_NAME = 'registrations';
+    
+    // Airtable APIにデータを送信
+    fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${AIRTABLE_API_TOKEN}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+            fields: {
+                fullName: formData.fullName,
+                furigana: formData.furigana,
+                email: formData.email,
+                ageRange: formData.ageRange,
+                university: formData.university,
+                workStyle: formData.workStyle,
+                jobTypes: formData.jobTypes.join(', '),
+                skills: formData.experience,
+                purposes: formData.purposes.join(', '),
+                notes: formData.freeText,
+                status: '未対応',
+                registeredAt: new Date().toISOString()
+            }
+        })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showSuccessModal();
-        } else {
-            alert('登録に失敗しました。もう一度お試しください。');
-            submitButton.innerHTML = originalButtonText;
-            submitButton.disabled = false;
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('登録に失敗しました');
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('登録成功:', data);
+        
+        // ローカルストレージにメールアドレスを保存
+        localStorage.setItem('userEmail', formData.email);
+        
+        // 成功モーダルを表示
+        showSuccessModal();
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('エラーが発生しました。もう一度お試しください。');
+        alert('登録中にエラーが発生しました。もう一度お試しください。\n\nエラー詳細: ' + error.message);
         submitButton.innerHTML = originalButtonText;
         submitButton.disabled = false;
     });
-    */
-    
-    // デモ用：2秒後に成功モーダルを表示
-    console.log('登録データ:', formData);
-    
-    setTimeout(() => {
-        showSuccessModal();
-        
-        // ローカルストレージにメールアドレスを保存（次回の自動入力用）
-        localStorage.setItem('userEmail', formData.email);
-    }, 2000);
-}
+
 
 // ========================================
 // 成功モーダルの表示
