@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>セキュリティ対策説明資料 - 大学赴任者家族帯同支援プログラム</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #1f2937;
+            --bg-color: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 30px 0 20px;
+            color: var(--secondary-color);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .status-card {
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+
+        .status-card.safe {
+            background: #d1fae5;
+            border-color: var(--success-color);
+        }
+
+        .status-card.warning {
+            background: #fef3c7;
+            border-color: var(--warning-color);
+        }
+
+        .status-card.danger {
+            background: #fee2e2;
+            border-color: var(--danger-color);
+        }
+
+        .status-card h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-card p {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: var(--bg-color);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -29px;
+            top: 25px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--primary-color);
+        }
+
+        .timeline-item.priority-1::before {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .timeline-item.priority-2::before {
+            background: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .timeline-item.priority-3::before {
+            background: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .timeline-item h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .timeline-item .meta {
+            color: #6b7280;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .badge.danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .badge.warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid var(--warning-color);
+            margin: 30px 0;
+        }
+
+        .highlight-box h4 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #92400e;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .cta-box h3 {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        ul {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            section {
+                padding: 25px 20px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-shield-alt"></i> セキュリティ対策説明資料</h1>
+        <p>大学赴任者家族帯同支援プログラム - 個人情報保護とデータセキュリティ</p>
+    </header>
+
+    <div class="container">
+        <!-- 概要 -->
+        <section>
+            <h2><i class="fas fa-info-circle"></i> 概要</h2>
+            <p>
+                本プログラムでは、登録者の個人情報を厳格に管理し、個人情報保護法およびGDPRに準拠したセキュリティ対策を実施しています。このドキュメントでは、現在実施しているセキュリティ対策と、今後予定している追加対策について説明します。
+            </p>
+        </section>
+
+        <!-- 現在のセキュリティ状況 -->
+        <section>
+            <h2><i class="fas fa-check-circle"></i> 実装済みのセキュリティ対策</h2>
+
+            <div class="status-grid">
+                <div class="status-card safe">
+                    <h4><i class="fas fa-lock"></i> HTTPS 通信</h4>
+                    <p>すべての通信は SSL/TLS で暗号化されており、データの盗聴や改ざんを防止しています。</p>
+                </div>
+
+                <div class="status-card safe">
+                    <h4><i class="fas fa-file-contract"></i> プライバシーポリシー</h4>
+                    <p>収集する個人情報の種類、利用目的、第三者提供、開示・訂正・削除の手続きを明記しています。</p>
+                </div>
+
+                <div class="status-card safe">
+                    <h4><i class="fas fa-user-check"></i> 同意取得</h4>
+                    <p>登録フォームで個人情報の取り扱いに関する同意を明示的に取得しています。</p>
+                </div>
+
+                <div class="status-card safe">
+                    <h4><i class="fas fa-shield-alt"></i> XSS 対策</h4>
+                    <p>HTML エスケープ処理により、クロスサイトスクリプティング攻撃を防止しています。</p>
+                </div>
+
+                <div class="status-card safe">
+                    <h4><i class="fas fa-database"></i> クラウドデータベース</h4>
+                    <p>Airtable（米国企業）のクラウドデータベースを使用し、データの冗長化とバックアップを実現しています。</p>
+                </div>
+
+                <div class="status-card safe">
+                    <h4><i class="fas fa-check-double"></i> 入力検証</h4>
+                    <p>必須項目のチェック、メールアドレスの形式検証など、クライアントサイドでの入力検証を実施しています。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 今後の対策 -->
+        <section>
+            <h2><i class="fas fa-tasks"></i> 今後実施予定のセキュリティ対策</h2>
+
+            <div class="highlight-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> 本番運用前に実施する重要な対策</h4>
+                <p>
+                    現在、開発段階のため一部のセキュリティ対策が未実装です。椙山女学園大学と名古屋市立大学が参加し、本格的な運用を開始する前に、以下の対策を実施します。
+                </p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item priority-1">
+                    <span class="badge danger">最優先</span>
+                    <h4>API トークンのセキュアな管理</h4>
+                    <div class="meta">所要時間: 2〜3時間 | 実施時期: 本番運用開始前</div>
+                    <p><strong>現状の課題:</strong></p>
+                    <ul>
+                        <li>開発段階のため、API トークンがソースコードに含まれています</li>
+                        <li>GitHub 上で公開されているため、セキュリティリスクがあります</li>
+                    </ul>
+                    <p><strong>実施する対策:</strong></p>
+                    <ul>
+                        <li>✅ Netlify へ移行し、環境変数でトークンを管理</li>
+                        <li>✅ サーバーレス関数（Netlify Functions）でAPIアクセスを制御</li>
+                        <li>✅ フロントエンドからトークンを完全に削除</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item priority-1">
+                    <span class="badge danger">最優先</span>
+                    <h4>管理画面へのアクセス制限</h4>
+                    <div class="meta">所要時間: 4〜6時間 | 実施時期: 本番運用開始前</div>
+                    <p><strong>現状の課題:</strong></p>
+                    <ul>
+                        <li>管理画面に認証機能がありません</li>
+                        <li>URLを知っていれば誰でもアクセス可能です</li>
+                    </ul>
+                    <p><strong>実施する対策:</strong></p>
+                    <ul>
+                        <li>✅ Netlify Identity を使用した認証機能の実装</li>
+                        <li>✅ ログイン画面の追加</li>
+                        <li>✅ 権限管理（管理者のみがアクセス可能）</li>
+                        <li>✅ セッション管理とタイムアウト機能</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item priority-2">
+                    <span class="badge warning">高優先度</span>
+                    <h4>データのバックアップ体制</h4>
+                    <div class="meta">所要時間: 2〜3時間 | 実施時期: 運用開始後1週間以内</div>
+                    <p><strong>実施する対策:</strong></p>
+                    <ul>
+                        <li>✅ 週1回の自動バックアップ（CSV形式）</li>
+                        <li>✅ Google Drive への自動保存</li>
+                        <li>✅ バックアップの定期確認</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item priority-2">
+                    <span class="badge warning">高優先度</span>
+                    <h4>監査ログの実装</h4>
+                    <div class="meta">所要時間: 3〜4時間 | 実施時期: 運用開始後1ヶ月以内</div>
+                    <p><strong>実施する対策:</strong></p>
+                    <ul>
+                        <li>✅ すべての操作（閲覧、更新、削除）を記録</li>
+                        <li>✅ 操作日時、ユーザー、操作内容を記録</li>
+                        <li>✅ 不正アクセスの検知</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item priority-3">
+                    <span class="badge success">中優先度</span>
+                    <h4>サーバーサイド入力検証</h4>
+                    <div class="meta">所要時間: 2〜3時間 | 実施時期: 運用開始後2ヶ月以内</div>
+                    <p><strong>実施する対策:</strong></p>
+                    <ul>
+                        <li>✅ サーバーサイドでの入力検証強化</li>
+                        <li>✅ SQLインジェクション対策</li>
+                        <li>✅ 不正なデータの拒否</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 個人情報の取り扱い -->
+        <section>
+            <h2><i class="fas fa-user-shield"></i> 個人情報の取り扱い</h2>
+
+            <h3>収集する個人情報</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>項目</th>
+                            <th>内容</th>
+                            <th>利用目的</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>氏名・フリガナ</td>
+                            <td>登録者の本名</td>
+                            <td>本人確認、連絡</td>
+                        </tr>
+                        <tr>
+                            <td>メールアドレス</td>
+                            <td>連絡先</td>
+                            <td>通知、情報提供</td>
+                        </tr>
+                        <tr>
+                            <td>年代</td>
+                            <td>20代、30代など</td>
+                            <td>統計分析</td>
+                        </tr>
+                        <tr>
+                            <td>勤務先大学名</td>
+                            <td>パートナーの勤務先</td>
+                            <td>大学連携、マッチング</td>
+                        </tr>
+                        <tr>
+                            <td>希望職種・スキル</td>
+                            <td>就職希望情報</td>
+                            <td>求人マッチング</td>
+                        </tr>
+                        <tr>
+                            <td>登録の目的</td>
+                            <td>プログラム利用目的</td>
+                            <td>サービス改善</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>個人情報の保管と管理</h3>
+            <ul>
+                <li>✅ <strong>保管場所</strong>: Airtable クラウドデータベース（米国）</li>
+                <li>✅ <strong>暗号化</strong>: 通信はすべて HTTPS で暗号化</li>
+                <li>✅ <strong>アクセス制限</strong>: 権限を持つ管理者のみがアクセス可能（実装予定）</li>
+                <li>✅ <strong>保管期間</strong>: 登録から5年間、またはサービス終了まで</li>
+                <li>✅ <strong>第三者提供</strong>: 本人の同意なく第三者には提供しません</li>
+            </ul>
+
+            <h3>個人情報の開示・訂正・削除</h3>
+            <p>
+                登録者本人から個人情報の開示、訂正、削除のご請求があった場合、本人確認の上で速やかに対応いたします。
+            </p>
+            <ul>
+                <li>✅ 開示請求: 保有する個人情報の内容を開示します</li>
+                <li>✅ 訂正請求: 誤った情報を訂正します</li>
+                <li>✅ 削除請求: 個人情報を削除します（忘れられる権利）</li>
+            </ul>
+        </section>
+
+        <!-- 法的準拠 -->
+        <section>
+            <h2><i class="fas fa-balance-scale"></i> 法的準拠</h2>
+
+            <h3>個人情報保護法（日本）</h3>
+            <div class="status-grid">
+                <div class="status-card safe">
+                    <h4>✅ 利用目的の明示</h4>
+                    <p>プライバシーポリシーで明記</p>
+                </div>
+                <div class="status-card safe">
+                    <h4>✅ 同意の取得</h4>
+                    <p>登録フォームで取得</p>
+                </div>
+                <div class="status-card warning">
+                    <h4>⚠️ 安全管理措置</h4>
+                    <p>本番運用前に強化予定</p>
+                </div>
+                <div class="status-card safe">
+                    <h4>✅ 開示・訂正・削除</h4>
+                    <p>対応手順を整備済み</p>
+                </div>
+            </div>
+
+            <h3>GDPR（EU 一般データ保護規則）</h3>
+            <div class="status-grid">
+                <div class="status-card safe">
+                    <h4>✅ 透明性</h4>
+                    <p>プライバシーポリシーで明記</p>
+                </div>
+                <div class="status-card safe">
+                    <h4>✅ 同意</h4>
+                    <p>明示的な同意を取得</p>
+                </div>
+                <div class="status-card warning">
+                    <h4>⚠️ データセキュリティ</h4>
+                    <p>本番運用前に強化予定</p>
+                </div>
+                <div class="status-card safe">
+                    <h4>✅ 忘れられる権利</h4>
+                    <p>削除請求に対応可能</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- インシデント対応 -->
+        <section>
+            <h2><i class="fas fa-exclamation-triangle"></i> セキュリティインシデント対応</h2>
+
+            <h3>万が一、データ漏洩が発生した場合</h3>
+            <ol style="margin-left: 40px; line-height: 2;">
+                <li><strong>即座に API トークンを削除</strong>（5分以内）</li>
+                <li><strong>影響範囲の特定</strong>（1時間以内）
+                    <ul>
+                        <li>漏洩したデータの内容</li>
+                        <li>影響を受ける登録者の数</li>
+                        <li>漏洩の期間</li>
+                    </ul>
+                </li>
+                <li><strong>関係者への通知</strong>（24時間以内）
+                    <ul>
+                        <li>影響を受ける登録者への個別通知</li>
+                        <li>参加大学への報告</li>
+                    </ul>
+                </li>
+                <li><strong>個人情報保護委員会への報告</strong>（72時間以内）</li>
+                <li><strong>再発防止策の実施</strong>（1週間以内）
+                    <ul>
+                        <li>セキュリティ対策の見直し</li>
+                        <li>システムの改修</li>
+                        <li>運用手順の変更</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>連絡先</h3>
+            <p style="background: var(--bg-color); padding: 20px; border-radius: 8px; margin-top: 20px;">
+                <strong>セキュリティインシデント報告窓口</strong><br>
+                株式会社バリューグロー<br>
+                代表取締役：田中裕章<br>
+                ※ 緊急時の連絡先を別途設定することを推奨します
+            </p>
+        </section>
+
+        <!-- まとめ -->
+        <section>
+            <h2><i class="fas fa-thumbs-up"></i> まとめ</h2>
+            <p>
+                本プログラムでは、個人情報保護法およびGDPRに準拠したセキュリティ対策を実施しています。現在は開発段階のため一部の対策が未実装ですが、<strong>椙山女学園大学と名古屋市立大学が参加し、本格的な運用を開始する前に、すべての必須対策を完了します。</strong>
+            </p>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: var(--success-color);">
+                <h4 style="color: #065f46;"><i class="fas fa-check-circle"></i> 本番運用開始前の対策完了をお約束します</h4>
+                <ul style="color: #065f46;">
+                    <li>✅ API トークンのセキュアな管理（Netlify 移行）</li>
+                    <li>✅ 管理画面への認証機能追加（Netlify Identity）</li>
+                    <li>✅ データのバックアップ体制構築</li>
+                    <li>✅ 運用ガイドラインの整備</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <h3>セキュリティに関するご質問・ご相談</h3>
+            <p style="font-size: 1.1em; opacity: 0.95; margin-bottom: 30px;">
+                セキュリティ対策について、ご不明な点やご心配な点がございましたら、<br>お気軽にお問い合わせください。
+            </p>
+            <a href="for-universities.html#contact" class="btn">
+                <i class="fas fa-envelope"></i> お問い合わせ
+            </a>
+        </div>
+    </div>
+</body>
+</html>
