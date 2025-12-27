@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大学関係者の皆様へ - 大学赴任者家族帯同支援プログラム</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #1f2937;
+            --bg-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        /* ヘッダー */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ナビゲーション */
+        nav {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 18px 25px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--bg-color);
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        /* コンテナ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* セクション */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        section h2 i {
+            font-size: 1.2em;
+        }
+
+        section h3 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 30px 0 20px;
+            color: var(--secondary-color);
+        }
+
+        section p {
+            font-size: 1.05em;
+            margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        /* メリットカード */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .benefit-card .icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.3em;
+            margin: 0 0 15px 0;
+            color: var(--primary-color);
+        }
+
+        .benefit-card p {
+            font-size: 1em;
+            margin: 0;
+            color: #6b7280;
+        }
+
+        /* 統計情報 */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            margin: 50px 0;
+        }
+
+        .stats-section h3 {
+            color: white;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #fbbf24;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        /* 参加大学 */
+        .universities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .university-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .university-card.active {
+            border-color: var(--accent-color);
+            background: linear-gradient(to bottom, rgba(16, 185, 129, 0.05), white);
+        }
+
+        .university-card.upcoming {
+            border-color: var(--warning-color);
+            background: linear-gradient(to bottom, rgba(245, 158, 11, 0.05), white);
+        }
+
+        .university-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .university-card .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .badge.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .badge.upcoming {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .university-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .university-card p {
+            font-size: 0.95em;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        /* プロセスステップ */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .step {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2em;
+            box-shadow: var(--shadow);
+        }
+
+        .step h4 {
+            font-size: 1.2em;
+            margin: 20px 0 15px;
+            color: var(--secondary-color);
+        }
+
+        .step p {
+            font-size: 0.95em;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        /* 成功事例 */
+        .case-study {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin: 30px 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .case-study h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .case-study .meta {
+            color: #6b7280;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .case-study blockquote {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            font-style: italic;
+            margin: 20px 0;
+            color: #4b5563;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .case-study .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-color);
+            border-radius: 8px;
+        }
+
+        .result-item .number {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .result-item .label {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* FAQ */
+        .faq-list {
+            margin: 40px 0;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .faq-question i {
+            margin-top: 3px;
+        }
+
+        .faq-answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-color), #059669);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .cta-section h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .cta-section p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--accent-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* お問い合わせフォーム */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin: 40px auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .required {
+            color: var(--danger-color);
+            margin-left: 3px;
+        }
+
+        /* フッター */
+        footer {
+            background: var(--text-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: opacity 0.3s;
+        }
+
+        footer a:hover {
+            opacity: 0.8;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            nav a {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+
+            section h2 {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .stats-section {
+                padding: 40px 20px;
+            }
+
+            .stat-number {
+                font-size: 2.5em;
+            }
+
+            .cta-section {
+                padding: 40px 20px;
+            }
+
+            .cta-section h3 {
+                font-size: 1.5em;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <h1><i class="fas fa-university"></i> 大学関係者の皆様へ</h1>
+        <p>優秀な研究者の採用力向上と定着率向上を実現する、家族帯同支援プログラム</p>
+    </header>
+
+    <!-- ナビゲーション -->
+    <nav>
+        <ul>
+            <li><a href="#overview"><i class="fas fa-info-circle"></i> 概要</a></li>
+            <li><a href="#benefits"><i class="fas fa-star"></i> メリット</a></li>
+            <li><a href="#universities"><i class="fas fa-university"></i> 参加大学</a></li>
+            <li><a href="#process"><i class="fas fa-tasks"></i> 参加プロセス</a></li>
+            <li><a href="security-presentation.html"><i class="fas fa-shield-alt"></i> セキュリティ対策</a></li>
+            <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> お問い合わせ</a></li>
+        </ul>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="container">
+        <!-- 概要 -->
+        <section id="overview">
+            <h2><i class="fas fa-lightbulb"></i> プログラム概要</h2>
+            <p>
+                <strong>「大学赴任者家族帯同支援プログラム」</strong>は、大学に赴任する研究者とそのパートナー・ご家族の両方のキャリアと生活を同時にサポートする、日本初の包括的支援プログラムです。
+            </p>
+            <p>
+                優秀な研究者を採用する際、パートナーのキャリア継続や家族の生活環境は重要な意思決定要因となります。本プログラムは、これらの課題を解決し、大学の採用競争力を高めると同時に、研究者の定着率向上を実現します。
+            </p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>採用力の向上</h3>
+                    <p>家族帯同の不安を解消し、優秀な研究者の採用を促進します</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-anchor"></i></div>
+                    <h3>定着率の向上</h3>
+                    <p>パートナーの就職成功により、研究者の長期定着を実現します</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-trophy"></i></div>
+                    <h3>ブランド価値向上</h3>
+                    <p>先進的な取り組みとして、大学の評価とブランド力を高めます</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="icon"><i class="fas fa-globe"></i></div>
+                    <h3>国際競争力強化</h3>
+                    <p>海外からの優秀な研究者の獲得に有利に働きます</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 参加のメリット -->
+        <section id="benefits">
+            <h2><i class="fas fa-star"></i> 参加大学のメリット</h2>
+
+            <h3>1. 優秀な研究者の採用競争力向上</h3>
+            <p>
+                研究者が新しいポジションを検討する際、パートナーのキャリア継続は最も重要な懸念事項の一つです。本プログラムを提供することで、競合大学に対する優位性を確立できます。
+            </p>
+            <ul style="margin: 20px 0 20px 40px; line-height: 2;">
+                <li>✅ 内定承諾率の向上</li>
+                <li>✅ 海外からの優秀な研究者の獲得</li>
+                <li>✅ 若手研究者の採用促進（30〜40代のデュアルキャリア世代）</li>
+            </ul>
+
+            <h3>2. 研究者の定着率向上と生産性の向上</h3>
+            <p>
+                パートナーが地域で充実したキャリアを築けることで、研究者の長期定着が実現します。家族の満足度が高まることで、研究者自身も研究に集中できる環境が整います。
+            </p>
+            <ul style="margin: 20px 0 20px 40px; line-height: 2;">
+                <li>✅ 早期離職の防止</li>
+                <li>✅ 研究の質と生産性の向上</li>
+                <li>✅ 家族の満足度向上による精神的安定</li>
+            </ul>
+
+            <h3>3. 大学のブランド価値向上</h3>
+            <p>
+                先進的な家族帯同支援の取り組みは、大学の社会的評価を高め、優秀な人材を惹きつける要因となります。
+            </p>
+            <ul style="margin: 20px 0 20px 40px; line-height: 2;">
+                <li>✅ ダイバーシティ＆インクルージョンの推進</li>
+                <li>✅ 社会貢献活動としての評価向上</li>
+                <li>✅ メディア露出と広報効果</li>
+            </ul>
+
+            <h3>4. 地域経済・企業との連携強化</h3>
+            <p>
+                本プログラムを通じて、大学と地域企業との関係が深まり、産学連携の新たな機会が生まれます。
+            </p>
+            <ul style="margin: 20px 0 20px 40px; line-height: 2;">
+                <li>✅ 地域企業との信頼関係構築</li>
+                <li>✅ 共同研究・受託研究の機会創出</li>
+                <li>✅ 地域社会への貢献</li>
+            </ul>
+        </section>
+
+        <!-- 参加大学 -->
+        <section id="universities">
+            <h2><i class="fas fa-university"></i> 参加大学</h2>
+            <p>
+                現在、3大学がプログラムに参加し、研究者とそのご家族を支援しています。
+            </p>
+
+            <div class="universities-list">
+                <div class="university-card active">
+                    <span class="badge active"><i class="fas fa-check-circle"></i> 準備中</span>
+                    <h4>名古屋大学</h4>
+                    <p>2025年度参加予定</p>
+                </div>
+                <div class="university-card upcoming">
+                    <span class="badge upcoming"><i class="fas fa-clock"></i> 参加検討中</span>
+                    <h4>椙山女学園大学</h4>
+                    <p>2025年度参加を検討中</p>
+                </div>
+                <div class="university-card upcoming">
+                    <span class="badge upcoming"><i class="fas fa-clock"></i> 参加検討中</span>
+                    <h4>名古屋市立大学</h4>
+                    <p>2025年度参加を検討中</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 40px; font-size: 1.1em; color: var(--secondary-color);">
+                <strong>貴学も、このネットワークに参加しませんか？</strong>
+            </p>
+        </section>
+
+        <!-- 参加プロセス -->
+        <section id="process">
+            <h2><i class="fas fa-tasks"></i> 参加までのプロセス</h2>
+            <p>
+                プログラムへの参加は、以下の4つのステップで簡単に始められます。
+            </p>
+
+            <div class="process-steps">
+                <div class="step" data-step="1">
+                    <h4><i class="fas fa-comments"></i> 初回相談（無料）</h4>
+                    <p>プログラムの詳細説明、貴学のニーズのヒアリング、質疑応答を行います。オンラインまたは対面で実施。</p>
+                </div>
+                <div class="step" data-step="2">
+                    <h4><i class="fas fa-presentation"></i> プログラム説明会</h4>
+                    <p>貴学の関係者（人事部、国際課、学長室など）に向けて、詳細な説明会を実施します。</p>
+                </div>
+                <div class="step" data-step="3">
+                    <h4><i class="fas fa-file-signature"></i> 契約・参加開始</h4>
+                    <p>契約書の締結、プログラムの詳細設定、広報資料の作成を行います。</p>
+                </div>
+                <div class="step" data-step="4">
+                    <h4><i class="fas fa-rocket"></i> 運用開始</h4>
+                    <p>研究者・パートナーへの案内開始、登録受付、支援活動のスタートです。</p>
+                </div>
+            </div>
+
+            <div style="background: var(--bg-color); padding: 30px; border-radius: 12px; margin-top: 40px; border-left: 5px solid var(--primary-color);">
+                <h4 style="font-size: 1.2em; margin-bottom: 15px; color: var(--primary-color);">
+                    <i class="fas fa-clock"></i> 参加までの期間
+                </h4>
+                <p style="margin: 0; font-size: 1.05em;">
+                    初回相談から運用開始まで、<strong style="color: var(--primary-color);">約1〜2ヶ月</strong>で参加いただけます。
+                </p>
+            </div>
+        </section>
+
+
+
+        <!-- FAQ -->
+        <section id="faq">
+            <h2><i class="fas fa-question-circle"></i> よくあるご質問</h2>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>プログラム参加に費用はかかりますか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        現在、プログラム参加に費用は発生しません。将来的に一部有料化を検討する場合もございますが、その際は事前に十分な説明とご相談の機会を設けさせていただきます。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>参加大学の義務や負担は何ですか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        基本的には、研究者・パートナーへのプログラム案内と、必要に応じた情報提供（赴任予定者リストなど）のみです。日常的な支援活動は本プログラム運営側で行いますので、大学側の負担は最小限に抑えられます。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>他大学の参加状況はどうなっていますか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        現在、名古屋大学が参加を準備中であり、椙山女学園大学と名古屋市立大学が2025年度の参加を検討しています。地域全体で研究者を支援するエコシステムの構築を目指しています。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>プログラムの運営主体はどこですか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        株式会社バリューグロー（代表取締役：田中裕章）が主体となり、中部圏イノベーション推進機構、地域企業、行政機関と連携してプログラムを運営しています。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>個人情報の管理はどうなっていますか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        個人情報保護法およびGDPRに準拠した厳格な管理体制を構築しています。データは暗号化され、Airtable（クラウドデータベース）で安全に保管されます。詳細は<a href="privacy-policy.html" target="_blank" style="color: var(--primary-color); text-decoration: underline;">プライバシーポリシー</a>をご覧ください。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>契約期間はどのくらいですか？いつでも退会できますか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        契約期間は原則1年間（自動更新）です。3ヶ月前の事前通知により、いつでも退会いただけます。初年度は試験的な参加も可能ですので、お気軽にご相談ください。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>対象者は研究者のパートナーのみですか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        主な対象はパートナーですが、ご家族全体の生活支援（住居情報、医療・教育情報、地域情報など）も含まれます。お子様の教育環境や高齢のご家族のサポートについてもご相談いただけます。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <span>外国人研究者も対象ですか？</span>
+                    </div>
+                    <div class="faq-answer">
+                        はい、日本人・外国人問わず、すべての研究者とそのご家族が対象です。多言語対応（英語、中国語など）も順次整備しています。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section id="contact">
+            <div class="cta-section">
+                <h3>プログラムへの参加をご検討ください</h3>
+                <p>
+                    優秀な研究者の採用力向上と定着率向上を実現する、<br>
+                    家族帯同支援プログラムにぜひご参加ください。
+                </p>
+                <div class="cta-buttons">
+                    <a href="#contact-form" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> お問い合わせ
+                    </a>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> サイトトップへ
+                    </a>
+                </div>
+            </div>
+
+            <!-- お問い合わせフォーム -->
+            <div class="contact-form" id="contact-form">
+                <h3 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">
+                    <i class="fas fa-envelope"></i> お問い合わせフォーム
+                </h3>
+                <form id="universityContactForm">
+                    <div class="form-group">
+                        <label for="universityName">大学名 <span class="required">*</span></label>
+                        <input type="text" id="universityName" name="universityName" required placeholder="例：名古屋大学">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">部署名 <span class="required">*</span></label>
+                        <input type="text" id="department" name="department" required placeholder="例：人事部、国際課">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactName">ご担当者名 <span class="required">*</span></label>
+                        <input type="text" id="contactName" name="contactName" required placeholder="例：山田 太郎">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">メールアドレス <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="例：yamada@example.ac.jp">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">電話番号</label>
+                        <input type="tel" id="phone" name="phone" placeholder="例：052-123-4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiryType">お問い合わせ内容 <span class="required">*</span></label>
+                        <select id="inquiryType" name="inquiryType" required>
+                            <option value="">選択してください</option>
+                            <option value="説明会希望">プログラム説明会を希望</option>
+                            <option value="資料請求">資料請求</option>
+                            <option value="初回相談">初回相談を希望</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">メッセージ</label>
+                        <textarea id="message" name="message" placeholder="ご質問やご要望をお聞かせください"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.1em; padding: 15px;">
+                        <i class="fas fa-paper-plane"></i> 送信する
+                    </button>
+                </form>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: white; border-radius: 12px; box-shadow: var(--shadow);">
+                <h4 style="font-size: 1.3em; margin-bottom: 20px; color: var(--primary-color);">
+                    <i class="fas fa-phone"></i> お電話でのお問い合わせ
+                </h4>
+                <p style="font-size: 1.2em; margin: 10px 0;">
+                    <strong>株式会社バリューグロー</strong>
+                </p>
+                <p style="font-size: 1.1em; color: var(--secondary-color); margin: 10px 0;">
+                    代表取締役：田中裕章
+                </p>
+                <p style="font-size: 1em; color: #6b7280; margin-top: 20px;">
+                    ※ お問い合わせ受付時間：平日 9:00〜17:00
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- フッター -->
+    <footer>
+        <p>
+            <a href="index.html"><i class="fas fa-home"></i> トップページ</a>
+            <a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> プライバシーポリシー</a>
+            <a href="SECURITY-GUIDE.md"><i class="fas fa-lock"></i> セキュリティガイド</a>
+        </p>
+        <p style="margin-top: 20px; opacity: 0.8;">
+            &copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // フォーム送信処理
+        document.getElementById('universityContactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = {
+                universityName: document.getElementById('universityName').value,
+                department: document.getElementById('department').value,
+                contactName: document.getElementById('contactName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                inquiryType: document.getElementById('inquiryType').value,
+                message: document.getElementById('message').value,
+                submittedAt: new Date().toISOString()
+            };
+
+            // ここで Airtable または他のバックエンドにデータを送信
+            // 現時点では、アラート表示のみ
+            alert('お問い合わせありがとうございます。\n\n担当者より2営業日以内にご連絡させていただきます。');
+            
+            // フォームをリセット
+            this.reset();
+        });
+
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 登録者数をリアルタイム取得（オプション）
+        // Airtable API から取得する場合は、以下のコードを有効化
+        /*
+        async function updateRegistrationCount() {
+            try {
+                const response = await fetch('https://api.airtable.com/v0/appb0XRjUEQ8gxO3V/registrations', {
+                    headers: {
+                        'Authorization': 'Bearer YOUR_API_TOKEN'
+                    }
+                });
+                const data = await response.json();
+                document.getElementById('registrationCount').textContent = data.records.length;
+            } catch (error) {
+                console.error('Error fetching registration count:', error);
+            }
+        }
+        updateRegistrationCount();
+        */
+    </script>
+</body>
+</html>
+
