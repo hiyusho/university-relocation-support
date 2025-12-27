@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャリアコンサルティング - 大学赴任者家族帯同支援プログラム</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #059669;
+            --secondary-color: #10b981;
+            --accent-color: #34d399;
+            --dark-green: #047857;
+            --light-green: #d1fae5;
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            padding-top: 80px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header h1 i {
+            font-size: 1.2em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* メインコンテンツ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .badge i {
+            font-size: 1.3em;
+        }
+
+        /* セクション */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h3 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        section h3 i {
+            font-size: 1.2em;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--text-gray);
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        /* カード */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card h4 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h4 i {
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .card ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .card ul li {
+            padding: 10px 0;
+            color: var(--text-gray);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.6;
+        }
+
+        .card ul li i {
+            color: var(--primary-color);
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        /* コンサルタント紹介 */
+        .consultant-intro {
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--white) 100%);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-top: 40px;
+        }
+
+            .consultant-intro h4 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .consultant-intro h4 i {
+            font-size: 1.2em;
+        }
+
+        .consultant-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .consultant-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .consultant-item h5 {
+            font-size: 1.2em;
+            color: var(--dark-green);
+            margin-bottom: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .consultant-item h5 i {
+            color: var(--primary-color);
+        }
+
+        .consultant-item ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .consultant-item ul li {
+            padding: 8px 0;
+            color: var(--text-gray);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.6;
+        }
+
+        .consultant-item ul li i {
+            color: var(--primary-color);
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: var(--light-green);
+            color: var(--dark-green);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* ステップ */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .step {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        /* 情報カード */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-green) 100%);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .info-card i {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .info-card h4 {
+            font-size: 1.5em;
+            color: var(--dark-green);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faq-question {
+            font-size: 1.3em;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .faq-question i {
+            color: var(--dark-green);
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .faq-answer {
+            color: var(--text-gray);
+            line-height: 1.8;
+            padding-left: 35px;
+        }
+
+        /* 申し込みフォーム */
+        .application-form {
+            background: var(--white);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1.1em;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+            margin-left: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Noto Sans JP', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .date-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .date-input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .date-label {
+            font-weight: 600;
+            color: var(--dark-green);
+            min-width: 80px;
+        }
+
+        .privacy-agreement {
+            background: var(--light-green);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .privacy-agreement label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .privacy-agreement input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .privacy-agreement a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-green) 100%);
+            color: var(--white);
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        /* フッター */
+        footer {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        footer .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        footer .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h2 {
+                font-size: 1.8em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            section h3 {
+                font-size: 1.5em;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .consultant-intro {
+                padding: 30px 20px;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+
+            .date-input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .application-form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="container">
+            <h1>
+                <i class="fas fa-user-tie"></i>
+                キャリアコンサルティング
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> トップページ</a></li>
+                    <li><a href="#application"><i class="fas fa-edit"></i> 申し込み</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <div class="container">
+            <h2>
+                <i class="fas fa-star"></i>
+                国家資格キャリアコンサルタントによる<br>無料キャリア相談
+            </h2>
+            <p>
+                研究者のパートナーの皆様のキャリアを全力でサポートします。<br>
+                転職、スキルアップ、働き方など、どんなことでもお気軽にご相談ください。
+            </p>
+            <div class="hero-badges">
+                <div class="badge">
+                    <i class="fas fa-gift"></i>
+                    完全無料
+                </div>
+                <div class="badge">
+                    <i class="fas fa-laptop"></i>
+                    オンライン対応
+                </div>
+                <div class="badge">
+                    <i class="fas fa-lock"></i>
+                    守秘義務厳守
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- サービス概要 -->
+    <section id="overview">
+        <div class="container">
+            <h3>
+                <i class="fas fa-info-circle"></i>
+                サービス概要
+            </h3>
+            <p class="section-intro">
+                国家資格を持つキャリアコンサルタントが、あなたのキャリアプランを無料でサポートします。<br>
+                オンラインで全国どこからでも相談可能。守秘義務を厳守しますので、安心してご相談ください。
+            </p>
+        </div>
+    </section>
+
+    <!-- キャリアコンサルタント紹介 -->
+    <section id="consultant">
+        <div class="container">
+            <h3>
+                <i class="fas fa-user-tie"></i>
+                キャリアコンサルタントについて
+            </h3>
+            <div class="consultant-intro">
+                <h4>
+                    <i class="fas fa-certificate"></i>
+                    国家資格キャリアコンサルタント
+                </h4>
+                <p style="font-size: 1.1em; color: var(--text-gray); margin-bottom: 20px;">
+                    株式会社バリューグロー所属
+                </p>
+                <div class="consultant-details">
+                    <div class="consultant-item">
+                        <h5>
+                            <i class="fas fa-briefcase"></i>
+                            経歴・実績
+                        </h5>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 大手企業での長年のキャリア指導経験</li>
+                            <li><i class="fas fa-check-circle"></i> 大企業・中堅企業の従業員向けキャリア相談</li>
+                            <li><i class="fas fa-check-circle"></i> 働き方改革・スキルアップ支援の豊富な実績</li>
+                        </ul>
+                    </div>
+                    <div class="consultant-item">
+                        <h5>
+                            <i class="fas fa-star"></i>
+                            得意分野
+                        </h5>
+                        <div class="tags">
+                            <span class="tag">スキルアップ</span>
+                            <span class="tag">職場での働き方</span>
+                            <span class="tag">キャリア設計</span>
+                            <span class="tag">転職支援</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 相談できる内容 -->
+    <section id="topics">
+        <div class="container">
+            <h3>
+                <i class="fas fa-comments"></i>
+                相談できる内容
+            </h3>
+            <p class="section-intro">
+                キャリアに関するあらゆるご相談に対応しています。<br>
+                以下は相談内容の一例です。お気軽にお問い合わせください。
+            </p>
+            <div class="cards">
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-compass"></i>
+                        キャリアの方向性
+                    </h4>
+                    <p>今後のキャリアプランについて、一緒に考えましょう。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 自分の強みや適性の棚卸し</li>
+                        <li><i class="fas fa-arrow-right"></i> 今後のキャリアプランの整理</li>
+                        <li><i class="fas fa-arrow-right"></i> 転職すべきか、現職でスキルアップすべきか</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-search"></i>
+                        求職活動の支援
+                    </h4>
+                    <p>就職・転職活動を具体的にサポートします。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 履歴書・職務経歴書の書き方</li>
+                        <li><i class="fas fa-arrow-right"></i> 面接対策・自己PRの作成</li>
+                        <li><i class="fas fa-arrow-right"></i> 企業研究や業界分析の方法</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-heart"></i>
+                        ライフキャリアの相談
+                    </h4>
+                    <p>仕事と生活の両立について、一緒に考えます。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 家族との両立、育児とキャリア</li>
+                        <li><i class="fas fa-arrow-right"></i> ワークライフバランスの整理</li>
+                        <li><i class="fas fa-arrow-right"></i> 名古屋での生活設計</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-graduation-cap"></i>
+                        スキルアップ・学び直し
+                    </h4>
+                    <p>キャリアアップに必要なスキル習得をサポート。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 必要な資格やスキルの明確化</li>
+                        <li><i class="fas fa-arrow-right"></i> 学び直しやリスキリングの計画</li>
+                        <li><i class="fas fa-arrow-right"></i> オンライン講座や研修の選び方</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-smile"></i>
+                        メンタル面のサポート
+                    </h4>
+                    <p>キャリアに関する不安や悩みをお聞きします。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 転職や新生活への不安</li>
+                        <li><i class="fas fa-arrow-right"></i> 新しい環境への適応</li>
+                        <li><i class="fas fa-arrow-right"></i> 自己肯定感の向上</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>
+                        <i class="fas fa-building"></i>
+                        職場での働き方
+                    </h4>
+                    <p>現職での働き方やキャリアアップについて。</p>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i> 職場での人間関係やコミュニケーション</li>
+                        <li><i class="fas fa-arrow-right"></i> 社内でのキャリアアップ戦略</li>
+                        <li><i class="fas fa-arrow-right"></i> 働き方改革・リモートワークの活用</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+      <!-- 相談の流れ -->
+    <section id="flow">
+        <div class="container">
+            <h3>
+                <i class="fas fa-route"></i>
+                相談の流れ
+            </h3>
+            <p class="section-intro">
+                申し込みから面談まで、わかりやすい5つのステップでご案内します。
+            </p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>お申し込み</h4>
+                        <p>下記の申し込みフォームから、必要事項をご入力ください。相談したい内容や希望日時をお知らせください。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>スケジュール調整</h4>
+                        <p>担当者より2営業日以内にご連絡し、面談の日時を調整します。オンライン（Zoom/Microsoft Teams）での実施となります。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>事前準備（任意）</h4>
+                        <p>相談内容を事前にまとめていただくと、より充実した面談になります。履歴書や職務経歴書をお持ちの場合は、ご準備ください。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>面談（60分程度）</h4>
+                        <p>国家資格キャリアコンサルタントがオンラインで面談を行います。相談内容は厳格に守秘義務で保護されますので、安心してお話しください。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>フォローアップ</h4>
+                        <p>面談後、相談内容のまとめや次のアクションプランをお送りします。継続的なサポートが必要な場合は、次回の面談をご予約いただけます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 料金・頻度・面談方法 -->
+    <section id="details">
+        <div class="container">
+            <h3>
+                <i class="fas fa-info-circle"></i>
+                料金・頻度・面談方法
+            </h3>
+            <div class="info-cards">
+                <div class="info-card">
+                    <i class="fas fa-gift"></i>
+                    <h4>完全無料</h4>
+                    <p>本プログラムは参加大学からの委託金で運営されています。初回・2回目以降を問わず、費用は一切かかりません。</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h4>面談頻度</h4>
+                    <p>月1〜2回程度を推奨していますが、相談者の方のペースに合わせて調整可能です。1回のみの相談も歓迎します。</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-laptop"></i>
+                    <h4>面談方法</h4>
+                    <p>オンライン（Zoom / Microsoft Teams）で実施します。ご自宅から安心してご相談いただけます。</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-lock"></i>
+                    <h4>プライバシーの保護</h4>
+                    <p>相談内容は守秘義務により厳格に保護されます。大学や企業への開示は一切ありませんので、安心してご相談ください。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- よくある質問 -->
+    <section id="faq">
+        <div class="container">
+            <h3>
+                <i class="fas fa-question-circle"></i>
+                よくある質問
+            </h3>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>本当に完全無料ですか？</span>
+                </div>
+                <div class="faq-answer">
+                    はい、完全無料です。本プログラムは参加大学からの委託金で運営されていますので、相談者の方に費用をご負担いただくことは一切ありません。
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>何回まで相談できますか？</span>
+                </div>
+                <div class="faq-answer">
+                    回数制限はありません。月1〜2回程度を推奨していますが、必要に応じて何度でもご相談いただけます。1回のみの相談も歓迎します。
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>相談内容は秘密にしてもらえますか？</span>
+                </div>
+                <div class="faq-answer">
+                    はい、厳格に守秘義務を遵守します。相談内容が大学や企業、第三者に開示されることは一切ありませんので、安心してご相談ください。
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>オンライン面談の使い方がわかりません</span>
+                </div>
+                <div class="faq-answer">
+                    Zoom または Microsoft Teams での面談となります。事前に接続方法や使い方をご案内しますので、初めての方でも安心してご利用いただけます。
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>キャリアの方向性が全く決まっていませんが、相談できますか？</span>
+                </div>
+                <div class="faq-answer">
+                    もちろんです。むしろ、そのような段階でご相談いただくことで、より効果的なキャリア設計が可能になります。一緒にキャリアの方向性を整理しましょう。
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-question"></i>
+                    <span>転職を考えていなくても相談できますか？</span>
+                </div>
+                <div class="faq-answer">
+                    はい、もちろんです。現職でのキャリアアップ、スキルアップ、働き方の改善など、転職以外のご相談も大歓迎です。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 申し込みフォーム -->
+    <section id="application">
+        <div class="container">
+            <h3>
+                <i class="fas fa-edit"></i>
+                申し込みフォーム
+            </h3>
+            <p class="section-intro">
+                以下のフォームからお申し込みください。<br>
+                担当者より2営業日以内にご連絡いたします。
+            </p>
+            <div class="application-form">
+                <form id="careerConsultingForm">
+                    <!-- 基本情報 -->
+                    <h4 style="color: var(--primary-color); margin-bottom: 30px; font-size: 1.5em;">
+                        <i class="fas fa-user"></i> 基本情報
+                    </h4>
+                    <div class="form-group">
+                        <label for="fullName">お名前 <span class="required">*</span></label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="例：山田 花子">
+                    </div>
+                    <div class="form-group">
+                        <label for="furigana">フリガナ <span class="required">*</span></label>
+                        <input type="text" id="furigana" name="furigana" required placeholder="例：ヤマダ ハナコ">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">メールアドレス <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="例：example@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">電話番号（任意）</label>
+                        <input type="tel" id="phone" name="phone" placeholder="例：090-1234-5678">
+                    </div>
+                    <div class="form-group">
+                        <label for="university">パートナーの勤務先大学 <span class="required">*</span></label>
+                        <select id="university" name="university" required>
+                            <option value="">選択してください</option>
+                            <option value="名古屋大学">名古屋大学</option>
+                            <option value="椙山女学園大学">椙山女学園大学</option>
+                            <option value="名古屋市立大学">名古屋市立大学</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+
+                    <!-- 相談内容 -->
+                    <h4 style="color: var(--primary-color); margin: 50px 0 30px 0; font-size: 1.5em;">
+                        <i class="fas fa-comments"></i> 相談内容
+                    </h4>
+                    <div class="form-group">
+                        <label>相談したい内容（複数選択可） <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic1" name="topics" value="キャリアの方向性">
+                                <label for="topic1">キャリアの方向性（強みの棚卸し、今後のキャリアプラン）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic2" name="topics" value="求職活動の支援">
+                                <label for="topic2">求職活動の支援（履歴書・職務経歴書、面接対策）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic3" name="topics" value="ライフキャリアの相談">
+                                <label for="topic3">ライフキャリアの相談（家族との両立、ワークライフバランス）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic4" name="topics" value="スキルアップ・学び直し">
+                                <label for="topic4">スキルアップ・学び直し（資格、リスキリング）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic5" name="topics" value="メンタル面のサポート">
+                                <label for="topic5">メンタル面のサポート（不安、新環境への適応）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic6" name="topics" value="職場での働き方">
+                                <label for="topic6">職場での働き方（人間関係、キャリアアップ）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topic7" name="topics" value="その他">
+                                <label for="topic7">その他</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="details">相談内容の詳細（任意）</label>
+                        <textarea id="details" name="details" placeholder="相談したい内容を具体的にお書きください"></textarea>
+                    </div>
+
+                    <!-- 希望日時 -->
+                    <h4 style="color: var(--primary-color); margin: 50px 0 30px 0; font-size: 1.5em;">
+                        <i class="fas fa-calendar-alt"></i> 希望日時
+                    </h4>
+                    <div class="form-group">
+                        <label>面談希望日時（第1〜第3希望） <span class="required">*</span></label>
+                        <div class="date-inputs">
+                            <div class="date-input-group">
+                                <span class="date-label">第1希望：</span>
+                                <input type="datetime-local" id="preferredDate1" name="preferredDate1" required>
+                            </div>
+                            <div class="date-input-group">
+                                <span class="date-label">第2希望：</span>
+                                <input type="datetime-local" id="preferredDate2" name="preferredDate2" required>
+                            </div>
+                            <div class="date-input-group">
+                                <span class="date-label">第3希望：</span>
+                                <input type="datetime-local" id="preferredDate3" name="preferredDate3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- プライバシーポリシー -->
+                    <div class="privacy-agreement">
+                        <label>
+                            <input type="checkbox" id="privacy" name="privacy" required>
+                            <span><a href="privacy-policy.html" target="_blank">プライバシーポリシー</a>に同意します <span class="required">*</span></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-paper-plane"></i> 申し込む
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム</p>
+            <div class="footer-links">
+                <a href="index.html"><i class="fas fa-home"></i> トップページ</a>
+                <a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> プライバシーポリシー</a>
+                <a href="for-universities.html"><i class="fas fa-university"></i> 大学関係者の方へ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // フォーム送信処理
+        document.getElementById('careerConsultingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 相談内容（複数選択）の取得
+            const topicsCheckboxes = document.querySelectorAll('input[name="topics"]:checked');
+            const topics = Array.from(topicsCheckboxes).map(cb => cb.value);
+
+            // 相談内容が選択されているかチェック
+            if (topics.length === 0) {
+                alert('相談したい内容を少なくとも1つ選択してください。');
+                return;
+            }
+
+            // フォームデータの収集
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                furigana: document.getElementById('furigana').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value || '',
+                university: document.getElementById('university').value,
+                topics: topics,
+                details: document.getElementById('details').value || '',
+                preferredDate1: document.getElementById('preferredDate1').value,
+                preferredDate2: document.getElementById('preferredDate2').value,
+                preferredDate3: document.getElementById('preferredDate3').value,
+                submittedAt: new Date().toISOString()
+            };
+
+            console.log('送信データ:', formData);
+
+            // TODO: Airtable または他のバックエンドへのデータ送信
+            // 現在はコンソールにログ出力のみ
+
+            alert('お申し込みありがとうございます。\n担当者より2営業日以内にご連絡いたします。');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
