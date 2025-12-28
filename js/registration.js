@@ -262,7 +262,7 @@ function submitRegistrationData(formData) {
     submitButton.disabled = true;
     
     // Airtable API の設定
-    const AIRTABLE_API_TOKEN = 'patOnPRhiWIQ8HcU5.c40ccad44380653ebe386635bf7a5ac785acec43bf43a5dabd93f005dcbb6a36';
+    const AIRTABLE_API_TOKEN = 'patYv1t8cVGl5E5Bq.a239a5e9932099ead1730a174288ace1bb8477b10b40226bfeddda35b82dfc3b';
     const AIRTABLE_BASE_ID = 'appb0XRjUEQ8gxO3V';
     const AIRTABLE_TABLE_NAME = 'registrations';
     
@@ -379,7 +379,7 @@ window.addEventListener('beforeunload', function(e) {
 });
 
 // ========================================
-// フォーム自動保存機能（オプション）
+// フォーム自動保存機能(オプション)
 // ========================================
 
 function setupAutoSave() {
@@ -433,3 +433,4 @@ function debounce(func, wait) {
 }
 
 // setupAutoSave();
+
