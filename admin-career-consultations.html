@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャリア相談申し込み管理 - 管理画面</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #059669;
+            --secondary-color: #047857;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-banner {
+            background: #10b981;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-icon.primary { background: #d1fae5; color: var(--primary-color); }
+        .stat-icon.warning { background: #fef3c7; color: var(--warning-color); }
+        .stat-icon.success { background: #d1fae5; color: var(--success-color); }
+        .stat-icon.info { background: #dbeafe; color: #2563eb; }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-scheduled { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #f3f4f6; color: #374151; }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .loading i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close-btn:hover {
+            color: var(--text-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .topic-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #d1fae5;
+            color: var(--primary-color);
+            border-radius: 16px;
+            font-size: 12px;
+            margin: 4px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-row {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                <i class="fas fa-user-tie"></i>
+                キャリア相談申し込み管理
+            </h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="security-banner">
+            <i class="fas fa-shield-alt"></i>
+            管理画面 - Airtable データベース接続中
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>総申し込み数</h3>
+                    <p id="totalCount">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>申し込み受付</h3>
+                    <p id="pendingCount">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>日程調整中</h3>
+                    <p id="schedulingCount">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>面談完了</h3>
+                    <p id="completedCount">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="searchInput">検索</label>
+                    <input type="text" id="searchInput" placeholder="氏名、メールアドレスで検索" onkeyup="applyFilters()">
+                </div>
+
+                <div class="control-group">
+                    <label for="statusFilter">ステータス</label>
+                    <select id="statusFilter" onchange="applyFilters()">
+                        <option value="">すべて</option>
+                        <option value="申し込み受付">申し込み受付</option>
+                        <option value="日程調整中">日程調整中</option>
+                        <option value="面談予定">面談予定</option>
+                        <option value="面談完了">面談完了</option>
+                        <option value="キャンセル">キャンセル</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-primary" onclick="resetFilters()">
+                        <i class="fas fa-sync-alt"></i> リセット
+                    </button>
+                </div>
+
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-success" onclick="exportData()">
+                        <i class="fas fa-download"></i> CSV出力
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadingIndicator" class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>データを読み込んでいます...</p>
+        </div>
+
+        <table id="consultationsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>申込日</th>
+                    <th>氏名</th>
+                    <th>メール</th>
+                    <th>電話番号</th>
+                    <th>大学</th>
+                    <th>相談内容</th>
+                    <th>ステータス</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination" style="display: none;">
+            <button onclick="changePage(-1)" id="prevBtn">
+                <i class="fas fa-chevron-left"></i> 前へ
+            </button>
+            <span id="pageInfo">1 / 1 ページ</span>
+            <button onclick="changePage(1)" id="nextBtn">
+                次へ <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-circle"></i> 申し込み詳細</h2>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const AIRTABLE_API_TOKEN = 'pataECeibUMhylsQP.3fcc0bdf4b8788e71c1df522773af3c3cfc15ae562fbb107d6e4829eb595268c';
+        const AIRTABLE_BASE_ID = 'appb0XRjUEQ8gxO3V';
+        const AIRTABLE_TABLE_NAME = 'carrer_consultations';
+
+        let allConsultations = [];
+        let filteredConsultations = [];
+        let currentPage = 1;
+        const itemsPerPage = 20;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadConsultations();
+        });
+
+        async function loadConsultations() {
+            try {
+                const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}?sort[0][field]=submittedAt&sort[0][direction]=desc`, {
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_TOKEN}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('データの取得に失敗しました');
+                }
+
+                const result = await response.json();
+                allConsultations = result.records.map(record => ({
+                    id: record.id,
+                    consultationId: record.fields.id || '',
+                    fullName: record.fields.fullName || '',
+                    furigana: record.fields.furigana || '',
+                    email: record.fields.email || '',
+                    phone: record.fields.phone || '',
+                    university: record.fields.university || '',
+                    topics: record.fields.topics || [],
+                    details: record.fields.details || '',
+                    preferredDate1: record.fields.preferredDate1 || '',
+                    preferredDate2: record.fields.preferredDate2 || '',
+                    preferredDate3: record.fields.preferredDate3 || '',
+                    status: record.fields.status || '申し込み受付',
+                    submittedAt: record.fields.submittedAt || record.createdTime
+                }));
+                
+                filteredConsultations = [...allConsultations];
+
+                updateStatistics();
+                renderTable();
+
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('consultationsTable').style.display = 'table';
+                document.getElementById('pagination').style.display = 'flex';
+
+            } catch (error) {
+                console.error('データ読み込みエラー:', error);
+                document.getElementById('loadingIndicator').innerHTML = `
+                    <i class="fas fa-exclamation-triangle" style="color: var(--danger-color);"></i>
+                    <p>データの読み込みに失敗しました。</p>
+                    <p style="font-size: 14px; margin-top: 10px;">エラー詳細: ${error.message}</p>
+                    <button class="btn btn-primary" onclick="location.reload()">再読み込み</button>
+                `;
+            }
+        }
+
+        function updateStatistics() {
+            const total = allConsultations.length;
+            const pending = allConsultations.filter(c => c.status === '申し込み受付').length;
+            const scheduling = allConsultations.filter(c => c.status === '日程調整中').length;
+            const completed = allConsultations.filter(c => c.status === '面談完了').length;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('schedulingCount').textContent = scheduling;
+            document.getElementById('completedCount').textContent = completed;
+        }
+
+        function renderTable() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredConsultations.slice(start, end);
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (pageData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">該当するデータがありません</td></tr>';
+                updatePagination();
+                return;
+            }
+
+            pageData.forEach(consultation => {
+                const tr = document.createElement('tr');
+                const date = new Date(consultation.submittedAt).toLocaleDateString('ja-JP');
+                const topicsPreview = Array.isArray(consultation.topics) && consultation.topics.length > 0 
+                    ? consultation.topics[0] + (consultation.topics.length > 1 ? ` 他${consultation.topics.length - 1}件` : '')
+                    : '未入力';
+                
+                tr.innerHTML = `
+                    <td>${date}</td>
+                    <td>${escapeHtml(consultation.fullName)}</td>
+                    <td>${escapeHtml(consultation.email)}</td>
+                    <td>${escapeHtml(consultation.phone || '未入力')}</td>
+                    <td>${escapeHtml(consultation.university)}</td>
+                    <td>${escapeHtml(topicsPreview)}</td>
+                    <td><span class="status-badge ${getStatusClass(consultation.status)}">${escapeHtml(consultation.status)}</span></td>
+                    <td>
+                        <button class="btn btn-primary" onclick='showDetail(${JSON.stringify(consultation).replace(/'/g, "&#39;")})' style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-eye"></i> 詳細
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updatePagination();
+        }
+
+        function getStatusClass(status) {
+            const statusMap = {
+                '申し込み受付': 'status-pending',
+                '日程調整中': 'status-scheduled',
+                '面談予定': 'status-scheduled',
+                '面談完了': 'status-completed',
+                'キャンセル': 'status-cancelled'
+            };
+            return statusMap[status] || 'status-pending';
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            filteredConsultations = allConsultations.filter(c => {
+                const matchSearch = !searchTerm || 
+                    c.fullName.toLowerCase().includes(searchTerm) ||
+                    c.email.toLowerCase().includes(searchTerm);
+                
+                const matchStatus = !statusFilter || c.status === statusFilter;
+
+                return matchSearch && matchStatus;
+            });
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            filteredConsultations = [...allConsultations];
+            currentPage = 1;
+            renderTable();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredConsultations.length / itemsPerPage);
+            document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages} ページ (全${filteredConsultations.length}件)`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        function changePage(delta) {
+            const totalPages = Math.ceil(filteredConsultations.length / itemsPerPage);
+            const newPage = currentPage + delta;
+            
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                renderTable();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showDetail(consultation) {
+            const modal = document.getElementById('detailModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            const topicsTags = Array.isArray(consultation.topics) && consultation.topics.length > 0
+                ? consultation.topics.map(t => `<span class="topic-tag">${escapeHtml(t)}</span>`).join('')
+                : '<span style="color: #6b7280;">未入力</span>';
+            
+            modalBody.innerHTML = `
+                <div class="detail-section">
+                    <h3><i class="fas fa-user"></i> 基本情報</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">申込ID</div>
+                            <div class="detail-value">${escapeHtml(consultation.consultationId)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">氏名</div>
+                            <div class="detail-value">${escapeHtml(consultation.fullName)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">フリガナ</div>
+                            <div class="detail-value">${escapeHtml(consultation.furigana || '未入力')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">メールアドレス</div>
+                            <div class="detail-value">${escapeHtml(consultation.email)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">電話番号</div>
+                            <div class="detail-value">${escapeHtml(consultation.phone || '未入力')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">パートナーの勤務先大学</div>
+                            <div class="detail-value">${escapeHtml(consultation.university)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-comments"></i> 相談内容</h3>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <div class="detail-label">相談テーマ</div>
+                        <div class="detail-value">${topicsTags}</div>
+                    </div>
+                    ${consultation.details ? `
+                    <div class="detail-item">
+                        <div class="detail-label">詳細内容</div>
+                        <div class="detail-value" style="white-space: pre-wrap;">${escapeHtml(consultation.details)}</div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="detail-section">
+                    <h3><i class="fas fa-calendar-alt"></i> 希望日時</h3>
+                    <div class="detail-grid">
+                        ${consultation.preferredDate1 ? `
+                        <div class="detail-item">
+                            <div class="detail-label">第1希望</div>
+                            <div class="detail-value">${escapeHtml(consultation.preferredDate1)}</div>
+                        </div>
+                        ` : ''}
+                        ${consultation.preferredDate2 ? `
+                        <div class="detail-item">
+                            <div class="detail-label">第2希望</div>
+                            <div class="detail-value">${escapeHtml(consultation.preferredDate2)}</div>
+                        </div>
+                        ` : ''}
+                        ${consultation.preferredDate3 ? `
+                        <div class="detail-item">
+                            <div class="detail-label">第3希望</div>
+                            <div class="detail-value">${escapeHtml(consultation.preferredDate3)}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="detail-section" style="background: var(--bg-color); padding: 20px; border-radius: 8px;">
+                    <h3><i class="fas fa-edit"></i> ステータス変更</h3>
+                    <div style="display: flex; gap: 15px; align-items: flex-end;">
+                        <div class="control-group" style="flex: 1;">
+                            <label for="statusUpdate">新しいステータス</label>
+                            <select id="statusUpdate">
+                                <option value="申し込み受付" ${consultation.status === '申し込み受付' ? 'selected' : ''}>申し込み受付</option>
+                                <option value="日程調整中" ${consultation.status === '日程調整中' ? 'selected' : ''}>日程調整中</option>
+                                <option value="面談予定" ${consultation.status === '面談予定' ? 'selected' : ''}>面談予定</option>
+                                <option value="面談完了" ${consultation.status === '面談完了' ? 'selected' : ''}>面談完了</option>
+                                <option value="キャンセル" ${consultation.status === 'キャンセル' ? 'selected' : ''}>キャンセル</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="updateStatus('${consultation.id}')">
+                            <i class="fas fa-save"></i> 更新
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        async function updateStatus(id) {
+            const newStatus = document.getElementById('statusUpdate').value;
+            
+            try {
+                const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${AIRTABLE_API_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            status: newStatus
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('更新に失敗しました');
+                }
+
+                const index = allConsultations.findIndex(c => c.id === id);
+                if (index !== -1) {
+                    allConsultations[index].status = newStatus;
+                }
+
+                updateStatistics();
+                applyFilters();
+                closeModal();
+
+                alert('✅ ステータスを更新しました');
+
+            } catch (error) {
+                console.error('更新エラー:', error);
+                alert('⚠️ ステータスの更新に失敗しました\n\nエラー詳細: ' + error.message);
+            }
+        }
+
+        function exportData() {
+            if (filteredConsultations.length === 0) {
+                alert('エクスポートするデータがありません');
+                return;
+            }
+
+            const headers = ['申込ID', '申込日', '氏名', 'フリガナ', 'メールアドレス', '電話番号', 'パートナーの勤務先大学', '相談テーマ', '詳細内容', '希望日時1', '希望日時2', '希望日時3', 'ステータス'];
+            const rows = filteredConsultations.map(c => {
+                const date = new Date(c.submittedAt).toLocaleString('ja-JP');
+                const topics = Array.isArray(c.topics) ? c.topics.join(', ') : '';
+                return [
+                    `"${c.consultationId}"`,
+                    `"${date}"`,
+                    `"${c.fullName}"`,
+                    `"${c.furigana}"`,
+                    `"${c.email}"`,
+                    `"${c.phone}"`,
+                    `"${c.university}"`,
+                    `"${topics}"`,
+                    `"${c.details.replace(/"/g, '""')}"`,
+                    `"${c.preferredDate1}"`,
+                    `"${c.preferredDate2}"`,
+                    `"${c.preferredDate3}"`,
+                    `"${c.status}"`
+                ].join(',');
+            });
+
+            const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `career_consultations_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
