@@ -1,5 +1,5 @@
-// キャリアコンサルティング申し込みフォーム - Ver 1.8.0 (完全デバッグ版)
-// すべてのフィールドに安全なアクセスを追加
+// キャリアコンサルティング申し込みフォーム - Ver 1.9.0 (日付フィールド修正版)
+// Airtable date型に対応 (YYYY-MM-DD形式のみ)
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded: ページ読み込み完了');
@@ -107,23 +107,28 @@ function submitConsultation() {
     }
     
     const detailsEl = document.getElementById('details');
-    if (detailsEl && detailsEl.value.trim()) {
+    if (detailsEl && detailsEl.value && detailsEl.value.trim()) {
         fields.details = detailsEl.value.trim();
     }
     
+    // 日付フィールド - YYYY-MM-DD形式のみ送信 (時刻は含めない)
     const preferredDate1El = document.getElementById('preferredDate1');
     if (preferredDate1El && preferredDate1El.value) {
-        fields.preferredDate1 = preferredDate1El.value.replace('T', ' ');
+        // datetime-local の値は "2025-12-30T14:00" 形式なので、日付部分だけを抽出
+        fields.preferredDate1 = preferredDate1El.value.split('T')[0];
+        console.log('preferredDate1:', fields.preferredDate1);
     }
     
     const preferredDate2El = document.getElementById('preferredDate2');
     if (preferredDate2El && preferredDate2El.value) {
-        fields.preferredDate2 = preferredDate2El.value.replace('T', ' ');
+        fields.preferredDate2 = preferredDate2El.value.split('T')[0];
+        console.log('preferredDate2:', fields.preferredDate2);
     }
     
     const preferredDate3El = document.getElementById('preferredDate3');
     if (preferredDate3El && preferredDate3El.value) {
-        fields.preferredDate3 = preferredDate3El.value.replace('T', ' ');
+        fields.preferredDate3 = preferredDate3El.value.split('T')[0];
+        console.log('preferredDate3:', fields.preferredDate3);
     }
     
     console.log('送信データ:', fields);
@@ -169,4 +174,3 @@ function submitConsultation() {
         }
     });
 }
-
