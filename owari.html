@@ -30,12 +30,16 @@
             padding: 3rem 2rem;
         }
         
+        .region-intro .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
         .region-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
-            margin: 2rem auto;
+            margin: 2rem 0;
         }
         
         .stat-card {
@@ -177,6 +181,21 @@
             
             .region-stats {
                 grid-template-columns: 1fr;
+            }
+            
+            .region-intro {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .region-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -668,7 +687,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>お問い合わせ</h4>
-                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a73747c755a6c7b766f7f7d76756d34706a">[email&#160;protected]</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afc6c1c9c0efd9cec3dacac8c3c0d881c5df">[email&#160;protected]</a></p>
                     <p><i class="fas fa-globe"></i> <a href="https://www.valueglow.jp/" target="_blank">www.valueglow.jp</a></p>
                 </div>
             </div>
