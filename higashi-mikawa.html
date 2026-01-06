@@ -3,54 +3,647 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>東三河地区居住ガイド | 大学赴任者家族帯同支援プログラム</title>
+    <title>東三河地区居住ガイド - 大学赴任者家族帯同支援プログラム</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/nagoya-city.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .region-intro {
+            background: linear-gradient(to bottom, #f8f9fa, white);
+            padding: 3rem 2rem;
+        }
+        
+        .region-intro .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .region-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5rem;
+            color: #f5576c;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        
+        .city-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .city-card-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .city-card-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .city-card-header .subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .city-card-body {
+            padding: 2rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li i {
+            color: #f5576c;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .section-highlight {
+            background: linear-gradient(to right, #f8f9fa, #ffe6f0);
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .city-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .region-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .region-intro {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .region-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo-container">
-            <img src="logo.png" alt="大学ロゴ" class="university-logo" id="universityLogo">
-            <h1 class="site-title">家族帯同ポータルサイト</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <nav class="sidebar">
-            <h2 class="sidebar-title">東三河地区居住ガイド</h2>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">ValueGlow</a>
+            <button class="nav-toggle" aria-label="メニューを開く">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html"><i class="fas fa-arrow-left"></i> トップに戻る</a>
-                </li>
+                <li><a href="index.html">トップページ</a></li>
+                <li><a href="nagoya-city.html">名古屋市</a></li>
+                <li><a href="owari.html">尾張地区</a></li>
+                <li><a href="nishi-mikawa.html">西三河地区</a></li>
+                <li><a href="higashi-mikawa.html" class="active">東三河地区</a></li>
+                <li><a href="registration.html">新規登録</a></li>
+                <li><a href="career-consulting.html">キャリア相談</a></li>
             </ul>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="main-content">
-            <section class="hero-section">
-                <h1 class="hero-title">東三河地区居住ガイド</h1>
-                <p style="color: var(--white); margin-top: 20px;">準備中</p>
-            </section>
-
-            <section class="section">
-                <h2 class="section-title">Coming Soon</h2>
-                <p>東三河地区の居住情報を現在準備中です。しばらくお待ちください。</p>
-                <p style="margin-top: 20px;"><a href="index.html" style="color: var(--primary-color);">← トップページに戻る</a></p>
-            </section>
-        </main>
-
-        <aside class="right-sidebar">
-            <div class="quick-actions">
-                <a href="registration.html" class="action-btn register-btn">
-                    <i class="fas fa-user-plus"></i> 新規登録
-                </a>
-            </div>
-        </aside>
+    <div class="hero-section">
+        <h1><i class="fas fa-water"></i> 東三河地区居住ガイド</h1>
+        <p>海と山に囲まれた、自然豊かな「ほの国」</p>
     </div>
 
+    <div class="region-intro">
+        <div class="container">
+            <h2 class="section-title">東三河地区の特徴</h2>
+            <p class="section-description">
+                東三河地域は、愛知県の東部に位置し、豊川の流域圏として社会的・経済的一体性の強い地域です。<br>
+                南は遠州灘、三河湾に面し、北は三河山地に囲まれた自然豊かなエリア。<br>
+                国際的な自動車港湾である三河港を有し、農業・工業・商業がバランスよく発展している地域です。
+            </p>
+
+            <div class="region-stats">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-map"></i></div>
+                    <div class="number">5市3町村</div>
+                    <div class="label">市町村数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <div class="number">約73万人</div>
+                    <div class="label">人口</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-ship"></i></div>
+                    <div class="number">三河港</div>
+                    <div class="label">国際貿易港</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-home"></i></div>
+                    <div class="number">6-10万円</div>
+                    <div class="label">家賃相場（3LDK）</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container section">
+        <h2 class="section-title"><i class="fas fa-city"></i> 主要都市ガイド</h2>
+        
+        <div class="city-grid">
+            <!-- 豊橋市 -->
+            <div class="city-card">
+                <div class="city-card-header">
+                    <h3><a href="https://www.city.toyohashi.lg.jp/" target="_blank" style="color: white; text-decoration: none;">豊橋市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
+                    <p class="subtitle">東三河の中心都市</p>
+                </div>
+                <div class="city-card-body">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i> おすすめポイント
+                    </h4>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 中核市・東三河の玄関口</li>
+                        <li><i class="fas fa-check"></i> 新幹線停車駅でアクセス良好</li>
+                        <li><i class="fas fa-check"></i> 三河港（国際貿易港）</li>
+                        <li><i class="fas fa-check"></i> 温暖な気候、豊かな自然</li>
+                        <li><i class="fas fa-check"></i> 共働き子育てしやすい街全国3位</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
+                        <span class="info-label">家賃相場（3LDK）</span>
+                        <span class="info-value">7-10万円</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">名古屋駅まで</span>
+                        <span class="info-value">新幹線約25分</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">小学校</span>
+                        <span class="info-value">51校</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">中学校</span>
+                        <span class="info-value">22校</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 豊川市 -->
+            <div class="city-card">
+                <div class="city-card-header">
+                    <h3><a href="https://www.city.toyokawa.lg.jp/" target="_blank" style="color: white; text-decoration: none;">豊川市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
+                    <p class="subtitle">豊川稲荷の門前町</p>
+                </div>
+                <div class="city-card-body">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i> おすすめポイント
+                    </h4>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 豊川稲荷で全国的に有名</li>
+                        <li><i class="fas fa-check"></i> いなり寿司発祥の地</li>
+                        <li><i class="fas fa-check"></i> 名古屋へのアクセス良好</li>
+                        <li><i class="fas fa-check"></i> 工業・農業のバランス良好</li>
+                        <li><i class="fas fa-check"></i> 子育て支援が充実</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
+                        <span class="info-label">家賃相場（3LDK）</span>
+                        <span class="info-value">6-9万円</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">名古屋駅まで</span>
+                        <span class="info-value">約50分</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">小学校</span>
+                        <span class="info-value">22校</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">中学校</span>
+                        <span class="info-value">10校</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 蒲郡市 -->
+            <div class="city-card">
+                <div class="city-card-header">
+                    <h3><a href="https://www.city.gamagori.lg.jp/" target="_blank" style="color: white; text-decoration: none;">蒲郡市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
+                    <p class="subtitle">マリンリゾートの街</p>
+                </div>
+                <div class="city-card-body">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i> おすすめポイント
+                    </h4>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 三河湾に面したリゾート地</li>
+                        <li><i class="fas fa-check"></i> ラグーナテンボスなど観光施設</li>
+                        <li><i class="fas fa-check"></i> 温暖な気候、温泉もあり</li>
+                        <li><i class="fas fa-check"></i> 新鮮な海の幸が豊富</li>
+                        <li><i class="fas fa-check"></i> 治安が良く落ち着いた雰囲気</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
+                        <span class="info-label">家賃相場（3LDK）</span>
+                        <span class="info-value">6-9万円</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">名古屋駅まで</span>
+                        <span class="info-value">約60分</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">小学校</span>
+                        <span class="info-value">10校</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">中学校</span>
+                        <span class="info-value">6校</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新城市 -->
+            <div class="city-card">
+                <div class="city-card-header">
+                    <h3><a href="https://www.city.shinshiro.lg.jp/" target="_blank" style="color: white; text-decoration: none;">新城市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
+                    <p class="subtitle">自然と歴史の街</p>
+                </div>
+                <div class="city-card-body">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i> おすすめポイント
+                    </h4>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 県内2番目の広さ</li>
+                        <li><i class="fas fa-check"></i> 鳳来寺山など豊かな自然</li>
+                        <li><i class="fas fa-check"></i> 長篠の戦いの舞台</li>
+                        <li><i class="fas fa-check"></i> 奥三河の玄関口</li>
+                        <li><i class="fas fa-check"></i> 家賃が非常にリーズナブル</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
+                        <span class="info-label">家賃相場（3LDK）</span>
+                        <span class="info-value">5-7万円</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">名古屋駅まで</span>
+                        <span class="info-value">約90分</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">小学校</span>
+                        <span class="info-value">15校</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">中学校</span>
+                        <span class="info-value">8校</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 田原市 -->
+            <div class="city-card">
+                <div class="city-card-header">
+                    <h3><a href="https://www.city.tahara.aichi.jp/" target="_blank" style="color: white; text-decoration: none;">田原市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
+                    <p class="subtitle">渥美半島の恵み</p>
+                </div>
+                <div class="city-card-body">
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i> おすすめポイント
+                    </h4>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 渥美半島に位置</li>
+                        <li><i class="fas fa-check"></i> 農業産出額全国トップクラス</li>
+                        <li><i class="fas fa-check"></i> メロン・電照菊が有名</li>
+                        <li><i class="fas fa-check"></i> サーフィンのメッカ</li>
+                        <li><i class="fas fa-check"></i> 温暖で過ごしやすい</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
+                        <span class="info-label">家賃相場（3LDK）</span>
+                        <span class="info-value">6-8万円</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">名古屋駅まで</span>
+                        <span class="info-value">約90分</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">小学校</span>
+                        <span class="info-value">13校</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">中学校</span>
+                        <span class="info-value">5校</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container section">
+        <h2 class="section-title"><i class="fas fa-map-marker-alt"></i> 奥三河（山間部）</h2>
+        
+        <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+            <p style="color: #666; line-height: 1.8; margin-bottom: 1.5rem;">
+                奥三河は、愛知県の北東部、三河山地に位置する自然豊かな地域です。<br>
+                茶臼山、鳳来寺山など美しい山々に囲まれ、四季折々の景観が楽しめます。<br>
+                移住支援も充実しており、スローライフを求める方に最適です。
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                <div class="city-tag"><a href="https://www.town.shitara.lg.jp/" target="_blank" style="text-decoration: none; color: inherit;">設楽町 <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a></div>
+                <div class="city-tag"><a href="https://www.town.toei.aichi.jp/" target="_blank" style="text-decoration: none; color: inherit;">東栄町 <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a></div>
+                <div class="city-tag"><a href="https://www.vill.toyone.aichi.jp/" target="_blank" style="text-decoration: none; color: inherit;">豊根村 <i class="fas fa-external-link-alt" style="font-size: 0.7em;"></i></a></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-highlight">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-lightbulb"></i> 東三河地区で暮らすメリット</h2>
+            
+            <div class="city-grid" style="margin-top: 2rem;">
+                <div class="stat-card" style="text-align: left;">
+                    <div class="icon" style="text-align: center;"><i class="fas fa-leaf"></i></div>
+                    <h3 style="text-align: center; margin-bottom: 1rem;">豊かな自然</h3>
+                    <p>海と山に囲まれた豊かな自然環境。表浜海岸、葦毛湿原、茶臼山など、美しい自然スポットが点在。休日は海でも山でも楽しめます。</p>
+                </div>
+                
+                <div class="stat-card" style="text-align: left;">
+                    <div class="icon" style="text-align: center;"><i class="fas fa-fish"></i></div>
+                    <h3 style="text-align: center; margin-bottom: 1rem;">食の豊かさ</h3>
+                    <p>三河湾の新鮮な海の幸、渥美半島の農産物（メロン、キャベツ）など、食材が豊富。地元ならではのグルメを日常的に楽しめます。</p>
+                </div>
+                
+                <div class="stat-card" style="text-align: left;">
+                    <div class="icon" style="text-align: center;"><i class="fas fa-yen-sign"></i></div>
+                    <h3 style="text-align: center; margin-bottom: 1rem;">生活コスト</h3>
+                    <p>家賃は名古屋市より3-4割安く、生活費も抑えられます。同じ予算でより広い住居と豊かな生活が実現できます。</p>
+                </div>
+                
+                <div class="stat-card" style="text-align: left;">
+                    <div class="icon" style="text-align: center;"><i class="fas fa-smile"></i></div>
+                    <h3 style="text-align: center; margin-bottom: 1rem;">のんびりライフ</h3>
+                    <p>都会の喧騒から離れた、ゆったりとした時間の流れ。地域コミュニティとのつながりも感じられ、心豊かな暮らしが送れます。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container section">
+        <h2 class="section-title"><i class="fas fa-comments"></i> 実際に住んでいる方の声</h2>
+        
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">A</div>
+                    <div>
+                        <div class="testimonial-name">Aさん（40代・研究者）</div>
+                        <div class="testimonial-location">豊橋市在住</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    「豊橋市は新幹線が停車するので、東京・大阪へのアクセスが良く、研究で出張が多い私にとって理想的です。
+                    温暖な気候で過ごしやすく、表浜海岸や葦毛湿原など自然も豊か。
+                    "共働き子育てしやすい街"全国3位に選ばれているだけあって、子育て支援も充実しています。
+                    家賃も名古屋より3割安く、広い家に住めて満足しています。」
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">B</div>
+                    <div>
+                        <div class="testimonial-name">Bさん（30代・研究者の配偶者）</div>
+                        <div class="testimonial-location">蒲郡市在住</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    「蒲郡市は三河湾に面していて、ラグーナテンボスなどリゾート施設も近く、休日の過ごし方に困りません。
+                    温泉もあり、リラックスできる環境が整っています。新鮮な海の幸が手頃な価格で手に入り、
+                    食卓が豊かになりました。治安も良く、落ち着いた雰囲気で子育てにも最適です。
+                    海の近くでのんびり暮らしたい方にはぴったりの街です。」
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">C</div>
+                    <div>
+                        <div class="testimonial-name">Cさん（50代・研究者）</div>
+                        <div class="testimonial-location">田原市在住</div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    「田原市は渥美半島に位置し、農業が盛んで地元の新鮮な野菜やメロンが美味しい！
+                    サーフィンのメッカでもあり、週末は海でリフレッシュしています。温暖な気候で年中過ごしやすく、
+                    自然に囲まれたスローライフを満喫しています。都会の喧騒から離れて、心豊かに暮らせる環境が気に入っています。
+                    移住して本当に良かったと感じています。」
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container section">
+        <h2 class="section-title"><i class="fas fa-question-circle"></i> よくある質問</h2>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-car"></i>
+                    <span>車は必要ですか？</span>
+                </div>
+                <div class="faq-answer">
+                    <p>東三河地区では車があると非常に便利です。特に蒲郡市、田原市、新城市など郊外エリアでは、
+                    車がないと生活に不便を感じることがあります。豊橋市中心部であれば公共交通機関も利用可能ですが、
+                    多くの世帯が車を所有しています。駐車場代は月3,000-6,000円程度と安価です。</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-train"></i>
+                    <span>名古屋へのアクセスは？</span>
+                </div>
+                <div class="faq-answer">
+                    <p>豊橋市から名古屋駅まで新幹線で約25分、在来線で約60分です。
+                    豊川市は約50分、蒲郡市は約60分でアクセス可能。田原市や新城市は90分程度かかりますが、
+                    日常生活は地元で完結するため、名古屋へ頻繁に行く必要はありません。</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-hospital"></i>
+                    <span>医療環境は充実していますか？</span>
+                </div>
+                <div class="faq-answer">
+                    <p>豊橋市には豊橋市民病院など総合病院があり、医療環境は充実しています。
+                    豊川市、蒲郡市にも総合病院やクリニックがあります。新城市、田原市は病院数は少ないですが、
+                    基本的な医療は受けられます。緊急時は豊橋市の病院を利用することも可能です。</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>買い物環境はどうですか？</span>
+                </div>
+                <div class="faq-answer">
+                    <p>豊橋市にはイオンモールや商店街があり、買い物環境は充実しています。
+                    豊川市、蒲郡市にもスーパーやホームセンターがあり、日常の買い物に困りません。
+                    田原市、新城市は大型店は少ないですが、地元のスーパーで十分賄えます。
+                    また、新鮮な農産物や海産物が手頃な価格で手に入るのも魅力です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2><i class="fas fa-phone-alt"></i> 住居に関する相談はこちら</h2>
+            <p>「どのエリアが自分に合っているか分からない」「具体的な物件情報が欲しい」など、お気軽にご相談ください。</p>
+            <a href="career-consulting.html" class="cta-button">
+                <i class="fas fa-calendar-check"></i> 相談予約はこちら
+            </a>
+        </div>
+    </section>
+
     <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ValueGlow</h3>
+                    <p>大学赴任者とそのご家族のキャリアと生活を支援します</p>
+                </div>
+                <div class="footer-section">
+                    <h4>リンク</h4>
+                    <ul>
+                        <li><a href="index.html">トップページ</a></li>
+                        <li><a href="nagoya-city.html">名古屋市</a></li>
+                        <li><a href="owari.html">尾張地区</a></li>
+                        <li><a href="nishi-mikawa.html">西三河地区</a></li>
+                        <li><a href="higashi-mikawa.html">東三河地区</a></li>
+                        <li><a href="registration.html">新規登録</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>お問い合わせ</h4>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d14131b123d0b1c1108181a11120a53170d">[email&#160;protected]</a></p>
+                    <p><i class="fas fa-globe"></i> <a href="https://www.valueglow.jp/" target="_blank">www.valueglow.jp</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024-2025 ValueGlow. All rights reserved.</p>
+            </div>
         </div>
     </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/main.js"></script>
 </body>
 </html>
