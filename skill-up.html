@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スキルアップしたい - 学習・研修サポート | 大学赴任者家族帯同支援プログラム</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="大学赴任者家族のためのスキルアップ支援。キャリア相談、外部教育機関の紹介、中部未来リーダーズサロン、中部圏イノベーション推進機構など、あなたの学びをサポートします。">
+    <meta name="keywords" content="スキルアップ,リスキリング,キャリア相談,研修,教育,中部未来リーダーズサロン,中部圏イノベーション推進機構,名古屋">
+    <meta name="author" content="名古屋圏域大学連携ネットワーク">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Protocol (OGP) -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="スキルアップしたい - 学習・研修サポート | 大学赴任者家族帯同支援">
+    <meta property="og:description" content="大学赴任者家族のためのスキルアップ支援。キャリア相談と外部教育機関のご紹介。">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/skill-up.html">
+    <meta property="og:site_name" content="大学赴任者家族帯同支援プログラム">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="スキルアップしたい - 学習・研修サポート">
+    <meta name="twitter:description" content="大学赴任者家族のためのスキルアップ支援。キャリア相談と外部教育機関のご紹介。">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/skill-up.html">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基本リセット */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        /* メインコンテンツ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* お知らせボックス */
+        .notice-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6b3 100%);
+            border-left: 5px solid #ffa500;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.15);
+        }
+
+        .notice-box h2 {
+            color: #ff8c00;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .notice-box p {
+            color: #666;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .notice-box .highlight {
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        /* サポート内容セクション */
+        .support-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .support-section h2 {
+            font-size: 1.8rem;
+            color: #11998e;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* サポートカード */
+        .support-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            border: 2px solid #e9ecef;
+        }
+
+        .support-card:hover {
+            border-color: #11998e;
+            box-shadow: 0 8px 30px rgba(17, 153, 142, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .support-card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .support-card-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .support-card h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .support-card p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .support-card .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .support-card .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        /* 外部機関セクション */
+        .organizations-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .organizations-section h2 {
+            font-size: 1.8rem;
+            color: #11998e;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* 組織カード */
+        .org-cards {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .org-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .org-card:hover {
+            border-color: #11998e;
+            box-shadow: 0 8px 30px rgba(17, 153, 142, 0.15);
+        }
+
+        .org-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .org-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.2);
+        }
+
+        .org-logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .org-title h3 {
+            font-size: 1.6rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .org-title .org-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .org-description {
+            color: #555;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .org-features {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .org-features h4 {
+            color: #11998e;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .org-features ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .org-features ul li {
+            padding: 0.5rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: #666;
+        }
+
+        .org-features ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #11998e;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .org-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .org-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        /* 今後の予定セクション */
+        .future-plans {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 2px solid #80deea;
+        }
+
+        .future-plans h2 {
+            font-size: 1.8rem;
+            color: #00796b;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .future-plans p {
+            color: #00695c;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 1rem;
+        }
+
+        .future-plans .highlight {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #00796b;
+            margin-top: 1.5rem;
+        }
+
+        .future-plans .highlight strong {
+            color: #00796b;
+        }
+
+        /* CTAセクション */
+        .cta-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 30px rgba(17, 153, 142, 0.3);
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: white;
+            color: #11998e;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+        }
+
+        /* フッター */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-icon {
+                font-size: 2rem;
+            }
+
+            .support-section,
+            .organizations-section,
+            .future-plans {
+                padding: 2rem 1.5rem;
+            }
+
+            .support-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .org-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "スキルアップ支援サービス",
+      "description": "大学赴任者家族のためのスキルアップ・リスキリング支援",
+      "provider": {
+        "@type": "Organization",
+        "name": "大学赴任者家族帯同支援プログラム"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "名古屋圏域"
+      }
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> トップページに戻る
+            </a>
+            <h1>
+                <i class="fas fa-graduation-cap header-icon"></i>
+                スキルアップしたい
+            </h1>
+            <p>学習・研修サポートのご案内</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- お知らせ -->
+        <div class="notice-box">
+            <h2>
+                <i class="fas fa-info-circle"></i>
+                プログラムについて
+            </h2>
+            <p>
+                現在、このプログラムでは<span class="highlight">直接的なスキルアップ教育の提供は行っておりません</span>が、<strong>キャリア相談</strong>と<strong>優良な外部教育機関のご紹介</strong>を通じて、あなたの学びをサポートいたします。
+            </p>
+            <p style="margin-top: 1rem;">
+                今後、主な教育プログラムについて<span class="highlight">直接お申し込みいただける仕組み</span>を構築していく予定です。
+            </p>
+        </div>
+
+        <!-- サポート内容 -->
+        <section class="support-section">
+            <h2>
+                <i class="fas fa-hands-helping"></i>
+                私たちができるサポート
+            </h2>
+
+            <div class="support-cards">
+                <!-- キャリア相談 -->
+                <div class="support-card">
+                    <div class="support-card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>キャリア相談</h3>
+                    <p>
+                        スキルアップの方向性、学習計画の立て方、キャリアパスなど、専門コンサルタントが個別にご相談に応じます。あなたに最適な学習方法を一緒に考えましょう。
+                    </p>
+                    <a href="career-consulting.html" class="action-button">
+                        <i class="fas fa-calendar-alt"></i>
+                        面談を予約する
+                    </a>
+                </div>
+
+                <!-- 教育機関紹介 -->
+                <div class="support-card">
+                    <div class="support-card-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3>教育機関のご紹介</h3>
+                    <p>
+                        中部地域の優良な教育機関・研修プログラムをご紹介します。イノベーション、リーダーシップ、専門スキルなど、目的に応じた最適な学びの場をご案内いたします。
+                    </p>
+                    <a href="#organizations" class="action-button">
+                        <i class="fas fa-arrow-down"></i>
+                        詳しく見る
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 外部教育機関 -->
+        <section class="organizations-section" id="organizations">
+            <h2>
+                <i class="fas fa-building"></i>
+                おすすめの教育機関
+            </h2>
+
+            <div class="org-cards">
+                <!-- 中部未来リーダーズサロン -->
+                <div class="org-card">
+                    <div class="org-header">
+                        <div class="org-logo">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="org-title">
+                            <h3>中部未来リーダーズサロン</h3>
+                            <p class="org-subtitle">Chubu Future Leaders Salon</p>
+                        </div>
+                    </div>
+                    
+                    <p class="org-description">
+                        中部地域の未来を担うリーダー育成を目的とした学びのコミュニティ。経営者、起業家、専門家などが集い、互いに学び合いながら成長できる環境を提供しています。
+                    </p>
+
+                    <div class="org-features">
+                        <h4>
+                            <i class="fas fa-star"></i>
+                            主な特徴
+                        </h4>
+                        <ul>
+                            <li>リーダーシップ開発プログラム</li>
+                            <li>異業種交流・ネットワーキング</li>
+                            <li>実践的なビジネススキル研修</li>
+                            <li>メンタリング・コーチング</li>
+                            <li>地域課題解決プロジェクト</li>
+                        </ul>
+                    </div>
+
+                    <a href="https://cfls.html" target="_blank" rel="noopener noreferrer" class="org-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        公式サイトを見る
+                    </a>
+                </div>
+
+                <!-- 中部圏イノベーション推進機構 -->
+                <div class="org-card">
+                    <div class="org-header">
+                        <div class="org-logo">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="org-title">
+                            <h3>中部圏イノベーション推進機構</h3>
+                            <p class="org-subtitle">Chubu Region Innovation Organization</p>
+                        </div>
+                    </div>
+                    
+                    <p class="org-description">
+                        中部圏のイノベーション創出を支援する中核機関。スタートアップ支援、新規事業開発、オープンイノベーションなど、実践的なプログラムを多数提供しています。
+                    </p>
+
+                    <div class="org-features">
+                        <h4>
+                            <i class="fas fa-star"></i>
+                            主な特徴
+                        </h4>
+                        <ul>
+                            <li>イノベーション創出ワークショップ</li>
+                            <li>スタートアップ・アクセラレーションプログラム</li>
+                            <li>デザイン思考・アジャイル開発研修</li>
+                            <li>産学連携プロジェクト</li>
+                            <li>共創スペース「GARAGE NAGOYA」の提供</li>
+                        </ul>
+                    </div>
+
+                    <a href="https://garage-nagoya.or.jp" target="_blank" rel="noopener noreferrer" class="org-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        公式サイトを見る
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 今後の予定 -->
+        <section class="future-plans">
+            <h2>
+                <i class="fas fa-rocket"></i>
+                今後の予定
+            </h2>
+            <p>
+                私たちは、より便利で使いやすいサービスの提供を目指しています。
+            </p>
+            <div class="highlight">
+                <p>
+                    <i class="fas fa-check-circle" style="color: #00796b; margin-right: 0.5rem;"></i>
+                    <strong>近日実装予定:</strong> 主要な教育プログラムへの直接申し込み機能
+                </p>
+                <p style="margin-top: 0.8rem; margin-bottom: 0; color: #555;">
+                    このサイト上で、各種研修・セミナー・ワークショップに直接お申し込みいただけるようになります。申し込み状況の管理や、受講履歴の確認も可能になる予定です。
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>
+                <i class="fas fa-phone-alt"></i>
+                まずはご相談ください
+            </h2>
+            <p>
+                どのようなスキルを身につけたいか、どんな学び方が合っているか、<br>
+                専門コンサルタントがあなたに最適な学習プランをご提案します。
+            </p>
+            <a href="career-consulting.html" class="cta-button">
+                <i class="fas fa-calendar-check"></i>
+                キャリア相談を予約する
+            </a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.</p>
+    </footer>
+</body>
+</html>
