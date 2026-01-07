@@ -3,561 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ログイン | 大学赴任者家族帯同支援プログラム</title>
-    <meta name="description" content="大学赴任者家族帯同支援プログラムのログインページ。面談予約管理やプロフィール設定にアクセスできます。">
-    <meta name="keywords" content="ログイン,マイページ,面談予約,キャリア支援,名古屋大学">
-    <meta name="author" content="大学赴任者家族帯同支援プログラム">
-    <meta name="robots" content="noindex, nofollow">
+    <title>大学赴任者家族帯同支援プログラム</title>
+        <!-- SEO Meta Tags -->
+    <meta name="description" content="名古屋圏域の大学赴任者とその家族のための総合支援プログラム。住居情報、キャリア支援、スキルアップ、医療・教育情報など、安心して新生活をスタートできるサポートを提供します。">
+    <meta name="keywords" content="大学赴任,家族帯同,名古屋,愛知県,住居支援,キャリア支援,デュアルキャリア,研究者支援,転居サポート">
+    <meta name="author" content="名古屋圏域大学連携ネットワーク">
+    <meta name="robots" content="index, follow">
     
-    <!-- OGP -->
+    <!-- Open Graph Protocol (OGP) -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="ログイン | 大学赴任者家族帯同支援プログラム">
-    <meta property="og:description" content="マイページにログインして、面談予約管理や応募書類の確認ができます。">
-    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/login.html">
+    <meta property="og:title" content="大学赴任者家族帯同支援プログラム | 名古屋圏域">
+    <meta property="og:description" content="名古屋圏域の大学赴任者とその家族のための総合支援プログラム。住居、キャリア、スキルアップ、医療・教育など安心の新生活サポート。">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/">
     <meta property="og:site_name" content="大学赴任者家族帯同支援プログラム">
+    <meta property="og:locale" content="ja_JP">
     
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="ログイン | 大学赴任者家族帯同支援プログラム">
-    <meta name="twitter:description" content="マイページにログインして、面談予約管理や応募書類の確認ができます。">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="大学赴任者家族帯同支援プログラム | 名古屋圏域">
+    <meta name="twitter:description" content="名古屋圏域の大学赴任者とその家族のための総合支援プログラム。住居、キャリア、スキルアップ、医療・教育など安心の新生活サポート。">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/login.html">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
+        /* 地域選択セクションのスタイル */
+
+        
+        /* タブレット・デスクトップで3カラム表示 */
+        @media (min-width: 992px) {
+        }
+        
+        /* スマホで1カラム表示 */
+        @media (max-width: 768px) {
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            display: block;
+        }
+
+        .region-highlights {
+            list-style: none;
             padding: 0;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .region-highlights li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .region-highlights li i {
+            margin-right: 0.75rem;
+            color: #2563eb;
+        }
+
+        .view-details-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nishi-mikawa-card .view-details-btn {
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+        }
+
+        .higashi-mikawa-card .view-details-btn {
+            background: linear-gradient(135deg, #4A90E2 0%, #50C878 100%);
+        }
+
+        .view-details-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+
+        }
+    
+        /* コンテナの幅制限 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
-                         'Hiragino Sans', Meiryo, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+
+        /* ヘッダーの調整 */
+        header {
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 450px;
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-        
-        .login-header i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .login-header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .login-header p {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-        
-        .login-body {
-            padding: 40px 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 3px;
-        }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        .input-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 1.1rem;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            padding: 5px;
-            font-size: 1.1rem;
-        }
-        
-        .password-toggle:hover {
-            color: #667eea;
-        }
-        
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        .forgot-password {
-            color: #667eea;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .forgot-password:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-        
-        .btn-login {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
-        .btn-login i {
-            margin-right: 8px;
-        }
-        
-        .divider {
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-        }
-        
-        .divider::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 1px;
-            background: #e0e0e0;
-        }
-        
-        .divider span {
-            background: white;
-            padding: 0 15px;
-            color: #999;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .register-link {
-            text-align: center;
-            padding: 25px 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .register-link p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .btn-register {
-            display: inline-block;
-            padding: 12px 30px;
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-register:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .back-home {
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .back-home a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .back-home a:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .security-notice {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            color: #1565C0;
-        }
-        
-        .security-notice i {
-            margin-right: 8px;
-        }
-        
-        .error-message {
-            display: none;
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #c62828;
-            font-size: 0.9rem;
-        }
-        
-        .error-message.show {
-            display: block;
-        }
-        
-        .error-message i {
-            margin-right: 8px;
-        }
-        
-        @media (max-width: 768px) {
-            .login-container {
-                border-radius: 15px;
+
+        /* レスポンシブ対応の改善 */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 0 1rem;
             }
             
-            .login-header {
-                padding: 30px 20px;
+            .sidebar {
+                width: 220px !important;
             }
             
-            .login-header h1 {
-                font-size: 1.5rem;
+            .main-content {
+                flex: 1;
+                min-width: 0;
             }
             
-            .login-body {
-                padding: 30px 20px;
+            .right-sidebar {
+                width: 250px !important;
             }
-            
-            .form-options {
+        }
+
+        @media (max-width: 992px) {
+            .container {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+            }
+            
+            .sidebar,
+            .right-sidebar {
+                width: 100% !important;
+                max-width: 100%;
             }
         }
+
     </style>
-</head>
-<body>
-    <div style="max-width: 450px; width: 100%;">
-        <div class="login-container">
-            <div class="login-header">
-                <i class="fas fa-user-circle"></i>
-                <h1>ログイン</h1>
-                <p>マイページにアクセス</p>
-            </div>
-            
-            <div class="login-body">
-                <div class="error-message" id="errorMessage">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span id="errorText"></span>
-                </div>
-                
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="email">
-                            メールアドレス
-                            <span class="required">*</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-envelope"></i>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                class="form-control" 
-                                placeholder="example@email.com"
-                                required
-                                autocomplete="email"
-                            >
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">
-                            パスワード
-                            <span class="required">*</span>
-                        </label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-lock"></i>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                class="form-control" 
-                                placeholder="パスワードを入力"
-                                required
-                                autocomplete="current-password"
-                            >
-                            <button type="button" class="password-toggle" id="togglePassword">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" id="rememberMe" name="rememberMe">
-                            <span>ログイン状態を保持</span>
-                        </label>
-                        <a href="password-reset.html" class="forgot-password">
-                            パスワードを忘れた方
-                        </a>
-                    </div>
-                    
-                    <button type="submit" class="btn-login">
-                        <i class="fas fa-sign-in-alt"></i>
-                        ログイン
-                    </button>
-                    
-                    <div class="security-notice">
-                        <i class="fas fa-shield-alt"></i>
-                        通信は暗号化され、個人情報は厳重に保護されています
-                    </div>
-                </form>
-            </div>
-            
-            <div class="register-link">
-                <p>アカウントをお持ちでない方</p>
-                <a href="registration.html" class="btn-register">
-                    <i class="fas fa-user-plus"></i> 新規登録（無料）
-                </a>
-            </div>
-        </div>
-        
-        <div class="back-home">
-            <a href="index.html">
-                <i class="fas fa-home"></i>
-                トップページに戻る
-            </a>
-        </div>
-    </div>
-    
-    <script>
-        // パスワード表示/非表示の切り替え
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-        
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-        
-        // フォーム送信処理（現在はダミー実装）
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // エラーメッセージを非表示
-            errorMessage.classList.remove('show');
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-            
-            // バリデーション
-            if (!email || !password) {
-                showError('メールアドレスとパスワードを入力してください');
-                return;
-            }
-            
-            // メールアドレスの形式チェック
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('正しいメールアドレスを入力してください');
-                return;
-            }
-            
-            // ローディング状態
-            const submitButton = loginForm.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ログイン中...';
-            submitButton.disabled = true;
-            
-            // TODO: 実際の認証処理をここに実装
-            // 現在はダミー実装（3秒後にダッシュボードへリダイレクト）
-            
-            setTimeout(() => {
-                // 開発中の注意メッセージ
-                alert('🚧 開発中の機能です
 
-現在、バックエンド認証システムの実装準備中です。
-完成後、Firebase Authenticationと連携してログイン機能が有効になります。
-
-ダッシュボード画面のプレビューに移動します。');
-                
-                // ダッシュボードへリダイレクト
-                window.location.href = 'dashboard.html';
-            }, 1500);
-            
-            /*
-            // 実装例（Firebase使用時）
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password, rememberMe })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    // ログイン成功
-                    localStorage.setItem('authToken', data.token);
-                    window.location.href = 'dashboard.html';
-                } else {
-                    // ログイン失敗
-                    showError(data.message || 'ログインに失敗しました');
-                    submitButton.innerHTML = originalText;
-                    submitButton.disabled = false;
-                }
-            } catch (error) {
-                showError('ネットワークエラーが発生しました');
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-            }
-            */
-        });
-        
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.classList.add('show');
-            
-            // 5秒後に自動で非表示
-            setTimeout(() => {
-                errorMessage.classList.remove('show');
-            }, 5000);
-        }
-        
-        // Enterキーでログイン
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && (e.target.id === 'email' || e.target.id === 'password')) {
-                loginForm.dispatchEvent(new Event('submit'));
-            }
-        });
-    </script>
-    
-    <!-- JSON-LD構造化データ -->
+    <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "ログイン | 大学赴任者家族帯同支援プログラム",
-        "description": "大学赴任者家族帯同支援プログラムのログインページ",
-        "url": "https://hiyusho.github.io/university-relocation-support/login.html",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "大学赴任者家族帯同支援プログラム",
-            "url": "https://hiyusho.github.io/university-relocation-support/"
-        }
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "大学赴任者家族帯同支援プログラム",
+      "url": "https://hiyusho.github.io/university-relocation-support/",
+      "logo": "https://hiyusho.github.io/university-relocation-support/logo.png",
+      "description": "名古屋圏域の大学赴任者とその家族のための総合支援プログラム",
+      "areaServed": {
+        "@type": "Place",
+        "name": "名古屋圏域（愛知県）"
+      },
+      "serviceType": [
+        "住居支援",
+        "キャリアカウンセリング",
+        "スキルアップ支援",
+        "医療・教育情報提供"
+      ]
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "大学赴任者家族帯同支援プログラム",
+      "url": "https://hiyusho.github.io/university-relocation-support/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://hiyusho.github.io/university-relocation-support/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="大学ロゴ" class="university-logo" id="universityLogo">
+            <h1 class="site-title">家族帯同ポータルサイト</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 左側ナビゲーション -->
+        <nav class="sidebar">
+            <h2 class="sidebar-title">家族帯同ポータルサイト</h2>
+            <ul class="nav-menu">
+                <li class="nav-item" data-tooltip="トップページへ戻ります">
+                    <a href="#top"><i class="fas fa-home"></i> Top</a>
+                </li>
+                <li class="nav-item nav-item-parent" data-tooltip="名古屋市、尾張、西三河、東三河の居住地情報をご案内します">
+                    <a href="#residence-guide"><i class="fas fa-map-marked-alt"></i> 住む場所を知る</a>
+                    <ul class="nav-submenu">
+                        <li class="nav-subitem"><a href="nagoya-city.html"><i class="fas fa-city"></i> 名古屋市</a></li>
+                        <li class="nav-subitem"><a href="owari.html"><i class="fas fa-torii-gate"></i> 尾張地区</a></li>
+                        <li class="nav-subitem"><a href="nishi-mikawa.html"><i class="fas fa-industry"></i> 西三河地区</a></li>
+                        <li class="nav-subitem"><a href="higashi-mikawa.html"><i class="fas fa-water"></i> 東三河地区</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" data-tooltip="就職活動のサポート、求人情報、キャリアカウンセリングをご案内します">
+                    <a href="job-search.html"><i class="fas fa-briefcase"></i> 仕事を見つけたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="スキルアップ・リスキリング講座、資格取得支援の情報を提供します">
+                    <a href="skill-up.html"><i class="fas fa-graduation-cap"></i> スキルアップしたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="先輩家族の体験談、成功事例をご紹介します">
+                    <a href="https://network2010.org/series" target="_blank" rel="noopener noreferrer"><i class="fas fa-users"></i> ロールモデル紹介 <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="家族帯同に関する制度、手続き、サポート内容の詳細情報です">
+                    <a href="family-support.html"><i class="fas fa-home"></i> 家族帯同について知りたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="ビザ、住居、保険など、必要な手続き情報をまとめています">
+                    <a href="#important-info"><i class="fas fa-info-circle"></i> 見ておきたい情報</a>
+                </li>
+                <li class="nav-item" data-tooltip="地域企業とのマッチング、ネットワーキングイベントをご案内します">
+                    <a href="#networking"><i class="fas fa-handshake"></i> 現地企業とつながりたい</a>
+                </li>
+                <li class="nav-item" data-tooltip="医療機関、学校、保育施設などの情報を提供します">
+                    <a href="https://network2010.org/nagoya" target="_blank" rel="noopener noreferrer"><i class="fas fa-hospital"></i> 医療・教育を知りたい <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 5px;"></i></a>
+                </li>
+                <li class="nav-item" data-tooltip="専門スタッフによる個別相談をご利用いただけます">
+                    <a href="#consultation"><i class="fas fa-comments"></i> 相談したい場合</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- ヒーローセクション -->
+            <section id="top" class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">大学赴任者家族帯同支援プログラム</h2>
+                    <p style="font-size: 1.1em; line-height: 1.8; color: #555; margin: 20px 0;">
+                        名古屋地域に赴任される研究者とそのご家族のキャリア・生活を総合的にサポートします。<br>
+                        就職支援、スキルアップ、住居情報、医療・教育情報など、安心して新生活を始めるための情報が揃っています。
+                    </p>
+                    <div class="video-container">
+                        <a href="https://www.youtube.com/channel/UCjgRr4MVUFnhjgqug5bWt0Q" target="_blank" rel="noopener noreferrer" class="video-placeholder">
+                            <i class="fas fa-play-circle"></i>
+                            <p>名古屋での生活紹介動画</p>
+                            <small style="font-size: 12px; opacity: 0.9; margin-top: 10px; display: block;">提供:Network2010</small>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About the Program -->
+            <section id="about" class="section">
+                <h2 class="section-title">About the Program</h2>
+                <div class="program-intro">
+                    <h3>「名古屋デュアルキャリア支援」とは？</h3>
+                    <p>大学に赴任する研究者とそのパートナーの両方のキャリアを同時にサポートする、画期的な支援プログラムです。</p>
+                    <div class="support-pillars">
+                        <div class="pillar">
+                            <i class="fas fa-user-tie"></i>
+                            <h4>研究者・パートナーを同時サポート</h4>
+                            <p>家族・パートナーを同時に「働く」「暮らす」を包括的にサポート</p>
+                        </div>
+                        <div class="pillar">
+                            <i class="fas fa-users"></i>
+                            <h4>家族・研究者への総合支援</h4>
+                            <p>対象者・家族の生活、研究への適応を総合的にサポート</p>
+                        </div>
+                        <div class="pillar">
+                            <i class="fas fa-building"></i>
+                            <h4>企業・大学・地域を結ぶ</h4>
+                            <p>地域の企業、大学、支援機関が連携してサポート</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <!-- Who We Support -->
+            <section id="support" class="section">
+                <h2 class="section-title">Who We Support</h2>
+                <div class="support-targets">
+                    <h3>こんな方をサポートします</h3>
+                    <div class="target-grid">
+                        <div class="target-card">
+                            <i class="fas fa-plane-arrival"></i>
+                            <p>名古屋に転入してきた<strong>研究者・専門職パートナー</strong></p>
+                        </div>
+                        <div class="target-card">
+                            <i class="fas fa-search"></i>
+                            <p>地元に住んでいる<strong>キャリア再考・進路検討を始めたい方</strong></p>
+                        </div>
+                        <div class="target-card">
+                            <i class="fas fa-baby"></i>
+                            <p>妊娠・出産後に<strong>再就職を希望する方</strong></p>
+                        </div>
+                        <div class="target-card">
+                            <i class="fas fa-star"></i>
+                            <p>多様な経験・<strong>スキルを活かしたい方</strong></p>
+                        </div>
+                        <div class="target-card">
+                            <i class="fas fa-chart-line"></i>
+                            <p><strong>自分を磨きたい方</strong></p>
+                        </div>
+                        <div class="target-card">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <p><strong>地域での生活に慣れたい方</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What We Offer -->
+            <section id="offer" class="section">
+                <h2 class="section-title">What We Offer</h2>
+                <div class="services">
+                    <h3>提供しているサポート</h3>
+                    <div class="service-list">
+                         <div class="service-item">
+                            <i class="fas fa-user-check"></i>
+                            <h4><a href="career-consulting.html" style="color: inherit; text-decoration: none;">キャリアカウンセリング・就職相談 <i class="fas fa-arrow-right" style="font-size: 0.8em; color: #2563eb;"></i></a></h4>
+                            <p>国家資格キャリアコンサルタントが無料でサポート <a href="career-consulting.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">詳細・申し込み →</a></p>
+                        </div>
+
+                        <div class="service-item">
+                            <i class="fas fa-handshake"></i>
+                            <h4>地域企業とのジョブマッチングサポート</h4>
+                            <p>名古屋地域の優良企業との出会いをコーディネートします</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-book-open"></i>
+                            <h4>スキルアップ・リスキリング講座の紹介</h4>
+                            <p>最新のスキル習得をサポートする講座をご案内します</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-home"></i>
+                            <h4>生活・育児・教育・医療など暮らし情報の提供</h4>
+                            <p>住まい、子育て、医療など生活に必要な情報を網羅的に提供</p>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <h4>パートナー・転入者同士の交流イベント</h4>
+                            <p>同じ立場の仲間と出会い、情報交換できる場を提供します</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How to Get Started -->
+            <section id="get-started" class="section">
+                <h2 class="section-title">How to Get Started</h2>
+                <div class="steps">
+                    <h3>ご利用の流れ</h3>
+                    <div class="step-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h4>フォームからお問い合わせまたは登録</h4>
+                            <p>まずは簡単な登録フォームからご連絡ください</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h4>オリエンテーション面談(オンライン可)</h4>
+                            <p>専門スタッフが丁寧にヒアリングします</p>
+                        </div>
+                        <div class="step-arrow">→</div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h4>ニーズに応じた情報提供・サポート開始</h4>
+                            <p>あなたに最適なサポートをカスタマイズして提供</p>
+                        </div>
+                    </div>
+                    <div class="cta-button-container">
+                        <a href="registration.html" class="cta-button">
+                            <i class="fas fa-user-plus"></i> 新規登録はこちら
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 右側サイドバー -->
+        <aside class="right-sidebar">
+            <div class="quick-actions">
+                <a href="registration.html" class="action-btn register-btn">
+                    <i class="fas fa-user-plus"></i> 新規登録
+                </a>
+                <a href="log-in.html" class="action-btn login-btn">
+                    <i class="fas fa-sign-in-alt"></i> ログイン
+                </a>
+            </div>
+
+            <div class="widget video-widget">
+                <h3>名古屋の魅力動画</h3>
+                <div class="video-placeholder-small">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+
+            <div class="widget news-widget">
+                <h3>お知らせ</h3>
+                <ul class="news-list">
+                    <li>
+                        <span class="news-date">2025.11.15</span>
+                        <a href="#">キャリア相談会開催のお知らせ</a>
+                    </li>
+                    <li>
+                        <span class="news-date">2025.11.10</span>
+                        <a href="#">交流イベント参加者募集</a>
+                    </li>
+                    <li>
+                        <span class="news-date">2025.11.05</span>
+                        <a href="#">スキルアップ講座のご案内</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="widget info-widget">
+                <h3>運営情報</h3>
+                <ul class="info-links">
+                    <li><a href="#"><i class="fas fa-building"></i> 運営会社</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> 個人情報保護方針</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> お問い合わせ</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 大学赴任者家族帯同支援プログラム All Rights Reserved.</p>
+            <p>※ 本プログラムは参加大学と地域企業の協力により運営されています</p>
+            <p style="margin-top: 15px; font-size: 13px;">名古屋地域情報提供:<a href="https://network2010.org/" target="_blank" rel="noopener noreferrer" style="color: #FF9F54; text-decoration: none;">Network2010 <i class="fas fa-external-link-alt" style="font-size: 10px;"></i></a></p>
+        </div>
+    </footer>
+
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
