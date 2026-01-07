@@ -8,123 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* 地域選択セクションのスタイル */
-        .region-selection {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 3rem 1.5rem;
-            margin: 2rem 0;
-            border-radius: 16px;
-            max-width: 100%;
-        }
 
-        .region-selection h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
 
-        .region-selection .subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 3rem;
-        }
 
-        .region-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            max-width: 100%;
-            margin: 0 auto;
-        }
         
         /* タブレット・デスクトップで3カラム表示 */
         @media (min-width: 992px) {
-            .region-cards {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
         
         /* スマホで1カラム表示 */
         @media (max-width: 768px) {
-            .region-cards {
-                grid-template-columns: 1fr;
-            }
         }
 
-        .region-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
 
-        .region-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
 
-        .region-card-header {
-            padding: 2.5rem 2rem;
-            color: white;
-            text-align: center;
-            position: relative;
-        }
 
-        .region-card-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: inherit;
-            opacity: 0.95;
-        }
 
-        .region-card-header > * {
-            position: relative;
-            z-index: 1;
-        }
 
-        .owari-card .region-card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
 
-        .nishi-mikawa-card .region-card-header {
-            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
-        }
 
-        .higashi-mikawa-card .region-card-header {
-            background: linear-gradient(135deg, #4A90E2 0%, #50C878 100%);
-        }
 
-        .region-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
 
-        .region-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-        }
 
-        .region-card-body {
-            padding: 2rem;
-        }
 
-        .region-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
 
         .stat-item {
             text-align: center;
@@ -140,18 +46,7 @@
             display: block;
         }
 
-        .stat-label {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.25rem;
-        }
 
-        .region-description {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 1.5rem;
-        }
 
         .region-highlights {
             list-style: none;
@@ -198,13 +93,7 @@
         }
 
         @media (max-width: 768px) {
-            .region-cards {
-                grid-template-columns: 1fr;
-            }
 
-            .region-selection h2 {
-                font-size: 1.8rem;
-            }
         }
     
         /* コンテナの幅制限 */
@@ -355,130 +244,7 @@
                 </div>
             </section>
 
-            <!-- 地域選択セクション -->
-            <section id="residence-guide" class="region-selection">
-                <h2><i class="fas fa-map-marked-alt"></i> あなたに合った地域を選ぶ</h2>
-                <p class="subtitle">愛知県の3つの地域から、あなたとご家族に最適な居住エリアを見つけましょう</p>
-                
-                <div class="region-cards">
-                    <!-- 尾張地区カード -->
-                    <a href="owari.html" class="region-card owari-card">
-                        <div class="region-card-header">
-                            <i class="fas fa-torii-gate region-icon"></i>
-                            <h3 class="region-name">🟣 尾張地区</h3>
-                        </div>
-                        <div class="region-card-body">
-                            <div class="region-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number">4校</span>
-                                    <span class="stat-label">主要大学</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">19市町</span>
-                                    <span class="stat-label">市町村数</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">15-30分</span>
-                                    <span class="stat-label">名古屋駅まで</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">8-12万円</span>
-                                    <span class="stat-label">家賃相場(3LDK)</span>
-                                </div>
-                            </div>
-                            <p class="region-description">
-                                名古屋市の北部・東部に広がる地域。歴史的建造物と現代的な都市機能が共存し、文化施設も充実。名古屋へのアクセスも良好で、バランスの取れた生活環境が魅力です。
-                            </p>
-                            <ul class="region-highlights">
-                                <li><i class="fas fa-check-circle"></i> 愛知県立大学、愛知医科大学など</li>
-                                <li><i class="fas fa-check-circle"></i> 国宝犬山城、モリコロパーク</li>
-                                <li><i class="fas fa-check-circle"></i> 長久手市、日進市など住みやすい都市</li>
-                            </ul>
-                            <span class="view-details-btn">
-                                <i class="fas fa-arrow-right"></i> 詳細を見る
-                            </span>
-                        </div>
-                    </a>
-
-                    <!-- 西三河地区カード -->
-                    <a href="nishi-mikawa.html" class="region-card nishi-mikawa-card">
-                        <div class="region-card-header">
-                            <i class="fas fa-industry region-icon"></i>
-                            <h3 class="region-name">🟢 西三河地区</h3>
-                        </div>
-                        <div class="region-card-body">
-                            <div class="region-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number">9市1町</span>
-                                    <span class="stat-label">市町村数</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">161万人</span>
-                                    <span class="stat-label">人口(2020年)</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">20-40分</span>
-                                    <span class="stat-label">名古屋駅まで</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">7-12万円</span>
-                                    <span class="stat-label">家賃相場(3LDK)</span>
-                                </div>
-                            </div>
-                            <p class="region-description">
-                                トヨタ自動車を中心とした製造業の一大集積地。安定した雇用環境と充実した都市機能を持ち、豊かな自然環境も魅力。キャリア形成に最適なエリアです。
-                            </p>
-                            <ul class="region-highlights">
-                                <li><i class="fas fa-check-circle"></i> トヨタ本社、豊田スタジアム</li>
-                                <li><i class="fas fa-check-circle"></i> 岡崎城、安城七夕まつり</li>
-                                <li><i class="fas fa-check-circle"></i> 製造業の雇用機会が豊富</li>
-                            </ul>
-                            <span class="view-details-btn">
-                                <i class="fas fa-arrow-right"></i> 詳細を見る
-                            </span>
-                        </div>
-                    </a>
-
-                    <!-- 東三河地区カード -->
-                    <a href="higashi-mikawa.html" class="region-card higashi-mikawa-card">
-                        <div class="region-card-header">
-                            <i class="fas fa-water region-icon"></i>
-                            <h3 class="region-name">🔵 東三河地区</h3>
-                        </div>
-                        <div class="region-card-body">
-                            <div class="region-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number">5市3町村</span>
-                                    <span class="stat-label">市町村数</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">約73万人</span>
-                                    <span class="stat-label">人口</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">三河港</span>
-                                    <span class="stat-label">国際貿易港</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">6-10万円</span>
-                                    <span class="stat-label">家賃相場(3LDK)</span>
-                                </div>
-                            </div>
-                            <p class="region-description">
-                                太平洋に面した開放的な地域。国際貿易港・三河港を中心に農業・工業・商業がバランスよく発展。温暖な気候と豊かな自然環境が魅力のエリアです。
-                            </p>
-                            <ul class="region-highlights">
-                                <li><i class="fas fa-check-circle"></i> ラグーナテンボス、渥美半島</li>
-                                <li><i class="fas fa-check-circle"></i> 三河港（自動車輸出入拠点）</li>
-                                <li><i class="fas fa-check-circle"></i> 温暖な気候、海と自然が豊富</li>
-                            </ul>
-                            <span class="view-details-btn">
-                                <i class="fas fa-arrow-right"></i> 詳細を見る
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </section>
+            
 
             <!-- Who We Support -->
             <section id="support" class="section">
