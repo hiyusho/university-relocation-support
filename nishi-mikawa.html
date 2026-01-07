@@ -3,33 +3,686 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>西三河地区居住ガイド - 大学赴任者家族帯同支援プログラム</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/nagoya-city.css">
+    <title>尾張地区居住ガイド - 大学赴任者家族帯同支援プログラム</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/region.css">
     <style>
+        /* 基本リセット */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        /* 地域ページ共通スタイル */
+        
+        /* ヒーローセクション */
+        .hero-section {
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            opacity: 0.95;
+            z-index: 0;
+        }
+        
+        .hero-section h1,
+        .hero-section p {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 地域紹介セクション */
+        .region-intro {
+            background: linear-gradient(to bottom, #f8f9fa, white);
+            padding: 4rem 2rem;
+        }
+        
+        .region-intro .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* 統計カード */
+        .region-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .stat-card .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* セクション共通 */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* 都市カードグリッド */
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+        }
+        
+        .city-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .city-card-header {
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .city-card-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .city-card-header .subtitle {
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+        
+        .city-card-header a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+        
+        .city-card-header a:hover {
+            opacity: 0.8;
+        }
+        
+        .city-card-body {
+            padding: 2.5rem 2rem;
+        }
+        
+        /* 大学タグ */
+        .university-tag {
+            display: inline-block;
+            background: #e8eaf6;
+            color: #667eea;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin: 0.3rem;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        
+        .university-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 特徴リスト */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            color: #667eea;
+        }
+        
+        /* 情報行 */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        /* 画像ギャラリー */
+        .region-gallery {
+            padding: 4rem 2rem;
+            background: linear-gradient(to bottom, white, #f8f9fa);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            padding: 1.8rem;
+        }
+        
+        .gallery-caption h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .gallery-caption p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .gallery-caption .location-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+        }
+        
+        /* ハイライトセクション */
+        .section-highlight {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+        
+        /* その他の市町村セクション */
+        .city-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .city-tag {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .city-tag:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .city-tag a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        /* 証言カード */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-right: 1rem;
+        }
+        
+        .testimonial-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .testimonial-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        
+        .testimonial-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        /* FAQセクション */
+        .faq-container {
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        
+        .faq-item {
+            background: white;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .faq-question {
+            padding: 1.5rem 2rem;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            background: #f8f9fa;
+        }
+        
+        .faq-question i {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            color: #667eea;
+        }
+        
+        .faq-answer {
+            padding: 1.5rem 2rem;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .faq-answer p {
+            margin: 0;
+        }
+        
+        /* CTAセクション */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* フッター */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 1024px) {
+            .region-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .region-intro {
+                padding: 3rem 1.5rem;
+            }
+            
+            .section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .city-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .region-stats {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .stat-card .icon {
+                font-size: 2rem;
+            }
+            
+            .stat-card .number {
+                font-size: 1.8rem;
+            }
+            
+            .city-card-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .faq-question {
+                padding: 1.2rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .faq-answer {
+                padding: 1.2rem 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <h1><i class="fas fa-map-marked-alt"></i> 尾張地区居住ガイド</h1>
+        <p>名古屋市を取り囲む、バランスの良い住環境エリア</p>
+    </div>
+
+    <div class="region-intro">
+        <div class="container">
+            <h2 class="section-title">尾張地区の特徴</h2>
+            <p class="section-description">
+                尾張地域は、愛知県の北西部に位置し、名古屋市を扇状に囲むような形で広がっています。<br>
+                木曽川によって造られた濃尾平野とその東側の尾張丘陵から形成され、<br>
         /* 西三河地区カラーテーマ: グリーン */
-        .hero-section { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); }
+        .hero-section { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%) !important; }
         .stat-card .icon, .feature-list li i { color: #43cea2; }
-        .city-card-header { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); }
-        .university-tag { background: #e0f2f1; color: #43cea2; }
-        .cta-section { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); }
+        .city-card-header { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%) !important; }
+        .university-tag { background: #e8f5e9; color: #43cea2; }
+        .cta-section { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%) !important; }
         .cta-button { color: #43cea2; }
-        .testimonial-avatar { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); }
+        .testimonial-avatar { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%) !important; }
         .faq-question i { color: #43cea2; }
     </style>
 </head>
-                <li><a href="index.html">トップページ</a></li>
-                <li><a href="nagoya-city.html">名古屋市</a></li>
-                <li><a href="owari.html">尾張地区</a></li>
-                <li><a href="nishi-mikawa.html" class="active">西三河地区</a></li>
-                <li><a href="registration.html">新規登録</a></li>
-                <li><a href="career-consulting.html">キャリア相談</a></li>
-            </ul>
-        </div>
-    </nav>
-
+<body>
     <div class="hero-section">
         <h1><i class="fas fa-industry"></i> 西三河地区居住ガイド</h1>
         <p>ものづくりの中心地、安定した雇用と充実の生活環境</p>
@@ -39,14 +692,14 @@
         <div class="container">
             <h2 class="section-title">西三河地区の特徴</h2>
             <p class="section-description">
-                西三河地域は、愛知県のほぼ中央部を縦断する形で位置し、矢作川が中央を流れる豊かな地域です。<br>
-                トヨタ自動車を中心とした自動車産業が集積し、日本有数のものづくりの中心地として発展しています。<br>
+                西三河地域は、愛知県の経済中枢を担う地帯で豊田市を中心に、<br>
+                世界に誇るトヨタ自動車をはじめとした自動車産業が集積し、日本有数のものづくりの中心地として発展しています。<br>
                 経済的に安定した雇用環境と、充実した生活インフラが魅力の地域です。
             </p>
 
             <div class="region-stats">
                 <div class="stat-card">
-                    <div class="icon"><i class="fas fa-building"></i></div>
+                    <div class="icon"><i class="fas fa-city"></i></div>
                     <div class="number">9市1町</div>
                     <div class="label">市町村数</div>
                 </div>
@@ -68,16 +721,6 @@
             </div>
         </div>
     </div>
-
-    <section class="container section">
-        <h2 class="section-title"><i class="fas fa-city"></i> 主要都市ガイド</h2>
-        
-        <div class="city-grid">
-            <!-- 豊田市 -->
-            <div class="city-card">
-                <div class="city-card-header">
-                    <h3><a href="https://www.city.toyota.aichi.jp/" target="_blank" style="color: white; text-decoration: none;">豊田市 <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i></a></h3>
-                    <p class="subtitle">ものづくりのまち</p>
                 </div>
                 <div class="city-card-body">
                     <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">
@@ -519,7 +1162,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>お問い合わせ</h4>
-                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="442d2a222b04322528312123282b336a2e34">[email&#160;protected]</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="523b3c343d1224333e2737353e3d257c3822">[email&#160;protected]</a></p>
                     <p><i class="fas fa-globe"></i> <a href="https://www.valueglow.jp/" target="_blank">www.valueglow.jp</a></p>
                 </div>
             </div>
@@ -532,3 +1175,38 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/main.js"></script>
 </body>
 </html>
+
+    <!-- 画像ギャラリー -->
+    <section class="region-gallery">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-images"></i> 西三河地区の魅力</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://sspark.genspark.ai/cfimages?u1=DhqPejKO%2BqlONHEGLJCZ4KEPRfVp2ErYOII%2BrT0Fb7A0GPNa2QOCPoZZSXbI7oIlD0%2BEaXt1BYPqbH86u4l6zTrwNVH1fZAggTJrCAxAP%2BfyXtzsEswiGe3xsJE%3D&u2=C4Mny6eL7CJWKO%2BC&width=2560" alt="豊田スタジアム" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-futbol"></i> 豊田スタジアム</h4>
+                        <p>4万5千人収容の国際規格スタジアム。名古屋グランパスのホームスタジアムとして、また国際試合の会場としても活躍。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 豊田市</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://sspark.genspark.ai/cfimages?u1=OTgmB5RZXNuYqCrsdDUwVD7C4a4M7c%2F6XlttNNtbRxn3Gq7wQ1vO6V8xRqhreWQtGWhVjo%2FXIWU2k%2BnMiP8ItEQMxXFJfuYdWuVh%2FA2XXNr0vVd9RtV0rgnlfws%3D&u2=h4QiT2rwNFGcQtHm&width=2560" alt="岡崎城と桜" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-tree"></i> 岡崎城と桜</h4>
+                        <p>徳川家康生誕の地。春には約1,000本の桜が咲き誇り、日本さくら名所100選に選ばれています。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 岡崎市</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://sspark.genspark.ai/cfimages?u1=Bkgxb2G5OZvlw%2FjQCv1KNKLucIK8eSuGRoJ7lbtzCAqNKFSzC4YAz4GSOOIqOl6yaR6i%2B2Dp95oKOVuGnzo0ojhGMQXqdV4bNqbWgdjS2E%2BEP1oROmYJd8lYLOJy47r33tiq0HnR&u2=mIMjnsEVUkw02ESW&width=2560" alt="安城七夕まつり" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-star"></i> 安城七夕まつり</h4>
+                        <p>日本三大七夕まつりの一つ。色鮮やかな七夕飾りが街を彩り、「願いごと、日本一」として親しまれています。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 安城市</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
