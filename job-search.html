@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仕事を見つけたい - 就職支援サービス | 大学赴任者家族帯同支援プログラム</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="名古屋大学と共同で実施する、大学赴任者家族のための無料就職支援サービス。企業紹介、応募サポート、キャリア相談など、専門コンサルタントがあなたの就職活動を全面的にサポートします。">
+    <meta name="keywords" content="就職支援,転職支援,キャリア相談,名古屋大学,大学赴任,家族帯同,無料サービス,企業紹介">
+    <meta name="author" content="名古屋圏域大学連携ネットワーク">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Protocol (OGP) -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="仕事を見つけたい - 就職支援サービス | 大学赴任者家族帯同支援">
+    <meta property="og:description" content="名古屋大学と共同で実施する無料就職支援サービス。専門コンサルタントがあなたの就職活動を全面的にサポートします。">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/job-search.html">
+    <meta property="og:site_name" content="大学赴任者家族帯同支援プログラム">
+    <meta property="og:locale" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="仕事を見つけたい - 就職支援サービス">
+    <meta name="twitter:description" content="名古屋大学と共同で実施する無料就職支援サービス。専門コンサルタントがサポートします。">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/job-search.html">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基本リセット */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        /* メインコンテンツ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* プログラム概要セクション */
+        .program-overview {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .program-overview h2 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .program-overview p {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box strong {
+            color: #667eea;
+            font-size: 1.15rem;
+        }
+
+        /* 特徴リスト */
+        .features-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .features-list li {
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .features-list li:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .features-list i {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .features-list .text {
+            flex: 1;
+        }
+
+        .features-list .title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+
+        .features-list .description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* 手順セクション */
+        .steps-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .steps-section h2 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .steps {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-card h3 {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            color: #333;
+        }
+
+        .step-card p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .step-card .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 1rem;
+        }
+
+        .step-card .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* CTAセクション */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button.primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        /* フッター */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-icon {
+                font-size: 2rem;
+            }
+
+            .program-overview,
+            .steps-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Structured Data用の非表示要素 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+    </style>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "就職支援サービス",
+      "description": "名古屋大学と共同で実施する、大学赴任者家族のための無料就職支援サービス",
+      "provider": {
+        "@type": "Organization",
+        "name": "大学赴任者家族帯同支援プログラム"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "名古屋圏域"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      }
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> トップページに戻る
+            </a>
+            <h1>
+                <i class="fas fa-briefcase header-icon"></i>
+                仕事を見つけたい
+            </h1>
+            <p>就職支援サービスのご案内</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- プログラム概要 -->
+        <section class="program-overview">
+            <h2>
+                <i class="fas fa-info-circle"></i>
+                プログラムについて
+            </h2>
+            
+            <div class="highlight-box">
+                <strong>このプログラムは、名古屋大学と共同で実施する、帯同者の就職をサポートする無料プログラムです。</strong>
+            </div>
+
+            <p>
+                大学赴任に伴い名古屋圏域へ移住されたご家族（帯同者）の皆様が、新しい環境でキャリアを継続・発展できるよう、専門のコンサルタントが就職活動を全面的にサポートいたします。
+            </p>
+
+            <ul class="features-list">
+                <li>
+                    <i class="fas fa-handshake"></i>
+                    <div class="text">
+                        <div class="title">企業担当者のご紹介</div>
+                        <div class="description">
+                            直接企業と繋ぐのではなく、ご希望に応じて関係する企業の採用担当者をご紹介します。あなたのペースで就職活動を進められます。
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <i class="fas fa-user-check"></i>
+                    <div class="text">
+                        <div class="title">ご自身での応募</div>
+                        <div class="description">
+                            企業への正式な応募は、ご自身で行っていただきます。応募のタイミングや内容も、あなたが主体的に決定できます。
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <i class="fas fa-edit"></i>
+                    <div class="text">
+                        <div class="title">応募書類・面接サポート</div>
+                        <div class="description">
+                            履歴書・職務経歴書の添削、面接対策など、企業への応募時に必要なサポートを実施します。あなたの強みを最大限に引き出します。
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <i class="fas fa-comments"></i>
+                    <div class="text">
+                        <div class="title">キャリア相談</div>
+                        <div class="description">
+                            就職活動の不安、キャリアの方向性、ワークライフバランスなど、どんなご相談にも専門コンサルタントが親身にお応えします。
+                        </div>
+                    </div>
+                </li>
+                
+                <li>
+                    <i class="fas fa-yen-sign"></i>
+                    <div class="text">
+                        <div class="title">完全無料のサービス</div>
+                        <div class="description">
+                            このプログラムは大学の委託により実施されているため、すべてのサービスを無料でご利用いただけます。
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- サービス利用手順 -->
+        <section class="steps-section">
+            <h2>
+                <i class="fas fa-list-ol"></i>
+                サービス利用の流れ
+            </h2>
+
+            <div class="steps">
+                <!-- STEP 1 -->
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3><i class="fas fa-user-plus"></i> 新規登録</h3>
+                    <p>
+                        まずは新規登録フォームからご登録ください。お名前、メールアドレス、現在の状況などの基本情報をご入力いただきます。登録は3分程度で完了します。
+                    </p>
+                    <p style="margin-top: 1rem; padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                        <i class="fas fa-shield-alt" style="color: #667eea;"></i>
+                        <strong>個人情報保護:</strong> ご登録いただいた情報は厳重に管理し、就職支援の目的以外には使用いたしません。
+                    </p>
+                    <a href="registration.html" class="action-button">
+                        <i class="fas fa-user-plus"></i>
+                        新規登録はこちら
+                    </a>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3><i class="fas fa-calendar-check"></i> コンサルタントとの面談予約</h3>
+                    <p>
+                        新規登録完了後、専門コンサルタントとの初回面談日時をご予約ください。オンライン・対面どちらでも対応可能です。
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <strong>面談内容:</strong>
+                    </p>
+                    <ul style="margin-left: 2rem; color: #666;">
+                        <li>これまでのキャリアのヒアリング</li>
+                        <li>希望する仕事内容・勤務条件の確認</li>
+                        <li>今後の就職活動プランの作成</li>
+                        <li>不安なこと・質問へのご回答</li>
+                    </ul>
+                    <a href="career-consulting.html" class="action-button">
+                        <i class="fas fa-calendar-alt"></i>
+                        面談を予約する
+                    </a>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3><i class="fas fa-rocket"></i> 就職活動スタート</h3>
+                    <p>
+                        面談後、コンサルタントがあなたに合った企業をご紹介します。ご希望に応じて企業の採用担当者をご紹介し、応募書類の作成支援、面接対策など、内定獲得まで継続的にサポートいたします。
+                    </p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-radius: 8px; border-left: 4px solid #667eea;">
+                        <strong style="color: #667eea;">
+                            <i class="fas fa-heart"></i> あなたのペースで進められます
+                        </strong>
+                        <p style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem;">
+                            就職活動は、あなたのペースで進めていただけます。焦る必要はありません。コンサルタントが寄り添いながら、最適なキャリアを一緒に見つけていきましょう。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>
+                <i class="fas fa-star"></i>
+                まずは新規登録から始めましょう
+            </h2>
+            <p>
+                登録は無料、わずか3分で完了します。<br>
+                あなたの新しいキャリアの第一歩を、私たちがサポートします。
+            </p>
+            <div class="cta-buttons">
+                <a href="registration.html" class="cta-button primary">
+                    <i class="fas fa-user-plus"></i>
+                    新規登録（無料）
+                </a>
+                <a href="career-consulting.html" class="cta-button secondary">
+                    <i class="fas fa-phone-alt"></i>
+                    まずは相談してみる
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 大学赴任者家族帯同支援プログラム. All rights reserved.</p>
+    </footer>
+</body>
+</html>
