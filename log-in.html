@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン | 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="大学赴任者家族帯同支援プログラムのログインページ。面談予約管理やプロフィール設定にアクセスできます。">
+    <meta name="keywords" content="ログイン,マイページ,面談予約,キャリア支援,名古屋大学">
+    <meta name="author" content="大学赴任者家族帯同支援プログラム">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ログイン | 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="マイページにログインして、面談予約管理や応募書類の確認ができます。">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/login.html">
+    <meta property="og:site_name" content="大学赴任者家族帯同支援プログラム">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ログイン | 大学赴任者家族帯同支援プログラム">
+    <meta name="twitter:description" content="マイページにログインして、面談予約管理や応募書類の確認ができます。">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/login.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
+                         'Hiragino Sans', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .login-body {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .btn-login i {
+            margin-right: 8px;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .register-link {
+            text-align: center;
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .register-link p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .btn-register {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-register:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-home a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-home a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .security-notice {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #1565C0;
+        }
+        
+        .security-notice i {
+            margin-right: 8px;
+        }
+        
+        .error-message {
+            display: none;
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #c62828;
+            font-size: 0.9rem;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .error-message i {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 30px 20px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .login-body {
+                padding: 30px 20px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 450px; width: 100%;">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-user-circle"></i>
+                <h1>ログイン</h1>
+                <p>マイページにアクセス</p>
+            </div>
+            
+            <div class="login-body">
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText"></span>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">
+                            メールアドレス
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-control" 
+                                placeholder="example@email.com"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">
+                            パスワード
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-control" 
+                                placeholder="パスワードを入力"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span>ログイン状態を保持</span>
+                        </label>
+                        <a href="password-reset.html" class="forgot-password">
+                            パスワードを忘れた方
+                        </a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        ログイン
+                    </button>
+                    
+                    <div class="security-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        通信は暗号化され、個人情報は厳重に保護されています
+                    </div>
+                </form>
+            </div>
+            
+            <div class="register-link">
+                <p>アカウントをお持ちでない方</p>
+                <a href="registration.html" class="btn-register">
+                    <i class="fas fa-user-plus"></i> 新規登録（無料）
+                </a>
+            </div>
+        </div>
+        
+        <div class="back-home">
+            <a href="index.html">
+                <i class="fas fa-home"></i>
+                トップページに戻る
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // パスワード表示/非表示の切り替え
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+        
+        // フォーム送信処理（現在はダミー実装）
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // エラーメッセージを非表示
+            errorMessage.classList.remove('show');
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // バリデーション
+            if (!email || !password) {
+                showError('メールアドレスとパスワードを入力してください');
+                return;
+            }
+            
+            // メールアドレスの形式チェック
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('正しいメールアドレスを入力してください');
+                return;
+            }
+            
+            // ローディング状態
+            const submitButton = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ログイン中...';
+            submitButton.disabled = true;
+            
+            // TODO: 実際の認証処理をここに実装
+            // 現在はダミー実装（3秒後にダッシュボードへリダイレクト）
+            
+            setTimeout(() => {
+                // 開発中の注意メッセージ
+                alert('🚧 開発中の機能です
+
+現在、バックエンド認証システムの実装準備中です。
+完成後、Firebase Authenticationと連携してログイン機能が有効になります。
+
+ダッシュボード画面のプレビューに移動します。');
+                
+                // ダッシュボードへリダイレクト
+                window.location.href = 'dashboard.html';
+            }, 1500);
+            
+            /*
+            // 実装例（Firebase使用時）
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password, rememberMe })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // ログイン成功
+                    localStorage.setItem('authToken', data.token);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // ログイン失敗
+                    showError(data.message || 'ログインに失敗しました');
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }
+            } catch (error) {
+                showError('ネットワークエラーが発生しました');
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }
+            */
+        });
+        
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+            
+            // 5秒後に自動で非表示
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Enterキーでログイン
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && (e.target.id === 'email' || e.target.id === 'password')) {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+    
+    <!-- JSON-LD構造化データ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "ログイン | 大学赴任者家族帯同支援プログラム",
+        "description": "大学赴任者家族帯同支援プログラムのログインページ",
+        "url": "https://hiyusho.github.io/university-relocation-support/login.html",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "大学赴任者家族帯同支援プログラム",
+            "url": "https://hiyusho.github.io/university-relocation-support/"
+        }
+    }
+    </script>
+</body>
+</html>
