@@ -10,9 +10,10 @@
         /* 地域選択セクションのスタイル */
         .region-selection {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 4rem 2rem;
-            margin: 3rem 0;
+            padding: 3rem 1.5rem;
+            margin: 2rem 0;
             border-radius: 16px;
+            max-width: 100%;
         }
 
         .region-selection h2 {
@@ -31,10 +32,24 @@
 
         .region-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 100%;
             margin: 0 auto;
+        }
+        
+        /* タブレット・デスクトップで3カラム表示 */
+        @media (min-width: 992px) {
+            .region-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* スマホで1カラム表示 */
+        @media (max-width: 768px) {
+            .region-cards {
+                grid-template-columns: 1fr;
+            }
         }
 
         .region-card {
@@ -191,6 +206,54 @@
                 font-size: 1.8rem;
             }
         }
+    
+        /* コンテナの幅制限 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            box-sizing: border-box;
+        }
+
+        /* ヘッダーの調整 */
+        header {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* レスポンシブ対応の改善 */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 0 1rem;
+            }
+            
+            .sidebar {
+                width: 220px !important;
+            }
+            
+            .main-content {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .right-sidebar {
+                width: 250px !important;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar,
+            .right-sidebar {
+                width: 100% !important;
+                max-width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
