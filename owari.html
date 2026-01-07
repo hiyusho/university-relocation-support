@@ -4,41 +4,662 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>尾張地区居住ガイド - 大学赴任者家族帯同支援プログラム</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/nagoya-city.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/region.css">
     <style>
-        /* 尾張地区カラーテーマ: パープル */
-        .hero-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .stat-card .icon, .feature-list li i { color: #667eea; }
-        .city-card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .university-tag { background: #e8eaf6; color: #667eea; }
-        .cta-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .cta-button { color: #667eea; }
-        .testimonial-avatar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .faq-question i { color: #667eea; }
+        /* 基本リセット */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        /* 地域ページ共通スタイル */
+        
+        /* ヒーローセクション */
+        .hero-section {
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            opacity: 0.95;
+            z-index: 0;
+        }
+        
+        .hero-section h1,
+        .hero-section p {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 地域紹介セクション */
+        .region-intro {
+            background: linear-gradient(to bottom, #f8f9fa, white);
+            padding: 4rem 2rem;
+        }
+        
+        .region-intro .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* 統計カード */
+        .region-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .stat-card .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .label {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* セクション共通 */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* 都市カードグリッド */
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+        }
+        
+        .city-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .city-card-header {
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .city-card-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .city-card-header .subtitle {
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+        
+        .city-card-header a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+        
+        .city-card-header a:hover {
+            opacity: 0.8;
+        }
+        
+        .city-card-body {
+            padding: 2.5rem 2rem;
+        }
+        
+        /* 大学タグ */
+        .university-tag {
+            display: inline-block;
+            background: #e8eaf6;
+            color: #667eea;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin: 0.3rem;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        
+        .university-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 特徴リスト */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-list li {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            color: #667eea;
+        }
+        
+        /* 情報行 */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .info-value {
+            color: #333;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        /* 画像ギャラリー */
+        .region-gallery {
+            padding: 4rem 2rem;
+            background: linear-gradient(to bottom, white, #f8f9fa);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            padding: 1.8rem;
+        }
+        
+        .gallery-caption h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .gallery-caption p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        .gallery-caption .location-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+        }
+        
+        /* ハイライトセクション */
+        .section-highlight {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+        
+        /* その他の市町村セクション */
+        .city-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .city-tag {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .city-tag:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .city-tag a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        /* 証言カード */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-right: 1rem;
+        }
+        
+        .testimonial-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .testimonial-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        
+        .testimonial-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        
+        /* FAQセクション */
+        .faq-container {
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        
+        .faq-item {
+            background: white;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .faq-question {
+            padding: 1.5rem 2rem;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            background: #f8f9fa;
+        }
+        
+        .faq-question i {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            color: #667eea;
+        }
+        
+        .faq-answer {
+            padding: 1.5rem 2rem;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .faq-answer p {
+            margin: 0;
+        }
+        
+        /* CTAセクション */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* フッター */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 1024px) {
+            .region-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .region-intro {
+                padding: 3rem 1.5rem;
+            }
+            
+            .section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .city-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .region-stats {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .stat-card .icon {
+                font-size: 2rem;
+            }
+            
+            .stat-card .number {
+                font-size: 1.8rem;
+            }
+            
+            .city-card-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .faq-question {
+                padding: 1.2rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .faq-answer {
+                padding: 1.2rem 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">ValueGlow</a>
-            <button class="nav-toggle" aria-label="メニューを開く">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu">
-                <li><a href="index.html">トップページ</a></li>
-                <li><a href="nagoya-city.html">名古屋市</a></li>
-                <li><a href="owari.html" class="active">尾張地区</a></li>
-                <li><a href="registration.html">新規登録</a></li>
-                <li><a href="career-consulting.html">キャリア相談</a></li>
-            </ul>
-        </div>
-    </nav>
-
     <div class="hero-section">
         <h1><i class="fas fa-map-marked-alt"></i> 尾張地区居住ガイド</h1>
         <p>名古屋市を取り囲む、バランスの良い住環境エリア</p>
@@ -77,7 +698,6 @@
             </div>
         </div>
     </div>
-
     <section class="container section">
         <h2 class="section-title"><i class="fas fa-graduation-cap"></i> 主要大学別おすすめエリア</h2>
         
@@ -258,42 +878,6 @@
                         <li><i class="fas fa-check"></i> 家賃が非常にリーズナブル</li>
                     </ul>
     <!-- 地域の風景 -->
-    <section class="region-gallery">
-        <div class="container">
-            <h2 class="section-title"><i class="fas fa-images"></i> 尾張地区の魅力</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="https://www.aichi-koen.com/moricoro/wp-content/uploads/sites/5/slider01.jpg" alt="モリコロパーク" loading="lazy">
-                    <div class="gallery-caption">
-                        <h4><i class="fas fa-leaf"></i> モリコロパーク</h4>
-                        <p>愛・地球博記念公園。広大な敷地に芝生広場、大観覧車、アイススケート場などがあり、家族連れに大人気のスポット。</p>
-                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 長久手市</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <img src="https://kariya-oasis.com/wp-content/uploads/2023/03/facility_img01.jpg" alt="刈谷ハイウェイオアシス" loading="lazy">
-                    <div class="gallery-caption">
-                        <h4><i class="fas fa-ferris-wheel"></i> 刈谷ハイウェイオアシス</h4>
-                        <p>観覧車が目印の大型レジャー施設。温泉、遊園地、産直市場が一体となった家族で楽しめるスポット。</p>
-                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 刈谷市</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <img src="https://inuyama-castle.jp/wp-content/themes/inuyama-castle/assets/images/top/mv_img01.jpg" alt="国宝犬山城" loading="lazy">
-                    <div class="gallery-caption">
-                        <h4><i class="fas fa-torii-gate"></i> 国宝犬山城</h4>
-                        <p>現存する日本最古の木造天守。国宝五城の一つで、天守から眺める木曽川と町並みの景色は絶景。</p>
-                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 犬山市</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-                    
-                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
-                    <div class="info-row">
                         <span class="info-label">家賃相場（3LDK）</span>
                         <span class="info-value">6-9万円</span>
                     </div>
@@ -352,6 +936,43 @@
         </div>
     </section>
 
+<!-- 画像ギャラリーをここに挿入 -->
+    <section class="region-gallery">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-images"></i> 尾張地区の魅力</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://www.aichi-koen.com/moricoro/wp-content/uploads/sites/5/slider01.jpg" alt="モリコロパーク" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-leaf"></i> モリコロパーク</h4>
+                        <p>愛・地球博記念公園。広大な敷地に芝生広場、大観覧車、アイススケート場などがあり、家族連れに大人気のスポット。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 長久手市</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://kariya-oasis.com/wp-content/uploads/2023/03/facility_img01.jpg" alt="刈谷ハイウェイオアシス" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-ferris-wheel"></i> 刈谷ハイウェイオアシス</h4>
+                        <p>観覧車が目印の大型レジャー施設。温泉、遊園地、産直市場が一体となった家族で楽しめるスポット。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 刈谷市</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://inuyama-castle.jp/wp-content/themes/inuyama-castle/assets/images/top/mv_img01.jpg" alt="国宝犬山城" loading="lazy">
+                    <div class="gallery-caption">
+                        <h4><i class="fas fa-torii-gate"></i> 国宝犬山城</h4>
+                        <p>現存する日本最古の木造天守。国宝五城の一つで、天守から眺める木曽川と町並みの景色は絶景。</p>
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> 犬山市</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+                    
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">基本情報</h4>
+                    <div class="info-row">
     <div class="section-highlight">
         <div class="container">
             <h2 class="section-title"><i class="fas fa-lightbulb"></i> 尾張地区で暮らすメリット</h2>
@@ -541,7 +1162,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>お問い合わせ</h4>
-                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="234a4d454c6355424f5646444f4c540d4953">[email&#160;protected]</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e1888f878ea197808d9484868d8e96cf8b91">[email&#160;protected]</a></p>
                     <p><i class="fas fa-globe"></i> <a href="https://www.valueglow.jp/" target="_blank">www.valueglow.jp</a></p>
                 </div>
             </div>
