@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ | 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="大学赴任者家族帯同支援プログラムのマイページ。面談予約管理、企業紹介、応募書類管理などを一元管理できます。">
+    <meta name="keywords" content="マイページ,ダッシュボード,面談予約,企業紹介,応募書類,キャリア支援">
+    <meta name="author" content="大学赴任者家族帯同支援プログラム">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- OGP -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="マイページ | 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="あなた専用のマイページで、面談予約や応募状況を一元管理できます。">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/dashboard.html">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/dashboard.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
+                         'Hiragino Sans', Meiryo, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* メインコンテナ */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        /* サイドバー */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .sidebar-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea;
+        }
+        
+        .sidebar-menu a.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-menu i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* コンテンツエリア */
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        /* ウェルカムカード */
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .welcome-card h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        /* カードグリッド */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .card-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+        
+        .card-icon.schedule {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-icon.message {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .card-icon.company {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .card-icon.document {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .card-icon.stats {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .card-count {
+            background: #e3f2fd;
+            color: #1976D2;
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        /* 予定カード */
+        .schedule-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .schedule-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .schedule-date {
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .schedule-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .schedule-info {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .schedule-info i {
+            color: #999;
+        }
+        
+        .schedule-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 6px 15px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        /* メッセージリスト */
+        .message-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .message-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .message-sender {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .message-preview {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .message-unread {
+            background: #e3f2fd;
+        }
+        
+        .unread-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #f5576c;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        /* 企業リスト */
+        .company-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .company-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .company-status {
+            width: 8px;
+            height: 40px;
+            border-radius: 4px;
+        }
+        
+        .status-passed {
+            background: #4caf50;
+        }
+        
+        .status-pending {
+            background: #ff9800;
+        }
+        
+        .status-new {
+            background: #2196F3;
+        }
+        
+        .company-info {
+            flex: 1;
+        }
+        
+        .company-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .company-status-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .company-action {
+            padding: 6px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .company-action:hover {
+            background: #5568d3;
+        }
+        
+        /* 書類リスト */
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .document-item:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .document-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .document-icon {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+        
+        .document-info {
+            flex: 1;
+        }
+        
+        .document-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+        
+        .document-meta {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: #f0f0f0;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-icon:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        /* 統計カード */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 空の状態 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        
+        .empty-state p {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        /* ボタン */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .view-all {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .view-all a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .view-all a:hover {
+            text-decoration: underline;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .sidebar-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .welcome-card h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-info span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>家族帯同支援プログラム</span>
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">田</div>
+                    <span>田中様</span>
+                </div>
+                <a href="log-in.html" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    ログアウト
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテナ -->
+    <div class="main-container">
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <div class="sidebar-title">メニュー</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> ダッシュボード</a></li>
+                <li><a href="career-consulting.html"><i class="fas fa-calendar-alt"></i> 面談予約</a></li>
+                <li><a href="#companies"><i class="fas fa-building"></i> 企業紹介</a></li>
+                <li><a href="#documents"><i class="fas fa-file-alt"></i> 応募書類</a></li>
+                <li><a href="#messages"><i class="fas fa-envelope"></i> メッセージ</a></li>
+                <li><a href="#reports"><i class="fas fa-chart-line"></i> 活動レポート</a></li>
+                <li><a href="#profile"><i class="fas fa-user"></i> プロフィール</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> 設定</a></li>
+            </ul>
+        </aside>
+
+        <!-- コンテンツ -->
+        <main class="content">
+            <!-- ウェルカムカード -->
+            <div class="welcome-card">
+                <h1>こんにちは、田中様 👋</h1>
+                <p>最終ログイン: 2026年1月7日 10:30</p>
+            </div>
+
+            <!-- カードグリッド -->
+            <div class="card-grid">
+                <!-- 次回の予定 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon schedule">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="card-title">次回の予定</div>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-date">2026年1月15日（水）14:00-15:00</div>
+                        <div class="schedule-title">初回キャリア面談</div>
+                        <div class="schedule-info">
+                            <i class="fas fa-video"></i>
+                            <span>オンライン（Zoom）</span>
+                        </div>
+                        <div class="schedule-actions">
+                            <button class="btn-small btn-primary">詳細を見る</button>
+                            <button class="btn-small btn-secondary">予約変更</button>
+                        </div>
+                    </div>
+                    
+                    <div class="view-all">
+                        <a href="career-consulting.html">
+                            すべての予定を見る
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- メッセージ -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon message">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="card-title">メッセージ</div>
+                        <span class="card-count">2件未読</span>
+                    </div>
+                    
+                    <div class="message-item message-unread">
+                        <div class="message-header">
+                            <div class="message-sender">
+                                <span class="unread-badge"></span>
+                                コンサルタント 山田
+                            </div>
+                            <div class="message-time">今日 9:30</div>
+                        </div>
+                        <div class="message-preview">
+                            面談準備のお願い：当日までに履歴書と職務経歴書のご準備をお願いします...
+                        </div>
+                    </div>
+                    
+                    <div class="message-item message-unread">
+                        <div class="message-header">
+                            <div class="message-sender">
+                                <span class="unread-badge"></span>
+                                システム通知
+                            </div>
+                            <div class="message-time">昨日 16:20</div>
+                        </div>
+                        <div class="message-preview">
+                            新しい企業紹介があります。マイページでご確認ください。
+                        </div>
+                    </div>
+                    
+                    <div class="view-all">
+                        <a href="#messages">
+                            すべてのメッセージを見る
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2行 -->
+            <div class="card-grid">
+                <!-- 紹介企業リスト -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon company">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="card-title">紹介企業リスト</div>
+                        <span class="card-count">3社</span>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-status status-passed"></div>
+                        <div class="company-info">
+                            <div class="company-name">ABC株式会社</div>
+                            <div class="company-status-text">書類選考通過 → 面接予定: 1/20</div>
+                        </div>
+                        <a href="#" class="company-action">詳細</a>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-status status-pending"></div>
+                        <div class="company-info">
+                            <div class="company-name">XYZ株式会社</div>
+                            <div class="company-status-text">応募中（1/8応募）</div>
+                        </div>
+                        <a href="#" class="company-action">詳細</a>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-status status-new"></div>
+                        <div class="company-info">
+                            <div class="company-name">DEF株式会社</div>
+                            <div class="company-status-text">紹介済み（未応募）</div>
+                        </div>
+                        <a href="#" class="company-action">応募</a>
+                    </div>
+                    
+                    <div class="view-all">
+                        <a href="#companies">
+                            すべての企業を見る
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 応募書類 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon document">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-title">応募書類</div>
+                        <span class="card-count">3件</span>
+                    </div>
+                    
+                    <div class="document-item">
+                        <i class="fas fa-file-pdf document-icon"></i>
+                        <div class="document-info">
+                            <div class="document-name">履歴書_v3.pdf</div>
+                            <div class="document-meta">最終更新: 2026/1/8 | 245KB</div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-icon" title="ダウンロード">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn-icon" title="削除">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="document-item">
+                        <i class="fas fa-file-pdf document-icon"></i>
+                        <div class="document-info">
+                            <div class="document-name">職務経歴書_v2.pdf</div>
+                            <div class="document-meta">最終更新: 2026/1/5 | 312KB</div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-icon" title="ダウンロード">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn-icon" title="削除">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="document-item">
+                        <i class="fas fa-file-pdf document-icon"></i>
+                        <div class="document-info">
+                            <div class="document-name">カバーレター_ABC社.pdf</div>
+                            <div class="document-meta">最終更新: 2026/1/8 | 128KB</div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-icon" title="ダウンロード">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn-icon" title="削除">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="view-all">
+                        <a href="#documents">
+                            <i class="fas fa-plus-circle"></i>
+                            新しい書類をアップロード
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活動サマリー -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon stats">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="card-title">活動サマリー</div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">面談実施回数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">応募企業数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">67%</div>
+                        <div class="stat-label">書類通過率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">21</div>
+                        <div class="stat-label">利用日数</div>
+                    </div>
+                </div>
+                
+                <div class="view-all">
+                    <a href="#reports">
+                        詳細レポートを見る
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 開発中の注意メッセージ
+        document.addEventListener('DOMContentLoaded', function() {
+            // すべてのボタンとリンクにイベントリスナーを追加
+            const interactiveElements = document.querySelectorAll('button:not(.logout-btn), a[href="#"], a[href^="#"]:not([href="#"])');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    // ログアウトボタンとトップへ戻るリンクは除外
+                    if (this.classList.contains('logout-btn') || this.href && this.href.includes('index.html')) {
+                        return;
+                    }
+                    
+                    if (this.href && (this.href.includes('career-consulting.html') || 
+                                     this.href.includes('job-search.html') ||
+                                     this.href.includes('skill-up.html') ||
+                                     this.href.includes('family-support.html'))) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    
+                    const actionName = this.textContent.trim() || this.title || '機能';
+                    alert(`🚧 開発中の機能です
+
+「${actionName}」は現在開発準備中です。
+完成後、Firebase連携により実際のデータ管理機能が有効になります。`);
+                });
+            });
+        });
+        
+        // ログアウト処理（デモ）
+        document.querySelector('.logout-btn').addEventListener('click', function(e) {
+            if (this.href.includes('log-in.html')) {
+                const confirmed = confirm('ログアウトしますか？');
+                if (!confirmed) {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+    
+    <!-- JSON-LD構造化データ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "マイページ | 大学赴任者家族帯同支援プログラム",
+        "description": "大学赴任者家族帯同支援プログラムのマイページ",
+        "url": "https://hiyusho.github.io/university-relocation-support/dashboard.html"
+    }
+    </script>
+</body>
+</html>
