@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テストデータ作成ツール - 求人データ</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2d3748;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .warning-icon {
+            color: #d97706;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .warning-text {
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .info-text {
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f4ff;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .progress {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .progress.show {
+            display: block;
+        }
+
+        .progress-text {
+            color: #64748b;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .job-list {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .job-item {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .job-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .job-company {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="dashboard.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            ダッシュボードに戻る
+        </a>
+
+        <div class="card">
+            <h1>
+                <i class="fas fa-database"></i>
+                テストデータ作成ツール
+            </h1>
+            <p class="subtitle">求人データを一括で Firestore に作成します</p>
+
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Warning -->
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <div class="warning-text">
+                    <strong>注意:</strong> このツールは開発・テスト用です。<br>
+                    既存のデータは影響を受けませんが、本番環境では使用しないでください。
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="info">
+                <div class="info-text">
+                    <strong>作成されるデータ:</strong><br>
+                    • 10件の求人データ（愛知県内の企業）<br>
+                    • 業種: 製造業、IT・通信、サービス、商社、金融など<br>
+                    • 雇用形態: 正社員、契約社員、パート<br>
+                    • 勤務地: 名古屋市、豊田市、岡崎市など
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <button id="createBtn" class="btn btn-primary" onclick="createTestJobs()">
+                <i class="fas fa-plus-circle"></i>
+                テストデータを作成（10件）
+            </button>
+
+            <button id="deleteBtn" class="btn btn-danger" onclick="deleteAllJobs()">
+                <i class="fas fa-trash-alt"></i>
+                すべての求人データを削除
+            </button>
+
+            <button class="btn btn-secondary" onclick="window.location.href='job-list.html'">
+                <i class="fas fa-list"></i>
+                企業一覧を見る
+            </button>
+
+            <!-- Progress -->
+            <div id="progress" class="progress">
+                <div class="progress-text" id="progressText">処理中...</div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalJobs">0</div>
+                    <div class="stat-label">登録済み求人</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="createdJobs">0</div>
+                    <div class="stat-label">作成した求人</div>
+                </div>
+            </div>
+
+            <!-- Job List -->
+            <div id="jobList" class="job-list" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadStats();
+            } else {
+                window.location.href = 'log-in.html';
+            }
+        });
+
+        // Test job data
+        const testJobs = [
+            {
+                companyName: "株式会社トヨタ自動車東日本",
+                title: "生産技術エンジニア",
+                description: "自動車の生産技術開発および生産ライン改善業務を担当していただきます。新しい生産技術の導入や既存ラインの効率化を推進します。",
+                requirements: "機械工学または電気工学の知識、製造業での実務経験3年以上",
+                employmentType: "正社員",
+                location: "豊田市",
+                industry: "製造業",
+                salary: "月給30万円〜50万円（経験・能力による）",
+                workHours: "8:00〜17:00（実働8時間）",
+                holidays: "週休2日制（土日）、年間休日120日、GW・夏季・年末年始休暇",
+                benefits: "社会保険完備、退職金制度、社員食堂、通勤手当全額支給、家族手当",
+                selectionProcess: "書類選考 → 一次面接 → 二次面接（役員面接） → 内定"
+            },
+            {
+                companyName: "株式会社デンソー",
+                title: "組込みソフトウェアエンジニア",
+                description: "自動車向け電子制御システムの組込みソフトウェア開発を担当。C/C++を使用した開発経験を活かせます。",
+                requirements: "C/C++プログラミング経験2年以上、組込みシステム開発経験",
+                employmentType: "正社員",
+                location: "刈谷市",
+                industry: "製造業",
+                salary: "月給28万円〜45万円",
+                workHours: "8:30〜17:30（フレックスタイム制あり）",
+                holidays: "完全週休2日制（土日祝）、年間休日125日",
+                benefits: "社会保険完備、退職金制度、持株会、社員寮、通勤手当、資格取得支援",
+                selectionProcess: "書類選考 → 適性検査 → 面接（2回） → 内定"
+            },
+            {
+                companyName: "株式会社名古屋銀行",
+                title: "法人営業担当",
+                description: "中小企業向けの融資・預金業務、資金運用のコンサルティングを行います。地域経済の発展に貢献できるやりがいのある仕事です。",
+                requirements: "大卒以上、金融業界経験者優遇（未経験可）",
+                employmentType: "正社員",
+                location: "名古屋市",
+                industry: "金融",
+                salary: "月給23万円〜35万円",
+                workHours: "8:45〜17:00",
+                holidays: "完全週休2日制（土日祝）、年間休日120日",
+                benefits: "社会保険完備、退職金制度、財形貯蓄、住宅ローン優遇、資格取得支援",
+                selectionProcess: "書類選考 → 筆記試験 → 面接（2回） → 内定"
+            },
+            {
+                companyName: "株式会社中部電力",
+                title: "電気設備保守管理",
+                description: "発電所や変電所の電気設備の保守・点検業務を担当。安定した電力供給を支える重要な仕事です。",
+                requirements: "電気工事士資格保有者優遇、電気設備の知識",
+                employmentType: "正社員",
+                location: "名古屋市",
+                industry: "サービス",
+                salary: "月給26万円〜40万円",
+                workHours: "8:30〜17:15",
+                holidays: "週休2日制、年間休日120日",
+                benefits: "社会保険完備、退職金制度、社員寮、通勤手当、資格取得支援",
+                selectionProcess: "書類選考 → 適性検査 → 面接 → 健康診断 → 内定"
+            },
+            {
+                companyName: "イオンリテール株式会社",
+                title: "店舗マネージャー候補",
+                description: "イオンモール内の店舗運営管理を担当。スタッフ育成や売上管理など、店舗マネジメント全般を経験できます。",
+                requirements: "小売業経験2年以上、リーダー経験者優遇",
+                employmentType: "正社員",
+                location: "名古屋市",
+                industry: "商社・流通",
+                salary: "月給24万円〜38万円",
+                workHours: "シフト制（実働8時間）",
+                holidays: "月9日休み、年間休日110日",
+                benefits: "社会保険完備、従業員割引、退職金制度、通勤手当",
+                selectionProcess: "書類選考 → 面接（2回） → 内定"
+            },
+            {
+                companyName: "株式会社NTTデータ東海",
+                title: "Webアプリケーションエンジニア",
+                description: "Java/PHP/Pythonを使用した業務システム開発。要件定義から保守まで一貫して携われます。",
+                requirements: "プログラミング経験1年以上、Webアプリ開発経験",
+                employmentType: "正社員",
+                location: "名古屋市",
+                industry: "IT・通信",
+                salary: "月給25万円〜42万円",
+                workHours: "9:00〜18:00（フレックスタイム制）",
+                holidays: "完全週休2日制（土日祝）、年間休日125日",
+                benefits: "社会保険完備、退職金制度、リモートワーク可、資格取得支援、書籍購入支援",
+                selectionProcess: "書類選考 → コーディングテスト → 面接（2回） → 内定"
+            },
+            {
+                companyName: "愛知県厚生農業協同組合連合会",
+                title: "看護師（病棟勤務）",
+                description: "総合病院での病棟看護業務。患者様に寄り添った看護を提供します。教育体制充実で安心して働けます。",
+                requirements: "看護師資格必須、経験不問（新卒可）",
+                employmentType: "正社員",
+                location: "岡崎市",
+                industry: "医療・福祉",
+                salary: "月給24万円〜35万円（夜勤手当含む）",
+                workHours: "シフト制（3交代）",
+                holidays: "4週8休、年間休日110日",
+                benefits: "社会保険完備、退職金制度、院内保育所、住宅手当、夜勤手当、資格取得支援",
+                selectionProcess: "書類選考 → 面接 → 健康診断 → 内定"
+            },
+            {
+                companyName: "トヨタ紡織株式会社",
+                title: "品質管理スタッフ",
+                description: "自動車部品の品質管理・品質保証業務。検査データ分析や改善活動を推進します。",
+                requirements: "品質管理経験または製造業経験2年以上",
+                employmentType: "正社員",
+                location: "豊田市",
+                industry: "製造業",
+                salary: "月給26万円〜40万円",
+                workHours: "8:00〜17:00",
+                holidays: "週休2日制、年間休日121日",
+                benefits: "社会保険完備、退職金制度、社員食堂、通勤手当、住宅手当",
+                selectionProcess: "書類選考 → 適性検査 → 面接（2回） → 内定"
+            },
+            {
+                companyName: "株式会社JR東海",
+                title: "駅務係（名古屋駅）",
+                description: "名古屋駅での改札業務、お客様案内、駅構内管理などを担当。接客スキルを磨けます。",
+                requirements: "高卒以上、接客経験者優遇",
+                employmentType: "契約社員",
+                location: "名古屋市",
+                industry: "サービス",
+                salary: "月給20万円〜28万円",
+                workHours: "シフト制（実働7時間45分）",
+                holidays: "月8〜10日休み、年間休日110日",
+                benefits: "社会保険完備、交通費全額支給、制服貸与、社員割引",
+                selectionProcess: "書類選考 → 適性検査 → 面接 → 内定"
+            },
+            {
+                companyName: "パナソニック ライフソリューションズ社",
+                title: "カスタマーサポート",
+                description: "家電製品のお客様サポート業務。電話・メール対応、製品の使い方説明などを行います。",
+                requirements: "PCスキル（Excel、Word）、接客経験者優遇",
+                employmentType: "パート",
+                location: "春日井市",
+                industry: "サービス",
+                salary: "時給1,200円〜1,500円",
+                workHours: "9:00〜18:00の間で週3日〜（シフト制）",
+                holidays: "シフト制、週休2日以上",
+                benefits: "社会保険完備（条件あり）、交通費支給、社員割引、研修充実",
+                selectionProcess: "書類選考 → 面接 → 内定"
+            }
+        ];
+
+        // Create test jobs
+        window.createTestJobs = async function() {
+            const createBtn = document.getElementById('createBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const progress = document.getElementById('progress');
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+            const stats = document.getElementById('stats');
+            const jobList = document.getElementById('jobList');
+
+            createBtn.disabled = true;
+            deleteBtn.disabled = true;
+            progress.classList.add('show');
+            stats.style.display = 'none';
+            jobList.style.display = 'none';
+
+            let created = 0;
+            const total = testJobs.length;
+
+            try {
+                for (let i = 0; i < testJobs.length; i++) {
+                    progressText.textContent = `求人データを作成中... (${i + 1}/${total})`;
+                    progressFill.style.width = `${((i + 1) / total) * 100}%`;
+
+                    await addDoc(collection(db, 'jobs'), {
+                        ...testJobs[i],
+                        postedAt: serverTimestamp()
+                    });
+
+                    created++;
+                }
+
+                progressText.textContent = '完了しました！';
+                progressFill.style.width = '100%';
+
+                showAlert(`${created}件の求人データを作成しました！`, 'success');
+                
+                setTimeout(() => {
+                    progress.classList.remove('show');
+                    loadStats();
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error creating jobs:', error);
+                showAlert('データ作成中にエラーが発生しました。', 'error');
+                progress.classList.remove('show');
+            } finally {
+                createBtn.disabled = false;
+                deleteBtn.disabled = false;
+            }
+        };
+
+        // Delete all jobs
+        window.deleteAllJobs = async function() {
+            if (!confirm('すべての求人データを削除しますか？\nこの操作は取り消せません。')) {
+                return;
+            }
+
+            const createBtn = document.getElementById('createBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const progress = document.getElementById('progress');
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+
+            createBtn.disabled = true;
+            deleteBtn.disabled = true;
+            progress.classList.add('show');
+
+            try {
+                const jobsRef = collection(db, 'jobs');
+                const querySnapshot = await getDocs(jobsRef);
+
+                const total = querySnapshot.size;
+                let deleted = 0;
+
+                progressText.textContent = `求人データを削除中... (0/${total})`;
+                progressFill.style.width = '0%';
+
+                for (const docSnap of querySnapshot.docs) {
+                    await deleteDoc(doc(db, 'jobs', docSnap.id));
+                    deleted++;
+                    progressText.textContent = `求人データを削除中... (${deleted}/${total})`;
+                    progressFill.style.width = `${(deleted / total) * 100}%`;
+                }
+
+                progressText.textContent = '削除が完了しました！';
+                progressFill.style.width = '100%';
+
+                showAlert(`${deleted}件の求人データを削除しました。`, 'success');
+
+                setTimeout(() => {
+                    progress.classList.remove('show');
+                    loadStats();
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error deleting jobs:', error);
+                showAlert('データ削除中にエラーが発生しました。', 'error');
+                progress.classList.remove('show');
+            } finally {
+                createBtn.disabled = false;
+                deleteBtn.disabled = false;
+            }
+        };
+
+        // Load stats
+        async function loadStats() {
+            try {
+                const jobsRef = collection(db, 'jobs');
+                const querySnapshot = await getDocs(jobsRef);
+
+                const stats = document.getElementById('stats');
+                const totalJobs = document.getElementById('totalJobs');
+                const jobList = document.getElementById('jobList');
+
+                totalJobs.textContent = querySnapshot.size;
+                stats.style.display = 'grid';
+
+                if (querySnapshot.size > 0) {
+                    jobList.style.display = 'block';
+                    jobList.innerHTML = '<h3 style="margin-bottom: 15px; color: #2d3748;">登録済み求人一覧</h3>';
+                    
+                    querySnapshot.forEach((doc) => {
+                        const job = doc.data();
+                        const jobItem = document.createElement('div');
+                        jobItem.className = 'job-item';
+                        jobItem.innerHTML = `
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-company">${job.companyName} - ${job.location}</div>
+                        `;
+                        jobList.appendChild(jobItem);
+                    });
+                } else {
+                    jobList.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.innerHTML = `
+                <span>${type === 'success' ? '✓' : '⚠'}</span>
+                <span>${message}</span>
+            `;
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
