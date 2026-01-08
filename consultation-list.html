@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面談予約一覧 - 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="予約済みのキャリア面談一覧を確認・管理できます。日時変更、キャンセル、詳細確認など。">
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/consultation-list.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="面談予約一覧 - 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="予約済みのキャリア面談一覧を確認・管理">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/consultation-list.html">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #f0f4ff;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #2d3748;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Consultation List */
+        .consultation-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .consultation-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .consultation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-scheduled {
+            background: #e6f7ff;
+            color: #0066cc;
+        }
+
+        .status-completed {
+            background: #e6ffe6;
+            color: #00aa00;
+        }
+
+        .status-cancelled {
+            background: #ffe6e6;
+            color: #cc0000;
+        }
+
+        .card-info {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .info-icon {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .card-content {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-content h4 {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            color: #2d3748;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            color: #2d3748;
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header-right {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-footer {
+                flex-direction: column;
+            }
+
+            .btn-small {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="dashboard.html" class="back-link">
+                    ← ダッシュボード
+                </a>
+                <h1>📅 面談予約一覧</h1>
+            </div>
+            <div class="header-right">
+                <a href="consultation-booking.html" class="btn btn-primary">
+                    ➕ 新規予約
+                </a>
+            </div>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <div class="tabs">
+                <button class="tab active" data-status="all">すべて</button>
+                <button class="tab" data-status="scheduled">予定</button>
+                <button class="tab" data-status="completed">完了</button>
+                <button class="tab" data-status="cancelled">キャンセル</button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+
+        <!-- Consultation List -->
+        <div id="consultationList" class="consultation-list" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">📭</div>
+            <h2>予約がありません</h2>
+            <p>まだ面談の予約がありません。<br>新しい予約を作成してください。</p>
+            <a href="consultation-booking.html" class="btn btn-primary">
+                ➕ 新規予約を作成
+            </a>
+        </div>
+    </div>
+
+    <!-- Cancel Confirmation Modal -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ 予約をキャンセルしますか？</h3>
+            </div>
+            <div class="modal-body">
+                <p>この面談予約をキャンセルしてもよろしいですか？</p>
+                <p style="color: #dc2626; font-weight: 600; margin-top: 10px;">
+                    ※ この操作は取り消せません
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCancelModal()">戻る</button>
+                <button class="btn btn-danger" onclick="confirmCancel()">キャンセルする</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>📋 予約詳細</h3>
+            </div>
+            <div class="modal-body" id="detailContent">
+                <!-- Content will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeDetailModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc, Timestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let consultations = [];
+        let currentFilter = 'all';
+        let cancelConsultationId = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadConsultations();
+            } else {
+                window.location.href = 'log-in.html';
+            }
+        });
+
+        // Load consultations
+        async function loadConsultations() {
+            try {
+                const loading = document.getElementById('loading');
+                const consultationList = document.getElementById('consultationList');
+                const emptyState = document.getElementById('emptyState');
+
+                loading.style.display = 'block';
+                consultationList.style.display = 'none';
+                emptyState.style.display = 'none';
+
+                // Query consultations
+                const consultationsRef = collection(db, 'consultations');
+                const q = query(
+                    consultationsRef,
+                    where('userId', '==', currentUser.uid),
+                    orderBy('consultationDate', 'desc')
+                );
+
+                const querySnapshot = await getDocs(q);
+                consultations = [];
+
+                querySnapshot.forEach((doc) => {
+                    consultations.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                loading.style.display = 'none';
+
+                if (consultations.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    consultationList.style.display = 'grid';
+                    renderConsultations();
+                }
+            } catch (error) {
+                console.error('Error loading consultations:', error);
+                showAlert('予約の読み込みに失敗しました。', 'error');
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // Render consultations
+        function renderConsultations() {
+            const consultationList = document.getElementById('consultationList');
+            
+            let filteredConsultations = consultations;
+            if (currentFilter !== 'all') {
+                filteredConsultations = consultations.filter(c => c.status === currentFilter);
+            }
+
+            if (filteredConsultations.length === 0) {
+                consultationList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h2>該当する予約がありません</h2>
+                        <p>このステータスの予約はまだありません。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            consultationList.innerHTML = filteredConsultations.map(consultation => {
+                const date = consultation.consultationDate.toDate();
+                const dateStr = formatDate(date);
+                const timeStr = formatTime(date);
+                const statusText = getStatusText(consultation.status);
+                const statusClass = `status-${consultation.status}`;
+                const formatText = consultation.format === 'online' ? 'オンライン (Zoom)' : '対面';
+                const createdDate = consultation.createdAt.toDate();
+
+                return `
+                    <div class="consultation-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                📅 ${dateStr} ${timeStr}
+                            </div>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-icon">📍</span>
+                                <span>${formatText}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-icon">📝</span>
+                                <span>予約日: ${formatDate(createdDate)}</span>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h4>相談内容</h4>
+                            <p>${consultation.content || '（内容なし）'}</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline btn-small" onclick="showDetail('${consultation.id}')">
+                                詳細を見る
+                            </button>
+                            ${consultation.status === 'scheduled' ? `
+                                <button class="btn btn-danger btn-small" onclick="showCancelModal('${consultation.id}')">
+                                    キャンセル
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.status;
+                renderConsultations();
+            });
+        });
+
+        // Show cancel modal
+        window.showCancelModal = function(consultationId) {
+            cancelConsultationId = consultationId;
+            document.getElementById('cancelModal').classList.add('active');
+        };
+
+        // Close cancel modal
+        window.closeCancelModal = function() {
+            document.getElementById('cancelModal').classList.remove('active');
+            cancelConsultationId = null;
+        };
+
+        // Confirm cancel
+        window.confirmCancel = async function() {
+            if (!cancelConsultationId) return;
+
+            try {
+                const consultationRef = doc(db, 'consultations', cancelConsultationId);
+                await updateDoc(consultationRef, {
+                    status: 'cancelled',
+                    cancelledAt: Timestamp.now()
+                });
+
+                showAlert('予約をキャンセルしました。', 'success');
+                closeCancelModal();
+                loadConsultations();
+            } catch (error) {
+                console.error('Error cancelling consultation:', error);
+                showAlert('キャンセルに失敗しました。もう一度お試しください。', 'error');
+            }
+        };
+
+        // Show detail modal
+        window.showDetail = function(consultationId) {
+            const consultation = consultations.find(c => c.id === consultationId);
+            if (!consultation) return;
+
+            const date = consultation.consultationDate.toDate();
+            const dateStr = formatDate(date);
+            const timeStr = formatTime(date);
+            const statusText = getStatusText(consultation.status);
+            const formatText = consultation.format === 'online' ? 'オンライン (Zoom)' : '対面';
+            const createdDate = consultation.createdAt.toDate();
+
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div style="display: grid; gap: 20px;">
+                    <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">予約日時</h4>
+                        <p style="font-size: 18px; font-weight: 700; color: #2d3748;">${dateStr} ${timeStr}</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">ステータス</h4>
+                        <span class="status-badge status-${consultation.status}">${statusText}</span>
+                    </div>
+                    <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">面談形式</h4>
+                        <p style="color: #2d3748;">${formatText}</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">相談内容</h4>
+                        <p style="color: #2d3748; line-height: 1.6;">${consultation.content || '（内容なし）'}</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">予約作成日</h4>
+                        <p style="color: #2d3748;">${formatDate(createdDate)} ${formatTime(createdDate)}</p>
+                    </div>
+                    ${consultation.cancelledAt ? `
+                        <div>
+                            <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">キャンセル日時</h4>
+                            <p style="color: #dc2626;">${formatDate(consultation.cancelledAt.toDate())} ${formatTime(consultation.cancelledAt.toDate())}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('detailModal').classList.add('active');
+        };
+
+        // Close detail modal
+        window.closeDetailModal = function() {
+            document.getElementById('detailModal').classList.remove('active');
+        };
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <span>${type === 'success' ? '✓' : '⚠'}</span>
+                <span>${message}</span>
+            `;
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Format date
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+            const weekday = weekdays[date.getDay()];
+            return `${year}年${month}月${day}日（${weekday}）`;
+        }
+
+        // Format time
+        function formatTime(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+
+        // Get status text
+        function getStatusText(status) {
+            const statusMap = {
+                'scheduled': '予定',
+                'completed': '完了',
+                'cancelled': 'キャンセル'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Close modal on outside click
+        document.getElementById('cancelModal').addEventListener('click', (e) => {
+            if (e.target.id === 'cancelModal') {
+                closeCancelModal();
+            }
+        });
+
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                closeDetailModal();
+            }
+        });
+    </script>
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "面談予約一覧",
+      "description": "予約済みのキャリア面談一覧を確認・管理",
+      "url": "https://hiyusho.github.io/university-relocation-support/consultation-list.html"
+    }
+    </script>
+</body>
+</html>
