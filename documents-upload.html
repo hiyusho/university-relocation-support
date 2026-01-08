@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書類アップロード | 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="履歴書や職務経歴書などの応募書類をアップロードできます。">
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/documents-upload.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #f0f4ff;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        /* Content */
+        .content {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        /* Upload Form */
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .form-label .required {
+            color: #ef4444;
+            margin-left: 4px;
+        }
+
+        .form-select {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* File Upload Area */
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f8fafc;
+        }
+
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Selected File */
+        .selected-file {
+            display: none;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+
+        .selected-file.show {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .file-size {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .remove-file-btn {
+            padding: 8px 15px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .remove-file-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-container.show {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #f0f4ff;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.show {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .info-box h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            font-size: 14px;
+            color: #1e40af;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-box li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="documents-list.html" class="back-link">
+                ← 書類一覧に戻る
+            </a>
+            <h1 class="header-title">書類アップロード</h1>
+        </div>
+
+        <!-- Alert -->
+        <div id="alertContainer"></div>
+
+        <!-- Content -->
+        <div class="content">
+            <h2 class="section-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                新しい書類をアップロード
+            </h2>
+
+            <form class="upload-form" id="uploadForm">
+                <!-- Document Type -->
+                <div class="form-group">
+                    <label class="form-label">
+                        書類の種類<span class="required">*</span>
+                    </label>
+                    <select class="form-select" id="documentType" required>
+                        <option value="">選択してください</option>
+                        <option value="resume">履歴書</option>
+                        <option value="cv">職務経歴書</option>
+                        <option value="cover_letter">カバーレター</option>
+                        <option value="certificate">資格証明書</option>
+                        <option value="portfolio">ポートフォリオ</option>
+                        <option value="other">その他</option>
+                    </select>
+                </div>
+
+                <!-- File Upload Area -->
+                <div class="form-group">
+                    <label class="form-label">
+                        ファイル<span class="required">*</span>
+                    </label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="upload-text">ファイルをドラッグ＆ドロップ</div>
+                        <div class="upload-hint">または、クリックしてファイルを選択</div>
+                    </div>
+                    <input type="file" class="file-input" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                </div>
+
+                <!-- Selected File Display -->
+                <div class="selected-file" id="selectedFile">
+                    <div class="file-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name" id="fileName">ファイル名</div>
+                        <div class="file-size" id="fileSize">0 KB</div>
+                    </div>
+                    <button type="button" class="remove-file-btn" onclick="removeFile()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%;">0%</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.location.href='documents-list.html'">
+                        キャンセル
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="uploadBtn">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        アップロード
+                    </button>
+                </div>
+            </form>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> アップロード可能なファイル</h4>
+                <ul>
+                    <li>対応形式: PDF, Word (.doc, .docx), 画像 (.jpg, .png)</li>
+                    <li>最大ファイルサイズ: 10MB</li>
+                    <li>ファイル名に日本語を使用できます</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let currentUser = null;
+        let selectedFile = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                window.location.href = 'log-in.html';
+            }
+        });
+
+        // File upload area interactions
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const selectedFileDiv = document.getElementById('selectedFile');
+
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            console.log('=== File selected ===');
+            console.log('File name:', file.name);
+            console.log('File size:', file.size);
+            console.log('File type:', file.type);
+
+            // Validate file type
+            const allowedTypes = [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'image/jpeg',
+                'image/jpg',
+                'image/png'
+            ];
+
+            if (!allowedTypes.includes(file.type)) {
+                showAlert('対応していないファイル形式です。PDF、Word、または画像ファイルをアップロードしてください。', 'error');
+                return;
+            }
+
+            // Validate file size (10MB)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                showAlert('ファイルサイズが大きすぎます。10MB以下のファイルをアップロードしてください。', 'error');
+                return;
+            }
+
+            selectedFile = file;
+
+            // Display selected file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            selectedFileDiv.classList.add('show');
+            fileUploadArea.style.display = 'none';
+        }
+
+        // Remove file
+        window.removeFile = function() {
+            selectedFile = null;
+            fileInput.value = '';
+            selectedFileDiv.classList.remove('show');
+            fileUploadArea.style.display = 'block';
+        };
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Upload form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showAlert('ログインしてください。', 'error');
+                return;
+            }
+
+            if (!selectedFile) {
+                showAlert('ファイルを選択してください。', 'error');
+                return;
+            }
+
+            const documentType = document.getElementById('documentType').value;
+            if (!documentType) {
+                showAlert('書類の種類を選択してください。', 'error');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> アップロード中...';
+            progressContainer.classList.add('show');
+
+            try {
+                console.log('=== Starting upload ===');
+                console.log('User ID:', currentUser.uid);
+                console.log('Document type:', documentType);
+                console.log('File:', selectedFile.name);
+
+                // Create storage reference
+                const timestamp = Date.now();
+                const fileName = `${timestamp}_${selectedFile.name}`;
+                const storageRef = ref(storage, `documents/${currentUser.uid}/${fileName}`);
+
+                console.log('Storage path:', `documents/${currentUser.uid}/${fileName}`);
+
+                // Upload file with progress
+                const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        // Progress
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload progress:', progress + '%');
+                        progressFill.style.width = progress + '%';
+                        progressFill.textContent = Math.round(progress) + '%';
+                    },
+                    (error) => {
+                        // Error
+                        console.error('=== Upload error ===');
+                        console.error('Error:', error);
+                        console.error('Error code:', error.code);
+                        console.error('Error message:', error.message);
+
+                        let errorMessage = 'アップロード中にエラーが発生しました。';
+                        
+                        if (error.code === 'storage/unauthorized') {
+                            errorMessage = 'アクセス権限がありません。Firebase Storage のセキュリティルールを確認してください。';
+                        } else if (error.code === 'storage/canceled') {
+                            errorMessage = 'アップロードがキャンセルされました。';
+                        } else if (error.code === 'storage/unknown') {
+                            errorMessage = '不明なエラーが発生しました。もう一度お試しください。';
+                        }
+
+                        showAlert(errorMessage, 'error');
+                        uploadBtn.disabled = false;
+                        uploadBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> アップロード';
+                        progressContainer.classList.remove('show');
+                    },
+                    async () => {
+                        // Success
+                        try {
+                            console.log('=== Upload completed ===');
+                            
+                            // Get download URL
+                            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                            console.log('Download URL:', downloadURL);
+
+                            // Save document metadata to Firestore
+                            const documentData = {
+                                userId: currentUser.uid,
+                                userEmail: currentUser.email,
+                                documentType: documentType,
+                                fileName: selectedFile.name,
+                                fileSize: selectedFile.size,
+                                fileType: selectedFile.type,
+                                storagePath: `documents/${currentUser.uid}/${fileName}`,
+                                downloadURL: downloadURL,
+                                uploadedAt: serverTimestamp()
+                            };
+
+                            console.log('Saving to Firestore:', documentData);
+
+                            await addDoc(collection(db, 'documents'), documentData);
+
+                            console.log('=== Document saved successfully ===');
+
+                            showAlert('書類のアップロードが完了しました！', 'success');
+
+                            // Redirect to documents list after 2 seconds
+                            setTimeout(() => {
+                                window.location.href = 'documents-list.html';
+                            }, 2000);
+
+                        } catch (error) {
+                            console.error('=== Error saving to Firestore ===');
+                            console.error('Error:', error);
+                            console.error('Error code:', error.code);
+                            console.error('Error message:', error.message);
+
+                            showAlert('ファイルはアップロードされましたが、データベースへの保存に失敗しました。', 'error');
+                            uploadBtn.disabled = false;
+                            uploadBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> アップロード';
+                            progressContainer.classList.remove('show');
+                        }
+                    }
+                );
+
+            } catch (error) {
+                console.error('=== Unexpected error ===');
+                console.error('Error:', error);
+                
+                showAlert('予期しないエラーが発生しました。もう一度お試しください。', 'error');
+                uploadBtn.disabled = false;
+                uploadBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> アップロード';
+                progressContainer.classList.remove('show');
+            }
+        });
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Debug: Expose Firebase instances
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+        window.firebaseStorage = storage;
+    </script>
+</body>
+</html>
