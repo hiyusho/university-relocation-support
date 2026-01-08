@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業紹介一覧 - 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="愛知県内の求人企業一覧。検索・フィルター機能で希望の企業を見つけられます。">
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/job-list.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="企業紹介一覧 - 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="愛知県内の求人企業一覧">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/job-list.html">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #f0f4ff;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #2d3748;
+        }
+
+        /* Search & Filter */
+        .search-filter {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Stats */
+        .stats {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-text {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .stats-count {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Job List */
+        .job-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .job-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .job-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .job-info {
+            flex: 1;
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-employment {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .tag-location {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .tag-industry {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .detail-icon {
+            color: #667eea;
+        }
+
+        .job-description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .posted-date {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h2 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .job-details {
+                grid-template-columns: 1fr;
+            }
+
+            .job-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="dashboard.html" class="back-link">
+                    ← ダッシュボード
+                </a>
+                <h1>🏢 企業紹介一覧</h1>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-filter">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="キーワードで検索（職種、企業名、スキルなど）">
+                <button class="btn btn-primary" onclick="searchJobs()">
+                    <i class="fas fa-search"></i> 検索
+                </button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">地域</label>
+                    <select id="locationFilter" class="filter-select" onchange="filterJobs()">
+                        <option value="">すべて</option>
+                        <option value="名古屋市">名古屋市</option>
+                        <option value="豊田市">豊田市</option>
+                        <option value="岡崎市">岡崎市</option>
+                        <option value="一宮市">一宮市</option>
+                        <option value="春日井市">春日井市</option>
+                        <option value="豊橋市">豊橋市</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">業種</label>
+                    <select id="industryFilter" class="filter-select" onchange="filterJobs()">
+                        <option value="">すべて</option>
+                        <option value="製造業">製造業</option>
+                        <option value="IT・通信">IT・通信</option>
+                        <option value="サービス">サービス</option>
+                        <option value="商社・流通">商社・流通</option>
+                        <option value="金融">金融</option>
+                        <option value="医療・福祉">医療・福祉</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">雇用形態</label>
+                    <select id="employmentFilter" class="filter-select" onchange="filterJobs()">
+                        <option value="">すべて</option>
+                        <option value="正社員">正社員</option>
+                        <option value="契約社員">契約社員</option>
+                        <option value="パート">パート</option>
+                        <option value="派遣">派遣</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div id="stats" class="stats" style="display: none;">
+            <span class="stats-text">
+                <span class="stats-count" id="jobCount">0</span> 件の求人が見つかりました
+            </span>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+
+        <!-- Job List -->
+        <div id="jobList" class="job-list" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">🔍</div>
+            <h2>求人が見つかりませんでした</h2>
+            <p>検索条件を変更してもう一度お試しください。</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, query, getDocs, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let allJobs = [];
+        let filteredJobs = [];
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadJobs();
+            } else {
+                window.location.href = 'log-in.html';
+            }
+        });
+
+        // Load jobs
+        async function loadJobs() {
+            try {
+                const loading = document.getElementById('loading');
+                const jobList = document.getElementById('jobList');
+                const emptyState = document.getElementById('emptyState');
+                const stats = document.getElementById('stats');
+
+                loading.style.display = 'block';
+                jobList.style.display = 'none';
+                emptyState.style.display = 'none';
+                stats.style.display = 'none';
+
+                // Query jobs
+                const jobsRef = collection(db, 'jobs');
+                const q = query(jobsRef, orderBy('postedAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+                
+                allJobs = [];
+                querySnapshot.forEach((doc) => {
+                    allJobs.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                loading.style.display = 'none';
+
+                if (allJobs.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    filteredJobs = [...allJobs];
+                    stats.style.display = 'flex';
+                    jobList.style.display = 'grid';
+                    renderJobs();
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+            }
+        }
+
+        // Render jobs
+        function renderJobs() {
+            const jobList = document.getElementById('jobList');
+            const jobCount = document.getElementById('jobCount');
+            
+            jobCount.textContent = filteredJobs.length;
+
+            if (filteredJobs.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                jobList.style.display = 'none';
+                return;
+            }
+
+            document.getElementById('emptyState').style.display = 'none';
+            jobList.style.display = 'grid';
+
+            jobList.innerHTML = filteredJobs.map(job => {
+                const logo = job.companyName ? job.companyName.charAt(0).toUpperCase() : '企';
+                const postedDate = job.postedAt ? formatDate(job.postedAt.toDate()) : '日付不明';
+
+                return `
+                    <div class="job-card" onclick="viewJobDetail('${job.id}')">
+                        <div class="job-header">
+                            <div class="job-logo">${logo}</div>
+                            <div class="job-info">
+                                <div class="job-title">${job.title || '求人タイトル'}</div>
+                                <div class="company-name">${job.companyName || '企業名'}</div>
+                                <div class="job-tags">
+                                    ${job.employmentType ? `<span class="tag tag-employment">${job.employmentType}</span>` : ''}
+                                    ${job.location ? `<span class="tag tag-location">${job.location}</span>` : ''}
+                                    ${job.industry ? `<span class="tag tag-industry">${job.industry}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="job-details">
+                            ${job.salary ? `
+                                <div class="detail-item">
+                                    <i class="fas fa-yen-sign detail-icon"></i>
+                                    <span>${job.salary}</span>
+                                </div>
+                            ` : ''}
+                            ${job.workHours ? `
+                                <div class="detail-item">
+                                    <i class="fas fa-clock detail-icon"></i>
+                                    <span>${job.workHours}</span>
+                                </div>
+                            ` : ''}
+                            ${job.benefits ? `
+                                <div class="detail-item">
+                                    <i class="fas fa-heart detail-icon"></i>
+                                    <span>${job.benefits}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="job-description">
+                            ${job.description ? job.description.substring(0, 120) + '...' : '求人の詳細情報を表示します。'}
+                        </div>
+                        <div class="job-footer">
+                            <span class="posted-date">掲載日: ${postedDate}</span>
+                            <button class="btn btn-primary btn-small" onclick="event.stopPropagation(); viewJobDetail('${job.id}')">
+                                詳細を見る →
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Search jobs
+        window.searchJobs = function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredJobs = [...allJobs];
+            } else {
+                filteredJobs = allJobs.filter(job => 
+                    (job.title && job.title.toLowerCase().includes(searchTerm)) ||
+                    (job.companyName && job.companyName.toLowerCase().includes(searchTerm)) ||
+                    (job.description && job.description.toLowerCase().includes(searchTerm)) ||
+                    (job.requirements && job.requirements.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            applyFilters();
+        };
+
+        // Filter jobs
+        window.filterJobs = function() {
+            applyFilters();
+        };
+
+        function applyFilters() {
+            const location = document.getElementById('locationFilter').value;
+            const industry = document.getElementById('industryFilter').value;
+            const employment = document.getElementById('employmentFilter').value;
+
+            let result = [...filteredJobs];
+
+            if (location) {
+                result = result.filter(job => job.location === location);
+            }
+
+            if (industry) {
+                result = result.filter(job => job.industry === industry);
+            }
+
+            if (employment) {
+                result = result.filter(job => job.employmentType === employment);
+            }
+
+            filteredJobs = result;
+            renderJobs();
+        }
+
+        // View job detail
+        window.viewJobDetail = function(jobId) {
+            window.location.href = `job-detail.html?id=${jobId}`;
+        };
+
+        // Format date
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${year}年${month}月${day}日`;
+        }
+    </script>
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "企業紹介一覧",
+      "description": "愛知県内の求人企業一覧",
+      "url": "https://hiyusho.github.io/university-relocation-support/job-list.html"
+    }
+    </script>
+</body>
+</html>
