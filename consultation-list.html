@@ -581,6 +581,10 @@
         // Load consultations
         async function loadConsultations() {
             try {
+                console.log('=== Starting to load consultations ===');
+                console.log('Current user:', currentUser);
+                console.log('User ID:', currentUser.uid);
+                
                 const loading = document.getElementById('loading');
                 const consultationList = document.getElementById('consultationList');
                 const emptyState = document.getElementById('emptyState');
@@ -591,21 +595,33 @@
 
                 // Query consultations
                 const consultationsRef = collection(db, 'consultations');
+                console.log('Consultations collection reference:', consultationsRef);
+                
                 const q = query(
                     consultationsRef,
                     where('userId', '==', currentUser.uid),
                     orderBy('consultationDate', 'asc')
                 );
+                console.log('Query created:', q);
 
+                console.log('Fetching data from Firestore...');
                 const querySnapshot = await getDocs(q);
+                console.log('Query snapshot received:', querySnapshot);
+                console.log('Number of documents:', querySnapshot.size);
+                
                 consultations = [];
 
                 querySnapshot.forEach((doc) => {
+                    console.log('Document ID:', doc.id);
+                    console.log('Document data:', doc.data());
                     consultations.push({
                         id: doc.id,
                         ...doc.data()
                     });
                 });
+                
+                console.log('Total consultations loaded:', consultations.length);
+                console.log('Consultations array:', consultations);
 
                 loading.style.display = 'none';
 
@@ -617,8 +633,22 @@
                 }
             } catch (error) {
                 console.error('Error loading consultations:', error);
-                showAlert('予約の読み込みに失敗しました。', 'error');
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                let errorMessage = '予約の読み込みに失敗しました。';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'アクセス権限がありません。Firestore のセキュリティルールを確認してください。';
+                } else if (error.code === 'failed-precondition') {
+                    errorMessage = 'インデックスが必要です。コンソールのリンクからインデックスを作成してください。';
+                } else if (error.message) {
+                    errorMessage += ` (${error.message})`;
+                }
+                
+                showAlert(errorMessage, 'error');
                 document.getElementById('loading').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
             }
         }
 
@@ -850,4 +880,4 @@
     }
     </script>
 </body>
-</html>
+</html> 
