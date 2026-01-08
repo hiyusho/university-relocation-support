@@ -517,7 +517,7 @@
         // Firebase SDKのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, serverTimestamp, Timestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         
         // Firebase設定
         const firebaseConfig = {
@@ -637,17 +637,22 @@
             submitBtn.disabled = true;
             
             try {
+                // 日時を結合してTimestampを作成
+                const dateTimeString = `${formData.date}T${formData.time}:00`;
+                const consultationDate = Timestamp.fromDate(new Date(dateTimeString));
+                
                 // Firestoreに予約情報を保存
                 const docRef = await addDoc(collection(db, 'consultations'), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
-                    date: formData.date,
-                    time: formData.time,
+                    consultationDate: consultationDate,  // Timestamp型で保存
                     format: formData.format,
-                    topic: formData.topic || '',
+                    content: formData.topic || '',  // topic → content に変更
                     status: 'scheduled', // scheduled, completed, cancelled
                     createdAt: serverTimestamp()
                 });
+                
+                console.log('Consultation created with ID:', docRef.id);
                 
                 // 成功メッセージ表示
                 successText.innerHTML = `
