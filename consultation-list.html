@@ -594,7 +594,7 @@
                 const q = query(
                     consultationsRef,
                     where('userId', '==', currentUser.uid),
-                    orderBy('consultationDate', 'desc')
+                    orderBy('consultationDate', 'asc')
                 );
 
                 const querySnapshot = await getDocs(q);
