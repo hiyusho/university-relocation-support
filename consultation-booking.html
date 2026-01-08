@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面談予約 | 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="キャリアコンサルタントとの面談を予約できます。">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
+                         'Hiragino Sans', Meiryo, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* メインコンテナ */
+        .main-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .page-description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        /* カード */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: #667eea;
+            font-size: 1.4rem;
+        }
+        
+        /* フォーム */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        select.form-control,
+        textarea.form-control {
+            cursor: pointer;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+            padding: 14px 15px;
+        }
+        
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .time-slot {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .time-slot:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .time-slot.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .time-slot.disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            position: relative;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+        
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .radio-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .radio-option label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+        
+        .radio-option label i {
+            font-size: 1.3rem;
+            color: #667eea;
+        }
+        
+        /* メッセージ */
+        .error-message {
+            display: none;
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #c62828;
+            font-size: 0.9rem;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .error-message i {
+            margin-right: 8px;
+        }
+        
+        .success-message {
+            display: none;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #2e7d32;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .success-message i {
+            margin-right: 8px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #1565C0;
+            line-height: 1.6;
+        }
+        
+        .info-box i {
+            margin-right: 8px;
+        }
+        
+        /* ボタン */
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .time-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .radio-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <div class="header">
+        <div class="header-container">
+            <a href="dashboard.html" class="logo">
+                <i class="fas fa-calendar-alt"></i>
+                面談予約
+            </a>
+            <a href="dashboard.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                ダッシュボードに戻る
+            </a>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="main-container">
+        <h1 class="page-title">面談予約</h1>
+        <p class="page-description">キャリアコンサルタントとの面談を予約できます。ご都合の良い日時をお選びください。</p>
+        
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            面談時間は1回あたり60分です。初回面談ではキャリアプランや希望条件などをお伺いします。
+        </div>
+        
+        <!-- エラー/成功メッセージ -->
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <div id="successText"></div>
+        </div>
+        
+        <!-- 予約フォーム -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-calendar-check"></i>
+                予約情報の入力
+            </div>
+            
+            <form id="bookingForm">
+                <!-- 希望日 -->
+                <div class="form-group">
+                    <label for="date">
+                        希望日
+                        <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-calendar"></i>
+                        <input 
+                            type="date" 
+                            id="date" 
+                            class="form-control" 
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <!-- 希望時間 -->
+                <div class="form-group">
+                    <label>
+                        希望時間
+                        <span class="required">*</span>
+                    </label>
+                    <div class="time-grid" id="timeSlots">
+                        <!-- JavaScript で生成 -->
+                    </div>
+                    <input type="hidden" id="selectedTime" required>
+                </div>
+                
+                <!-- 面談形式 -->
+                <div class="form-group">
+                    <label>
+                        面談形式
+                        <span class="required">*</span>
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-option" data-value="online">
+                            <input type="radio" name="format" id="format-online" value="online" required>
+                            <label for="format-online">
+                                <i class="fas fa-video"></i>
+                                <div>
+                                    <div><strong>オンライン（Zoom）</strong></div>
+                                    <small style="color: #666;">自宅から参加可能</small>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="radio-option" data-value="in-person">
+                            <input type="radio" name="format" id="format-in-person" value="in-person">
+                            <label for="format-in-person">
+                                <i class="fas fa-building"></i>
+                                <div>
+                                    <div><strong>対面（オフィス）</strong></div>
+                                    <small style="color: #666;">名古屋市内のオフィス</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 相談内容 -->
+                <div class="form-group">
+                    <label for="topic">
+                        相談内容・事前に伝えたいこと
+                    </label>
+                    <textarea 
+                        id="topic" 
+                        class="form-control" 
+                        placeholder="例：転職活動の進め方、履歴書の添削、面接対策など"
+                        style="padding-left: 15px;"
+                    ></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-check"></i>
+                        予約を確定する
+                    </button>
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        キャンセル
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase SDKのインポート
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+        
+        // Firebaseの初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        let currentUser = null;
+        
+        // 認証状態の監視
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                // 未ログイン - ログインページへリダイレクト
+                window.location.href = 'log-in.html';
+            }
+        });
+        
+        // 日付入力の最小値を今日に設定
+        const dateInput = document.getElementById('date');
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+        
+        // 時間スロットの生成
+        const timeSlots = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+        const timeSlotsContainer = document.getElementById('timeSlots');
+        
+        timeSlots.forEach(time => {
+            const slot = document.createElement('div');
+            slot.className = 'time-slot';
+            slot.textContent = time;
+            slot.dataset.time = time;
+            
+            slot.addEventListener('click', function() {
+                // 他のスロットの選択を解除
+                document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                // このスロットを選択
+                this.classList.add('selected');
+                document.getElementById('selectedTime').value = this.dataset.time;
+            });
+            
+            timeSlotsContainer.appendChild(slot);
+        });
+        
+        // ラジオボタンのスタイル切り替え
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                
+                // 他のオプションの選択を解除
+                document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+                // このオプションを選択
+                this.classList.add('selected');
+            });
+        });
+        
+        // フォーム送信処理
+        const bookingForm = document.getElementById('bookingForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        
+        bookingForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // メッセージをクリア
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            
+            if (!currentUser) {
+                showError('ログインセッションが切れています。再度ログインしてください。');
+                return;
+            }
+            
+            const formData = {
+                date: document.getElementById('date').value,
+                time: document.getElementById('selectedTime').value,
+                format: document.querySelector('input[name="format"]:checked')?.value,
+                topic: document.getElementById('topic').value
+            };
+            
+            // バリデーション
+            if (!formData.date) {
+                showError('希望日を選択してください。');
+                return;
+            }
+            
+            if (!formData.time) {
+                showError('希望時間を選択してください。');
+                return;
+            }
+            
+            if (!formData.format) {
+                showError('面談形式を選択してください。');
+                return;
+            }
+            
+            // ローディング状態
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 予約中...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Firestoreに予約情報を保存
+                const docRef = await addDoc(collection(db, 'consultations'), {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    date: formData.date,
+                    time: formData.time,
+                    format: formData.format,
+                    topic: formData.topic || '',
+                    status: 'scheduled', // scheduled, completed, cancelled
+                    createdAt: serverTimestamp()
+                });
+                
+                // 成功メッセージ表示
+                successText.innerHTML = `
+                    <strong>面談予約が完了しました！</strong><br><br>
+                    予約日時: ${formData.date} ${formData.time}<br>
+                    面談形式: ${formData.format === 'online' ? 'オンライン（Zoom）' : '対面（オフィス）'}<br><br>
+                    予約確認メールを送信しました。<br>
+                    <a href="consultation-list.html" style="color: #2e7d32; text-decoration: underline;">予約一覧を確認する</a>
+                `;
+                successMessage.classList.add('show');
+                window.scrollTo(0, 0);
+                
+                // フォームをクリア
+                bookingForm.reset();
+                document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+                
+                // ボタンを元に戻す
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+            } catch (error) {
+                console.error('予約エラー:', error);
+                showError('予約中にエラーが発生しました。もう一度お試しください。');
+                
+                // ボタンを元に戻す
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+            window.scrollTo(0, 0);
+            
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 5000);
+        }
+        
+        // グローバルスコープに公開（デバッグ用）
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
+</body>
+</html>
