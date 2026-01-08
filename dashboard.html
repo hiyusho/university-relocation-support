@@ -947,10 +947,98 @@
         </main>
     </div>
 
-    <script>
-        // 開発中の注意メッセージ
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase SDKのインポート
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOuecuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+        
+        // Firebaseの初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // 認証状態の監視
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // ログイン済み
+                console.log('ログイン済みユーザー:', user.email);
+                
+                // Firestoreからユーザー情報を取得
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        
+                        // ユーザー名を表示
+                        const userName = userData.name || 'ユーザー';
+                        const welcomeTitle = document.querySelector('.welcome-card h1');
+                        if (welcomeTitle) {
+                            welcomeTitle.textContent = `こんにちは、${userName}様`;
+                        }
+                        
+                        // ユーザーアバターの初期文字を表示
+                        const userAvatar = document.querySelector('.user-avatar');
+                        if (userAvatar && userName) {
+                            userAvatar.textContent = userName.charAt(0);
+                        }
+                        
+                        // ユーザー情報を表示
+                        const userInfoSpan = document.querySelector('.user-info span');
+                        if (userInfoSpan) {
+                            userInfoSpan.textContent = userName;
+                        }
+                        
+                        console.log('ユーザー情報取得成功:', userData);
+                    } else {
+                        console.log('ユーザードキュメントが存在しません');
+                    }
+                } catch (error) {
+                    console.error('ユーザー情報取得エラー:', error);
+                }
+            } else {
+                // 未ログイン - ログインページへリダイレクト
+                console.log('未ログイン状態');
+                window.location.href = 'log-in.html';
+            }
+        });
+        
+        // ログアウト処理
         document.addEventListener('DOMContentLoaded', function() {
-            // すべてのボタンとリンクにイベントリスナーを追加
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    const confirmed = confirm('ログアウトしますか？');
+                    if (confirmed) {
+                        try {
+                            await signOut(auth);
+                            console.log('ログアウト成功');
+                            window.location.href = 'log-in.html';
+                        } catch (error) {
+                            console.error('ログアウトエラー:', error);
+                            alert('ログアウトに失敗しました。もう一度お試しください。');
+                        }
+                    }
+                });
+            }
+            
+            // 開発中の注意メッセージ（一部機能用）
             const interactiveElements = document.querySelectorAll('button:not(.logout-btn), a[href="#"], a[href^="#"]:not([href="#"])');
             
             interactiveElements.forEach(element => {
@@ -970,23 +1058,14 @@
                     e.preventDefault();
                     
                     const actionName = this.textContent.trim() || this.title || '機能';
-                    alert(`🚧 開発中の機能です
-
-「${actionName}」は現在開発準備中です。
-完成後、Firebase連携により実際のデータ管理機能が有効になります。`);
+                    alert(`🚧 開発中の機能です\n\n「${actionName}」は現在開発準備中です。\n完成後、Firebase連携により実際のデータ管理機能が有効になります。`);
                 });
             });
         });
         
-        // ログアウト処理（デモ）
-        document.querySelector('.logout-btn').addEventListener('click', function(e) {
-            if (this.href.includes('log-in.html')) {
-                const confirmed = confirm('ログアウトしますか？');
-                if (!confirmed) {
-                    e.preventDefault();
-                }
-            }
-        });
+        // グローバルスコープに公開（デバッグ用）
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
     </script>
     
     <!-- JSON-LD構造化データ -->
