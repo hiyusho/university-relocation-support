@@ -600,7 +600,7 @@
                 const q = query(
                     consultationsRef,
                     where('userId', '==', currentUser.uid),
-                    orderBy('consultationDate', 'asc')
+                    orderBy('createdAt', 'desc')
                 );
                 console.log('Query created:', q);
 
@@ -673,13 +673,12 @@
             }
 
             consultationList.innerHTML = filteredConsultations.map(consultation => {
-                const date = consultation.consultationDate.toDate();
-                const dateStr = formatDate(date);
-                const timeStr = formatTime(date);
-                const statusText = getStatusText(consultation.status);
-                const statusClass = `status-${consultation.status}`;
-                const formatText = consultation.format === 'online' ? 'オンライン (Zoom)' : '対面';
-                const createdDate = consultation.createdAt.toDate();
+                const dateStr = consultation.preferredDate;
+                const timeStr = consultation.preferredTime;
+                const statusText = consultation.statusLabel || getStatusText(consultation.status);
+                const statusClass = `status-${consultation.status.replace('pending', 'scheduled')}`;
+                const formatText = consultation.methodLabel || (consultation.method === 'online' ? 'オンライン (Zoom)' : '対面');
+                const createdDate = consultation.createdAt ? consultation.createdAt.toDate() : new Date();
 
                 return `
                     <div class="consultation-card">
@@ -700,14 +699,14 @@
                             </div>
                         </div>
                         <div class="card-content">
-                            <h4>相談内容</h4>
-                            <p>${consultation.content || '（内容なし）'}</p>
+                            <h4>${consultation.consultationTypeLabel || '面談タイプ'}</h4>
+                            <p>${consultation.notes || '（内容なし）'}</p>
                         </div>
                         <div class="card-footer">
                             <button class="btn btn-outline btn-small" onclick="showDetail('${consultation.id}')">
                                 詳細を見る
                             </button>
-                            ${consultation.status === 'scheduled' ? `
+                            ${(consultation.status === 'scheduled' || consultation.status === 'pending') ? `
                                 <button class="btn btn-danger btn-small" onclick="showCancelModal('${consultation.id}')">
                                     キャンセル
                                 </button>
@@ -765,12 +764,11 @@
             const consultation = consultations.find(c => c.id === consultationId);
             if (!consultation) return;
 
-            const date = consultation.consultationDate.toDate();
-            const dateStr = formatDate(date);
-            const timeStr = formatTime(date);
-            const statusText = getStatusText(consultation.status);
-            const formatText = consultation.format === 'online' ? 'オンライン (Zoom)' : '対面';
-            const createdDate = consultation.createdAt.toDate();
+            const dateStr = consultation.preferredDate;
+            const timeStr = consultation.preferredTime;
+            const statusText = consultation.statusLabel || getStatusText(consultation.status);
+            const formatText = consultation.methodLabel || (consultation.method === 'online' ? 'オンライン (Zoom)' : '対面');
+            const createdDate = consultation.createdAt ? consultation.createdAt.toDate() : new Date();
 
             const detailContent = document.getElementById('detailContent');
             detailContent.innerHTML = `
@@ -788,8 +786,12 @@
                         <p style="color: #2d3748;">${formatText}</p>
                     </div>
                     <div>
+                        <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">面談タイプ</h4>
+                        <p style="color: #2d3748;">${consultation.consultationTypeLabel || '未設定'}</p>
+                    </div>
+                    <div>
                         <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">相談内容</h4>
-                        <p style="color: #2d3748; line-height: 1.6;">${consultation.content || '（内容なし）'}</p>
+                        <p style="color: #2d3748; line-height: 1.6;">${consultation.notes || '（内容なし）'}</p>
                     </div>
                     <div>
                         <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">予約作成日</h4>
@@ -848,6 +850,7 @@
         // Get status text
         function getStatusText(status) {
             const statusMap = {
+                'pending': '予約確認中',
                 'scheduled': '予定',
                 'completed': '完了',
                 'cancelled': 'キャンセル'
