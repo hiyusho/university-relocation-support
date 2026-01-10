@@ -679,7 +679,8 @@
             consultationList.innerHTML = filteredConsultations.map(consultation => {
                 const dateStr = consultation.preferredDate;
                 const timeStr = consultation.preferredTime;
-                const statusText = consultation.statusLabel || getStatusText(consultation.status);
+                // Always use getStatusText() to get current status text (ignore statusLabel)
+                const statusText = getStatusText(consultation.status);
                 // Normalize status for CSS class (pending -> scheduled)
                 const normalizedStatus = consultation.status === 'pending' ? 'scheduled' : consultation.status;
                 const statusClass = `status-${normalizedStatus}`;
@@ -772,7 +773,8 @@
 
             const dateStr = consultation.preferredDate;
             const timeStr = consultation.preferredTime;
-            const statusText = consultation.statusLabel || getStatusText(consultation.status);
+            // Always use getStatusText() to get current status text (ignore statusLabel)
+            const statusText = getStatusText(consultation.status);
             const formatText = consultation.methodLabel || (consultation.method === 'online' ? 'オンライン (Zoom)' : '対面');
             const createdDate = consultation.createdAt ? consultation.createdAt.toDate() : new Date();
 
