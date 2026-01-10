@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活動レポート - 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="就職活動の進捗状況を可視化。応募状況、面談予約、メッセージの統計情報をグラフで確認できます。">
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/activity-report.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="活動レポート - 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="就職活動の進捗状況を可視化">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/activity-report.html">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #f0f4ff;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #2d3748;
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .summary-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card:nth-child(1) .summary-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .summary-card:nth-child(2) .summary-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .summary-card:nth-child(3) .summary-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .summary-card:nth-child(4) .summary-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .summary-change {
+            font-size: 13px;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .summary-change.negative {
+            color: #ef4444;
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .chart-card h2 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Timeline */
+        .timeline-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .timeline-card h2 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #667eea;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .timeline-description {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .badge-application {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .badge-consultation {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+
+        .badge-message {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="dashboard.html" class="back-link">
+                    ← ダッシュボード
+                </a>
+                <h1>📊 活動レポート</h1>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div id="summarySection" style="display: none;">
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-icon">📝</div>
+                    <div class="summary-label">応募企業数</div>
+                    <div class="summary-value" id="applicationCount">0</div>
+                    <div class="summary-change">+0 今月</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">📅</div>
+                    <div class="summary-label">面談予約数</div>
+                    <div class="summary-value" id="consultationCount">0</div>
+                    <div class="summary-change">+0 今月</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">💬</div>
+                    <div class="summary-label">メッセージ数</div>
+                    <div class="summary-value" id="messageCount">0</div>
+                    <div class="summary-change">+0 今月</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🕒</div>
+                    <div class="summary-label">最終活動日</div>
+                    <div class="summary-value" id="lastActivity" style="font-size: 18px;">-</div>
+                    <div class="summary-change" style="visibility: hidden;">-</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h2>📊 応募ステータス内訳</h2>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h2>📈 月別活動状況</h2>
+                    <div class="chart-container">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="timeline-card">
+                <h2>🕐 最近の活動履歴</h2>
+                <div class="timeline" id="timeline">
+                    <!-- Timeline items will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">📊</div>
+            <h3>まだ活動データがありません</h3>
+            <p>企業への応募や面談予約を行うと、ここに統計情報が表示されます。</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadActivityData();
+            } else {
+                window.location.href = 'log-in.html';
+            }
+        });
+
+        // Load activity data
+        async function loadActivityData() {
+            try {
+                const loading = document.getElementById('loading');
+                const summarySection = document.getElementById('summarySection');
+                const emptyState = document.getElementById('emptyState');
+
+                loading.style.display = 'block';
+                summarySection.style.display = 'none';
+                emptyState.style.display = 'none';
+
+                // Fetch data from all collections
+                const [applications, consultations, messages] = await Promise.all([
+                    fetchApplications(),
+                    fetchConsultations(),
+                    fetchMessages()
+                ]);
+
+                loading.style.display = 'none';
+
+                if (applications.length === 0 && consultations.length === 0 && messages.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                summarySection.style.display = 'block';
+
+                // Update summary cards
+                updateSummaryCards(applications, consultations, messages);
+
+                // Render charts
+                renderStatusChart(applications);
+                renderMonthlyChart(applications, consultations);
+
+                // Render timeline
+                renderTimeline(applications, consultations, messages);
+
+            } catch (error) {
+                console.error('Error loading activity data:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+            }
+        }
+
+        // Fetch applications
+        async function fetchApplications() {
+            const q = query(
+                collection(db, 'applications'),
+                where('userId', '==', currentUser.uid)
+            );
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        // Fetch consultations
+        async function fetchConsultations() {
+            const q = query(
+                collection(db, 'consultations'),
+                where('userId', '==', currentUser.uid)
+            );
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        // Fetch messages
+        async function fetchMessages() {
+            const q = query(
+                collection(db, 'messages'),
+                where('userId', '==', currentUser.uid)
+            );
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        // Update summary cards
+        function updateSummaryCards(applications, consultations, messages) {
+            // Application count
+            document.getElementById('applicationCount').textContent = applications.length;
+
+            // Consultation count
+            document.getElementById('consultationCount').textContent = consultations.length;
+
+            // Message count
+            document.getElementById('messageCount').textContent = messages.length;
+
+            // Last activity
+            const allDates = [
+                ...applications.map(a => a.appliedAt?.toDate()),
+                ...consultations.map(c => c.createdAt?.toDate()),
+                ...messages.map(m => m.createdAt?.toDate())
+            ].filter(d => d);
+
+            if (allDates.length > 0) {
+                const lastDate = new Date(Math.max(...allDates));
+                document.getElementById('lastActivity').textContent = formatDate(lastDate);
+            }
+        }
+
+        // Render status chart
+        function renderStatusChart(applications) {
+            const statusCounts = {
+                'pending': 0,
+                'screening': 0,
+                'interview': 0,
+                'offered': 0,
+                'rejected': 0
+            };
+
+            applications.forEach(app => {
+                if (statusCounts.hasOwnProperty(app.status)) {
+                    statusCounts[app.status]++;
+                }
+            });
+
+            const ctx = document.getElementById('statusChart');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['書類選考中', '面接調整中', '内定', '不採用', '応募中'],
+                    datasets: [{
+                        data: [
+                            statusCounts.screening,
+                            statusCounts.interview,
+                            statusCounts.offered,
+                            statusCounts.rejected,
+                            statusCounts.pending
+                        ],
+                        backgroundColor: [
+                            '#667eea',
+                            '#f093fb',
+                            '#43e97b',
+                            '#ef4444',
+                            '#94a3b8'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render monthly chart
+        function renderMonthlyChart(applications, consultations) {
+            const months = ['1月', '2月', '3月', '4月', '5月', '6月'];
+            const applicationCounts = new Array(6).fill(0);
+            const consultationCounts = new Array(6).fill(0);
+
+            // Count applications by month
+            applications.forEach(app => {
+                if (app.appliedAt) {
+                    const month = app.appliedAt.toDate().getMonth();
+                    if (month < 6) {
+                        applicationCounts[month]++;
+                    }
+                }
+            });
+
+            // Count consultations by month
+            consultations.forEach(cons => {
+                if (cons.createdAt) {
+                    const month = cons.createdAt.toDate().getMonth();
+                    if (month < 6) {
+                        consultationCounts[month]++;
+                    }
+                }
+            });
+
+            const ctx = document.getElementById('monthlyChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: '応募数',
+                            data: applicationCounts,
+                            backgroundColor: '#667eea'
+                        },
+                        {
+                            label: '面談数',
+                            data: consultationCounts,
+                            backgroundColor: '#f093fb'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render timeline
+        function renderTimeline(applications, consultations, messages) {
+            const timeline = document.getElementById('timeline');
+
+            // Combine all activities
+            const activities = [
+                ...applications.map(a => ({
+                    type: 'application',
+                    date: a.appliedAt?.toDate(),
+                    title: `${a.companyName || '企業'} に応募`,
+                    description: a.position || '求人',
+                    badge: 'badge-application'
+                })),
+                ...consultations.map(c => ({
+                    type: 'consultation',
+                    date: c.createdAt?.toDate(),
+                    title: '面談を予約',
+                    description: c.consultationTypeLabel || '面談',
+                    badge: 'badge-consultation'
+                })),
+                ...messages.map(m => ({
+                    type: 'message',
+                    date: m.createdAt?.toDate(),
+                    title: 'メッセージを送信',
+                    description: m.message?.substring(0, 50) + (m.message?.length > 50 ? '...' : ''),
+                    badge: 'badge-message'
+                }))
+            ];
+
+            // Sort by date (newest first)
+            activities.sort((a, b) => (b.date || 0) - (a.date || 0));
+
+            // Show only the latest 10 activities
+            const recentActivities = activities.slice(0, 10);
+
+            if (recentActivities.length === 0) {
+                timeline.innerHTML = '<p style="color: #94a3b8; text-align: center;">まだ活動履歴がありません</p>';
+                return;
+            }
+
+            timeline.innerHTML = recentActivities.map(activity => `
+                <div class="timeline-item">
+                    <div class="timeline-date">${formatDateTime(activity.date)}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">${activity.title}</div>
+                        <div class="timeline-description">${activity.description}</div>
+                        <span class="timeline-badge ${activity.badge}">
+                            ${activity.type === 'application' ? '応募' : activity.type === 'consultation' ? '面談' : 'メッセージ'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format date
+        function formatDate(date) {
+            if (!date) return '-';
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${year}/${month}/${day}`;
+        }
+
+        // Format date time
+        function formatDateTime(date) {
+            if (!date) return '-';
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}/${month}/${day} ${hours}:${minutes}`;
+        }
+    </script>
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "活動レポート",
+      "description": "就職活動の進捗状況を可視化",
+      "url": "https://hiyusho.github.io/university-relocation-support/activity-report.html"
+    }
+    </script>
+</body>
+</html>
