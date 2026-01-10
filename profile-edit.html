@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>プロフィール編集 | 大学赴任者家族帯同支援プログラム</title>
-    <meta name="description" content="プロフィール情報の編集ページ。基本情報やパスワードを変更できます。">
-    <meta name="robots" content="noindex, nofollow">
+    <title>プロフィール編集 - 大学赴任者家族帯同支援プログラム</title>
+    <meta name="description" content="プロフィール情報の編集ページ。基本情報、住所、職歴などを更新できます。">
+    <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/profile-edit.html">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Open Graph -->
+    <meta property="og:title" content="プロフィール編集 - 大学赴任者家族帯同支援プログラム">
+    <meta property="og:description" content="プロフィール情報を編集・更新">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/profile-edit.html">
     
     <style>
         * {
@@ -16,293 +19,266 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
-                         'Hiragino Sans', Meiryo, sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
-        }
-        
-        /* ヘッダー */
-        .header {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
         }
-        
-        .header-container {
-            max-width: 1200px;
+
+        .container {
+            max-width: 800px;
             margin: 0 auto;
-            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: white;
+
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
-        
-        .back-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
+
+        .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
-        
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+
+        .back-link:hover {
+            background: #f0f4ff;
         }
-        
-        /* メインコンテナ */
-        .main-container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 0 20px;
+
+        .header h1 {
+            font-size: 24px;
+            color: #2d3748;
         }
-        
-        .page-title {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .page-description {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        /* カード */
-        .card {
+
+        /* Form Card */
+        .form-card {
             background: white;
-            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #333;
+
+        .form-card h2 {
+            font-size: 18px;
+            color: #2d3748;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
         }
-        
-        .card-title i {
-            color: #667eea;
-            font-size: 1.4rem;
-        }
-        
-        /* フォーム */
+
         .form-group {
             margin-bottom: 20px;
         }
-        
-        .form-group label {
+
+        .form-label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            font-size: 14px;
             font-weight: 600;
-            font-size: 0.95rem;
+            color: #2d3748;
+            margin-bottom: 8px;
         }
-        
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 3px;
+
+        .form-label.required::after {
+            content: ' *';
+            color: #ef4444;
         }
-        
-        .input-wrapper {
-            position: relative;
-        }
-        
-        .input-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 1.1rem;
-        }
-        
-        .form-control {
+
+        .form-input,
+        .form-textarea,
+        .form-select {
             width: 100%;
-            padding: 14px 15px 14px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
             transition: all 0.3s ease;
         }
-        
-        .form-control:focus {
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        
-        .form-control:disabled {
-            background: #f5f5f5;
+
+        .form-input:disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
             cursor: not-allowed;
         }
-        
-        select.form-control {
-            cursor: pointer;
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
         }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            padding: 5px;
-            font-size: 1.1rem;
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
-        
-        .password-toggle:hover {
-            color: #667eea;
-        }
-        
-        .password-hint {
-            font-size: 0.85rem;
-            color: #666;
+
+        .form-hint {
+            font-size: 12px;
+            color: #64748b;
             margin-top: 5px;
-            line-height: 1.5;
         }
-        
-        /* メッセージ */
-        .error-message {
-            display: none;
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #c62828;
-            font-size: 0.9rem;
-        }
-        
-        .error-message.show {
-            display: block;
-        }
-        
-        .error-message i {
-            margin-right: 8px;
-        }
-        
-        .success-message {
-            display: none;
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #2e7d32;
-            font-size: 0.9rem;
-        }
-        
-        .success-message.show {
-            display: block;
-        }
-        
-        .success-message i {
-            margin-right: 8px;
-        }
-        
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            color: #1565C0;
-            line-height: 1.6;
-        }
-        
-        .info-box i {
-            margin-right: 8px;
-        }
-        
-        /* ボタン */
+
+        /* Buttons */
         .btn {
-            padding: 14px 30px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-        
-        .btn-primary:hover {
+
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-        
+
         .btn-primary:disabled {
-            background: #ccc;
+            opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
-        
+
         .btn-secondary {
             background: white;
             color: #667eea;
             border: 2px solid #667eea;
         }
-        
+
         .btn-secondary:hover {
-            background: #f8f9fa;
+            background: #667eea;
+            color: white;
         }
-        
-        .button-group {
+
+        .btn-group {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 10px;
+            justify-content: flex-end;
         }
-        
-        /* レスポンシブ */
-        @media (max-width: 768px) {
-            .button-group {
-                flex-direction: column;
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
             }
-            
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
             .btn {
                 width: 100%;
                 justify-content: center;
@@ -311,234 +287,173 @@
     </style>
 </head>
 <body>
-    <!-- ヘッダー -->
-    <div class="header">
-        <div class="header-container">
-            <a href="dashboard.html" class="logo">
-                <i class="fas fa-user-circle"></i>
-                プロフィール編集
-            </a>
-            <a href="dashboard.html" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                ダッシュボードに戻る
-            </a>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="dashboard.html" class="back-link">
+                    ← ダッシュボード
+                </a>
+                <h1>👤 プロフィール編集</h1>
+            </div>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>読み込み中...</p>
+        </div>
+
+        <!-- Profile Form -->
+        <div id="profileForm" style="display: none;">
+            <!-- Basic Information -->
+            <div class="form-card">
+                <h2>📝 基本情報</h2>
+                <form id="basicInfoForm">
+                    <div class="form-group">
+                        <label class="form-label required">表示名</label>
+                        <input type="text" id="displayName" class="form-input" placeholder="山田 太郎" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">メールアドレス</label>
+                        <input type="email" id="email" class="form-input" disabled>
+                        <p class="form-hint">メールアドレスは変更できません</p>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">電話番号</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="090-1234-5678">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">生年月日</label>
+                            <input type="date" id="birthDate" class="form-input">
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" id="saveBasicBtn">
+                            💾 保存する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Address Information -->
+            <div class="form-card">
+                <h2>🏠 住所情報</h2>
+                <form id="addressForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">郵便番号</label>
+                            <input type="text" id="postalCode" class="form-input" placeholder="123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">都道府県</label>
+                            <input type="text" id="prefecture" class="form-input" placeholder="愛知県">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">市区町村</label>
+                        <input type="text" id="city" class="form-input" placeholder="名古屋市中区">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">番地・建物名</label>
+                        <input type="text" id="address" class="form-input" placeholder="三の丸3-1-2">
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" id="saveAddressBtn">
+                            💾 保存する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Career Information -->
+            <div class="form-card">
+                <h2>💼 職歴・学歴</h2>
+                <form id="careerForm">
+                    <div class="form-group">
+                        <label class="form-label">最終学歴</label>
+                        <input type="text" id="education" class="form-input" placeholder="○○大学 ○○学部 卒業">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">職務経歴</label>
+                        <textarea id="workHistory" class="form-textarea" placeholder="これまでの職務経歴を入力してください"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">スキル</label>
+                        <textarea id="skills" class="form-textarea" placeholder="持っているスキルや資格を入力してください"></textarea>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" id="saveCareerBtn">
+                            💾 保存する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Other Information -->
+            <div class="form-card">
+                <h2>✨ その他</h2>
+                <form id="otherForm">
+                    <div class="form-group">
+                        <label class="form-label">自己PR</label>
+                        <textarea id="bio" class="form-textarea" placeholder="自己PRを入力してください"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">希望職種</label>
+                            <input type="text" id="desiredPosition" class="form-input" placeholder="営業職">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">希望勤務地</label>
+                            <input type="text" id="desiredLocation" class="form-input" placeholder="愛知県">
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" id="saveOtherBtn">
+                            💾 保存する
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Password Change -->
+            <div class="form-card">
+                <h2>🔒 パスワード変更</h2>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label class="form-label required">現在のパスワード</label>
+                        <input type="password" id="currentPassword" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">新しいパスワード</label>
+                        <input type="password" id="newPassword" class="form-input" minlength="6" required>
+                        <p class="form-hint">6文字以上で入力してください</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">新しいパスワード（確認）</label>
+                        <input type="password" id="confirmPassword" class="form-input" minlength="6" required>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" id="changePasswordBtn">
+                            🔐 パスワードを変更
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- メインコンテンツ -->
-    <div class="main-container">
-        <h1 class="page-title">プロフィール編集</h1>
-        <p class="page-description">登録情報を更新できます。変更後は「保存する」ボタンをクリックしてください。</p>
-        
-        <!-- エラー/成功メッセージ -->
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText"></span>
-        </div>
-        
-        <div class="success-message" id="successMessage">
-            <i class="fas fa-check-circle"></i>
-            <span id="successText"></span>
-        </div>
-        
-        <!-- 基本情報 -->
-        <div class="card">
-            <div class="card-title">
-                <i class="fas fa-user"></i>
-                基本情報
-            </div>
-            
-            <form id="profileForm">
-                <div class="form-group">
-                    <label for="email">
-                        メールアドレス
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope"></i>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            class="form-control" 
-                            disabled
-                        >
-                    </div>
-                    <div class="password-hint">メールアドレスは変更できません</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="name">
-                        お名前
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user"></i>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            class="form-control" 
-                            placeholder="山田 太郎"
-                            required
-                        >
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">
-                        電話番号
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-phone"></i>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            class="form-control" 
-                            placeholder="090-1234-5678"
-                            required
-                        >
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="university">
-                        赴任先大学
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-university"></i>
-                        <select id="university" class="form-control" required>
-                            <option value="">選択してください</option>
-                            <option value="nagoya">名古屋大学</option>
-                            <option value="nagoya-tech">名古屋工業大学</option>
-                            <option value="aichi-edu">愛知教育大学</option>
-                            <option value="toyota-tech">豊橋技術科学大学</option>
-                            <option value="aichi-prefectural">愛知県立大学</option>
-                            <option value="nagoya-city">名古屋市立大学</option>
-                            <option value="other">その他</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="relationship">
-                        赴任者との関係
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-users"></i>
-                        <select id="relationship" class="form-control" required>
-                            <option value="">選択してください</option>
-                            <option value="spouse">配偶者</option>
-                            <option value="family">家族</option>
-                            <option value="self">本人</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary" id="saveBtn">
-                        <i class="fas fa-save"></i>
-                        保存する
-                    </button>
-                    <a href="dashboard.html" class="btn btn-secondary">
-                        <i class="fas fa-times"></i>
-                        キャンセル
-                    </a>
-                </div>
-            </form>
-        </div>
-        
-        <!-- パスワード変更 -->
-        <div class="card">
-            <div class="card-title">
-                <i class="fas fa-lock"></i>
-                パスワード変更
-            </div>
-            
-            <div class="info-box">
-                <i class="fas fa-info-circle"></i>
-                パスワードを変更する場合は、現在のパスワードと新しいパスワードを入力してください。
-            </div>
-            
-            <form id="passwordForm">
-                <div class="form-group">
-                    <label for="currentPassword">
-                        現在のパスワード
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="currentPassword" 
-                            class="form-control" 
-                            placeholder="現在のパスワードを入力"
-                        >
-                        <button type="button" class="password-toggle" id="toggleCurrentPassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="newPassword">
-                        新しいパスワード
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="newPassword" 
-                            class="form-control" 
-                            placeholder="8文字以上の英数字"
-                        >
-                        <button type="button" class="password-toggle" id="toggleNewPassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="password-hint">
-                        8文字以上、英大文字・小文字・数字を含むことを推奨
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">
-                        新しいパスワード（確認）
-                        <span class="required">*</span>
-                    </label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="confirmPassword" 
-                            class="form-control" 
-                            placeholder="もう一度入力してください"
-                        >
-                        <button type="button" class="password-toggle" id="toggleConfirmPassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary" id="changePasswordBtn">
-                        <i class="fas fa-key"></i>
-                        パスワードを変更
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase SDKのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        
-        // Firebase設定
+        import { getAuth, onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
             authDomain: "university-relocation-support.firebaseapp.com",
@@ -548,231 +463,252 @@
             appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
             measurementId: "G-RJP20TC7DV"
         };
-        
-        // Firebaseの初期化
+
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
+
         let currentUser = null;
-        
-        // 認証状態の監視
-        onAuthStateChanged(auth, async (user) => {
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                
-                // ユーザー情報を取得して表示
-                try {
-                    const userDoc = await getDoc(doc(db, 'users', user.uid));
-                    
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        
-                        // フォームに情報を表示
-                        document.getElementById('email').value = userData.email || '';
-                        document.getElementById('name').value = userData.name || '';
-                        document.getElementById('phone').value = userData.phone || '';
-                        document.getElementById('university').value = userData.university || '';
-                        document.getElementById('relationship').value = userData.relationship || '';
-                    }
-                } catch (error) {
-                    console.error('ユーザー情報取得エラー:', error);
-                }
+                loadProfile();
             } else {
-                // 未ログイン - ログインページへリダイレクト
                 window.location.href = 'log-in.html';
             }
         });
-        
-        // パスワード表示/非表示の切り替え
-        function setupPasswordToggle(toggleId, inputId) {
-            const toggle = document.getElementById(toggleId);
-            const input = document.getElementById(inputId);
-            
-            if (toggle && input) {
-                toggle.addEventListener('click', function() {
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
-                    
-                    const icon = this.querySelector('i');
-                    icon.classList.toggle('fa-eye');
-                    icon.classList.toggle('fa-eye-slash');
-                });
+
+        // Load profile
+        async function loadProfile() {
+            try {
+                const loading = document.getElementById('loading');
+                const profileForm = document.getElementById('profileForm');
+
+                loading.style.display = 'block';
+                profileForm.style.display = 'none';
+
+                // Get user document
+                const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+
+                // Fill form fields
+                document.getElementById('displayName').value = userData.displayName || currentUser.displayName || '';
+                document.getElementById('email').value = currentUser.email || '';
+                document.getElementById('phone').value = userData.phone || '';
+                document.getElementById('birthDate').value = userData.birthDate || '';
+                document.getElementById('postalCode').value = userData.postalCode || '';
+                document.getElementById('prefecture').value = userData.prefecture || '';
+                document.getElementById('city').value = userData.city || '';
+                document.getElementById('address').value = userData.address || '';
+                document.getElementById('education').value = userData.education || '';
+                document.getElementById('workHistory').value = userData.workHistory || '';
+                document.getElementById('skills').value = userData.skills || '';
+                document.getElementById('bio').value = userData.bio || '';
+                document.getElementById('desiredPosition').value = userData.desiredPosition || '';
+                document.getElementById('desiredLocation').value = userData.desiredLocation || '';
+
+                loading.style.display = 'none';
+                profileForm.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showAlert('プロフィールの読み込みに失敗しました。', 'error');
+                document.getElementById('loading').style.display = 'none';
             }
         }
-        
-        setupPasswordToggle('toggleCurrentPassword', 'currentPassword');
-        setupPasswordToggle('toggleNewPassword', 'newPassword');
-        setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
-        
-        // プロフィール更新フォーム
-        const profileForm = document.getElementById('profileForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        const successMessage = document.getElementById('successMessage');
-        const successText = document.getElementById('successText');
-        
-        profileForm.addEventListener('submit', async function(e) {
+
+        // Save basic info
+        document.getElementById('basicInfoForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // メッセージをクリア
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
-            
-            if (!currentUser) {
-                showError('ログインセッションが切れています。再度ログインしてください。');
-                return;
-            }
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                university: document.getElementById('university').value,
-                relationship: document.getElementById('relationship').value
-            };
-            
-            // バリデーション
-            if (!formData.name || !formData.phone || !formData.university || !formData.relationship) {
-                showError('すべての項目を入力してください。');
-                return;
-            }
-            
-            // ローディング状態
-            const saveBtn = document.getElementById('saveBtn');
-            const originalText = saveBtn.innerHTML;
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
-            saveBtn.disabled = true;
+            const btn = document.getElementById('saveBasicBtn');
             
             try {
-                // Firestoreにユーザー情報を更新
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    name: formData.name,
-                    phone: formData.phone,
-                    university: formData.university,
-                    relationship: formData.relationship
-                });
-                
-                showSuccess('プロフィールを更新しました！');
-                
-                // ボタンを元に戻す
-                saveBtn.innerHTML = originalText;
-                saveBtn.disabled = false;
-                
+                btn.disabled = true;
+                btn.textContent = '保存中...';
+
+                const data = {
+                    displayName: document.getElementById('displayName').value,
+                    phone: document.getElementById('phone').value,
+                    birthDate: document.getElementById('birthDate').value,
+                    updatedAt: new Date()
+                };
+
+                await setDoc(doc(db, 'users', currentUser.uid), data, { merge: true });
+                showAlert('基本情報を保存しました。', 'success');
             } catch (error) {
-                console.error('プロフィール更新エラー:', error);
-                showError('プロフィールの更新中にエラーが発生しました。');
-                
-                // ボタンを元に戻す
-                saveBtn.innerHTML = originalText;
-                saveBtn.disabled = false;
+                console.error('Error saving basic info:', error);
+                showAlert('保存に失敗しました。もう一度お試しください。', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 保存する';
             }
         });
-        
-        // パスワード変更フォーム
-        const passwordForm = document.getElementById('passwordForm');
-        
-        passwordForm.addEventListener('submit', async function(e) {
+
+        // Save address
+        document.getElementById('addressForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btn = document.getElementById('saveAddressBtn');
             
-            // メッセージをクリア
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
-            
-            if (!currentUser) {
-                showError('ログインセッションが切れています。再度ログインしてください。');
-                return;
+            try {
+                btn.disabled = true;
+                btn.textContent = '保存中...';
+
+                const data = {
+                    postalCode: document.getElementById('postalCode').value,
+                    prefecture: document.getElementById('prefecture').value,
+                    city: document.getElementById('city').value,
+                    address: document.getElementById('address').value,
+                    updatedAt: new Date()
+                };
+
+                await setDoc(doc(db, 'users', currentUser.uid), data, { merge: true });
+                showAlert('住所情報を保存しました。', 'success');
+            } catch (error) {
+                console.error('Error saving address:', error);
+                showAlert('保存に失敗しました。もう一度お試しください。', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 保存する';
             }
+        });
+
+        // Save career
+        document.getElementById('careerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveCareerBtn');
+            
+            try {
+                btn.disabled = true;
+                btn.textContent = '保存中...';
+
+                const data = {
+                    education: document.getElementById('education').value,
+                    workHistory: document.getElementById('workHistory').value,
+                    skills: document.getElementById('skills').value,
+                    updatedAt: new Date()
+                };
+
+                await setDoc(doc(db, 'users', currentUser.uid), data, { merge: true });
+                showAlert('職歴・学歴を保存しました。', 'success');
+            } catch (error) {
+                console.error('Error saving career:', error);
+                showAlert('保存に失敗しました。もう一度お試しください。', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 保存する';
+            }
+        });
+
+        // Save other info
+        document.getElementById('otherForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveOtherBtn');
+            
+            try {
+                btn.disabled = true;
+                btn.textContent = '保存中...';
+
+                const data = {
+                    bio: document.getElementById('bio').value,
+                    desiredPosition: document.getElementById('desiredPosition').value,
+                    desiredLocation: document.getElementById('desiredLocation').value,
+                    updatedAt: new Date()
+                };
+
+                await setDoc(doc(db, 'users', currentUser.uid), data, { merge: true });
+                showAlert('その他の情報を保存しました。', 'success');
+            } catch (error) {
+                console.error('Error saving other info:', error);
+                showAlert('保存に失敗しました。もう一度お試しください。', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '💾 保存する';
+            }
+        });
+
+        // Change password
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('changePasswordBtn');
             
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // バリデーション
-            if (!currentPassword || !newPassword || !confirmPassword) {
-                showError('すべての項目を入力してください。');
-                return;
-            }
-            
-            if (newPassword.length < 8) {
-                showError('新しいパスワードは8文字以上で入力してください。');
-                return;
-            }
-            
+
             if (newPassword !== confirmPassword) {
-                showError('新しいパスワードが一致しません。');
+                showAlert('新しいパスワードが一致しません。', 'error');
                 return;
             }
-            
-            // ローディング状態
-            const changePasswordBtn = document.getElementById('changePasswordBtn');
-            const originalText = changePasswordBtn.innerHTML;
-            changePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 変更中...';
-            changePasswordBtn.disabled = true;
-            
+
             try {
-                // 再認証
+                btn.disabled = true;
+                btn.textContent = '変更中...';
+
+                // Reauthenticate user
                 const credential = EmailAuthProvider.credential(
                     currentUser.email,
                     currentPassword
                 );
                 await reauthenticateWithCredential(currentUser, credential);
-                
-                // パスワード更新
+
+                // Update password
                 await updatePassword(currentUser, newPassword);
+
+                showAlert('パスワードを変更しました。', 'success');
                 
-                showSuccess('パスワードを変更しました！');
-                
-                // フォームをクリア
-                passwordForm.reset();
-                
-                // ボタンを元に戻す
-                changePasswordBtn.innerHTML = originalText;
-                changePasswordBtn.disabled = false;
-                
+                // Clear password fields
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
             } catch (error) {
-                console.error('パスワード変更エラー:', error);
+                console.error('Error changing password:', error);
                 
-                let errorMsg = 'パスワードの変更中にエラーが発生しました。';
-                
+                let errorMessage = 'パスワードの変更に失敗しました。';
                 if (error.code === 'auth/wrong-password') {
-                    errorMsg = '現在のパスワードが正しくありません。';
+                    errorMessage = '現在のパスワードが正しくありません。';
                 } else if (error.code === 'auth/weak-password') {
-                    errorMsg = '新しいパスワードが弱すぎます。より強力なパスワードを設定してください。';
-                } else if (error.code === 'auth/requires-recent-login') {
-                    errorMsg = 'セキュリティのため、再度ログインしてからパスワードを変更してください。';
+                    errorMessage = '新しいパスワードは6文字以上で設定してください。';
                 }
                 
-                showError(errorMsg);
-                
-                // ボタンを元に戻す
-                changePasswordBtn.innerHTML = originalText;
-                changePasswordBtn.disabled = false;
+                showAlert(errorMessage, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔐 パスワードを変更';
             }
         });
-        
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.classList.add('show');
-            window.scrollTo(0, 0);
-            
+
+        // Show alert
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <span>${type === 'success' ? '✓' : '⚠'}</span>
+                <span>${message}</span>
+            `;
+            alertContainer.appendChild(alert);
+
             setTimeout(() => {
-                errorMessage.classList.remove('show');
+                alert.remove();
             }, 5000);
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        
-        function showSuccess(message) {
-            successText.textContent = message;
-            successMessage.classList.add('show');
-            window.scrollTo(0, 0);
-            
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 5000);
-        }
-        
-        // グローバルスコープに公開（デバッグ用）
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
+    </script>
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "プロフィール編集",
+      "description": "プロフィール情報を編集・更新",
+      "url": "https://hiyusho.github.io/university-relocation-support/profile-edit.html"
+    }
     </script>
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
