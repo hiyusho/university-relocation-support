@@ -658,7 +658,11 @@
             
             let filteredConsultations = consultations;
             if (currentFilter !== 'all') {
-                filteredConsultations = consultations.filter(c => c.status === currentFilter);
+                filteredConsultations = consultations.filter(c => {
+                    // Handle 'pending' as 'scheduled' for filtering
+                    const normalizedStatus = c.status === 'pending' ? 'scheduled' : c.status;
+                    return normalizedStatus === currentFilter;
+                });
             }
 
             if (filteredConsultations.length === 0) {
@@ -676,7 +680,9 @@
                 const dateStr = consultation.preferredDate;
                 const timeStr = consultation.preferredTime;
                 const statusText = consultation.statusLabel || getStatusText(consultation.status);
-                const statusClass = `status-${consultation.status.replace('pending', 'scheduled')}`;
+                // Normalize status for CSS class (pending -> scheduled)
+                const normalizedStatus = consultation.status === 'pending' ? 'scheduled' : consultation.status;
+                const statusClass = `status-${normalizedStatus}`;
                 const formatText = consultation.methodLabel || (consultation.method === 'online' ? 'オンライン (Zoom)' : '対面');
                 const createdDate = consultation.createdAt ? consultation.createdAt.toDate() : new Date();
 
@@ -779,7 +785,7 @@
                     </div>
                     <div>
                         <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">ステータス</h4>
-                        <span class="status-badge status-${consultation.status}">${statusText}</span>
+                        <span class="status-badge status-${consultation.status === 'pending' ? 'scheduled' : consultation.status}">${statusText}</span>
                     </div>
                     <div>
                         <h4 style="color: #64748b; font-size: 14px; margin-bottom: 8px;">面談形式</h4>
