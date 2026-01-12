@@ -539,12 +539,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <!-- Firebase SDK (Modular) -->
+    <script type="module">
+        // Firebase SDKのインポート
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    <script>
         // Firebase設定
         const firebaseConfig = {
             apiKey: "AIzaSyDMwu0kzvR7rwc3aUVs4OAcFyPaZkW4mZs",
@@ -557,9 +558,12 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        
 
         let currentUser = null;
 
@@ -567,8 +571,8 @@
         console.log('🔄 Firebase 初期化完了');
         console.log('🔄 認証状態を確認中...');
 
-        // 認証状態の確認（改善版）
-        auth.onAuthStateChanged(user => {
+        // 認証状態の確認（改善版 - modular SDK）
+        onAuthStateChanged(auth, (user) => {
             console.log('🔔 認証状態変更:', user ? `ログイン済み (${user.email})` : 'ログインしていません');
             
             if (user) {
