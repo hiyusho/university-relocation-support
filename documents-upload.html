@@ -1,9 +1,3 @@
-<!-- 認証ローディング画面 -->
-<div id="authLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
-    <div style="width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-    <p style="color: white; font-size: 18px; margin-top: 20px; font-weight: 500;">ログイン状態を確認中...</p>
-    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
-</div>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -371,14 +365,7 @@
     </style>
 </head>
 <body>
-    <!-- 認証ローディング画面 -->
-    <div id="authLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
-        <div style="width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-        <p style="color: white; font-size: 18px; margin-top: 20px; font-weight: 500;">ログイン状態を確認中...</p>
-        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
-    </div>
-
-    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.5s ease;">
+    <div class="container">
         <!-- Header -->
         <div class="header">
             <a href="documents-list.html" class="back-link">
@@ -547,180 +534,33 @@
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
-                const firebaseConfig = {
-    apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
-    authDomain: "university-relocation-support.firebaseapp.com",
-    projectId: "university-relocation-support",
-    storageBucket: "university-relocation-support-storage",
-    messagingSenderId: "849634495988",
-    appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
-    measurementId: "G-RJP20TC7DV"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support-storage",
+            messagingSenderId: "849634495988",
+            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+            measurementId: "G-RJP20TC7DV"
+        };
 
-        // Initialize Firebase
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        
-
         let currentUser = null;
 
-        // デバッグ情報を記録
-        console.log('🔄 Firebase 初期化完了');
-        console.log('🔄 Firebase Config:', firebaseConfig);
-        console.log('🔄 認証状態を確認中...');
-        
-        // LocalStorage の認証トークンを確認
-        const authKeys = Object.keys(localStorage).filter(k => k.includes('firebase'));
-        console.log('🔑 LocalStorage Firebase Keys:', authKeys);
-        authKeys.forEach(key => {
-            console.log(`   ${key}:`, localStorage.getItem(key)?.substring(0, 100) + '...');
-        });
-
-        // 認証状態の確認（超シンプル版）
-        
-// ===================================
-// 認証状態の確認
-// ===================================
-console.log('🔄 認証チェック開始...');
-
-// DOM要素の確実な取得（DOMContentLoaded後に実行）
-let authLoading, mainContainer;
-
-// DOMが完全に読み込まれるまで待つ
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAuth);
-} else {
-    // 既に読み込まれている場合は即実行
-    initAuth();
-}
-
-function initAuth() {
-    console.log('📦 DOM読み込み完了。要素を取得中...');
-    
-    // DOM要素を取得
-    authLoading = document.getElementById('authLoading');
-    mainContainer = document.getElementById('mainContainer');
-    
-    // 要素の存在確認
-    if (!authLoading) {
-        console.warn('⚠️ authLoading 要素が見つかりません');
-    } else {
-        console.log('✅ authLoading 要素を取得:', authLoading);
-    }
-    
-    if (!mainContainer) {
-        console.warn('⚠️ mainContainer 要素が見つかりません');
-    } else {
-        console.log('✅ mainContainer 要素を取得:', mainContainer);
-    }
-    
-    // 認証状態を監視
-    onAuthStateChanged(auth, handleAuthStateChange);
-}
-
-// 認証タイムアウト（20秒）
-const authTimeout = setTimeout(() => {
-    console.error('❌ 認証タイムアウト（20秒経過）');
-    console.log('🔄 ログイン画面にリダイレクトします...');
-    window.location.href = 'log-in.html';
-}, 20000);
-
-// 認証状態変更ハンドラ
-function handleAuthStateChange(user) {
-    // タイムアウトをクリア
-    clearTimeout(authTimeout);
-    
-    console.log('🔔 認証状態変更イベント発火');
-    
-    if (user) {
-        console.log('✅ ユーザー認証成功！');
-        console.log('📧 Email:', user.email);
-        console.log('🆔 UID:', user.uid);
-        
-        // currentUser を設定
-        currentUser = user;
-        
-        // ローディング画面を非表示にし、メインコンテンツを表示
-        setTimeout(() => {
-            console.log('🎨 UI更新中...');
-            
-            // ローディング画面を削除
-            if (authLoading && authLoading.parentNode) {
-                authLoading.parentNode.removeChild(authLoading);
-                console.log('✅ ローディング画面を削除しました');
-            }
-            
-            // メインコンテンツを表示
-            if (mainContainer) {
-                mainContainer.style.cssText = `
-                    opacity: 1 !important;
-                    visibility: visible !important;
-                    display: block !important;
-                    transition: opacity 0.3s ease;
-                `;
-                console.log('✅ メインコンテンツを表示しました');
-            }
-            
-            // body の overflow を設定
-            document.body.style.overflow = 'auto';
-            
-            console.log('🎉 UI更新完了！');
-        }, 100);
-        
-    } else {
-        console.warn('❌ ユーザーがログインしていません');
-        console.log('🔄 ログイン画面にリダイレクトします...');
-        window.location.href = 'log-in.html';
-    }
-}
-
-                    
-                    // ローディング削除
-                    if (loading && loading.parentNode) {
-                        loading.parentNode.removeChild(loading);
-                        console.log('✅ ローディング削除完了');
-                    }
-                    
-                    // コンテンツ表示
-                    if (container) {
-                        container.style.cssText = 'opacity: 1 !important; visibility: visible !important; display: block !important;';
-                        console.log('✅ コンテンツ表示完了');
-                    }
-                    
-                    // 念のため body も確認
-                    document.body.style.overflow = 'visible';
-                    
-                    console.log('=== 表示処理完了 ===');
-                }, 100);
+        // 認証状態の確認（シンプル版）
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('✅ ユーザー認証成功:', user.email);
             } else {
-                console.log('❌ 未ログイン - リダイレクト');
-                setTimeout(() => {
-                    window.location.href = 'log-in.html';
-                }, 500);
-            }
-        });
-
-        // タイムアウト処理を改善（5秒ごとにチェック）
-        let timeoutCounter = 0;
-        const maxTimeout = 20; // 最大20秒
-        
-        const checkAuthInterval = setInterval(() => {
-            timeoutCounter++;
-            console.log(`⏱️ 認証チェック... (${timeoutCounter}秒経過)`);
-            
-            if (currentUser) {
-                console.log('✅ 認証確認済み - タイマー停止');
-                clearInterval(checkAuthInterval);
-            } else if (timeoutCounter >= maxTimeout) {
-                console.log('⚠️ 認証タイムアウト（20秒経過）');
-                console.log('⚠️ ログインページへリダイレクト');
-                clearInterval(checkAuthInterval);
+                console.warn('❌ ログインしていません');
                 window.location.href = 'log-in.html';
             }
-        }, 1000);
+        });
 
         // フォーム送信
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
@@ -756,7 +596,7 @@ function handleAuthStateChange(user) {
 
             try {
                 // Firestoreに保存
-                await db.collection('documents').add({
+                await addDoc(collection(db, 'documents'), {
                     userId: currentUser.uid,
                     userEmail: currentUser.email,
                     documentType: documentType,
@@ -773,8 +613,8 @@ function handleAuthStateChange(user) {
                     fileSize: null,
                     fileType: null,
                     
-                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    uploadedAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
                 });
 
                 showAlert('success', '書類が登録されました！');
