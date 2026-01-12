@@ -25,9 +25,50 @@
             line-height: 1.6;
         }
 
+        /* 初回認証ロード画面 */
+        #authLoading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        #authLoading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        #authLoading p {
+            color: white;
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .container.visible {
+            opacity: 1;
         }
 
         /* Header */
@@ -100,19 +141,21 @@
         }
 
         .filter-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: 2px solid #e2e8f0;
             background: white;
-            border-radius: 20px;
-            font-size: 14px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
             color: #4a5568;
         }
 
         .filter-btn:hover {
             border-color: #667eea;
             color: #667eea;
+            transform: translateY(-2px);
         }
 
         .filter-btn.active {
@@ -121,33 +164,83 @@
             border-color: #667eea;
         }
 
+        .filter-btn i {
+            margin-right: 8px;
+        }
+
         /* Content */
         .content {
             background: white;
+            padding: 35px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            padding: 35px;
+            min-height: 400px;
         }
 
-        /* Document Grid */
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #38a169;
+        }
+
+        .alert.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        /* Documents Grid */
         .documents-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .document-card {
+            background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-            transform: translateY(-3px);
         }
 
         .document-icon {
@@ -158,54 +251,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 28px;
             margin-bottom: 15px;
+        }
+
+        .document-icon i {
+            font-size: 28px;
+            color: white;
         }
 
         .document-title {
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             color: #2d3748;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            word-break: break-word;
         }
 
         .document-meta {
             font-size: 13px;
             color: #718096;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
-        .document-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .badge-google-drive {
-            background: #e8f4fd;
-            color: #1976d2;
-        }
-
-        .badge-dropbox {
-            background: #e3f2fd;
-            color: #0061ff;
-        }
-
-        .badge-onedrive {
-            background: #e1f5fe;
-            color: #0078d4;
-        }
-
-        .badge-other {
-            background: #f5f5f5;
-            color: #666;
+        .document-meta i {
+            color: #667eea;
         }
 
         .document-actions {
@@ -216,43 +288,40 @@
             border-top: 1px solid #e2e8f0;
         }
 
-        .action-btn {
+        .document-actions button {
             flex: 1;
-            padding: 8px 12px;
+            padding: 10px;
             border: none;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
         }
 
-        .action-btn-download {
-            background: #48bb78;
+        .btn-download {
+            background: #667eea;
             color: white;
         }
 
-        .action-btn-download:hover {
-            background: #38a169;
+        .btn-download:hover {
+            background: #5568d3;
         }
 
-        .action-btn-delete {
-            background: #f56565;
+        .btn-delete {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .btn-delete:hover {
+            background: #fc8181;
             color: white;
-        }
-
-        .action-btn-delete:hover {
-            background: #e53e3e;
         }
 
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
         }
 
         .empty-icon {
@@ -262,105 +331,60 @@
         }
 
         .empty-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 10px;
+            color: #2d3748;
+            margin-bottom: 12px;
         }
 
         .empty-text {
+            font-size: 16px;
             color: #718096;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
 
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Alert */
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Delete Modal */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.3s ease;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal.show {
+            display: flex;
         }
 
         .modal-content {
             background: white;
-            margin: 10% auto;
-            padding: 30px;
+            padding: 35px;
             border-radius: 15px;
-            max-width: 500px;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: #2d3748;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .modal-text {
+            font-size: 15px;
             color: #4a5568;
+            line-height: 1.6;
             margin-bottom: 25px;
         }
 
@@ -373,7 +397,21 @@
         @media (max-width: 768px) {
             .header-top {
                 flex-direction: column;
+                align-items: flex-start;
                 gap: 15px;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .filter-section {
+                justify-content: center;
             }
 
             .documents-grid {
@@ -383,15 +421,24 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 認証ローディング画面 -->
+    <div id="authLoading">
+        <div class="spinner"></div>
+        <p>ログイン状態を確認中...</p>
+    </div>
+
+    <div class="container" id="mainContainer">
         <!-- Header -->
         <div class="header">
             <div class="header-top">
-                <h1 class="header-title">応募書類管理</h1>
+                <h1 class="header-title">
+                    <i class="fas fa-file-alt" style="color: #667eea;"></i>
+                    応募書類管理
+                </h1>
                 <div class="header-actions">
                     <a href="dashboard.html" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i>
-                        ダッシュボード
+                        ダッシュボードへ
                     </a>
                     <a href="documents-upload.html" class="btn btn-primary">
                         <i class="fas fa-plus"></i>
@@ -508,20 +555,47 @@
         let currentFilter = 'all';
         let documentToDelete = null;
 
-        // 認証状態の確認
+        // デバッグ情報を記録
+        console.log('🔄 Firebase 初期化完了');
+        console.log('🔄 認証状態を確認中...');
+
+        // 認証状態の確認（改善版）
         auth.onAuthStateChanged(user => {
+            console.log('🔔 認証状態変更:', user ? `ログイン済み (${user.email})` : 'ログインしていません');
+            
             if (user) {
                 currentUser = user;
-                console.log('User authenticated:', user.email);
+                console.log('✅ User authenticated:', user.email);
+                console.log('📧 ユーザーID:', user.uid);
+                
+                // 認証ローディングを非表示
+                document.getElementById('authLoading').style.display = 'none';
+                document.getElementById('mainContainer').classList.add('visible');
+                
+                // 書類を読み込む
                 loadDocuments();
             } else {
-                window.location.href = 'log-in.html';
+                console.log('❌ ユーザーがログインしていません');
+                console.log('🔄 ログインページへリダイレクト...');
+                // 認証失敗: ログインページへ
+                setTimeout(() => {
+                    window.location.href = 'log-in.html';
+                }, 500);
             }
         });
+
+        // タイムアウト処理（10秒以内に認証判定されない場合）
+        setTimeout(() => {
+            if (!currentUser) {
+                console.log('⚠️ 認証タイムアウト: ログインページへリダイレクト');
+                window.location.href = 'log-in.html';
+            }
+        }, 10000);
 
         // 書類の読み込み
         async function loadDocuments() {
             try {
+                console.log('📥 書類を読み込み中...');
                 document.getElementById('loading').style.display = 'block';
                 document.getElementById('documentsGrid').style.display = 'none';
                 document.getElementById('emptyState').style.display = 'none';
@@ -536,11 +610,12 @@
                     ...doc.data()
                 }));
 
-                console.log('Loaded documents:', documents.length);
+                console.log('✅ Loaded documents:', documents.length, '件');
+                console.log('📄 書類:', documents);
                 renderDocuments();
 
             } catch (error) {
-                console.error('Error loading documents:', error);
+                console.error('❌ Error loading documents:', error);
                 showAlert('error', '書類の読み込みに失敗しました');
             } finally {
                 document.getElementById('loading').style.display = 'none';
@@ -555,6 +630,8 @@
             const filteredDocs = currentFilter === 'all' 
                 ? documents 
                 : documents.filter(doc => doc.documentType === currentFilter);
+
+            console.log('🔍 フィルター:', currentFilter, '→', filteredDocs.length, '件');
 
             if (filteredDocs.length === 0) {
                 grid.style.display = 'none';
@@ -576,66 +653,66 @@
                         ${getDocumentTypeName(doc.documentType)}
                     </div>
                     <div class="document-meta">
-                        <i class="fas fa-calendar"></i>
-                        ${formatDate(doc.uploadedAt)}
+                        <i class="fas fa-cloud"></i>
+                        ${getStorageTypeName(doc.storageType)}
                     </div>
                     ${doc.description ? `
-                        <div class="document-meta">
-                            <i class="fas fa-comment"></i>
+                        <div class="document-meta" style="margin-top: 8px; font-size: 12px; color: #a0aec0;">
+                            <i class="fas fa-sticky-note"></i>
                             ${escapeHtml(doc.description)}
                         </div>
                     ` : ''}
-                    <div class="document-badge ${getBadgeClass(doc.storageType)}">
-                        <i class="fab ${getStorageIcon(doc.storageType)}"></i>
-                        ${getStorageTypeName(doc.storageType)}
+                    <div class="document-meta">
+                        <i class="fas fa-clock"></i>
+                        ${formatDate(doc.uploadedAt)}
                     </div>
                     <div class="document-actions">
-                        <button class="action-btn action-btn-download" onclick="downloadDocument('${doc.id}')">
-                            <i class="fas fa-external-link-alt"></i>
-                            開く
+                        <button class="btn-download" onclick="downloadDocument('${doc.id}')">
+                            <i class="fas fa-download"></i> 開く
                         </button>
-                        <button class="action-btn action-btn-delete" onclick="showDeleteModal('${doc.id}')">
-                            <i class="fas fa-trash"></i>
-                            削除
+                        <button class="btn-delete" onclick="showDeleteModal('${doc.id}')">
+                            <i class="fas fa-trash"></i> 削除
                         </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 書類を開く（外部リンク）
+        // 書類のダウンロード
         function downloadDocument(docId) {
             const doc = documents.find(d => d.id === docId);
             if (doc && doc.externalURL) {
+                console.log('🔗 Opening:', doc.externalURL);
                 window.open(doc.externalURL, '_blank');
             } else {
                 showAlert('error', 'リンクが見つかりません');
             }
         }
 
-        // 削除モーダルを表示
+        // 削除モーダルの表示
         function showDeleteModal(docId) {
             documentToDelete = docId;
-            document.getElementById('deleteModal').style.display = 'block';
+            document.getElementById('deleteModal').classList.add('show');
         }
 
         // 削除モーダルを閉じる
         function closeDeleteModal() {
             documentToDelete = null;
-            document.getElementById('deleteModal').style.display = 'none';
+            document.getElementById('deleteModal').classList.remove('show');
         }
 
-        // 削除を実行
+        // 削除を確認
         async function confirmDelete() {
             if (!documentToDelete) return;
 
             try {
                 await db.collection('documents').doc(documentToDelete).delete();
+                console.log('🗑️ Document deleted:', documentToDelete);
                 showAlert('success', '書類を削除しました');
                 closeDeleteModal();
                 loadDocuments();
             } catch (error) {
-                console.error('Error deleting document:', error);
+                console.error('❌ Error deleting document:', error);
                 showAlert('error', '削除に失敗しました');
             }
         }
@@ -643,14 +720,28 @@
         // フィルター
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                currentFilter = btn.dataset.filter;
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
+                console.log('🔍 Filter changed:', currentFilter);
                 renderDocuments();
             });
         });
 
-        // ユーティリティ関数
+        // アラート表示
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.className = `alert ${type} show`;
+            alert.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                ${message}
+            `;
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+
+        // ヘルパー関数
         function getDocumentIcon(type) {
             const icons = {
                 resume: 'fa-file-alt',
@@ -672,17 +763,7 @@
                 portfolio: 'ポートフォリオ',
                 other: 'その他'
             };
-            return names[type] || type;
-        }
-
-        function getStorageIcon(type) {
-            const icons = {
-                google_drive: 'fa-google-drive',
-                dropbox: 'fa-dropbox',
-                onedrive: 'fa-microsoft',
-                other: 'fa-cloud'
-            };
-            return icons[type] || 'fa-cloud';
+            return names[type] || 'その他';
         }
 
         function getStorageTypeName(type) {
@@ -692,26 +773,18 @@
                 onedrive: 'OneDrive',
                 other: 'その他'
             };
-            return names[type] || type;
-        }
-
-        function getBadgeClass(type) {
-            const classes = {
-                google_drive: 'badge-google-drive',
-                dropbox: 'badge-dropbox',
-                onedrive: 'badge-onedrive',
-                other: 'badge-other'
-            };
-            return classes[type] || 'badge-other';
+            return names[type] || 'その他';
         }
 
         function formatDate(timestamp) {
-            if (!timestamp) return '日付不明';
+            if (!timestamp) return '';
             const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
             return date.toLocaleDateString('ja-JP', { 
                 year: 'numeric', 
                 month: '2-digit', 
-                day: '2-digit' 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
             });
         }
 
@@ -720,28 +793,6 @@
             div.textContent = text;
             return div.innerHTML;
         }
-
-        function showAlert(type, message) {
-            const alert = document.getElementById('alert');
-            alert.className = `alert alert-${type}`;
-            alert.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                ${message}
-            `;
-            alert.style.display = 'flex';
-
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 5000);
-        }
-
-        // モーダルの外側クリックで閉じる
-        window.onclick = function(event) {
-            const modal = document.getElementById('deleteModal');
-            if (event.target === modal) {
-                closeDeleteModal();
-            }
-        };
     </script>
 </body>
 </html>
