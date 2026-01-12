@@ -1,3 +1,9 @@
+<!-- 認証ローディング画面 -->
+<div id="authLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
+    <div style="width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <p style="color: white; font-size: 18px; margin-top: 20px; font-weight: 500;">ログイン状態を確認中...</p>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+</div>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -365,7 +371,14 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 認証ローディング画面 -->
+    <div id="authLoading" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
+        <div style="width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="color: white; font-size: 18px; margin-top: 20px; font-weight: 500;">ログイン状態を確認中...</p>
+        <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+    </div>
+
+    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.5s ease;">
         <!-- Header -->
         <div class="header">
             <a href="documents-list.html" class="back-link">
@@ -550,16 +563,41 @@
 
         let currentUser = null;
 
-        // 認証状態の確認
+        // デバッグ情報を記録
+        console.log('🔄 Firebase 初期化完了');
+        console.log('🔄 認証状態を確認中...');
+
+        // 認証状態の確認（改善版）
         auth.onAuthStateChanged(user => {
+            console.log('🔔 認証状態変更:', user ? `ログイン済み (${user.email})` : 'ログインしていません');
+            
             if (user) {
                 currentUser = user;
-                console.log('User authenticated:', user.email);
+                console.log('✅ User authenticated:', user.email);
+                console.log('📧 ユーザーID:', user.uid);
+                
+                // 認証ローディングを非表示
+                const authLoading = document.getElementById('authLoading');
+                const mainContainer = document.getElementById('mainContainer');
+                if (authLoading) authLoading.style.display = 'none';
+                if (mainContainer) mainContainer.style.opacity = '1';
             } else {
-                // 未ログインの場合はログインページへリダイレクト
-                window.location.href = 'log-in.html';
+                console.log('❌ ユーザーがログインしていません');
+                console.log('🔄 ログインページへリダイレクト...');
+                // 認証失敗: ログインページへ
+                setTimeout(() => {
+                    window.location.href = 'log-in.html';
+                }, 500);
             }
         });
+
+        // タイムアウト処理（10秒以内に認証判定されない場合）
+        setTimeout(() => {
+            if (!currentUser) {
+                console.log('⚠️ 認証タイムアウト: ログインページへリダイレクト');
+                window.location.href = 'log-in.html';
+            }
+        }, 10000);
 
         // フォーム送信
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
