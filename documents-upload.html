@@ -579,73 +579,44 @@
             console.log(`   ${key}:`, localStorage.getItem(key)?.substring(0, 100) + '...');
         });
 
-        // 認証状態の確認（改善版 - modular SDK）
+        // 認証状態の確認（超シンプル版）
         onAuthStateChanged(auth, (user) => {
-            console.log('🔔 認証状態変更イベント発火');
-            console.log('🔔 User オブジェクト:', user);
+            console.log('=== 認証状態変更 ===');
             
             if (user) {
+                console.log('✅ ログイン済み:', user.email);
                 currentUser = user;
-                console.log('✅ ユーザー認証成功！');
-                console.log('📧 Email:', user.email);
-                console.log('📧 UID:', user.uid);
-                console.log('🔐 Token:', user.stsTokenManager?.accessToken?.substring(0, 50) + '...');
                 
-                // 認証ローディングを非表示（強制）
-                const authLoading = document.getElementById('authLoading');
-                const mainContainer = document.getElementById('mainContainer');
-                
-                console.log('🔧 DOM要素を確認中...');
-                console.log('  authLoading:', authLoading);
-                console.log('  mainContainer:', mainContainer);
-                
-                // authLoading を強制的に削除
-                if (authLoading) {
-                    console.log('🗑️ authLoading を削除中...');
-                    authLoading.parentNode.removeChild(authLoading);
-                    console.log('✅ 認証ローディング完全削除');
-                } else {
-                    console.warn('⚠️ authLoading 要素が見つかりません');
-                }
-                
-                // mainContainer を強制表示
-                if (mainContainer) {
-                    console.log('📺 mainContainer を表示中...');
-                    mainContainer.style.opacity = '1';
-                    mainContainer.style.visibility = 'visible';
-                    mainContainer.style.display = 'block';
-                    mainContainer.style.position = 'relative';
-                    mainContainer.style.zIndex = '1';
-                    console.log('✅ メインコンテンツ強制表示');
-                    console.log('   - opacity:', mainContainer.style.opacity);
-                    console.log('   - visibility:', mainContainer.style.visibility);
-                    console.log('   - display:', mainContainer.style.display);
-                } else {
-                    console.warn('⚠️ mainContainer 要素が見つかりません');
-                }
-                
-                // body の設定
-                document.body.style.overflow = 'auto';
-                console.log('✅ body overflow 設定完了');
-                
-                // 最終確認
+                // シンプルに表示切り替え
                 setTimeout(() => {
-                    const stillExists = document.getElementById('authLoading');
-                    console.log('🔍 最終確認: authLoading は削除されたか?', stillExists === null ? 'はい' : 'いいえ');
+                    const loading = document.getElementById('authLoading');
+                    const container = document.getElementById('mainContainer');
+                    
+                    console.log('DOM要素:', {loading, container});
+                    
+                    // ローディング削除
+                    if (loading && loading.parentNode) {
+                        loading.parentNode.removeChild(loading);
+                        console.log('✅ ローディング削除完了');
+                    }
+                    
+                    // コンテンツ表示
+                    if (container) {
+                        container.style.cssText = 'opacity: 1 !important; visibility: visible !important; display: block !important;';
+                        console.log('✅ コンテンツ表示完了');
+                    }
+                    
+                    // 念のため body も確認
+                    document.body.style.overflow = 'visible';
+                    
+                    console.log('=== 表示処理完了 ===');
                 }, 100);
             } else {
-                console.log('❌ ユーザーがログインしていません');
-                console.log('❌ User オブジェクトが null です');
-                console.log('🔄 ログインページへリダイレクト...');
-                
-                // 認証失敗: ログインページへ
+                console.log('❌ 未ログイン - リダイレクト');
                 setTimeout(() => {
                     window.location.href = 'log-in.html';
-                }, 1000);
+                }, 500);
             }
-        }, (error) => {
-            console.error('❌ 認証状態チェックエラー:', error);
-            console.error('エラー詳細:', error.code, error.message);
         });
 
         // タイムアウト処理を改善（5秒ごとにチェック）
