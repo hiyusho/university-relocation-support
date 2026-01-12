@@ -591,18 +591,35 @@
                 console.log('📧 UID:', user.uid);
                 console.log('🔐 Token:', user.stsTokenManager?.accessToken?.substring(0, 50) + '...');
                 
-                // 認証ローディングを非表示
+                // 認証ローディングを非表示（強制）
                 const authLoading = document.getElementById('authLoading');
                 const mainContainer = document.getElementById('mainContainer');
                 
+                console.log('🔧 DOM要素を確認中...');
+                console.log('  authLoading:', authLoading);
+                console.log('  mainContainer:', mainContainer);
+                
                 if (authLoading) {
                     authLoading.style.display = 'none';
-                    console.log('✅ 認証ローディング非表示');
+                    authLoading.style.visibility = 'hidden';
+                    authLoading.remove(); // 完全に削除
+                    console.log('✅ 認証ローディング完全削除');
+                } else {
+                    console.warn('⚠️ authLoading 要素が見つかりません');
                 }
+                
                 if (mainContainer) {
                     mainContainer.style.opacity = '1';
-                    console.log('✅ メインコンテンツ表示');
+                    mainContainer.style.visibility = 'visible';
+                    mainContainer.style.display = 'block';
+                    console.log('✅ メインコンテンツ強制表示');
+                } else {
+                    console.warn('⚠️ mainContainer 要素が見つかりません');
                 }
+                
+                // body の背景も確認
+                document.body.style.overflow = 'auto';
+                console.log('✅ body overflow 設定完了');
             } else {
                 console.log('❌ ユーザーがログインしていません');
                 console.log('❌ User オブジェクトが null です');
@@ -618,14 +635,24 @@
             console.error('エラー詳細:', error.code, error.message);
         });
 
-        // タイムアウト処理（15秒以内に認証判定されない場合）
-        setTimeout(() => {
-            if (!currentUser) {
-                console.log('⚠️ 認証タイムアウト（15秒経過）');
+        // タイムアウト処理を改善（5秒ごとにチェック）
+        let timeoutCounter = 0;
+        const maxTimeout = 20; // 最大20秒
+        
+        const checkAuthInterval = setInterval(() => {
+            timeoutCounter++;
+            console.log(`⏱️ 認証チェック... (${timeoutCounter}秒経過)`);
+            
+            if (currentUser) {
+                console.log('✅ 認証確認済み - タイマー停止');
+                clearInterval(checkAuthInterval);
+            } else if (timeoutCounter >= maxTimeout) {
+                console.log('⚠️ 認証タイムアウト（20秒経過）');
                 console.log('⚠️ ログインページへリダイレクト');
+                clearInterval(checkAuthInterval);
                 window.location.href = 'log-in.html';
             }
-        }, 15000);
+        }, 1000);
 
         // フォーム送信
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
