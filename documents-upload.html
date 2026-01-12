@@ -599,27 +599,40 @@
                 console.log('  authLoading:', authLoading);
                 console.log('  mainContainer:', mainContainer);
                 
+                // authLoading を強制的に削除
                 if (authLoading) {
-                    authLoading.style.display = 'none';
-                    authLoading.style.visibility = 'hidden';
-                    authLoading.remove(); // 完全に削除
+                    console.log('🗑️ authLoading を削除中...');
+                    authLoading.parentNode.removeChild(authLoading);
                     console.log('✅ 認証ローディング完全削除');
                 } else {
                     console.warn('⚠️ authLoading 要素が見つかりません');
                 }
                 
+                // mainContainer を強制表示
                 if (mainContainer) {
+                    console.log('📺 mainContainer を表示中...');
                     mainContainer.style.opacity = '1';
                     mainContainer.style.visibility = 'visible';
                     mainContainer.style.display = 'block';
+                    mainContainer.style.position = 'relative';
+                    mainContainer.style.zIndex = '1';
                     console.log('✅ メインコンテンツ強制表示');
+                    console.log('   - opacity:', mainContainer.style.opacity);
+                    console.log('   - visibility:', mainContainer.style.visibility);
+                    console.log('   - display:', mainContainer.style.display);
                 } else {
                     console.warn('⚠️ mainContainer 要素が見つかりません');
                 }
                 
-                // body の背景も確認
+                // body の設定
                 document.body.style.overflow = 'auto';
                 console.log('✅ body overflow 設定完了');
+                
+                // 最終確認
+                setTimeout(() => {
+                    const stillExists = document.getElementById('authLoading');
+                    console.log('🔍 最終確認: authLoading は削除されたか?', stillExists === null ? 'はい' : 'いいえ');
+                }, 100);
             } else {
                 console.log('❌ ユーザーがログインしていません');
                 console.log('❌ User オブジェクトが null です');
