@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>応募書類管理 | 大学赴任者家族帯同支援プログラム</title>
-    <meta name="description" content="アップロード済みの応募書類を管理できます。">
+    <meta name="description" content="アップロードした応募書類を管理・閲覧できます。">
     <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/documents-list.html">
     
     <!-- Font Awesome -->
@@ -33,67 +33,69 @@
         /* Header */
         .header {
             background: white;
-            padding: 20px 30px;
+            padding: 25px 35px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+        }
+
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            background: #f0f4ff;
+            margin-bottom: 20px;
         }
 
         .header-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             color: #2d3748;
         }
 
-        .upload-btn {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
             border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
 
-        .upload-btn:hover {
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        /* Filters */
-        .filters {
+        .btn-secondary {
             background: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            color: #667eea;
+            border: 2px solid #667eea;
         }
 
-        .filter-group {
+        .btn-secondary:hover {
+            background: #f0f4ff;
+        }
+
+        /* Filter Section */
+        .filter-section {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
@@ -103,10 +105,9 @@
             background: white;
             border-radius: 20px;
             font-size: 14px;
-            font-weight: 600;
-            color: #64748b;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: #4a5568;
         }
 
         .filter-btn:hover {
@@ -115,9 +116,9 @@
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             color: white;
-            border-color: transparent;
+            border-color: #667eea;
         }
 
         /* Content */
@@ -125,68 +126,10 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            padding: 30px;
+            padding: 35px;
         }
 
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 60px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 30px;
-            display: none;
-        }
-
-        .empty-state.show {
-            display: block;
-        }
-
-        .empty-icon {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            background: #f0f4ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: #667eea;
-        }
-
-        .empty-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-
-        .empty-text {
-            font-size: 16px;
-            color: #64748b;
-            margin-bottom: 25px;
-        }
-
-        /* Documents Grid */
+        /* Document Grid */
         .documents-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -194,7 +137,6 @@
         }
 
         .document-card {
-            background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             padding: 20px;
@@ -208,74 +150,65 @@
             transform: translateY(-3px);
         }
 
-        .doc-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .doc-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
+        .document-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
             color: white;
-            flex-shrink: 0;
+            font-size: 28px;
+            margin-bottom: 15px;
         }
 
-        .doc-icon.pdf {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        }
-
-        .doc-icon.word {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
-
-        .doc-icon.image {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .doc-info {
-            flex: 1;
-        }
-
-        .doc-type-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #f0f4ff;
-            color: #667eea;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .doc-name {
+        .document-title {
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             color: #2d3748;
             margin-bottom: 8px;
-            word-break: break-word;
         }
 
-        .doc-meta {
-            display: flex;
-            gap: 15px;
+        .document-meta {
             font-size: 13px;
-            color: #64748b;
-        }
-
-        .doc-meta-item {
+            color: #718096;
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .doc-actions {
+        .document-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-google-drive {
+            background: #e8f4fd;
+            color: #1976d2;
+        }
+
+        .badge-dropbox {
+            background: #e3f2fd;
+            color: #0061ff;
+        }
+
+        .badge-onedrive {
+            background: #e1f5fe;
+            color: #0078d4;
+        }
+
+        .badge-other {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .document-actions {
             display: flex;
             gap: 10px;
             margin-top: 15px;
@@ -283,111 +216,138 @@
             border-top: 1px solid #e2e8f0;
         }
 
-        .doc-action-btn {
+        .action-btn {
             flex: 1;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
         }
 
-        .btn-download {
-            background: #667eea;
+        .action-btn-download {
+            background: #48bb78;
             color: white;
         }
 
-        .btn-download:hover {
-            background: #5568d3;
+        .action-btn-download:hover {
+            background: #38a169;
         }
 
-        .btn-delete {
-            background: #fee2e2;
-            color: #ef4444;
+        .action-btn-delete {
+            background: #f56565;
+            color: white;
         }
 
-        .btn-delete:hover {
-            background: #fecaca;
+        .action-btn-delete:hover {
+            background: #e53e3e;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: #718096;
+            margin-bottom: 25px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Alert */
         .alert {
             padding: 15px 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 20px;
             display: none;
-            animation: slideIn 0.3s ease;
-        }
-
-        .alert.show {
-            display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #10b981;
+            background: #d4edda;
+            color: #155724;
         }
 
         .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #ef4444;
+            background: #f8d7da;
+            color: #721c24;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Modal */
+        /* Delete Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 1000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
 
-        .modal.show {
-            display: flex;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
-            border-radius: 15px;
+            margin: 10% auto;
             padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            animation: modalSlideIn 0.3s ease;
+            border-radius: 15px;
+            max-width: 500px;
+            animation: slideUp 0.3s ease;
         }
 
-        @keyframes modalSlideIn {
+        @keyframes slideUp {
             from {
-                transform: scale(0.9);
+                transform: translateY(50px);
                 opacity: 0;
             }
             to {
-                transform: scale(1);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
@@ -400,48 +360,18 @@
         }
 
         .modal-text {
-            font-size: 15px;
-            color: #64748b;
+            color: #4a5568;
             margin-bottom: 25px;
         }
 
         .modal-actions {
             display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-cancel {
-            background: #e2e8f0;
-            color: #64748b;
-        }
-
-        .btn-cancel:hover {
-            background: #cbd5e0;
-        }
-
-        .btn-confirm {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-confirm:hover {
-            background: #dc2626;
+            gap: 15px;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header {
+            .header-top {
                 flex-direction: column;
                 gap: 15px;
             }
@@ -456,82 +386,95 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <a href="dashboard.html" class="back-link">
-                ← ダッシュボードに戻る
-            </a>
-            <h1 class="header-title">応募書類管理</h1>
-            <a href="documents-upload.html" class="upload-btn">
-                <i class="fas fa-plus"></i>
-                新規アップロード
-            </a>
-        </div>
+            <div class="header-top">
+                <h1 class="header-title">応募書類管理</h1>
+                <div class="header-actions">
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i>
+                        ダッシュボード
+                    </a>
+                    <a href="documents-upload.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        新規登録
+                    </a>
+                </div>
+            </div>
 
-        <!-- Alert -->
-        <div id="alertContainer"></div>
-
-        <!-- Filters -->
-        <div class="filters">
-            <div class="filter-group">
+            <!-- Filter -->
+            <div class="filter-section">
                 <button class="filter-btn active" data-filter="all">
-                    すべて
+                    <i class="fas fa-th"></i> すべて
                 </button>
                 <button class="filter-btn" data-filter="resume">
-                    履歴書
+                    <i class="fas fa-file-alt"></i> 履歴書
                 </button>
                 <button class="filter-btn" data-filter="cv">
-                    職務経歴書
+                    <i class="fas fa-briefcase"></i> 職務経歴書
                 </button>
                 <button class="filter-btn" data-filter="cover_letter">
-                    カバーレター
+                    <i class="fas fa-envelope"></i> カバーレター
                 </button>
                 <button class="filter-btn" data-filter="certificate">
-                    資格証明書
+                    <i class="fas fa-certificate"></i> 資格証明書
                 </button>
                 <button class="filter-btn" data-filter="portfolio">
-                    ポートフォリオ
+                    <i class="fas fa-folder-open"></i> ポートフォリオ
                 </button>
                 <button class="filter-btn" data-filter="other">
-                    その他
+                    <i class="fas fa-file"></i> その他
                 </button>
             </div>
         </div>
 
         <!-- Content -->
         <div class="content">
+            <!-- Alert -->
+            <div id="alert" class="alert"></div>
+
             <!-- Loading -->
             <div id="loading" class="loading">
                 <div class="spinner"></div>
                 <p>読み込み中...</p>
             </div>
 
+            <!-- Documents Grid -->
+            <div id="documentsGrid" class="documents-grid"></div>
+
             <!-- Empty State -->
-            <div id="emptyState" class="empty-state">
+            <div id="emptyState" class="empty-state" style="display: none;">
                 <div class="empty-icon">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-inbox"></i>
                 </div>
-                <h3 class="empty-title">書類がありません</h3>
-                <p class="empty-text">最初の書類をアップロードしましょう</p>
-                <a href="documents-upload.html" class="upload-btn">
+                <div class="empty-title">書類がありません</div>
+                <div class="empty-text">
+                    まだ書類が登録されていません。<br>
+                    「新規登録」ボタンから書類を登録してください。
+                </div>
+                <a href="documents-upload.html" class="btn btn-primary">
                     <i class="fas fa-plus"></i>
-                    新規アップロード
+                    書類を登録する
                 </a>
             </div>
-
-            <!-- Documents Grid -->
-            <div id="documentsGrid" class="documents-grid" style="display: none;"></div>
         </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
-            <h3 class="modal-title">書類を削除</h3>
-            <p class="modal-text">この書類を削除してもよろしいですか？この操作は取り消せません。</p>
+            <h3 class="modal-title">
+                <i class="fas fa-exclamation-triangle" style="color: #f56565;"></i>
+                書類を削除
+            </h3>
+            <p class="modal-text">
+                この書類を削除してもよろしいですか？<br>
+                <strong>この操作は取り消せません。</strong>
+            </p>
             <div class="modal-actions">
-                <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()" style="flex: 1;">
                     キャンセル
                 </button>
-                <button class="modal-btn btn-confirm" id="confirmDeleteBtn">
+                <button class="btn btn-primary" onclick="confirmDelete()" style="flex: 1; background: #f56565;">
+                    <i class="fas fa-trash"></i>
                     削除する
                 </button>
             </div>
@@ -539,15 +482,14 @@
     </div>
 
     <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, query, where, orderBy, getDocs, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getStorage, ref, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-        // Firebase configuration
+    <script>
+        // Firebase設定
         const firebaseConfig = {
-            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+            apiKey: "AIzaSyDMwu0kzvR7rwc3aUVs4OAcFyPaZkW4mZs",
             authDomain: "university-relocation-support.firebaseapp.com",
             projectId: "university-relocation-support",
             storageBucket: "university-relocation-support-storage",
@@ -557,193 +499,148 @@
         };
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         let currentUser = null;
         let documents = [];
         let currentFilter = 'all';
         let documentToDelete = null;
 
-        // Check authentication
-        onAuthStateChanged(auth, (user) => {
+        // 認証状態の確認
+        auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
+                console.log('User authenticated:', user.email);
                 loadDocuments();
             } else {
                 window.location.href = 'log-in.html';
             }
         });
 
-        // Load documents
+        // 書類の読み込み
         async function loadDocuments() {
-            const loading = document.getElementById('loading');
-            const emptyState = document.getElementById('emptyState');
-            const documentsGrid = document.getElementById('documentsGrid');
-
             try {
-                console.log('=== Loading documents ===');
-                console.log('User ID:', currentUser.uid);
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('documentsGrid').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'none';
 
-                loading.style.display = 'block';
-                emptyState.classList.remove('show');
-                documentsGrid.style.display = 'none';
+                const snapshot = await db.collection('documents')
+                    .where('userId', '==', currentUser.uid)
+                    .orderBy('uploadedAt', 'desc')
+                    .get();
 
-                const documentsRef = collection(db, 'documents');
-                const q = query(
-                    documentsRef,
-                    where('userId', '==', currentUser.uid),
-                    orderBy('uploadedAt', 'desc')
-                );
+                documents = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
 
-                console.log('Query created:', q);
-
-                const querySnapshot = await getDocs(q);
-                console.log('Number of documents:', querySnapshot.size);
-
-                documents = [];
-                querySnapshot.forEach((doc) => {
-                    console.log('Document ID:', doc.id);
-                    console.log('Document data:', doc.data());
-                    documents.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-
-                console.log('Total documents loaded:', documents.length);
-
-                loading.style.display = 'none';
-
-                if (documents.length === 0) {
-                    emptyState.classList.add('show');
-                } else {
-                    documentsGrid.style.display = 'grid';
-                    renderDocuments();
-                }
+                console.log('Loaded documents:', documents.length);
+                renderDocuments();
 
             } catch (error) {
-                console.error('=== Error loading documents ===');
-                console.error('Error:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-
-                let errorMessage = '書類の読み込みに失敗しました。';
-
-                if (error.code === 'permission-denied') {
-                    errorMessage = 'アクセス権限がありません。Firestore のセキュリティルールを確認してください。';
-                } else if (error.code === 'failed-precondition') {
-                    errorMessage = 'インデックスが必要です。コンソールのリンクからインデックスを作成してください。';
-                }
-
-                showAlert(errorMessage + ' 詳細はコンソールを確認してください。', 'error');
-                loading.style.display = 'none';
-                emptyState.classList.add('show');
+                console.error('Error loading documents:', error);
+                showAlert('error', '書類の読み込みに失敗しました');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
             }
         }
 
-        // Render documents
+        // 書類の表示
         function renderDocuments() {
-            const documentsGrid = document.getElementById('documentsGrid');
-            
+            const grid = document.getElementById('documentsGrid');
+            const emptyState = document.getElementById('emptyState');
+
             const filteredDocs = currentFilter === 'all' 
                 ? documents 
                 : documents.filter(doc => doc.documentType === currentFilter);
 
             if (filteredDocs.length === 0) {
-                documentsGrid.innerHTML = '<p style="text-align: center; color: #64748b; grid-column: 1/-1;">該当する書類がありません</p>';
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
                 return;
             }
 
-            documentsGrid.innerHTML = filteredDocs.map(doc => {
-                const docTypeLabel = getDocumentTypeLabel(doc.documentType);
-                const fileIcon = getFileIcon(doc.fileType);
-                const fileSize = formatFileSize(doc.fileSize);
-                const uploadDate = formatDate(doc.uploadedAt);
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
 
-                return `
-                    <div class="document-card">
-                        <div class="doc-header">
-                            <div class="doc-icon ${fileIcon.class}">
-                                <i class="fas ${fileIcon.icon}"></i>
-                            </div>
-                            <div class="doc-info">
-                                <span class="doc-type-badge">${docTypeLabel}</span>
-                                <div class="doc-name">${doc.fileName}</div>
-                            </div>
-                        </div>
-                        <div class="doc-meta">
-                            <div class="doc-meta-item">
-                                <i class="fas fa-file"></i>
-                                ${fileSize}
-                            </div>
-                            <div class="doc-meta-item">
-                                <i class="fas fa-calendar"></i>
-                                ${uploadDate}
-                            </div>
-                        </div>
-                        <div class="doc-actions">
-                            <button class="doc-action-btn btn-download" onclick="downloadDocument('${doc.downloadURL}', '${doc.fileName}')">
-                                <i class="fas fa-download"></i>
-                                ダウンロード
-                            </button>
-                            <button class="doc-action-btn btn-delete" onclick="confirmDelete('${doc.id}', '${doc.storagePath}')">
-                                <i class="fas fa-trash"></i>
-                                削除
-                            </button>
-                        </div>
+            grid.innerHTML = filteredDocs.map(doc => `
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas ${getDocumentIcon(doc.documentType)}"></i>
                     </div>
-                `;
-            }).join('');
+                    <div class="document-title">${escapeHtml(doc.fileName)}</div>
+                    <div class="document-meta">
+                        <i class="fas fa-tag"></i>
+                        ${getDocumentTypeName(doc.documentType)}
+                    </div>
+                    <div class="document-meta">
+                        <i class="fas fa-calendar"></i>
+                        ${formatDate(doc.uploadedAt)}
+                    </div>
+                    ${doc.description ? `
+                        <div class="document-meta">
+                            <i class="fas fa-comment"></i>
+                            ${escapeHtml(doc.description)}
+                        </div>
+                    ` : ''}
+                    <div class="document-badge ${getBadgeClass(doc.storageType)}">
+                        <i class="fab ${getStorageIcon(doc.storageType)}"></i>
+                        ${getStorageTypeName(doc.storageType)}
+                    </div>
+                    <div class="document-actions">
+                        <button class="action-btn action-btn-download" onclick="downloadDocument('${doc.id}')">
+                            <i class="fas fa-external-link-alt"></i>
+                            開く
+                        </button>
+                        <button class="action-btn action-btn-delete" onclick="showDeleteModal('${doc.id}')">
+                            <i class="fas fa-trash"></i>
+                            削除
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Get document type label
-        function getDocumentTypeLabel(type) {
-            const labels = {
-                'resume': '履歴書',
-                'cv': '職務経歴書',
-                'cover_letter': 'カバーレター',
-                'certificate': '資格証明書',
-                'portfolio': 'ポートフォリオ',
-                'other': 'その他'
-            };
-            return labels[type] || 'その他';
-        }
-
-        // Get file icon
-        function getFileIcon(fileType) {
-            if (fileType === 'application/pdf') {
-                return { icon: 'fa-file-pdf', class: 'pdf' };
-            } else if (fileType.includes('word')) {
-                return { icon: 'fa-file-word', class: 'word' };
-            } else if (fileType.includes('image')) {
-                return { icon: 'fa-file-image', class: 'image' };
+        // 書類を開く（外部リンク）
+        function downloadDocument(docId) {
+            const doc = documents.find(d => d.id === docId);
+            if (doc && doc.externalURL) {
+                window.open(doc.externalURL, '_blank');
+            } else {
+                showAlert('error', 'リンクが見つかりません');
             }
-            return { icon: 'fa-file-alt', class: 'pdf' };
         }
 
-        // Format file size
-        function formatFileSize(bytes) {
-            if (!bytes) return '0 KB';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        // 削除モーダルを表示
+        function showDeleteModal(docId) {
+            documentToDelete = docId;
+            document.getElementById('deleteModal').style.display = 'block';
         }
 
-        // Format date
-        function formatDate(timestamp) {
-            if (!timestamp) return '-';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}/${month}/${day}`;
+        // 削除モーダルを閉じる
+        function closeDeleteModal() {
+            documentToDelete = null;
+            document.getElementById('deleteModal').style.display = 'none';
         }
 
-        // Filter buttons
+        // 削除を実行
+        async function confirmDelete() {
+            if (!documentToDelete) return;
+
+            try {
+                await db.collection('documents').doc(documentToDelete).delete();
+                showAlert('success', '書類を削除しました');
+                closeDeleteModal();
+                loadDocuments();
+            } catch (error) {
+                console.error('Error deleting document:', error);
+                showAlert('error', '削除に失敗しました');
+            }
+        }
+
+        // フィルター
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -753,104 +650,98 @@
             });
         });
 
-        // Download document
-        window.downloadDocument = function(url, fileName) {
-            console.log('Downloading:', fileName);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showAlert('ダウンロードを開始しました。', 'success');
-        };
+        // ユーティリティ関数
+        function getDocumentIcon(type) {
+            const icons = {
+                resume: 'fa-file-alt',
+                cv: 'fa-briefcase',
+                cover_letter: 'fa-envelope',
+                certificate: 'fa-certificate',
+                portfolio: 'fa-folder-open',
+                other: 'fa-file'
+            };
+            return icons[type] || 'fa-file';
+        }
 
-        // Confirm delete
-        window.confirmDelete = function(docId, storagePath) {
-            documentToDelete = { docId, storagePath };
-            document.getElementById('deleteModal').classList.add('show');
-        };
+        function getDocumentTypeName(type) {
+            const names = {
+                resume: '履歴書',
+                cv: '職務経歴書',
+                cover_letter: 'カバーレター',
+                certificate: '資格証明書',
+                portfolio: 'ポートフォリオ',
+                other: 'その他'
+            };
+            return names[type] || type;
+        }
 
-        // Close delete modal
-        window.closeDeleteModal = function() {
-            document.getElementById('deleteModal').classList.remove('show');
-            documentToDelete = null;
-        };
+        function getStorageIcon(type) {
+            const icons = {
+                google_drive: 'fa-google-drive',
+                dropbox: 'fa-dropbox',
+                onedrive: 'fa-microsoft',
+                other: 'fa-cloud'
+            };
+            return icons[type] || 'fa-cloud';
+        }
 
-        // Delete document
-        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-            if (!documentToDelete) return;
+        function getStorageTypeName(type) {
+            const names = {
+                google_drive: 'Google Drive',
+                dropbox: 'Dropbox',
+                onedrive: 'OneDrive',
+                other: 'その他'
+            };
+            return names[type] || type;
+        }
 
-            const { docId, storagePath } = documentToDelete;
+        function getBadgeClass(type) {
+            const classes = {
+                google_drive: 'badge-google-drive',
+                dropbox: 'badge-dropbox',
+                onedrive: 'badge-onedrive',
+                other: 'badge-other'
+            };
+            return classes[type] || 'badge-other';
+        }
 
-            try {
-                console.log('=== Deleting document ===');
-                console.log('Document ID:', docId);
-                console.log('Storage path:', storagePath);
+        function formatDate(timestamp) {
+            if (!timestamp) return '日付不明';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleDateString('ja-JP', { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit' 
+            });
+        }
 
-                // Delete from Storage
-                const storageRef = ref(storage, storagePath);
-                await deleteObject(storageRef);
-                console.log('File deleted from Storage');
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-                // Delete from Firestore
-                await deleteDoc(doc(db, 'documents', docId));
-                console.log('Document deleted from Firestore');
-
-                showAlert('書類を削除しました。', 'success');
-                closeDeleteModal();
-                loadDocuments();
-
-            } catch (error) {
-                console.error('=== Error deleting document ===');
-                console.error('Error:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-
-                let errorMessage = '削除中にエラーが発生しました。';
-
-                if (error.code === 'storage/object-not-found') {
-                    errorMessage = 'ファイルが見つかりません。データベースのみ削除します。';
-                    // Delete from Firestore only
-                    try {
-                        await deleteDoc(doc(db, 'documents', docId));
-                        showAlert('書類を削除しました。', 'success');
-                        closeDeleteModal();
-                        loadDocuments();
-                        return;
-                    } catch (err) {
-                        console.error('Error deleting from Firestore:', err);
-                    }
-                } else if (error.code === 'permission-denied') {
-                    errorMessage = 'アクセス権限がありません。Firebase Storage のセキュリティルールを確認してください。';
-                }
-
-                showAlert(errorMessage, 'error');
-                closeDeleteModal();
-            }
-        });
-
-        // Show alert
-        function showAlert(message, type = 'success') {
-            const alertContainer = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} show`;
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.className = `alert alert-${type}`;
             alert.innerHTML = `
                 <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <span>${message}</span>
+                ${message}
             `;
-            alertContainer.appendChild(alert);
+            alert.style.display = 'flex';
 
             setTimeout(() => {
-                alert.remove();
+                alert.style.display = 'none';
             }, 5000);
         }
 
-        // Debug: Expose Firebase instances
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-        window.firebaseStorage = storage;
+        // モーダルの外側クリックで閉じる
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        };
     </script>
 </body>
 </html>
