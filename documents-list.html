@@ -540,7 +540,7 @@
             apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
             authDomain: "university-relocation-support.firebaseapp.com",
             projectId: "university-relocation-support",
-            storageBucket: "university-relocation-support.firebasestorage.app",
+            storageBucket: "university-relocation-support-storage",
             messagingSenderId: "849634495988",
             appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
             measurementId: "G-RJP20TC7DV"
@@ -630,16 +630,20 @@
 
                 const q = query(
                     collection(db, 'documents'),
-                    where('userId', '==', currentUser.uid),
-                    orderBy('uploadedAt', 'desc')
+                    where('userId', '==', currentUser.uid)
                 );
 
                 const snapshot = await getDocs(q);
 
+                // クライアント側でソート
                 documents = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
-                }));
+                })).sort((a, b) => {
+                    const timeA = a.uploadedAt?.toMillis() || 0;
+                    const timeB = b.uploadedAt?.toMillis() || 0;
+                    return timeB - timeA; // 降順
+                });
 
                 console.log('✅ Loaded documents:', documents.length, '件');
                 console.log('📄 書類:', documents);
