@@ -548,14 +548,14 @@
 
         // Firebase設定
                 const firebaseConfig = {
-            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
-            authDomain: "university-relocation-support.firebaseapp.com",
-            projectId: "university-relocation-support",
-            storageBucket: "university-relocation-support.firebasestorage.app",
-            messagingSenderId: "849634495988",
-            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
-            measurementId: "G-RJP20TC7DV"
-        };
+    apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+    authDomain: "university-relocation-support.firebaseapp.com",
+    projectId: "university-relocation-support",
+    storageBucket: "university-relocation-support.firebasestorage.app",
+    messagingSenderId: "849634495988",
+    appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+    measurementId: "G-RJP20TC7DV"
+};
 
         // Initialize Firebase
         // Initialize Firebase
@@ -580,19 +580,103 @@
         });
 
         // 認証状態の確認（超シンプル版）
-        onAuthStateChanged(auth, (user) => {
-            console.log('=== 認証状態変更 ===');
+        
+// ===================================
+// 認証状態の確認
+// ===================================
+console.log('🔄 認証チェック開始...');
+
+// DOM要素の確実な取得（DOMContentLoaded後に実行）
+let authLoading, mainContainer;
+
+// DOMが完全に読み込まれるまで待つ
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+    // 既に読み込まれている場合は即実行
+    initAuth();
+}
+
+function initAuth() {
+    console.log('📦 DOM読み込み完了。要素を取得中...');
+    
+    // DOM要素を取得
+    authLoading = document.getElementById('authLoading');
+    mainContainer = document.getElementById('mainContainer');
+    
+    // 要素の存在確認
+    if (!authLoading) {
+        console.warn('⚠️ authLoading 要素が見つかりません');
+    } else {
+        console.log('✅ authLoading 要素を取得:', authLoading);
+    }
+    
+    if (!mainContainer) {
+        console.warn('⚠️ mainContainer 要素が見つかりません');
+    } else {
+        console.log('✅ mainContainer 要素を取得:', mainContainer);
+    }
+    
+    // 認証状態を監視
+    onAuthStateChanged(auth, handleAuthStateChange);
+}
+
+// 認証タイムアウト（20秒）
+const authTimeout = setTimeout(() => {
+    console.error('❌ 認証タイムアウト（20秒経過）');
+    console.log('🔄 ログイン画面にリダイレクトします...');
+    window.location.href = 'log-in.html';
+}, 20000);
+
+// 認証状態変更ハンドラ
+function handleAuthStateChange(user) {
+    // タイムアウトをクリア
+    clearTimeout(authTimeout);
+    
+    console.log('🔔 認証状態変更イベント発火');
+    
+    if (user) {
+        console.log('✅ ユーザー認証成功！');
+        console.log('📧 Email:', user.email);
+        console.log('🆔 UID:', user.uid);
+        
+        // currentUser を設定
+        currentUser = user;
+        
+        // ローディング画面を非表示にし、メインコンテンツを表示
+        setTimeout(() => {
+            console.log('🎨 UI更新中...');
             
-            if (user) {
-                console.log('✅ ログイン済み:', user.email);
-                currentUser = user;
-                
-                // シンプルに表示切り替え
-                setTimeout(() => {
-                    const loading = document.getElementById('authLoading');
-                    const container = document.getElementById('mainContainer');
-                    
-                    console.log('DOM要素:', {loading, container});
+            // ローディング画面を削除
+            if (authLoading && authLoading.parentNode) {
+                authLoading.parentNode.removeChild(authLoading);
+                console.log('✅ ローディング画面を削除しました');
+            }
+            
+            // メインコンテンツを表示
+            if (mainContainer) {
+                mainContainer.style.cssText = `
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    display: block !important;
+                    transition: opacity 0.3s ease;
+                `;
+                console.log('✅ メインコンテンツを表示しました');
+            }
+            
+            // body の overflow を設定
+            document.body.style.overflow = 'auto';
+            
+            console.log('🎉 UI更新完了！');
+        }, 100);
+        
+    } else {
+        console.warn('❌ ユーザーがログインしていません');
+        console.log('🔄 ログイン画面にリダイレクトします...');
+        window.location.href = 'log-in.html';
+    }
+}
+
                     
                     // ローディング削除
                     if (loading && loading.parentNode) {
