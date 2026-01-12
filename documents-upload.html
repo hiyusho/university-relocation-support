@@ -547,11 +547,11 @@
         import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyDMwu0kzvR7rwc3aUVs4OAcFyPaZkW4mZs",
+                const firebaseConfig = {
+            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
             authDomain: "university-relocation-support.firebaseapp.com",
             projectId: "university-relocation-support",
-            storageBucket: "university-relocation-support-storage",
+            storageBucket: "university-relocation-support.firebasestorage.app",
             messagingSenderId: "849634495988",
             appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
             measurementId: "G-RJP20TC7DV"
@@ -569,39 +569,63 @@
 
         // デバッグ情報を記録
         console.log('🔄 Firebase 初期化完了');
+        console.log('🔄 Firebase Config:', firebaseConfig);
         console.log('🔄 認証状態を確認中...');
+        
+        // LocalStorage の認証トークンを確認
+        const authKeys = Object.keys(localStorage).filter(k => k.includes('firebase'));
+        console.log('🔑 LocalStorage Firebase Keys:', authKeys);
+        authKeys.forEach(key => {
+            console.log(`   ${key}:`, localStorage.getItem(key)?.substring(0, 100) + '...');
+        });
 
         // 認証状態の確認（改善版 - modular SDK）
         onAuthStateChanged(auth, (user) => {
-            console.log('🔔 認証状態変更:', user ? `ログイン済み (${user.email})` : 'ログインしていません');
+            console.log('🔔 認証状態変更イベント発火');
+            console.log('🔔 User オブジェクト:', user);
             
             if (user) {
                 currentUser = user;
-                console.log('✅ User authenticated:', user.email);
-                console.log('📧 ユーザーID:', user.uid);
+                console.log('✅ ユーザー認証成功！');
+                console.log('📧 Email:', user.email);
+                console.log('📧 UID:', user.uid);
+                console.log('🔐 Token:', user.stsTokenManager?.accessToken?.substring(0, 50) + '...');
                 
                 // 認証ローディングを非表示
                 const authLoading = document.getElementById('authLoading');
                 const mainContainer = document.getElementById('mainContainer');
-                if (authLoading) authLoading.style.display = 'none';
-                if (mainContainer) mainContainer.style.opacity = '1';
+                
+                if (authLoading) {
+                    authLoading.style.display = 'none';
+                    console.log('✅ 認証ローディング非表示');
+                }
+                if (mainContainer) {
+                    mainContainer.style.opacity = '1';
+                    console.log('✅ メインコンテンツ表示');
+                }
             } else {
                 console.log('❌ ユーザーがログインしていません');
+                console.log('❌ User オブジェクトが null です');
                 console.log('🔄 ログインページへリダイレクト...');
+                
                 // 認証失敗: ログインページへ
                 setTimeout(() => {
                     window.location.href = 'log-in.html';
-                }, 500);
+                }, 1000);
             }
+        }, (error) => {
+            console.error('❌ 認証状態チェックエラー:', error);
+            console.error('エラー詳細:', error.code, error.message);
         });
 
-        // タイムアウト処理（10秒以内に認証判定されない場合）
+        // タイムアウト処理（15秒以内に認証判定されない場合）
         setTimeout(() => {
             if (!currentUser) {
-                console.log('⚠️ 認証タイムアウト: ログインページへリダイレクト');
+                console.log('⚠️ 認証タイムアウト（15秒経過）');
+                console.log('⚠️ ログインページへリダイレクト');
                 window.location.href = 'log-in.html';
             }
-        }, 10000);
+        }, 15000);
 
         // フォーム送信
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
