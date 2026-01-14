@@ -284,6 +284,24 @@
             background: rgba(255, 255, 255, 0.3);
         }
         
+        .manual-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .manual-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
         .security-notice {
             background: #e3f2fd;
             border-left: 4px solid #2196F3;
@@ -454,6 +472,10 @@
         </div>
         
         <div class="back-home">
+            <a href="manual.html" class="manual-link">
+                <i class="fas fa-book"></i>
+                使い方マニュアル
+            </a>
             <a href="index.html">
                 <i class="fas fa-home"></i>
                 トップページに戻る
