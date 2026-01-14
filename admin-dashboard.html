@@ -561,6 +561,460 @@
             font-size: 0.75rem;
             margin-top: 5px;
         }
+        
+        /* ========================================
+           管理者アカウント管理機能のスタイル
+           ======================================== */
+        .settings-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .settings-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+        
+        .settings-tab:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .settings-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .settings-tab i {
+            margin-right: 8px;
+        }
+        
+        .settings-content {
+            display: none;
+        }
+        
+        .settings-content.active {
+            display: block;
+        }
+        
+        .admin-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .admin-list-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 200px 150px 100px;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .admin-list-item {
+            display: grid;
+            grid-template-columns: 40px 1fr 200px 150px 100px;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+        
+        .admin-list-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .admin-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .admin-info h4 {
+            font-size: 1rem;
+            color: #212529;
+            margin-bottom: 4px;
+        }
+        
+        .admin-info p {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .role-super {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .role-admin {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .role-document {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .role-meeting {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: none;
+        }
+        
+        .btn-icon.edit {
+            color: #667eea;
+        }
+        
+        .btn-icon.edit:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn-icon.delete {
+            color: #dc3545;
+        }
+        
+        .btn-icon.delete:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .btn-icon.delete:disabled {
+            color: #dee2e6;
+            cursor: not-allowed;
+        }
+        
+        .btn-icon.delete:disabled:hover {
+            background: none;
+        }
+        
+        /* モーダルのスタイル */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.3rem;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-header h3 i {
+            color: #667eea;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6c757d;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background: #f8f9fa;
+            color: #212529;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label i {
+            margin-right: 6px;
+            color: #667eea;
+            width: 16px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-control:disabled {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+        
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+        }
+        
+        .password-generated {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px dashed #dee2e6;
+        }
+        
+        .password-generated p {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        
+        .password-value {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .password-value code {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #212529;
+            font-weight: 600;
+        }
+        
+        .btn-copy {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-copy:hover {
+            background: #5568d3;
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn-secondary {
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-primary {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
     </style>
 </head>
 <body>
@@ -778,6 +1232,7 @@
             </div>
             
             <!-- 設定セクション -->
+            <!-- 設定セクション -->
             <div id="settingsSection" class="section">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -785,10 +1240,185 @@
                         設定
                     </h2>
                 </div>
-                <div class="empty-state">
-                    <i class="fas fa-cog"></i>
-                    <h3>設定機能は開発中です</h3>
-                    <p>システム設定を管理できるようになります</p>
+                
+                <!-- タブメニュー -->
+                <div class="settings-tabs">
+                    <button class="settings-tab active" onclick="showSettingsTab('admins')">
+                        <i class="fas fa-user-shield"></i>
+                        管理者アカウント
+                    </button>
+                    <button class="settings-tab" onclick="showSettingsTab('general')">
+                        <i class="fas fa-sliders-h"></i>
+                        基本設定
+                    </button>
+                    <button class="settings-tab" onclick="showSettingsTab('security')">
+                        <i class="fas fa-lock"></i>
+                        セキュリティ
+                    </button>
+                </div>
+                
+                <!-- 管理者アカウント管理 -->
+                <div id="adminsTab" class="settings-content active">
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="color: #333; margin-bottom: 15px;">現在の管理者</h3>
+                        <p style="color: #666; margin-bottom: 20px;">
+                            システムにアクセスできる管理者アカウントを管理します
+                        </p>
+                    </div>
+                    
+                    <div class="table-container" id="adminsTable">
+                        <div class="loading">
+                            <i class="fas fa-spinner"></i>
+                            <p>読み込み中...</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <button class="btn btn-primary" onclick="showAddAdminModal()">
+                            <i class="fas fa-user-plus"></i>
+                            新しい管理者を追加
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 基本設定 -->
+                <div id="generalTab" class="settings-content">
+                    <div class="empty-state">
+                        <i class="fas fa-sliders-h"></i>
+                        <h3>基本設定は開発中です</h3>
+                        <p>システムの基本設定を管理できるようになります</p>
+                    </div>
+                </div>
+                
+                <!-- セキュリティ設定 -->
+                <div id="securityTab" class="settings-content">
+                    <div class="empty-state">
+                        <i class="fas fa-lock"></i>
+                        <h3>セキュリティ設定は開発中です</h3>
+                        <p>パスワードポリシーやセッション管理を設定できるようになります</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 管理者追加モーダル -->
+            <div id="addAdminModal" class="modal">
+                <div class="modal-content" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-user-plus"></i> 新しい管理者を追加</h3>
+                        <button class="modal-close" onclick="closeAddAdminModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addAdminForm">
+                            <div class="form-group">
+                                <label>メールアドレス <span style="color: red;">*</span></label>
+                                <input type="email" id="adminEmail" class="form-control" 
+                                       placeholder="admin@example.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>権限レベル <span style="color: red;">*</span></label>
+                                <select id="adminRole" class="form-control" required>
+                                    <option value="super_admin">スーパー管理者（全機能）</option>
+                                    <option value="admin">一般管理者（閲覧のみ）</option>
+                                    <option value="document_admin">書類管理者（書類管理のみ）</option>
+                                    <option value="meeting_admin">面談管理者（面談管理のみ）</option>
+                                </select>
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    権限レベルによってアクセスできる機能が異なります
+                                </small>
+                            </div>
+                            
+                            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
+                                    <i class="fas fa-info-circle"></i>
+                                    追加後、該当のメールアドレスで Firebase Authentication にユーザーを手動で作成する必要があります
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeAddAdminModal()">
+                            キャンセル
+                        </button>
+                        <button type="submit" form="addAdminForm" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            追加
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 管理者編集モーダル -->
+            <div id="editAdminModal" class="modal">
+                <div class="modal-content" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-edit"></i> 管理者の編集</h3>
+                        <button class="modal-close" onclick="closeEditAdminModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editAdminForm">
+                            <input type="hidden" id="editAdminId">
+                            <div class="form-group">
+                                <label>メールアドレス</label>
+                                <input type="email" id="editAdminEmail" class="form-control" disabled>
+                                <small style="color: #666;">メールアドレスは変更できません</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>権限レベル <span style="color: red;">*</span></label>
+                                <select id="editAdminRole" class="form-control" required>
+                                    <option value="super_admin">スーパー管理者（全機能）</option>
+                                    <option value="admin">一般管理者（閲覧のみ）</option>
+                                    <option value="document_admin">書類管理者（書類管理のみ）</option>
+                                    <option value="meeting_admin">面談管理者（面談管理のみ）</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditAdminModal()">
+                            キャンセル
+                        </button>
+                        <button type="submit" form="editAdminForm" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 削除確認モーダル -->
+            <div id="deleteAdminModal" class="modal">
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header" style="background: #ffebee; color: #c62828;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> 管理者の削除</h3>
+                        <button class="modal-close" onclick="closeDeleteAdminModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: #666; line-height: 1.6;">
+                            <strong id="deleteAdminEmail"></strong> を管理者から削除しますか?
+                        </p>
+                        <p style="color: #c62828; margin-top: 15px;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            この操作は取り消せません。
+                        </p>
+                        <input type="hidden" id="deleteAdminId">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeDeleteAdminModal()">
+                            キャンセル
+                        </button>
+                        <button type="button" class="btn" style="background: #c62828; color: white;" onclick="confirmDeleteAdmin()">
+                            <i class="fas fa-trash"></i>
+                            削除
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -857,6 +1487,9 @@
                 
                 // 書類データ取得
                 await loadDocuments();
+                
+                // 管理者データ取得（設定タブ用）
+                // await loadAdmins(); // タブクリック時に読み込み
                 
                 // 統計更新
                 updateStats();
@@ -1223,6 +1856,333 @@
             select.innerHTML = html;
         }
         
+
+        // ========================================
+        // 管理者アカウント管理機能
+        // ========================================
+
+// 管理者アカウント管理機能
+
+let allAdmins = [];
+
+// 管理者一覧の読み込み
+async function loadAdmins() {
+    try {
+        console.log('📥 管理者一覧を読み込み中...');
+        
+        // Firestoreから管理者リストを取得
+        const q = query(collection(db, 'admins'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        
+        allAdmins = [];
+        snapshot.forEach(doc => {
+            allAdmins.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        console.log(`✅ 管理者: ${allAdmins.length}人`);
+        displayAdmins();
+        
+    } catch (error) {
+        console.error('❌ 管理者読み込みエラー:', error);
+        
+        // Firestoreにadminsコレクションがない場合は初期データを作成
+        if (error.code === 'permission-denied' || allAdmins.length === 0) {
+            console.log('⚠️ 管理者データがありません。コード内のリストを表示します');
+            displayAdminsFromCode();
+        }
+    }
+}
+
+// コード内の管理者リストを表示（Firestore未使用時）
+function displayAdminsFromCode() {
+    const adminEmails = [
+        'hiroaki@valueglow.jp',
+        'test@test.com',
+        'admin@valueglow.jp'
+    ];
+    
+    const container = document.getElementById('adminsTable');
+    
+    let html = `
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+            <p style="margin: 0; color: #856404;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>注意:</strong> 現在、管理者情報はコード内にハードコードされています。
+                Firestoreに管理者コレクションを作成すると、動的に管理できるようになります。
+            </p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>メールアドレス</th>
+                    <th>権限レベル</th>
+                    <th>登録日</th>
+                    <th>アクション</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    adminEmails.forEach((email, index) => {
+        const role = email.includes('test') ? 'admin' : 'super_admin';
+        const roleName = getRoleName(role);
+        const roleClass = getRoleClass(role);
+        const isSelf = email === currentUser?.email;
+        
+        html += `
+            <tr>
+                <td>
+                    <strong>${email}</strong>
+                    ${isSelf ? '<span class="badge badge-info" style="margin-left: 10px;">自分</span>' : ''}
+                </td>
+                <td><span class="role-badge ${roleClass}">${roleName}</span></td>
+                <td>-</td>
+                <td>
+                    <div class="action-btns">
+                        ${!isSelf ? `
+                            <button class="btn-action btn-edit" onclick="alert('Firestoreに管理者データを作成すると編集できます')" title="編集">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="alert('Firestoreに管理者データを作成すると削除できます')" title="削除">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : `
+                            <span style="color: #999; font-size: 0.85rem;">-</span>
+                        `}
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+// 管理者一覧の表示
+function displayAdmins() {
+    const container = document.getElementById('adminsTable');
+    
+    if (allAdmins.length === 0) {
+        displayAdminsFromCode();
+        return;
+    }
+    
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>メールアドレス</th>
+                    <th>権限レベル</th>
+                    <th>登録日</th>
+                    <th>アクション</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    allAdmins.forEach(admin => {
+        const roleName = getRoleName(admin.role);
+        const roleClass = getRoleClass(admin.role);
+        const createdAt = admin.createdAt ? formatDate(admin.createdAt) : '-';
+        const isSelf = admin.email === currentUser?.email;
+        
+        html += `
+            <tr>
+                <td>
+                    <strong>${admin.email}</strong>
+                    ${isSelf ? '<span class="badge badge-info" style="margin-left: 10px;">自分</span>' : ''}
+                </td>
+                <td><span class="role-badge ${roleClass}">${roleName}</span></td>
+                <td>${createdAt}</td>
+                <td>
+                    <div class="action-btns">
+                        ${!isSelf ? `
+                            <button class="btn-action btn-edit" onclick="showEditAdminModal('${admin.id}')" title="編集">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="showDeleteAdminModal('${admin.id}')" title="削除">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : `
+                            <span style="color: #999; font-size: 0.85rem;">-</span>
+                        `}
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+// 権限名の取得
+function getRoleName(role) {
+    const roles = {
+        super_admin: 'スーパー管理者',
+        admin: '一般管理者',
+        document_admin: '書類管理者',
+        meeting_admin: '面談管理者'
+    };
+    return roles[role] || role;
+}
+
+// 権限クラスの取得
+function getRoleClass(role) {
+    const classes = {
+        super_admin: 'role-super',
+        admin: 'role-admin',
+        document_admin: 'role-document',
+        meeting_admin: 'role-meeting'
+    };
+    return classes[role] || 'role-admin';
+}
+
+// 設定タブの切り替え
+window.showSettingsTab = function(tabName) {
+    // すべてのタブとコンテンツを非アクティブ化
+    document.querySelectorAll('.settings-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.settings-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // 選択されたタブとコンテンツをアクティブ化
+    event.target.closest('.settings-tab').classList.add('active');
+    document.getElementById(tabName + 'Tab').classList.add('active');
+    
+    // 管理者タブの場合はデータをロード
+    if (tabName === 'admins' && allAdmins.length === 0) {
+        loadAdmins();
+    }
+};
+
+// 管理者追加モーダルを開く
+window.showAddAdminModal = function() {
+    document.getElementById('addAdminModal').classList.add('show');
+    document.getElementById('adminEmail').value = '';
+    document.getElementById('adminRole').value = 'admin';
+};
+
+// 管理者追加モーダルを閉じる
+window.closeAddAdminModal = function() {
+    document.getElementById('addAdminModal').classList.remove('show');
+};
+
+// 管理者追加フォーム送信
+document.getElementById('addAdminForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('adminEmail').value.trim();
+    const role = document.getElementById('adminRole').value;
+    
+    try {
+        // Firestoreに管理者を追加
+        const adminData = {
+            email: email,
+            role: role,
+            createdAt: new Date(),
+            createdBy: currentUser.uid
+        };
+        
+        await addDoc(collection(db, 'admins'), adminData);
+        
+        alert('✅ 管理者を追加しました\n\n次のステップ:\nFirebase Authentication でこのメールアドレスのユーザーアカウントを作成してください。');
+        
+        closeAddAdminModal();
+        loadAdmins();
+        
+    } catch (error) {
+        console.error('❌ 管理者追加エラー:', error);
+        alert('管理者の追加に失敗しました: ' + error.message);
+    }
+});
+
+// 管理者編集モーダルを開く
+window.showEditAdminModal = function(adminId) {
+    const admin = allAdmins.find(a => a.id === adminId);
+    if (!admin) return;
+    
+    document.getElementById('editAdminId').value = adminId;
+    document.getElementById('editAdminEmail').value = admin.email;
+    document.getElementById('editAdminRole').value = admin.role;
+    document.getElementById('editAdminModal').classList.add('show');
+};
+
+// 管理者編集モーダルを閉じる
+window.closeEditAdminModal = function() {
+    document.getElementById('editAdminModal').classList.remove('show');
+};
+
+// 管理者編集フォーム送信
+document.getElementById('editAdminForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const adminId = document.getElementById('editAdminId').value;
+    const role = document.getElementById('editAdminRole').value;
+    
+    try {
+        await updateDoc(doc(db, 'admins', adminId), {
+            role: role,
+            updatedAt: new Date(),
+            updatedBy: currentUser.uid
+        });
+        
+        alert('✅ 管理者情報を更新しました');
+        
+        closeEditAdminModal();
+        loadAdmins();
+        
+    } catch (error) {
+        console.error('❌ 管理者更新エラー:', error);
+        alert('管理者情報の更新に失敗しました: ' + error.message);
+    }
+});
+
+// 管理者削除モーダルを開く
+window.showDeleteAdminModal = function(adminId) {
+    const admin = allAdmins.find(a => a.id === adminId);
+    if (!admin) return;
+    
+    // 自分自身は削除できない
+    if (admin.email === currentUser.email) {
+        alert('⚠️ 自分自身を削除することはできません');
+        return;
+    }
+    
+    document.getElementById('deleteAdminId').value = adminId;
+    document.getElementById('deleteAdminEmail').textContent = admin.email;
+    document.getElementById('deleteAdminModal').classList.add('show');
+};
+
+// 管理者削除モーダルを閉じる
+window.closeDeleteAdminModal = function() {
+    document.getElementById('deleteAdminModal').classList.remove('show');
+};
+
+// 管理者削除の確認
+window.confirmDeleteAdmin = async function() {
+    const adminId = document.getElementById('deleteAdminId').value;
+    
+    try {
+        await deleteDoc(doc(db, 'admins', adminId));
+        
+        alert('✅ 管理者を削除しました\n\n注意: Firebase Authentication からもユーザーを削除することをお勧めします。');
+        
+        closeDeleteAdminModal();
+        loadAdmins();
+        
+    } catch (error) {
+        console.error('❌ 管理者削除エラー:', error);
+        alert('管理者の削除に失敗しました: ' + error.message);
+    }
+};
+
         // グローバル関数
         window.showSection = function(sectionName) {
             // すべてのセクションを非表示
