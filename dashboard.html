@@ -902,7 +902,7 @@
                     </div>
                     
                     <div class="view-all">
-                        <a href="#documents">
+                        <a href="documents-upload.html">
                             <i class="fas fa-plus-circle"></i>
                             新しい書類をアップロード
                         </a>
@@ -953,7 +953,8 @@
         // Firebase SDKのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, collection, query, where, orderBy, limit as firestoreLimit, getDocs, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref as storageRef, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
         
         // Firebase設定
         const firebaseConfig = {
@@ -970,6 +971,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
         
         // 認証状態の監視
         onAuthStateChanged(auth, async (user) => {
@@ -1004,6 +1006,9 @@
                         }
                         
                         console.log('ユーザー情報取得成功:', userData);
+                        
+                        // 最新の書類を読み込む
+                        await loadRecentDocuments(user.uid);
                     } else {
                         console.log('ユーザードキュメントが存在しません');
                     }
@@ -1065,6 +1070,271 @@
         });
         
         // グローバルスコープに公開（デバッグ用）
+        
+        // ============================================
+        // 書類管理機能
+        // ============================================
+        
+        // 最新の書類を読み込む
+        async function loadRecentDocuments(userId) {
+            try {
+                console.log('📄 書類を読み込み中...');
+                
+                const q = query(
+                    collection(db, 'documents'),
+                    where('userId', '==', userId),
+                    orderBy('uploadedAt', 'desc'),
+                    firestoreLimit(3)
+                );
+                
+                const querySnapshot = await getDocs(q);
+                const documents = [];
+                
+                querySnapshot.forEach((docSnap) => {
+                    documents.push({
+                        id: docSnap.id,
+                        ...docSnap.data()
+                    });
+                });
+                
+                console.log('✅ 書類読み込み完了:', documents.length, '件');
+                
+                // HTML に表示
+                displayDocuments(documents);
+                
+                // 件数を更新
+                updateDocumentCount(documents.length);
+                
+            } catch (error) {
+                console.error('❌ 書類読み込みエラー:', error);
+                displayEmptyState('読み込みエラー');
+            }
+        }
+        
+        // 書類を表示
+        function displayDocuments(documents) {
+            const card = document.querySelector('.card-icon.document')?.closest('.card');
+            if (!card) {
+                console.warn('書類カードが見つかりません');
+                return;
+            }
+            
+            // 既存の document-item を全て削除
+            const existingItems = card.querySelectorAll('.document-item');
+            existingItems.forEach(item => item.remove());
+            
+            // 既存の empty-state を削除
+            const existingEmpty = card.querySelector('.empty-state');
+            if (existingEmpty) existingEmpty.remove();
+            
+            const viewAllDiv = card.querySelector('.view-all');
+            
+            if (documents.length === 0) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.style.padding = '30px 20px';
+                emptyDiv.style.textAlign = 'center';
+                emptyDiv.style.color = '#999';
+                emptyDiv.innerHTML = `
+                    <i class="fas fa-file-alt" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
+                    <p style="font-size: 0.95rem; margin-bottom: 15px;">まだ書類がアップロードされていません</p>
+                    <a href="documents-upload.html" class="btn btn-outline" style="font-size: 0.9rem; padding: 8px 20px; display: inline-block;">
+                        <i class="fas fa-upload"></i> 最初の書類をアップロード
+                    </a>
+                `;
+                card.insertBefore(emptyDiv, viewAllDiv);
+                return;
+            }
+            
+            documents.forEach(doc => {
+                const item = createDocumentItem(doc);
+                card.insertBefore(item, viewAllDiv);
+            });
+        }
+        
+        // 書類アイテムのHTML要素を作成
+        function createDocumentItem(doc) {
+            const div = document.createElement('div');
+            div.className = 'document-item';
+            
+            const fileIcon = getFileIcon(doc.fileType || doc.fileName);
+            const fileSize = formatFileSize(doc.fileSize);
+            const uploadDate = formatDate(doc.uploadedAt);
+            
+            const safeFileName = escapeHtml(doc.fileName);
+            const safeDownloadURL = escapeHtml(doc.downloadURL || '');
+            
+            div.innerHTML = `
+                <i class="${fileIcon} document-icon"></i>
+                <div class="document-info">
+                    <div class="document-name">${safeFileName}</div>
+                    <div class="document-meta">最終更新: ${uploadDate} | ${fileSize}</div>
+                </div>
+                <div class="document-actions">
+                    <button class="btn-icon" title="ダウンロード" data-action="download" data-url="${safeDownloadURL}">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn-icon" title="削除" data-action="delete" data-id="${doc.id}" data-name="${safeFileName}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            // イベントリスナーを追加
+            const downloadBtn = div.querySelector('[data-action="download"]');
+            const deleteBtn = div.querySelector('[data-action="delete"]');
+            
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    downloadDocument(url);
+                });
+            }
+            
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    confirmDeleteDocument(id, name);
+                });
+            }
+            
+            return div;
+        }
+        
+        // ファイルアイコンを取得
+        function getFileIcon(fileTypeOrName) {
+            if (!fileTypeOrName) return 'fas fa-file';
+            
+            const type = fileTypeOrName.toLowerCase();
+            
+            if (type.includes('pdf')) return 'fas fa-file-pdf';
+            if (type.includes('word') || type.includes('.doc')) return 'fas fa-file-word';
+            if (type.includes('image') || type.includes('.jpg') || type.includes('.png')) return 'fas fa-file-image';
+            
+            return 'fas fa-file';
+        }
+        
+        // ファイルサイズをフォーマット
+        function formatFileSize(bytes) {
+            if (!bytes || bytes === 0) return '不明';
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+        
+        // 日付をフォーマット
+        function formatDate(timestamp) {
+            if (!timestamp) return '不明';
+            
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                
+                return `${year}/${month}/${day}`;
+            } catch (error) {
+                console.error('日付フォーマットエラー:', error);
+                return '不明';
+            }
+        }
+        
+        // HTMLエスケープ
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // 件数を更新
+        function updateDocumentCount(count) {
+            const countBadge = document.querySelector('.card-icon.document')?.closest('.card')?.querySelector('.card-count');
+            if (countBadge) {
+                countBadge.textContent = `${count}件`;
+            }
+        }
+        
+        // ダウンロード
+        function downloadDocument(downloadURL) {
+            if (!downloadURL) {
+                alert('ダウンロードURLが見つかりません');
+                return;
+            }
+            
+            console.log('🔗 Opening:', downloadURL);
+            window.open(downloadURL, '_blank');
+        }
+        
+        // 削除確認
+        async function confirmDeleteDocument(docId, fileName) {
+            const confirmed = confirm(`「${fileName}」を削除してもよろしいですか？\n\nこの操作は取り消せません。`);
+            
+            if (!confirmed) return;
+            
+            try {
+                console.log('🗑️ 削除開始:', docId);
+                
+                // Firestore からドキュメントを取得
+                const docRef = doc(db, 'documents', docId);
+                const docSnap = await getDoc(docRef);
+                
+                if (!docSnap.exists()) {
+                    alert('書類が見つかりません');
+                    return;
+                }
+                
+                const docData = docSnap.data();
+                
+                // Storage からファイルを削除
+                if (docData.storagePath) {
+                    const fileRef = storageRef(storage, docData.storagePath);
+                    await deleteObject(fileRef);
+                    console.log('✅ Storage からファイルを削除しました');
+                }
+                
+                // Firestore からドキュメントを削除
+                await deleteDoc(docRef);
+                console.log('✅ Firestore からメタデータを削除しました');
+                
+                alert('書類を削除しました');
+                
+                // 再読み込み
+                const user = auth.currentUser;
+                if (user) {
+                    await loadRecentDocuments(user.uid);
+                }
+                
+            } catch (error) {
+                console.error('❌ 削除エラー:', error);
+                alert('削除に失敗しました: ' + error.message);
+            }
+        }
+        
+        // 空の状態を表示
+        function displayEmptyState(message = '書類がありません') {
+            const card = document.querySelector('.card-icon.document')?.closest('.card');
+            if (!card) return;
+            
+            const existingItems = card.querySelectorAll('.document-item');
+            existingItems.forEach(item => item.remove());
+            
+            const existingEmpty = card.querySelector('.empty-state');
+            if (existingEmpty) existingEmpty.remove();
+            
+            const viewAllDiv = card.querySelector('.view-all');
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-state';
+            emptyDiv.style.padding = '30px 20px';
+            emptyDiv.style.textAlign = 'center';
+            emptyDiv.style.color = '#999';
+            emptyDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
+                <p style="font-size: 0.95rem;">${escapeHtml(message)}</p>
+            `;
+            card.insertBefore(emptyDiv, viewAllDiv);
+        }
         window.firebaseAuth = auth;
         window.firebaseDb = db;
     </script>
