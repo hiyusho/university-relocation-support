@@ -716,9 +716,9 @@
         // 書類のダウンロード
         window.downloadDocument = function(docId) {
             const doc = documents.find(d => d.id === docId);
-            if (doc && doc.externalURL) {
-                console.log('🔗 Opening:', doc.externalURL);
-                window.open(doc.externalURL, '_blank');
+            if (doc && doc.downloadURL) {
+                console.log('🔗 Opening:', doc.downloadURL);
+                window.open(doc.downloadURL, '_blank');
             } else {
                 showAlert('error', 'リンクが見つかりません');
             }
