@@ -436,6 +436,10 @@
                     応募書類管理
                 </h1>
                 <div class="header-actions">
+                    <a href="manual.html" target="_blank" class="btn btn-secondary">
+                        <i class="fas fa-book"></i>
+                        使い方マニュアル
+                    </a>
                     <a href="dashboard.html" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i>
                         ダッシュボードへ
@@ -569,6 +573,7 @@
         });
 
         // 認証状態の確認（改善版 - modular SDK）
+        // 認証状態の確認（ページ読み込み時）
         onAuthStateChanged(auth, (user) => {
             console.log('🔔 認証状態変更イベント発火');
             console.log('🔔 User オブジェクト:', user);
@@ -580,45 +585,37 @@
                 console.log('📧 UID:', user.uid);
                 console.log('🔐 Token:', user.stsTokenManager?.accessToken?.substring(0, 50) + '...');
                 
-                // 認証ローディングを非表示
-                const authLoading = document.getElementById('authLoading');
-                const mainContainer = document.getElementById('mainContainer');
-                
-                if (authLoading) {
-                    authLoading.style.display = 'none';
-                    console.log('✅ 認証ローディング非表示');
-                }
-                if (mainContainer) {
-                    mainContainer.classList.add('visible');
-                    console.log('✅ メインコンテンツ表示');
-                }
-                
                 // 書類を読み込む
                 console.log('📥 書類読み込み開始...');
                 loadDocuments();
             } else {
-                console.log('❌ ユーザーがログインしていません');
-                console.log('❌ User オブジェクトが null です');
-                console.log('🔄 ログインページへリダイレクト...');
-                
-                // 認証失敗: ログインページへ
-                setTimeout(() => {
-                    window.location.href = 'log-in.html';
-                }, 1000);
+                console.log('⚠️ ユーザーがログインしていません');
+                console.log('ℹ️ ログインしていない状態でもページ閲覧は可能です');
+                // リダイレクトしない - ユーザーがアクセスを試みた時のみログインを促す
+            }
+            
+            // 認証ローディングを非表示
+            const authLoading = document.getElementById('authLoading');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            if (authLoading) {
+                authLoading.style.display = 'none';
+                console.log('✅ 認証ローディング非表示');
+            }
+            if (mainContainer) {
+                mainContainer.classList.add('visible');
+                console.log('✅ メインコンテンツ表示');
             }
         }, (error) => {
             console.error('❌ 認証状態チェックエラー:', error);
             console.error('エラー詳細:', error.code, error.message);
+            
+            // エラーが発生してもページは表示する
+            const authLoading = document.getElementById('authLoading');
+            const mainContainer = document.getElementById('mainContainer');
+            if (authLoading) authLoading.style.display = 'none';
+            if (mainContainer) mainContainer.classList.add('visible');
         });
-
-        // タイムアウト処理（15秒以内に認証判定されない場合）
-        setTimeout(() => {
-            if (!currentUser) {
-                console.log('⚠️ 認証タイムアウト（15秒経過）');
-                console.log('⚠️ ログインページへリダイレクト');
-                window.location.href = 'log-in.html';
-            }
-        }, 15000);
 
         // 書類の読み込み
         async function loadDocuments() {
@@ -714,7 +711,17 @@
         }
 
         // 書類のダウンロード
+        // 書類のダウンロード
         window.downloadDocument = function(docId) {
+            // ログインチェック
+            if (!currentUser) {
+                showAlert('error', 'ダウンロードするにはログインが必要です');
+                setTimeout(() => {
+                    window.location.href = 'log-in.html';
+                }, 2000);
+                return;
+            }
+            
             const doc = documents.find(d => d.id === docId);
             if (doc && doc.downloadURL) {
                 console.log('🔗 Opening:', doc.downloadURL);
@@ -726,6 +733,15 @@
 
         // 削除モーダルの表示
         window.showDeleteModal = function(docId) {
+            // ログインチェック
+            if (!currentUser) {
+                showAlert('error', '削除するにはログインが必要です');
+                setTimeout(() => {
+                    window.location.href = 'log-in.html';
+                }, 2000);
+                return;
+            }
+            
             documentToDelete = docId;
             document.getElementById('deleteModal').classList.add('show');
         };
