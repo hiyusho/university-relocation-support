@@ -1015,6 +1015,191 @@
             to { transform: rotate(360deg); }
         }
         
+
+/* ========================================
+   面談枠管理のスタイル
+   ======================================== */
+
+.meeting-date-group {
+    margin-bottom: 30px;
+}
+
+.meeting-date-header {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meeting-date-header i {
+    font-size: 1.3rem;
+}
+
+.slot-count {
+    margin-left: auto;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+.meeting-slots-list {
+    display: grid;
+    gap: 15px;
+}
+
+.meeting-slot-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 150px 1fr 120px 80px;
+    gap: 20px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.meeting-slot-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+.meeting-slot-card.booked {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.meeting-slot-card.booked:hover {
+    border-color: #dee2e6;
+    box-shadow: none;
+    transform: none;
+}
+
+.slot-time {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot-time i {
+    font-size: 1.2rem;
+}
+
+.slot-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slot-type,
+.slot-location,
+.slot-capacity {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot-type i,
+.slot-location i,
+.slot-capacity i {
+    width: 16px;
+    color: #667eea;
+}
+
+.slot-status {
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-badge.available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.booked {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.slot-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 1.5px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-select:hover {
+    border-color: #667eea;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* モーダル内のフォーム調整 */
+#addSlotModal .form-group,
+#editSlotModal .form-group {
+    margin-bottom: 20px;
+}
+
+#addSlotModal .form-control,
+#editSlotModal .form-control {
+    padding: 10px 12px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .meeting-slot-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .slot-time {
+        font-size: 1rem;
+    }
+    
+    .slot-actions {
+        justify-content: flex-start;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1151,35 +1336,232 @@
             </div>
             
             <!-- 面談スケジュールセクション -->
+            <!-- 面談スケジュール管理セクション -->
             <div id="meetingsSection" class="section">
                 <div class="section-header">
                     <h2 class="section-title">
                         <i class="fas fa-calendar-alt"></i>
-                        面談スケジュール
+                        面談スケジュール管理
                     </h2>
-                    <button class="btn btn-primary" onclick="alert('面談予約追加機能（開発予定）')">
+                    <button class="btn btn-primary" onclick="showAddSlotModal()">
                         <i class="fas fa-plus"></i>
-                        予約追加
+                        面談枠を追加
                     </button>
                 </div>
                 
+                <!-- フィルター -->
                 <div class="filter-bar">
-                    <select class="filter-select" id="meetingFilter" onchange="filterMeetings()">
-                        <option value="all">すべての予定</option>
+                    <select class="filter-select" id="slotDateFilter" onchange="filterSlots()">
+                        <option value="all">すべての日程</option>
+                        <option value="upcoming">今後の予定</option>
                         <option value="today">今日</option>
                         <option value="week">今週</option>
                         <option value="month">今月</option>
                     </select>
+                    
+                    <select class="filter-select" id="slotStatusFilter" onchange="filterSlots()">
+                        <option value="all">すべてのステータス</option>
+                        <option value="available">空き</option>
+                        <option value="booked">予約済</option>
+                    </select>
                 </div>
                 
-                <div id="meetingsCalendar">
+                <!-- 面談枠一覧 -->
+                <div id="meetingSlotsContainer">
                     <div class="loading">
                         <i class="fas fa-spinner"></i>
-                        <p>読み込み中...</p>
+                        <p>面談枠を読み込み中...</p>
                     </div>
                 </div>
             </div>
             
+            <!-- 面談枠追加モーダル -->
+            <div id="addSlotModal" class="modal">
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-calendar-plus"></i> 新しい面談枠を追加</h3>
+                        <button class="modal-close" onclick="closeAddSlotModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addSlotForm">
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> 日付 <span style="color: red;">*</span></label>
+                                <input type="date" id="slotDate" class="form-control" required>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> 開始時間 <span style="color: red;">*</span></label>
+                                    <input type="time" id="slotStartTime" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> 終了時間 <span style="color: red;">*</span></label>
+                                    <input type="time" id="slotEndTime" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> 面談タイプ <span style="color: red;">*</span></label>
+                                <select id="slotType" class="form-control" required>
+                                    <option value="初回キャリア面談">初回キャリア面談</option>
+                                    <option value="フォローアップ面談">フォローアップ面談</option>
+                                    <option value="企業紹介面談">企業紹介面談</option>
+                                    <option value="応募書類添削">応募書類添削</option>
+                                    <option value="面接対策">面接対策</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color: red;">*</span></label>
+                                <select id="slotLocation" class="form-control" required>
+                                    <option value="オンライン（Zoom）">オンライン（Zoom）</option>
+                                    <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
+                                    <option value="対面（オフィス）">対面（オフィス）</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
+                                <input type="url" id="slotMeetingLink" class="form-control" 
+                                       placeholder="https://zoom.us/j/...">
+                                <small style="color: #666; display: block; margin-top: 5px;">
+                                    ZoomやGoogle MeetのURLを入力（予約後にユーザーに表示されます）
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-users"></i> 定員</label>
+                                <input type="number" id="slotCapacity" class="form-control" 
+                                       value="1" min="1" max="10" required>
+                            </div>
+                            
+                            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
+                                    <i class="fas fa-info-circle"></i>
+                                    追加した面談枠は、ユーザーが予約ページで選択できるようになります
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeAddSlotModal()">
+                            キャンセル
+                        </button>
+                        <button type="submit" form="addSlotForm" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            追加
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 面談枠編集モーダル -->
+            <div id="editSlotModal" class="modal">
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-edit"></i> 面談枠の編集</h3>
+                        <button class="modal-close" onclick="closeEditSlotModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editSlotForm">
+                            <input type="hidden" id="editSlotId">
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> 日付</label>
+                                <input type="date" id="editSlotDate" class="form-control" disabled>
+                                <small style="color: #666;">日付は変更できません</small>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> 開始時間</label>
+                                    <input type="time" id="editSlotStartTime" class="form-control" disabled>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> 終了時間</label>
+                                    <input type="time" id="editSlotEndTime" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <small style="color: #666; display: block; margin-bottom: 15px;">時間は変更できません</small>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> 面談タイプ <span style="color: red;">*</span></label>
+                                <select id="editSlotType" class="form-control" required>
+                                    <option value="初回キャリア面談">初回キャリア面談</option>
+                                    <option value="フォローアップ面談">フォローアップ面談</option>
+                                    <option value="企業紹介面談">企業紹介面談</option>
+                                    <option value="応募書類添削">応募書類添削</option>
+                                    <option value="面接対策">面接対策</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color: red;">*</span></label>
+                                <select id="editSlotLocation" class="form-control" required>
+                                    <option value="オンライン（Zoom）">オンライン（Zoom）</option>
+                                    <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
+                                    <option value="対面（オフィス）">対面（オフィス）</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
+                                <input type="url" id="editSlotMeetingLink" class="form-control" 
+                                       placeholder="https://zoom.us/j/...">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditSlotModal()">
+                            キャンセル
+                        </button>
+                        <button type="submit" form="editSlotForm" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 面談枠削除確認モーダル -->
+            <div id="deleteSlotModal" class="modal">
+                <div class="modal-content" style="max-width: 450px;">
+                    <div class="modal-header" style="background: #ffebee; color: #c62828;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> 面談枠の削除</h3>
+                        <button class="modal-close" onclick="closeDeleteSlotModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="color: #666; line-height: 1.6;" id="deleteSlotMessage"></p>
+                        <p style="color: #c62828; margin-top: 15px;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            この操作は取り消せません。
+                        </p>
+                        <input type="hidden" id="deleteSlotId">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeDeleteSlotModal()">
+                            キャンセル
+                        </button>
+                        <button type="button" class="btn" style="background: #c62828; color: white;" onclick="confirmDeleteSlot()">
+                            <i class="fas fa-trash"></i>
+                            削除
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- 書類管理セクション -->
             <div id="documentsSection" class="section">
                 <div class="section-header">
@@ -1428,7 +1810,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         
         // Firebase設定
         const firebaseConfig = {
@@ -1487,6 +1869,9 @@
                 
                 // 書類データ取得
                 await loadDocuments();
+                
+                // 面談枠データ取得
+                await loadMeetingSlots();
                 
                 // 管理者データ取得（設定タブ用）
                 // await loadAdmins(); // タブクリック時に読み込み
@@ -2180,6 +2565,310 @@ window.confirmDeleteAdmin = async function() {
     } catch (error) {
         console.error('❌ 管理者削除エラー:', error);
         alert('管理者の削除に失敗しました: ' + error.message);
+    }
+};
+
+
+// ========================================
+// 面談枠管理機能
+// ========================================
+
+let allMeetingSlots = [];
+
+// 面談枠の読み込み
+async function loadMeetingSlots() {
+    try {
+        console.log('📥 面談枠を読み込み中...');
+        
+        const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
+        const snapshot = await getDocs(q);
+        
+        allMeetingSlots = [];
+        snapshot.forEach(doc => {
+            allMeetingSlots.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        console.log(`✅ 面談枠: ${allMeetingSlots.length}件`);
+        displayMeetingSlots();
+        
+    } catch (error) {
+        console.error('❌ 面談枠読み込みエラー:', error);
+        document.getElementById('meetingSlotsContainer').innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <h3>読み込みエラー</h3>
+                <p>面談枠の読み込みに失敗しました</p>
+            </div>
+        `;
+    }
+}
+
+// 面談枠の表示
+function displayMeetingSlots() {
+    const container = document.getElementById('meetingSlotsContainer');
+    
+    if (allMeetingSlots.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <h3>面談枠がありません</h3>
+                <p>「面談枠を追加」ボタンから新しい面談枠を作成してください</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // 日付でグループ化
+    const groupedSlots = {};
+    allMeetingSlots.forEach(slot => {
+        if (!groupedSlots[slot.date]) {
+            groupedSlots[slot.date] = [];
+        }
+        groupedSlots[slot.date].push(slot);
+    });
+    
+    let html = '';
+    
+    // 日付ごとに表示
+    Object.keys(groupedSlots).sort().forEach(date => {
+        const slots = groupedSlots[date];
+        const dateObj = new Date(date + 'T00:00:00');
+        const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][dateObj.getDay()];
+        
+        html += `
+            <div class="meeting-date-group">
+                <h3 class="meeting-date-header">
+                    <i class="fas fa-calendar-day"></i>
+                    ${date}（${dayOfWeek}）
+                    <span class="slot-count">${slots.length}枠</span>
+                </h3>
+                <div class="meeting-slots-list">
+        `;
+        
+        slots.forEach(slot => {
+            const isBooked = slot.currentBookings >= slot.maxCapacity;
+            const statusBadge = isBooked 
+                ? '<span class="status-badge booked">予約済</span>' 
+                : '<span class="status-badge available">空き</span>';
+            
+            html += `
+                <div class="meeting-slot-card ${isBooked ? 'booked' : ''}">
+                    <div class="slot-time">
+                        <i class="fas fa-clock"></i>
+                        ${slot.startTime} - ${slot.endTime}
+                    </div>
+                    <div class="slot-info">
+                        <div class="slot-type">
+                            <i class="fas fa-tag"></i>
+                            ${slot.type}
+                        </div>
+                        <div class="slot-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            ${slot.location}
+                        </div>
+                        <div class="slot-capacity">
+                            <i class="fas fa-users"></i>
+                            予約: ${slot.currentBookings} / ${slot.maxCapacity}
+                        </div>
+                    </div>
+                    <div class="slot-status">
+                        ${statusBadge}
+                    </div>
+                    <div class="slot-actions">
+                        <button class="btn-icon edit" onclick="showEditSlotModal('${slot.id}')" title="編集">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon delete" onclick="showDeleteSlotModal('${slot.id}')" 
+                                title="削除" ${isBooked ? 'disabled' : ''}>
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// 面談枠のフィルタリング
+function filterSlots() {
+    const dateFilter = document.getElementById('slotDateFilter').value;
+    const statusFilter = document.getElementById('slotStatusFilter').value;
+    
+    // フィルタリングロジック（簡易版）
+    console.log('🔍 フィルター:', dateFilter, statusFilter);
+    // TODO: 実装
+}
+
+// 面談枠追加モーダルを開く
+window.showAddSlotModal = function() {
+    document.getElementById('addSlotModal').classList.add('show');
+    
+    // 今日の日付をデフォルトに
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];
+    document.getElementById('slotDate').value = dateString;
+    document.getElementById('slotDate').min = dateString; // 過去の日付は選択不可
+    
+    // デフォルト時間
+    document.getElementById('slotStartTime').value = '10:00';
+    document.getElementById('slotEndTime').value = '11:00';
+};
+
+// 面談枠追加モーダルを閉じる
+window.closeAddSlotModal = function() {
+    document.getElementById('addSlotModal').classList.remove('show');
+    document.getElementById('addSlotForm').reset();
+};
+
+// 面談枠追加フォーム送信
+document.getElementById('addSlotForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const date = document.getElementById('slotDate').value;
+    const startTime = document.getElementById('slotStartTime').value;
+    const endTime = document.getElementById('slotEndTime').value;
+    const type = document.getElementById('slotType').value;
+    const location = document.getElementById('slotLocation').value;
+    const meetingLink = document.getElementById('slotMeetingLink').value;
+    const capacity = parseInt(document.getElementById('slotCapacity').value);
+    
+    // バリデーション
+    if (startTime >= endTime) {
+        alert('⚠️ 終了時間は開始時間より後にしてください');
+        return;
+    }
+    
+    try {
+        // Timestamp作成（日時を結合）
+        const datetimeString = `${date}T${startTime}:00`;
+        const datetime = new Date(datetimeString);
+        
+        const slotData = {
+            date: date,
+            startTime: startTime,
+            endTime: endTime,
+            datetime: datetime,
+            type: type,
+            location: location,
+            meetingLink: meetingLink || '',
+            maxCapacity: capacity,
+            currentBookings: 0,
+            status: 'available',
+            createdBy: currentUser.uid,
+            createdAt: new Date()
+        };
+        
+        await addDoc(collection(db, 'meetingSlots'), slotData);
+        
+        alert('✅ 面談枠を追加しました');
+        
+        closeAddSlotModal();
+        loadMeetingSlots();
+        
+    } catch (error) {
+        console.error('❌ 面談枠追加エラー:', error);
+        alert('面談枠の追加に失敗しました: ' + error.message);
+    }
+});
+
+// 面談枠編集モーダルを開く
+window.showEditSlotModal = function(slotId) {
+    const slot = allMeetingSlots.find(s => s.id === slotId);
+    if (!slot) return;
+    
+    document.getElementById('editSlotId').value = slotId;
+    document.getElementById('editSlotDate').value = slot.date;
+    document.getElementById('editSlotStartTime').value = slot.startTime;
+    document.getElementById('editSlotEndTime').value = slot.endTime;
+    document.getElementById('editSlotType').value = slot.type;
+    document.getElementById('editSlotLocation').value = slot.location;
+    document.getElementById('editSlotMeetingLink').value = slot.meetingLink || '';
+    
+    document.getElementById('editSlotModal').classList.add('show');
+};
+
+// 面談枠編集モーダルを閉じる
+window.closeEditSlotModal = function() {
+    document.getElementById('editSlotModal').classList.remove('show');
+};
+
+// 面談枠編集フォーム送信
+document.getElementById('editSlotForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const slotId = document.getElementById('editSlotId').value;
+    const type = document.getElementById('editSlotType').value;
+    const location = document.getElementById('editSlotLocation').value;
+    const meetingLink = document.getElementById('editSlotMeetingLink').value;
+    
+    try {
+        await updateDoc(doc(db, 'meetingSlots', slotId), {
+            type: type,
+            location: location,
+            meetingLink: meetingLink || '',
+            updatedAt: new Date(),
+            updatedBy: currentUser.uid
+        });
+        
+        alert('✅ 面談枠を更新しました');
+        
+        closeEditSlotModal();
+        loadMeetingSlots();
+        
+    } catch (error) {
+        console.error('❌ 面談枠更新エラー:', error);
+        alert('面談枠の更新に失敗しました: ' + error.message);
+    }
+});
+
+// 面談枠削除モーダルを開く
+window.showDeleteSlotModal = function(slotId) {
+    const slot = allMeetingSlots.find(s => s.id === slotId);
+    if (!slot) return;
+    
+    // 予約済みの場合は削除不可
+    if (slot.currentBookings > 0) {
+        alert('⚠️ 予約が入っている面談枠は削除できません');
+        return;
+    }
+    
+    document.getElementById('deleteSlotId').value = slotId;
+    document.getElementById('deleteSlotMessage').textContent = 
+        `${slot.date} ${slot.startTime}-${slot.endTime} の面談枠を削除しますか？`;
+    
+    document.getElementById('deleteSlotModal').classList.add('show');
+};
+
+// 面談枠削除モーダルを閉じる
+window.closeDeleteSlotModal = function() {
+    document.getElementById('deleteSlotModal').classList.remove('show');
+};
+
+// 面談枠削除確認
+window.confirmDeleteSlot = async function() {
+    const slotId = document.getElementById('deleteSlotId').value;
+    
+    try {
+        await deleteDoc(doc(db, 'meetingSlots', slotId));
+        
+        alert('✅ 面談枠を削除しました');
+        
+        closeDeleteSlotModal();
+        loadMeetingSlots();
+        
+    } catch (error) {
+        console.error('❌ 面談枠削除エラー:', error);
+        alert('面談枠の削除に失敗しました: ' + error.message);
     }
 };
 
