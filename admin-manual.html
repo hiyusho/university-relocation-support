@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書類管理システム 管理者マニュアル</title>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            a {
+                color: #333 !important;
+                text-decoration: none !important;
+            }
+            
+            .toc-link {
+                color: #667eea !important;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* ヘッダー */
+        .header {
+            text-align: center;
+            border-bottom: 4px solid #e53e3e;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #e53e3e;
+            margin-bottom: 15px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .header .version {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .admin-badge {
+            background: #e53e3e;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        /* 目次 */
+        .toc {
+            background: #fff5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            border: 2px solid #feb2b2;
+        }
+        
+        .toc h2 {
+            font-size: 1.5rem;
+            color: #e53e3e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e53e3e;
+        }
+        
+        .toc ol {
+            padding-left: 25px;
+        }
+        
+        .toc li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+        
+        .toc a {
+            color: #e53e3e;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #c53030;
+            text-decoration: underline;
+        }
+        
+        /* セクション */
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section h2 {
+            font-size: 2rem;
+            color: #e53e3e;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e53e3e;
+        }
+        
+        .section h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .section h4 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        
+        /* リスト */
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+        
+        /* ボックス */
+        .danger-box {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid #38a169;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .admin-note {
+            background: #fef5e7;
+            border: 2px solid #f39c12;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        
+        /* コードブロック */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .code-block .comment {
+            color: #68d391;
+        }
+        
+        .command-line {
+            background: #1a202c;
+            color: #48bb78;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .command-line::before {
+            content: "$ ";
+            color: #63b3ed;
+        }
+        
+        /* テーブル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+        }
+        
+        table th {
+            background: #e53e3e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        
+        table tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        /* ステップ */
+        .step {
+            background: #f7fafc;
+            border-left: 4px solid #4299e1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .step h4 {
+            color: #2c5282;
+            margin-bottom: 10px;
+        }
+        
+        /* アイコン */
+        .icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        /* プリントボタン */
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e53e3e;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+        }
+        
+        /* チェックリスト */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .checklist li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .checklist li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 1.3rem;
+            color: #e53e3e;
+        }
+        
+        /* Firebase コンソールスクリーンショット */
+        .console-screenshot {
+            background: #f5f5f5;
+            border: 2px solid #e53e3e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        
+        /* URL ハイライト */
+        .url {
+            background: #edf2f7;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #2c5282;
+            word-break: break-all;
+        }
+        
+        /* 権限テーブル */
+        .permission-table td:first-child {
+            font-weight: 600;
+            background: #fff5f5;
+        }
+        
+        /* フッター */
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e53e3e;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">🔒 PDF保存 / 印刷</button>
+    
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>🔒 書類管理システム</h1>
+            <div class="subtitle">システム管理者マニュアル</div>
+            <div class="admin-badge">ADMINISTRATOR ONLY</div>
+            <div class="version">
+                大学赴任者家族帯同支援プログラム<br>
+                バージョン 1.0 | 最終更新: 2026年1月14日
+            </div>
+        </div>
+
+        <div class="danger-box">
+            <strong>⚠️ 重要な注意事項</strong><br>
+            このマニュアルは<strong>システム管理者専用</strong>です。ユーザーに公開しないでください。<br>
+            記載されている情報には、機密性の高い設定やパスワードが含まれています。
+        </div>
+
+        <!-- 目次 -->
+        <div class="toc">
+            <h2>📖 目次</h2>
+            <ol>
+                <li><a href="#section1" class="toc-link">システム概要とアーキテクチャ</a></li>
+                <li><a href="#section2" class="toc-link">Firebase コンソールへのアクセス</a></li>
+                <li><a href="#section3" class="toc-link">ユーザー管理</a></li>
+                <li><a href="#section4" class="toc-link">データ管理と確認</a></li>
+                <li><a href="#section5" class="toc-link">ストレージ管理</a></li>
+                <li><a href="#section6" class="toc-link">セキュリティ設定</a></li>
+                <li><a href="#section7" class="toc-link">バックアップとリストア</a></li>
+                <li><a href="#section8" class="toc-link">システム監視とログ確認</a></li>
+                <li><a href="#section9" class="toc-link">トラブルシューティング</a></li>
+                <li><a href="#section10" class="toc-link">メンテナンス作業</a></li>
+                <li><a href="#section11" class="toc-link">緊急時対応</a></li>
+                <li><a href="#section12" class="toc-link">付録</a></li>
+            </ol>
+        </div>
+
+        <!-- セクション1: システム概要 -->
+        <div class="section" id="section1">
+            <h2>🏗️ 1. システム概要とアーキテクチャ</h2>
+            
+            <h3>1.1 システム構成</h3>
+            
+            <div class="console-screenshot">
+┌─────────────────────────────────────────┐
+│         システムアーキテクチャ           │
+├─────────────────────────────────────────┤
+│                                         │
+│  【フロントエンド】                      │
+│  ┌─────────────────────────────┐        │
+│  │ GitHub Pages                │        │
+│  │ https://hiyusho.github.io/  │        │
+│  │ - HTML/CSS/JavaScript       │        │
+│  │ - 静的ホスティング           │        │
+│  └────────┬────────────────────┘        │
+│           │                              │
+│           ↓                              │
+│  【バックエンド】                        │
+│  ┌─────────────────────────────┐        │
+│  │ Firebase Platform           │        │
+│  │ ┌─────────────────────────┐ │        │
+│  │ │ Authentication          │ │        │
+│  │ │ - ユーザー認証          │ │        │
+│  │ │ - メール/パスワード      │ │        │
+│  │ └─────────────────────────┘ │        │
+│  │ ┌─────────────────────────┐ │        │
+│  │ │ Firestore Database      │ │        │
+│  │ │ - ユーザー情報          │ │        │
+│  │ │ - 書類メタデータ        │ │        │
+│  │ └─────────────────────────┘ │        │
+│  │ ┌─────────────────────────┐ │        │
+│  │ │ Storage                 │ │        │
+│  │ │ - ファイル保存          │ │        │
+│  │ │ - アクセス制御          │ │        │
+│  │ └─────────────────────────┘ │        │
+│  └─────────────────────────────┘        │
+└─────────────────────────────────────────┘
+            </div>
+            
+            <h3>1.2 使用技術スタック</h3>
+            
+            <table>
+                <tr>
+                    <th>カテゴリ</th>
+                    <th>技術</th>
+                    <th>バージョン</th>
+                </tr>
+                <tr>
+                    <td>ホスティング</td>
+                    <td>GitHub Pages</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>フロントエンド</td>
+                    <td>HTML5, CSS3, JavaScript (ES6+)</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>認証</td>
+                    <td>Firebase Authentication</td>
+                    <td>10.7.1</td>
+                </tr>
+                <tr>
+                    <td>データベース</td>
+                    <td>Firebase Firestore</td>
+                    <td>10.7.1</td>
+                </tr>
+                <tr>
+                    <td>ストレージ</td>
+                    <td>Firebase Storage</td>
+                    <td>10.7.1</td>
+                </tr>
+            </table>
+            
+            <h3>1.3 データモデル</h3>
+            
+            <h4>1.3.1 Firestore コレクション構造</h4>
+            
+            <div class="code-block">
+/users/{userId}
+  ├─ name: string
+  ├─ email: string
+  ├─ createdAt: timestamp
+  └─ updatedAt: timestamp
+
+/documents/{documentId}
+  ├─ userId: string
+  ├─ userEmail: string
+  ├─ documentType: string (resume, cv, cover_letter, etc.)
+  ├─ fileName: string
+  ├─ description: string
+  ├─ storagePath: string
+  ├─ downloadURL: string
+  ├─ fileSize: number
+  ├─ fileType: string
+  ├─ storageType: string ("firebase")
+  ├─ uploadedAt: timestamp
+  └─ updatedAt: timestamp
+            </div>
+            
+            <h4>1.3.2 Storage 構造</h4>
+            
+            <div class="code-block">
+gs://university-relocation-support.firebasestorage.app/
+└─ documents/
+   └─ {userId}/
+      ├─ {timestamp}_{filename1}.pdf
+      ├─ {timestamp}_{filename2}.docx
+      └─ {timestamp}_{filename3}.jpg
+            </div>
+            
+            <h3>1.4 アクセスURL一覧</h3>
+            
+            <table>
+                <tr>
+                    <th>サービス</th>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>本番サイト</td>
+                    <td><span class="url">https://hiyusho.github.io/university-relocation-support/</span></td>
+                </tr>
+                <tr>
+                    <td>Firebase Console</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support</span></td>
+                </tr>
+                <tr>
+                    <td>GitHub リポジトリ</td>
+                    <td><span class="url">https://github.com/hiyusho/university-relocation-support</span></td>
+                </tr>
+                <tr>
+                    <td>ユーザーマニュアル</td>
+                    <td><span class="url">https://hiyusho.github.io/university-relocation-support/manual.html</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション2: Firebase Console -->
+        <div class="section" id="section2">
+            <h2>🔐 2. Firebase コンソールへのアクセス</h2>
+            
+            <h3>2.1 Firebase Console ログイン</h3>
+            
+            <div class="step">
+                <h4>ステップ1: Firebase Console にアクセス</h4>
+                <p>ブラウザで以下のURLを開きます：</p>
+                <div class="url">https://console.firebase.google.com/</div>
+            </div>
+            
+            <div class="step">
+                <h4>ステップ2: Googleアカウントでログイン</h4>
+                <p>Firebase プロジェクトの管理者権限を持つGoogleアカウントでログインします。</p>
+            </div>
+            
+            <div class="step">
+                <h4>ステップ3: プロジェクトを選択</h4>
+                <p>プロジェクト一覧から以下を選択：</p>
+                <div class="code-block">university-relocation-support</div>
+            </div>
+            
+            <h3>2.2 プロジェクト情報</h3>
+            
+            <table>
+                <tr>
+                    <th>項目</th>
+                    <th>値</th>
+                </tr>
+                <tr>
+                    <td>プロジェクトID</td>
+                    <td>university-relocation-support</td>
+                </tr>
+                <tr>
+                    <td>プロジェクト名</td>
+                    <td>University Relocation Support</td>
+                </tr>
+                <tr>
+                    <td>リージョン</td>
+                    <td>asia-northeast1 (Tokyo)</td>
+                </tr>
+                <tr>
+                    <td>Storage バケット</td>
+                    <td>university-relocation-support.firebasestorage.app</td>
+                </tr>
+            </table>
+            
+            <h3>2.3 主要機能へのクイックアクセス</h3>
+            
+            <table>
+                <tr>
+                    <th>機能</th>
+                    <th>直接URL</th>
+                </tr>
+                <tr>
+                    <td>Authentication（認証）</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/authentication</span></td>
+                </tr>
+                <tr>
+                    <td>Firestore Database</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/firestore</span></td>
+                </tr>
+                <tr>
+                    <td>Storage</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/storage</span></td>
+                </tr>
+                <tr>
+                    <td>Rules（セキュリティルール）</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/firestore/rules</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション3: ユーザー管理 -->
+        <div class="section" id="section3">
+            <h2>👥 3. ユーザー管理</h2>
+            
+            <h3>3.1 ユーザー一覧の確認</h3>
+            
+            <div class="step">
+                <h4>手順：</h4>
+                <ol>
+                    <li>Firebase Console → <strong>Authentication</strong> をクリック</li>
+                    <li><strong>Users</strong> タブを選択</li>
+                    <li>登録済みユーザーの一覧が表示されます</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>表示される情報：</strong>
+                <ul>
+                    <li>User UID（ユーザー固有ID）</li>
+                    <li>メールアドレス</li>
+                    <li>作成日時</li>
+                    <li>最終サインイン日時</li>
+                </ul>
+            </div>
+            
+            <h3>3.2 新規ユーザーの追加</h3>
+            
+            <div class="step">
+                <h4>方法1: Firebase Console から追加（推奨）</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li><strong>「Add user」</strong>ボタンをクリック</li>
+                    <li>以下の情報を入力：
+                        <ul>
+                            <li><strong>Email:</strong> ユーザーのメールアドレス</li>
+                            <li><strong>Password:</strong> 初期パスワード（8文字以上）</li>
+                        </ul>
+                    </li>
+                    <li><strong>「Add user」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ 初期パスワードについて</strong><br>
+                ユーザーに初期パスワードを安全な方法で伝達してください。初回ログイン後、パスワードの変更を推奨してください。
+            </div>
+            
+            <div class="step">
+                <h4>方法2: ユーザー自身が登録（現在未実装）</h4>
+                <p>サインアップ機能を実装する場合は、以下を追加：</p>
+                <div class="code-block">
+<span class="comment">// sign-up.html を作成して実装</span>
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+const email = document.getElementById('email').value;
+const password = document.getElementById('password').value;
+
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // ユーザー作成成功
+    const user = userCredential.user;
+    console.log('User created:', user.uid);
+  })
+  .catch((error) => {
+    console.error('Error:', error.message);
+  });
+                </div>
+            </div>
+            
+            <h3>3.3 ユーザー情報の編集</h3>
+            
+            <h4>3.3.1 メールアドレスの変更</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>対象ユーザーをクリック</li>
+                    <li>メールアドレス欄の<strong>鉛筆アイコン</strong>をクリック</li>
+                    <li>新しいメールアドレスを入力</li>
+                    <li><strong>「Save」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h4>3.3.2 パスワードのリセット</h4>
+            
+            <div class="step">
+                <h4>方法A: Firebase Console から</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>対象ユーザーをクリック</li>
+                    <li><strong>「Reset password」</strong>をクリック</li>
+                    <li>パスワードリセットメールが送信されます</li>
+                </ol>
+            </div>
+            
+            <div class="step">
+                <h4>方法B: 新しいパスワードを直接設定</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>対象ユーザーをクリック</li>
+                    <li>パスワード欄の<strong>鉛筆アイコン</strong>をクリック</li>
+                    <li>新しいパスワードを入力</li>
+                    <li><strong>「Save」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h3>3.4 ユーザーの無効化・削除</h3>
+            
+            <h4>3.4.1 ユーザーの無効化（一時停止）</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>対象ユーザーをクリック</li>
+                    <li><strong>「Disable user」</strong>をクリック</li>
+                    <li>確認ダイアログで<strong>「Disable」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>💡 無効化の効果：</strong>
+                <ul>
+                    <li>ユーザーはログインできなくなります</li>
+                    <li>データは保持されます（削除されません）</li>
+                    <li>後で再度有効化できます</li>
+                </ul>
+            </div>
+            
+            <h4>3.4.2 ユーザーの完全削除</h4>
+            
+            <div class="danger-box">
+                <strong>⚠️ 重要：削除前の確認事項</strong>
+                <ul>
+                    <li>ユーザーのFirestoreデータを先に削除してください</li>
+                    <li>ユーザーのStorageファイルを先に削除してください</li>
+                    <li>削除は<strong>取り消せません</strong></li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h4>手順：</h4>
+                <ol>
+                    <li><strong>ステップ1: Firestoreデータを削除</strong>
+                        <ul>
+                            <li>Firestore Database → <code>documents</code> コレクション</li>
+                            <li>該当ユーザーのドキュメントを全て削除</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステップ2: Storageファイルを削除</strong>
+                        <ul>
+                            <li>Storage → <code>documents/{userId}/</code> フォルダ</li>
+                            <li>該当ユーザーのファイルを全て削除</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステップ3: Authenticationから削除</strong>
+                        <ul>
+                            <li>Authentication → Users タブ</li>
+                            <li>対象ユーザーをクリック</li>
+                            <li><strong>「Delete user」</strong>をクリック</li>
+                            <li>確認ダイアログで<strong>「Delete」</strong>をクリック</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>3.5 ユーザーデータのエクスポート</h3>
+            
+            <div class="step">
+                <h4>全ユーザーリストのエクスポート：</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>右上の<strong>「⋮」</strong>メニュー</li>
+                    <li><strong>「Download users as CSV」</strong>を選択</li>
+                    <li>CSVファイルがダウンロードされます</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>CSVファイルに含まれる情報：</strong>
+                <ul>
+                    <li>User UID</li>
+                    <li>メールアドレス</li>
+                    <li>作成日時</li>
+                    <li>最終ログイン日時</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション4: データ管理 -->
+        <div class="section" id="section4">
+            <h2>📊 4. データ管理と確認</h2>
+            
+            <h3>4.1 Firestore Database の確認</h3>
+            
+            <div class="step">
+                <h4>データの閲覧：</h4>
+                <ol>
+                    <li>Firebase Console → <strong>Firestore Database</strong></li>
+                    <li>左側のコレクション一覧から選択：
+                        <ul>
+                            <li><code>users</code> - ユーザー情報</li>
+                            <li><code>documents</code> - 書類メタデータ</li>
+                        </ul>
+                    </li>
+                    <li>ドキュメントをクリックして詳細を表示</li>
+                </ol>
+            </div>
+            
+            <h3>4.2 書類データの確認</h3>
+            
+            <h4>4.2.1 特定ユーザーの書類を検索</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firestore Database → <code>documents</code> コレクション</li>
+                    <li>右上の<strong>フィルターアイコン</strong>をクリック</li>
+                    <li>以下の条件を設定：
+                        <ul>
+                            <li><strong>Field:</strong> userId</li>
+                            <li><strong>Operator:</strong> ==</li>
+                            <li><strong>Value:</strong> [ユーザーのUID]</li>
+                        </ul>
+                    </li>
+                    <li><strong>「Apply」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h4>4.2.2 書類タイプでフィルター</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firestore Database → <code>documents</code> コレクション</li>
+                    <li>フィルター条件：
+                        <ul>
+                            <li><strong>Field:</strong> documentType</li>
+                            <li><strong>Operator:</strong> ==</li>
+                            <li><strong>Value:</strong> resume（または cv, cover_letter など）</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>4.3 データの手動編集</h3>
+            
+            <div class="warning-box">
+                <strong>⚠️ 注意</strong><br>
+                Firestoreのデータを直接編集すると、システムの動作に影響を与える可能性があります。慎重に行ってください。
+            </div>
+            
+            <div class="step">
+                <h4>フィールドの編集：</h4>
+                <ol>
+                    <li>Firestore Database → 対象のドキュメントを選択</li>
+                    <li>編集したいフィールドの<strong>鉛筆アイコン</strong>をクリック</li>
+                    <li>新しい値を入力</li>
+                    <li><strong>「Update」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h3>4.4 データの削除</h3>
+            
+            <h4>4.4.1 単一ドキュメントの削除</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firestore Database → 対象のドキュメントを選択</li>
+                    <li>右上の<strong>「⋮」</strong>メニュー</li>
+                    <li><strong>「Delete document」</strong>を選択</li>
+                    <li>確認ダイアログで<strong>「Delete」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <div class="danger-box">
+                <strong>⚠️ 書類データを削除する場合</strong><br>
+                Firestoreのメタデータだけでなく、Storageの実ファイルも削除する必要があります。
+            </div>
+            
+            <h4>4.4.2 複数ドキュメントの一括削除</h4>
+            
+            <div class="admin-note">
+                <strong>📝 管理者メモ</strong><br>
+                Firebase Consoleでは一括削除機能がありません。Cloud Shell（gcloud CLI）を使用する必要があります。
+            </div>
+            
+            <div class="command-line">
+gcloud firestore delete-all --collection=documents --project=university-relocation-support
+            </div>
+            
+            <h3>4.5 データのエクスポート</h3>
+            
+            <h4>4.5.1 Firestore データのエクスポート</h4>
+            
+            <div class="step">
+                <h4>Cloud Shell を使用：</h4>
+                <div class="command-line">
+gcloud firestore export gs://university-relocation-support-backup/$(date +%Y%m%d) --project=university-relocation-support
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>💡 エクスポートの用途：</strong>
+                <ul>
+                    <li>定期バックアップ</li>
+                    <li>データ分析</li>
+                    <li>移行・複製</li>
+                </ul>
+            </div>
+            
+            <h3>4.6 統計情報の確認</h3>
+            
+            <h4>登録書類数の確認</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firestore Database → <code>documents</code> コレクション</li>
+                    <li>ドキュメント数が表示されます</li>
+                </ol>
+            </div>
+            
+            <h4>ユーザー別の書類数</h4>
+            
+            <div class="info-box">
+                <strong>💡 ヒント</strong><br>
+                フィルター機能を使って特定ユーザーの書類を検索し、件数を確認できます。
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション5: ストレージ管理 -->
+        <div class="section" id="section5">
+            <h2>💾 5. ストレージ管理</h2>
+            
+            <h3>5.1 Storage の確認</h3>
+            
+            <div class="step">
+                <h4>ファイル一覧の表示：</h4>
+                <ol>
+                    <li>Firebase Console → <strong>Storage</strong></li>
+                    <li><strong>Files</strong> タブを選択</li>
+                    <li><code>documents/</code> フォルダを開く</li>
+                    <li>各ユーザーのフォルダ（UID）が表示されます</li>
+                </ol>
+            </div>
+            
+            <h3>5.2 ファイルの閲覧・ダウンロード</h3>
+            
+            <div class="step">
+                <h4>手順：</h4>
+                <ol>
+                    <li>Storage → <code>documents/{userId}/</code></li>
+                    <li>対象ファイルをクリック</li>
+                    <li>右側のパネルに詳細情報が表示されます</li>
+                    <li><strong>「Download」</strong>ボタンでダウンロード可能</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>表示される情報：</strong>
+                <ul>
+                    <li>ファイル名</li>
+                    <li>ファイルサイズ</li>
+                    <li>Content-Type</li>
+                    <li>作成日時</li>
+                    <li>アクセストークン</li>
+                    <li>ダウンロードURL</li>
+                </ul>
+            </div>
+            
+            <h3>5.3 ストレージ容量の確認</h3>
+            
+            <div class="step">
+                <ol>
+                    <li>Storage → <strong>Usage</strong> タブ</li>
+                    <li>以下の情報を確認：
+                        <ul>
+                            <li><strong>Total size:</strong> 使用中の容量</li>
+                            <li><strong>Number of files:</strong> ファイル数</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ 容量制限</strong><br>
+                <strong>Spark プラン（無料）:</strong> 5GB まで<br>
+                容量が不足する場合は、Blaze プラン（従量課金）への移行を検討してください。
+            </div>
+            
+            <h3>5.4 ファイルの削除</h3>
+            
+            <h4>5.4.1 単一ファイルの削除</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Storage → 対象ファイルを選択</li>
+                    <li>右上の<strong>「⋮」</strong>メニュー</li>
+                    <li><strong>「Delete」</strong>を選択</li>
+                    <li>確認ダイアログで<strong>「Delete」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <div class="danger-box">
+                <strong>⚠️ 重要</strong><br>
+                Storageからファイルを削除した場合、対応するFirestoreのメタデータも削除してください。
+            </div>
+            
+            <h4>5.4.2 フォルダ（ユーザー）の一括削除</h4>
+            
+            <div class="step">
+                <h4>Cloud Shell を使用：</h4>
+                <div class="command-line">
+gsutil -m rm -r gs://university-relocation-support.firebasestorage.app/documents/{userId}/
+                </div>
+            </div>
+            
+            <h3>5.5 CORS 設定の確認と変更</h3>
+            
+            <div class="step">
+                <h4>現在の CORS 設定を確認：</h4>
+                <div class="command-line">
+gsutil cors get gs://university-relocation-support.firebasestorage.app
+                </div>
+            </div>
+            
+            <div class="step">
+                <h4>CORS 設定を変更：</h4>
+                <ol>
+                    <li>cors.json ファイルを作成：</li>
+                </ol>
+                <div class="code-block">
+[
+  {
+    "origin": ["https://hiyusho.github.io", "http://localhost:*"],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Authorization"]
+  }
+]
+                </div>
+                <ol start="2">
+                    <li>適用：</li>
+                </ol>
+                <div class="command-line">
+gsutil cors set cors.json gs://university-relocation-support.firebasestorage.app
+                </div>
+            </div>
+            
+            <h3>5.6 アクセス権限の管理</h3>
+            
+            <div class="step">
+                <h4>IAM 権限の確認：</h4>
+                <ol>
+                    <li>Storage → <strong>「⋮」</strong>メニュー → <strong>「Bucket permissions」</strong></li>
+                    <li>権限を持つサービスアカウントを確認</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>現在の設定：</strong><br>
+                firebase-adminsdk-fbsvc@university-relocation-support.iam.gserviceaccount.com<br>
+                に <strong>Storage Object Admin</strong> 権限が付与されています。
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション6: セキュリティ設定 -->
+        <div class="section" id="section6">
+            <h2>🔒 6. セキュリティ設定</h2>
+            
+            <h3>6.1 Firestore Security Rules</h3>
+            
+            <h4>6.1.1 現在のルールの確認</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firestore Database → <strong>Rules</strong> タブ</li>
+                    <li>現在のルールが表示されます</li>
+                </ol>
+            </div>
+            
+            <h4>6.1.2 推奨セキュリティルール</h4>
+            
+            <div class="code-block">
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    <span class="comment">// ユーザー情報（読み取りは本人のみ）</span>
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    <span class="comment">// 書類データ（読み書きは本人のみ）</span>
+    match /documents/{documentId} {
+      allow read: if request.auth != null && 
+                     resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && 
+                       request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && 
+                               resource.data.userId == request.auth.uid;
+    }
+  }
+}
+            </div>
+            
+            <div class="step">
+                <h4>ルールの更新手順：</h4>
+                <ol>
+                    <li>Firestore Database → Rules タブ</li>
+                    <li>上記のルールをコピー＆ペースト</li>
+                    <li><strong>「Publish」</strong>ボタンをクリック</li>
+                    <li>確認ダイアログで<strong>「Publish」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h3>6.2 Storage Security Rules</h3>
+            
+            <h4>6.2.1 現在のルールの確認</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Storage → <strong>Rules</strong> タブ</li>
+                    <li>現在のルールが表示されます</li>
+                </ol>
+            </div>
+            
+            <h4>6.2.2 推奨セキュリティルール</h4>
+            
+            <div class="code-block">
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    <span class="comment">// 書類ファイル（読み書きは本人のみ）</span>
+    match /documents/{userId}/{allPaths=**} {
+      allow read: if request.auth != null && 
+                     request.auth.uid == userId;
+      allow write: if request.auth != null && 
+                      request.auth.uid == userId &&
+                      <span class="comment">// ファイルサイズ制限: 10MB</span>
+                      request.resource.size < 10 * 1024 * 1024;
+    }
+  }
+}
+            </div>
+            
+            <div class="step">
+                <h4>ルールの更新手順：</h4>
+                <ol>
+                    <li>Storage → Rules タブ</li>
+                    <li>上記のルールをコピー＆ペースト</li>
+                    <li><strong>「Publish」</strong>ボタンをクリック</li>
+                </ol>
+            </div>
+            
+            <h3>6.3 Authentication 設定</h3>
+            
+            <h4>6.3.1 許可されているサインイン方法</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Authentication → <strong>Sign-in method</strong> タブ</li>
+                    <li>現在有効な方法：
+                        <ul>
+                            <li>✅ <strong>Email/Password</strong></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h4>6.3.2 パスワードポリシーの設定</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Authentication → Settings タブ</li>
+                    <li><strong>Password policy</strong> セクション</li>
+                    <li>以下の設定を推奨：
+                        <ul>
+                            <li><strong>Minimum length:</strong> 8文字以上</li>
+                            <li><strong>Require uppercase:</strong> 有効</li>
+                            <li><strong>Require lowercase:</strong> 有効</li>
+                            <li><strong>Require numbers:</strong> 有効</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>6.4 セキュリティ監査</h3>
+            
+            <h4>定期的に確認すべき項目：</h4>
+            
+            <ul class="checklist">
+                <li>Firestore Rules が適切に設定されているか</li>
+                <li>Storage Rules が適切に設定されているか</li>
+                <li>不正なアクセスがないか（後述のログ確認）</li>
+                <li>未使用のユーザーアカウントがないか</li>
+                <li>パスワードリセット要求が適切に処理されているか</li>
+            </ul>
+            
+            <h3>6.5 アクセス制御リスト（ACL）</h3>
+            
+            <table class="permission-table">
+                <tr>
+                    <th>アクション</th>
+                    <th>ユーザー</th>
+                    <th>管理者</th>
+                </tr>
+                <tr>
+                    <td>自分の書類を閲覧</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td>自分の書類をアップロード</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td>自分の書類を削除</td>
+                    <td>✅</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td>他人の書類を閲覧</td>
+                    <td>❌</td>
+                    <td>✅（Console経由）</td>
+                </tr>
+                <tr>
+                    <td>他人の書類を削除</td>
+                    <td>❌</td>
+                    <td>✅（Console経由）</td>
+                </tr>
+                <tr>
+                    <td>ユーザー管理</td>
+                    <td>❌</td>
+                    <td>✅</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション7: バックアップとリストア -->
+        <div class="section" id="section7">
+            <h2>💾 7. バックアップとリストア</h2>
+            
+            <h3>7.1 バックアップ戦略</h3>
+            
+            <div class="admin-note">
+                <strong>📝 推奨バックアップ頻度</strong>
+                <ul>
+                    <li><strong>Firestore データ:</strong> 毎日（自動化推奨）</li>
+                    <li><strong>Storage ファイル:</strong> 週1回</li>
+                    <li><strong>ユーザーリスト:</strong> 月1回</li>
+                </ul>
+            </div>
+            
+            <h3>7.2 Firestore データのバックアップ</h3>
+            
+            <h4>7.2.1 手動バックアップ</h4>
+            
+            <div class="step">
+                <h4>Cloud Shell を使用：</h4>
+                <div class="command-line">
+gcloud firestore export gs://university-relocation-support-backup/firestore-$(date +%Y%m%d-%H%M%S) --project=university-relocation-support
+                </div>
+            </div>
+            
+            <h4>7.2.2 自動バックアップの設定（推奨）</h4>
+            
+            <div class="step">
+                <h4>Cloud Scheduler を使用した自動化：</h4>
+                <ol>
+                    <li><strong>バックアップ用のバケットを作成</strong></li>
+                </ol>
+                <div class="command-line">
+gsutil mb -p university-relocation-support -l asia-northeast1 gs://university-relocation-support-backup
+                </div>
+                
+                <ol start="2">
+                    <li><strong>Cloud Scheduler でジョブを作成</strong></li>
+                </ol>
+                <div class="code-block">
+<span class="comment"># Firebase Console → Cloud Scheduler</span>
+<span class="comment"># 新しいジョブを作成：</span>
+
+Name: daily-firestore-backup
+Frequency: 0 2 * * *  <span class="comment"># 毎日午前2時</span>
+Timezone: Asia/Tokyo
+Target: HTTP
+URL: https://firestore.googleapis.com/v1/projects/university-relocation-support/databases/(default):exportDocuments
+HTTP method: POST
+Body: {
+  "outputUriPrefix": "gs://university-relocation-support-backup/firestore-daily"
+}
+                </div>
+            </div>
+            
+            <h3>7.3 Storage ファイルのバックアップ</h3>
+            
+            <div class="step">
+                <h4>全ファイルのバックアップ：</h4>
+                <div class="command-line">
+gsutil -m cp -r gs://university-relocation-support.firebasestorage.app/documents gs://university-relocation-support-backup/storage-$(date +%Y%m%d)
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>💡 ヒント</strong><br>
+                <code>-m</code> オプションでマルチスレッド処理により高速化されます。
+            </div>
+            
+            <h3>7.4 ユーザーリストのバックアップ</h3>
+            
+            <div class="step">
+                <h4>CSV エクスポート：</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>右上の<strong>「⋮」</strong>メニュー</li>
+                    <li><strong>「Download users as CSV」</strong></li>
+                    <li>ファイル名を変更して保存：<br>
+                        <code>users-backup-YYYYMMDD.csv</code>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>7.5 データのリストア（復元）</h3>
+            
+            <h4>7.5.1 Firestore データのリストア</h4>
+            
+            <div class="danger-box">
+                <strong>⚠️ 警告</strong><br>
+                リストアを実行すると、既存のデータが上書きされます。必ず事前に現在のデータをバックアップしてください。
+            </div>
+            
+            <div class="step">
+                <h4>手順：</h4>
+                <ol>
+                    <li><strong>バックアップの場所を確認</strong></li>
+                </ol>
+                <div class="command-line">
+gsutil ls gs://university-relocation-support-backup/
+                </div>
+                
+                <ol start="2">
+                    <li><strong>リストアを実行</strong></li>
+                </ol>
+                <div class="command-line">
+gcloud firestore import gs://university-relocation-support-backup/firestore-20260114-020000 --project=university-relocation-support
+                </div>
+            </div>
+            
+            <h4>7.5.2 Storage ファイルのリストア</h4>
+            
+            <div class="step">
+                <div class="command-line">
+gsutil -m cp -r gs://university-relocation-support-backup/storage-20260114/documents gs://university-relocation-support.firebasestorage.app/
+                </div>
+            </div>
+            
+            <h3>7.6 バックアップの確認</h3>
+            
+            <div class="step">
+                <h4>定期的に確認すべき項目：</h4>
+                <ul class="checklist">
+                    <li>バックアップが正常に実行されているか</li>
+                    <li>バックアップファイルのサイズが適切か</li>
+                    <li>バックアップの保存場所に十分な容量があるか</li>
+                    <li>古いバックアップを定期的に削除しているか</li>
+                </ul>
+            </div>
+            
+            <h3>7.7 バックアップの保持期間</h3>
+            
+            <div class="admin-note">
+                <strong>📝 推奨保持期間</strong>
+                <ul>
+                    <li><strong>日次バックアップ:</strong> 30日間</li>
+                    <li><strong>週次バックアップ:</strong> 3ヶ月</li>
+                    <li><strong>月次バックアップ:</strong> 1年間</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h4>古いバックアップの削除（例：30日以上前）：</h4>
+                <div class="command-line">
+gsutil -m rm -r gs://university-relocation-support-backup/firestore-$(date -d "30 days ago" +%Y%m%d)*
+                </div>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション8: システム監視 -->
+        <div class="section" id="section8">
+            <h2>📊 8. システム監視とログ確認</h2>
+            
+            <h3>8.1 使用状況の確認</h3>
+            
+            <h4>8.1.1 Firebase Usage（使用量）</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firebase Console → 左サイドバー下部の<strong>「⚙️」</strong></li>
+                    <li><strong>「Usage and billing」</strong>を選択</li>
+                    <li>以下の情報を確認：
+                        <ul>
+                            <li><strong>Authentication:</strong> アクティブユーザー数</li>
+                            <li><strong>Firestore:</strong> 読み取り/書き込み回数、ストレージ使用量</li>
+                            <li><strong>Storage:</strong> ダウンロード容量、ストレージ使用量</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h4>8.1.2 Storage 使用量</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Storage → <strong>Usage</strong> タブ</li>
+                    <li>以下を確認：
+                        <ul>
+                            <li><strong>Total size:</strong> 総容量</li>
+                            <li><strong>Number of files:</strong> ファイル数</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ 容量制限の監視</strong><br>
+                Spark プラン（無料）: 5GB まで<br>
+                容量が 80% を超えた場合は、以下を検討：
+                <ul>
+                    <li>不要なファイルの削除</li>
+                    <li>Blaze プラン（従量課金）への移行</li>
+                </ul>
+            </div>
+            
+            <h3>8.2 ログの確認</h3>
+            
+            <h4>8.2.1 Authentication ログ</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firebase Console → Authentication</li>
+                    <li><strong>Users</strong> タブで各ユーザーの「Last sign-in」を確認</li>
+                </ol>
+            </div>
+            
+            <h4>8.2.2 Cloud Logging（詳細ログ）</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firebase Console → 左サイドバー下部の<strong>「⚙️」</strong></li>
+                    <li><strong>「Cloud Platform」</strong>を選択</li>
+                    <li>Google Cloud Console が開きます</li>
+                    <li>左メニュー → <strong>「Logging」</strong> → <strong>「Logs Explorer」</strong></li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>確認できるログ：</strong>
+                <ul>
+                    <li>認証イベント（ログイン、ログアウト）</li>
+                    <li>Firestore の読み取り/書き込み</li>
+                    <li>Storage のアップロード/ダウンロード</li>
+                    <li>エラーログ</li>
+                </ul>
+            </div>
+            
+            <h3>8.3 アラート設定</h3>
+            
+            <h4>8.3.1 予算アラートの設定</h4>
+            
+            <div class="step">
+                <ol>
+                    <li>Firebase Console → <strong>「Usage and billing」</strong></li>
+                    <li><strong>「Set budget alert」</strong>をクリック</li>
+                    <li>予算額を設定（例：月5,000円）</li>
+                    <li>通知先メールアドレスを設定</li>
+                    <li><strong>「Save」</strong>をクリック</li>
+                </ol>
+            </div>
+            
+            <h4>8.3.2 容量アラートの設定</h4>
+            
+            <div class="admin-note">
+                <strong>📝 管理者メモ</strong><br>
+                Cloud Monitoring を使用して、Storage容量が閾値を超えた際にメール通知を受け取ることができます。
+            </div>
+            
+            <h3>8.4 パフォーマンスモニタリング</h3>
+            
+            <div class="step">
+                <h4>ページの読み込み速度を確認：</h4>
+                <ol>
+                    <li>ブラウザの開発者ツール（F12）</li>
+                    <li><strong>Network</strong> タブ</li>
+                    <li>ページをリロード</li>
+                    <li>読み込み時間を確認</li>
+                </ol>
+            </div>
+            
+            <div class="info-box">
+                <strong>💡 目安</strong>
+                <ul>
+                    <li><strong>良好:</strong> 2秒以内</li>
+                    <li><strong>改善推奨:</strong> 2-5秒</li>
+                    <li><strong>問題あり:</strong> 5秒以上</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション9: トラブルシューティング -->
+        <div class="section" id="section9">
+            <h2>🔧 9. トラブルシューティング</h2>
+            
+            <h3>9.1 ユーザーがログインできない</h3>
+            
+            <h4>原因と対処法：</h4>
+            
+            <table>
+                <tr>
+                    <th>症状</th>
+                    <th>原因</th>
+                    <th>対処法</th>
+                </tr>
+                <tr>
+                    <td>「認証に失敗しました」エラー</td>
+                    <td>メールアドレスまたはパスワードが間違っている</td>
+                    <td>パスワードをリセット</td>
+                </tr>
+                <tr>
+                    <td>「アカウントが無効です」エラー</td>
+                    <td>ユーザーアカウントが無効化されている</td>
+                    <td>Authentication → Users でアカウントを有効化</td>
+                </tr>
+                <tr>
+                    <td>ログイン後すぐにログアウトされる</td>
+                    <td>セッションの問題</td>
+                    <td>ブラウザのキャッシュとCookieをクリア</td>
+                </tr>
+            </table>
+            
+            <h3>9.2 ファイルがアップロードできない</h3>
+            
+            <h4>チェック項目：</h4>
+            
+            <ul class="checklist">
+                <li>ファイルサイズが10MB以下か</li>
+                <li>ファイル形式が対応しているか（PDF, Word, 画像）</li>
+                <li>Storage Rules が正しく設定されているか</li>
+                <li>ユーザーが認証されているか</li>
+                <li>Storage の容量が十分か</li>
+            </ul>
+            
+            <div class="step">
+                <h4>Storage Rules を確認：</h4>
+                <ol>
+                    <li>Storage → Rules タブ</li>
+                    <li>以下のルールが設定されているか確認</li>
+                </ol>
+                <div class="code-block">
+allow write: if request.auth != null && 
+                request.auth.uid == userId &&
+                request.resource.size < 10 * 1024 * 1024;
+                </div>
+            </div>
+            
+            <h3>9.3 ダウンロードできない</h3>
+            
+            <h4>原因と対処法：</h4>
+            
+            <table>
+                <tr>
+                    <th>症状</th>
+                    <th>原因</th>
+                    <th>対処法</th>
+                </tr>
+                <tr>
+                    <td>「リンクが見つかりません」エラー</td>
+                    <td>downloadURL が Firestore に保存されていない</td>
+                    <td>Firestore のドキュメントを確認し、downloadURL フィールドを追加</td>
+                </tr>
+                <tr>
+                    <td>403 Forbidden エラー</td>
+                    <td>Storage Rules でアクセスが拒否されている</td>
+                    <td>Storage Rules を確認・修正</td>
+                </tr>
+                <tr>
+                    <td>CORS エラー</td>
+                    <td>CORS 設定が不適切</td>
+                    <td>CORS 設定を確認・再適用</td>
+                </tr>
+            </table>
+            
+            <h3>9.4 データが表示されない</h3>
+            
+            <div class="step">
+                <h4>確認手順：</h4>
+                <ol>
+                    <li><strong>Firestore を確認</strong>
+                        <ul>
+                            <li>Firestore Database → documents コレクション</li>
+                            <li>該当データが存在するか確認</li>
+                        </ul>
+                    </li>
+                    <li><strong>Firestore Rules を確認</strong>
+                        <ul>
+                            <li>Rules タブで読み取り権限を確認</li>
+                        </ul>
+                    </li>
+                    <li><strong>ブラウザのコンソールを確認</strong>
+                        <ul>
+                            <li>F12 → Console タブ</li>
+                            <li>エラーメッセージを確認</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>9.5 システムが遅い</h3>
+            
+            <h4>パフォーマンス改善の手順：</h4>
+            
+            <div class="step">
+                <ol>
+                    <li><strong>Firestore のインデックスを確認</strong>
+                        <ul>
+                            <li>Firestore Database → Indexes タブ</li>
+                            <li>必要なインデックスが作成されているか確認</li>
+                        </ul>
+                    </li>
+                    <li><strong>クエリを最適化</strong>
+                        <ul>
+                            <li>不要なデータ取得を減らす</li>
+                            <li>limit() を使用してデータ量を制限</li>
+                        </ul>
+                    </li>
+                    <li><strong>画像を最適化</strong>
+                        <ul>
+                            <li>大きすぎる画像ファイルを圧縮</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>9.6 緊急時の連絡先</h3>
+            
+            <div class="danger-box">
+                <strong>🆘 緊急時の対応</strong><br>
+                システムに重大な問題が発生した場合：
+                <ol>
+                    <li>Firebase サポート（有料プランのみ）</li>
+                    <li>GitHub Issues でコミュニティに質問</li>
+                    <li>Stack Overflow で検索・質問</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション10: メンテナンス -->
+        <div class="section" id="section10">
+            <h2>🛠️ 10. メンテナンス作業</h2>
+            
+            <h3>10.1 定期メンテナンスチェックリスト</h3>
+            
+            <h4>日次作業</h4>
+            
+            <ul class="checklist">
+                <li>システムの動作確認（ログイン、アップロード、ダウンロード）</li>
+                <li>エラーログの確認</li>
+                <li>ユーザーからの問い合わせ対応</li>
+            </ul>
+            
+            <h4>週次作業</h4>
+            
+            <ul class="checklist">
+                <li>Storage 容量の確認</li>
+                <li>バックアップの実行と確認</li>
+                <li>アクティブユーザー数の確認</li>
+                <li>新規登録ユーザーの確認</li>
+            </ul>
+            
+            <h4>月次作業</h4>
+            
+            <ul class="checklist">
+                <li>セキュリティルールの見直し</li>
+                <li>使用量と費用の確認</li>
+                <li>古いバックアップの削除</li>
+                <li>ユーザーリストのエクスポート</li>
+                <li>システムのパフォーマンス評価</li>
+            </ul>
+            
+            <h3>10.2 データクリーンアップ</h3>
+            
+            <h4>10.2.1 古いデータの削除</h4>
+            
+            <div class="step">
+                <h4>90日以上アクセスのないユーザーのデータを確認：</h4>
+                <ol>
+                    <li>Authentication → Users タブ</li>
+                    <li>「Last sign-in」でソート</li>
+                    <li>90日以上前のユーザーをリストアップ</li>
+                    <li>必要に応じて無効化または削除</li>
+                </ol>
+            </div>
+            
+            <h4>10.2.2 孤立したファイルの削除</h4>
+            
+            <div class="admin-note">
+                <strong>📝 管理者メモ</strong><br>
+                Firestore にメタデータがないが、Storage にファイルが残っている場合があります。定期的にチェックして削除してください。
+            </div>
+            
+            <h3>10.3 システムアップデート</h3>
+            
+            <h4>10.3.1 Firebase SDK のアップデート</h4>
+            
+            <div class="step">
+                <h4>現在のバージョン確認：</h4>
+                <p>HTMLファイルで以下を確認：</p>
+                <div class="code-block">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+                </div>
+                <p>最新バージョンは Firebase 公式サイトで確認：<br>
+                <span class="url">https://firebase.google.com/docs/web/setup</span></p>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ アップデート時の注意</strong>
+                <ul>
+                    <li>本番環境で実施する前にテスト環境で確認</li>
+                    <li>Breaking changes（互換性のない変更）を確認</li>
+                    <li>バックアップを取得してから実施</li>
+                </ul>
+            </div>
+            
+            <h3>10.4 コスト最適化</h3>
+            
+            <h4>費用削減のヒント：</h4>
+            
+            <table>
+                <tr>
+                    <th>項目</th>
+                    <th>最適化方法</th>
+                </tr>
+                <tr>
+                    <td>Firestore 読み取り</td>
+                    <td>キャッシュの活用、不要なクエリの削減</td>
+                </tr>
+                <tr>
+                    <td>Storage ダウンロード</td>
+                    <td>ファイルサイズの圧縮、CDN の活用</td>
+                </tr>
+                <tr>
+                    <td>Storage 容量</td>
+                    <td>古いファイルの削除、重複ファイルの整理</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション11: 緊急時対応 -->
+        <div class="section" id="section11">
+            <h2>🚨 11. 緊急時対応</h2>
+            
+            <h3>11.1 システムダウン時の対応</h3>
+            
+            <div class="danger-box">
+                <strong>⚠️ システムダウンの定義</strong><br>
+                ユーザーがログインできない、または主要機能が使用できない状態
+            </div>
+            
+            <div class="step">
+                <h4>対応手順：</h4>
+                <ol>
+                    <li><strong>ステップ1: 状況確認</strong>
+                        <ul>
+                            <li>Firebase Console にアクセス可能か</li>
+                            <li>GitHub Pages が動作しているか</li>
+                            <li>エラーメッセージの内容を確認</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステップ2: Firebase Status を確認</strong>
+                        <ul>
+                            <li><span class="url">https://status.firebase.google.com/</span></li>
+                            <li>Firebase 側の障害か確認</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステップ3: ユーザーへの連絡</strong>
+                        <ul>
+                            <li>メールで状況を通知</li>
+                            <li>復旧見込み時間を伝える</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステップ4: 復旧作業</strong>
+                        <ul>
+                            <li>原因に応じた対処（後述）</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>11.2 データ消失時の対応</h3>
+            
+            <div class="danger-box">
+                <strong>⚠️ 最優先事項</strong><br>
+                これ以上のデータ消失を防ぐため、直ちにシステムへのアクセスを停止してください。
+            </div>
+            
+            <div class="step">
+                <h4>復旧手順：</h4>
+                <ol>
+                    <li><strong>バックアップから復元</strong>
+                        <ul>
+                            <li>最新のバックアップを確認</li>
+                            <li>Firestore のリストア（セクション7.5参照）</li>
+                            <li>Storage のリストア</li>
+                        </ul>
+                    </li>
+                    <li><strong>影響範囲の確認</strong>
+                        <ul>
+                            <li>どのデータが失われたか</li>
+                            <li>何人のユーザーが影響を受けたか</li>
+                        </ul>
+                    </li>
+                    <li><strong>ユーザーへの報告</strong>
+                        <ul>
+                            <li>影響を受けたユーザーに連絡</li>
+                            <li>再アップロードを依頼</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>11.3 セキュリティ侵害時の対応</h3>
+            
+            <div class="danger-box">
+                <strong>🚨 セキュリティインシデントの兆候</strong>
+                <ul>
+                    <li>不正なログイン試行の急増</li>
+                    <li>予期しないデータの変更・削除</li>
+                    <li>不明なユーザーアカウントの作成</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h4>即座に実施すべき対応：</h4>
+                <ol>
+                    <li><strong>アクセスの遮断</strong>
+                        <ul>
+                            <li>Firestore Rules を読み取り専用に変更</li>
+                            <li>Storage Rules を読み取り専用に変更</li>
+                        </ul>
+                    </li>
+                    <li><strong>パスワードのリセット</strong>
+                        <ul>
+                            <li>全ユーザーにパスワードリセットを実施</li>
+                        </ul>
+                    </li>
+                    <li><strong>ログの確認</strong>
+                        <ul>
+                            <li>Cloud Logging で不正アクセスを調査</li>
+                            <li>影響範囲を特定</li>
+                        </ul>
+                    </li>
+                    <li><strong>セキュリティルールの見直し</strong>
+                        <ul>
+                            <li>脆弱性を修正</li>
+                            <li>より厳格なルールに更新</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <h3>11.4 緊急連絡先</h3>
+            
+            <table>
+                <tr>
+                    <th>役割</th>
+                    <th>連絡先</th>
+                </tr>
+                <tr>
+                    <td>システム管理者</td>
+                    <td>[管理者メールアドレス]<br>[管理者電話番号]</td>
+                </tr>
+                <tr>
+                    <td>Firebase サポート</td>
+                    <td><span class="url">https://firebase.google.com/support</span></td>
+                </tr>
+                <tr>
+                    <td>GitHub サポート</td>
+                    <td><span class="url">https://support.github.com/</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- セクション12: 付録 -->
+        <div class="section" id="section12">
+            <h2>📎 12. 付録</h2>
+            
+            <h3>12.1 重要なコマンド集</h3>
+            
+            <h4>Firestore コマンド</h4>
+            
+            <div class="code-block">
+<span class="comment"># データのエクスポート</span>
+gcloud firestore export gs://bucket-name/folder --project=PROJECT_ID
+
+<span class="comment"># データのインポート</span>
+gcloud firestore import gs://bucket-name/folder --project=PROJECT_ID
+
+<span class="comment"># コレクションの削除</span>
+gcloud firestore delete-all --collection=COLLECTION_NAME --project=PROJECT_ID
+            </div>
+            
+            <h4>Storage コマンド</h4>
+            
+            <div class="code-block">
+<span class="comment"># ファイルのコピー</span>
+gsutil cp SOURCE_FILE gs://BUCKET_NAME/DESTINATION_PATH
+
+<span class="comment"># ファイルの削除</span>
+gsutil rm gs://BUCKET_NAME/FILE_PATH
+
+<span class="comment"># フォルダの再帰的コピー</span>
+gsutil -m cp -r SOURCE_FOLDER gs://BUCKET_NAME/DESTINATION_PATH
+
+<span class="comment"># CORS の設定</span>
+gsutil cors set cors.json gs://BUCKET_NAME
+
+<span class="comment"># CORS の確認</span>
+gsutil cors get gs://BUCKET_NAME
+            </div>
+            
+            <h3>12.2 Firebase Config 情報</h3>
+            
+            <div class="warning-box">
+                <strong>⚠️ 機密情報</strong><br>
+                以下の情報は機密として扱ってください。外部に公開しないでください。
+            </div>
+            
+            <div class="code-block">
+const firebaseConfig = {
+  apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+  authDomain: "university-relocation-support.firebaseapp.com",
+  projectId: "university-relocation-support",
+  storageBucket: "university-relocation-support.firebasestorage.app",
+  messagingSenderId: "849634495988",
+  appId: "1:849634495988:web:bdc41fef1b5397b74f7da1",
+  measurementId: "G-1P7NZNB9DF"
+};
+            </div>
+            
+            <h3>12.3 よく使う Firebase Console URL</h3>
+            
+            <table>
+                <tr>
+                    <th>機能</th>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>プロジェクト概要</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support</span></td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/authentication/users</span></td>
+                </tr>
+                <tr>
+                    <td>Firestore Database</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/firestore/data</span></td>
+                </tr>
+                <tr>
+                    <td>Firestore Rules</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/firestore/rules</span></td>
+                </tr>
+                <tr>
+                    <td>Storage</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/storage</span></td>
+                </tr>
+                <tr>
+                    <td>Storage Rules</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/storage/rules</span></td>
+                </tr>
+                <tr>
+                    <td>Usage and billing</td>
+                    <td><span class="url">https://console.firebase.google.com/project/university-relocation-support/usage</span></td>
+                </tr>
+            </table>
+            
+            <h3>12.4 トラブルシューティング チェックリスト</h3>
+            
+            <h4>ユーザーがログインできない場合：</h4>
+            
+            <ul class="checklist">
+                <li>ユーザーアカウントが有効化されているか</li>
+                <li>パスワードが正しいか</li>
+                <li>Firebase Authentication が正常に動作しているか</li>
+                <li>ブラウザのCookieが有効になっているか</li>
+            </ul>
+            
+            <h4>ファイルがアップロードできない場合：</h4>
+            
+            <ul class="checklist">
+                <li>ファイルサイズが10MB以下か</li>
+                <li>対応フォーマットか（PDF, Word, 画像）</li>
+                <li>Storage Rules が正しく設定されているか</li>
+                <li>Storage の容量が十分か</li>
+                <li>CORS が正しく設定されているか</li>
+            </ul>
+            
+            <h4>データが表示されない場合：</h4>
+            
+            <ul class="checklist">
+                <li>Firestore にデータが存在するか</li>
+                <li>Firestore Rules が正しく設定されているか</li>
+                <li>ブラウザのコンソールにエラーがないか</li>
+                <li>ネットワーク接続が正常か</li>
+            </ul>
+            
+            <h3>12.5 用語集</h3>
+            
+            <table>
+                <tr>
+                    <th>用語</th>
+                    <th>説明</th>
+                </tr>
+                <tr>
+                    <td>Firebase</td>
+                    <td>Googleが提供するモバイルおよびウェブアプリケーション開発プラットフォーム</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>ユーザー認証サービス。ログイン機能を提供</td>
+                </tr>
+                <tr>
+                    <td>Firestore</td>
+                    <td>NoSQLドキュメントデータベース。ユーザー情報や書類メタデータを保存</td>
+                </tr>
+                <tr>
+                    <td>Storage</td>
+                    <td>ファイルストレージサービス。実際のファイル（PDF、画像など）を保存</td>
+                </tr>
+                <tr>
+                    <td>Security Rules</td>
+                    <td>データへのアクセス制御ルール。誰がどのデータにアクセスできるかを定義</td>
+                </tr>
+                <tr>
+                    <td>CORS</td>
+                    <td>Cross-Origin Resource Sharing。異なるドメイン間のリソース共有を制御</td>
+                </tr>
+                <tr>
+                    <td>UID</td>
+                    <td>User ID。各ユーザーに割り当てられる一意の識別子</td>
+                </tr>
+                <tr>
+                    <td>Cloud Shell</td>
+                    <td>ブラウザベースのコマンドラインインターフェース。Google Cloudの管理に使用</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- フッター -->
+        <div class="footer">
+            <p><strong>大学赴任者家族帯同支援プログラム 書類管理システム</strong></p>
+            <p>システム管理者マニュアル バージョン 1.0 | 最終更新: 2026年1月14日</p>
+            <p><strong>⚠️ このマニュアルは管理者専用です。外部に公開しないでください。</strong></p>
+            <p>© 2026 University Relocation Support Program. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            console.log('管理者マニュアルが読み込まれました');
+            console.log('⚠️ このマニュアルには機密情報が含まれています');
+        };
+    </script>
+</body>
+</html>
