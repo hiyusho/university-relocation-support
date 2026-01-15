@@ -2708,54 +2708,7 @@ function filterSlots() {
     console.log('🔍 フィルター:', dateFilter, statusFilter);
     // TODO: 実装
 }
-// ========================================
-// 1時間ごとの面談枠を生成する関数
-// ========================================
-function generateHourlySlots(date, startTime, endTime, type, location, meetingLink, capacity, userId) {
-    const slots = [];
-    
-    // 開始時刻と終了時刻をDateオブジェクトに変換
-    const start = new Date(`${date}T${startTime}:00`);
-    const end = new Date(`${date}T${endTime}:00`);
-    
-    // 1時間 = 60分 = 60 * 60 * 1000 ミリ秒
-    const HOUR_MS = 60 * 60 * 1000;
-    
-    // 現在時刻
-    let current = new Date(start);
-    
-    // 1時間ずつ枠を作成
-    while (current < end) {
-        const next = new Date(current.getTime() + HOUR_MS);
-        
-        // 終了時刻を超えないようにチェック
-        if (next > end) break;
-        
-        // HH:MM形式に変換
-        const slotStartTime = current.toTimeString().substring(0, 5);
-        const slotEndTime = next.toTimeString().substring(0, 5);
-        
-        slots.push({
-            date: date,
-            startTime: slotStartTime,
-            endTime: slotEndTime,
-            datetime: Timestamp.fromDate(new Date(current)),
-            type: type,
-            location: location,
-            meetingLink: meetingLink || '',
-            maxCapacity: capacity,
-            currentBookings: 0,
-            status: 'available',
-            createdBy: userId,
-            createdAt: Timestamp.now()
-        });
-        
-        current = next;
-    }
-    
-    return slots;
-}
-        
+
 // 面談枠追加モーダルを開く
 window.showAddSlotModal = function() {
     document.getElementById('addSlotModal').classList.add('show');
@@ -2777,6 +2730,7 @@ window.closeAddSlotModal = function() {
     document.getElementById('addSlotForm').reset();
 };
 
+// 面談枠追加フォーム送信
 document.getElementById('addSlotForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
