@@ -824,19 +824,25 @@
                 const now = new Date();
                 const q = query(
                     collection(db, 'meetingSlots'),
-                    where('datetime', '>=', Timestamp.fromDate(now)),
                     where('status', '==', 'available'),
                     orderBy('datetime', 'asc')
                 );
+                
+                // 現在時刻以降のスロットのみをフィルタ（クライアント側）
+                const nowTimestamp = Timestamp.fromDate(now);
 
                 const querySnapshot = await getDocs(q);
                 allSlots = [];
 
                 querySnapshot.forEach((docSnap) => {
-                    allSlots.push({
-                        id: docSnap.id,
-                        ...docSnap.data()
-                    });
+                    const slotData = docSnap.data();
+                    // 現在時刻以降のスロットのみを追加
+                    if (slotData.datetime && slotData.datetime.seconds >= nowTimestamp.seconds) {
+                        allSlots.push({
+                            id: docSnap.id,
+                            ...slotData
+                        });
+                    }
                 });
 
                 console.log('✅ 面談枠読み込み完了:', allSlots.length, '件');
