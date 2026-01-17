@@ -1,3009 +1,1979 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理者ダッシュボード | 大学赴任者家族帯同支援プログラム</title>
-    <meta name="description" content="管理者専用ダッシュボード - 利用者管理、面談スケジュール、書類確認">
-    <meta name="robots" content="noindex, nofollow">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
-                         'Hiragino Sans', Meiryo, sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
-        }
-        
-        /* ヘッダー */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .header-left i {
-            font-size: 1.8rem;
-        }
-        
-        .header-title h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        .header-title p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-top: 3px;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .btn-logout {
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
-            border-radius: 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .btn-logout:hover {
-            background: white;
-            color: #667eea;
-        }
-        
-        /* レイアウト */
-        .container {
-            display: flex;
-            min-height: calc(100vh - 70px);
-        }
-        
-        /* サイドバー */
-        .sidebar {
-            width: 250px;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-            padding: 20px 0;
-        }
-        
-        .sidebar-menu {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 25px;
-            color: #666;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: linear-gradient(90deg, #667eea 0%, transparent 100%);
-            color: #667eea;
-            border-left: 4px solid #667eea;
-        }
-        
-        .sidebar-menu i {
-            font-size: 1.2rem;
-            width: 20px;
-        }
-        
-        /* メインコンテンツ */
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-        
-        /* 統計カード */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-        }
-        
-        .stat-icon.users {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .stat-icon.meetings {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-        
-        .stat-icon.documents {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-        
-        .stat-icon.applications {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            color: white;
-        }
-        
-        .stat-info h3 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .stat-info p {
-            color: #999;
-            font-size: 0.9rem;
-        }
-        
-        /* セクション */
-        .section {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            display: none;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title i {
-            color: #667eea;
-        }
-        
-        /* ボタン */
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f5f7fa;
-            color: #666;
-        }
-        
-        .btn-secondary:hover {
-            background: #e8ecf1;
-        }
-        
-        /* テーブル */
-        .table-container {
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        thead {
-            background: #f8f9fa;
-        }
-        
-        th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #666;
-            font-size: 0.9rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #333;
-        }
-        
-        tbody tr {
-            transition: background 0.3s ease;
-        }
-        
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
-        
-        /* バッジ */
-        .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .badge-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .badge-info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        /* アクションボタン */
-        .action-btns {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .btn-action {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-view {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .btn-view:hover {
-            background: #1976d2;
-            color: white;
-        }
-        
-        .btn-edit {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .btn-edit:hover {
-            background: #f57c00;
-            color: white;
-        }
-        
-        .btn-delete {
-            background: #ffebee;
-            color: #c62828;
-        }
-        
-        .btn-delete:hover {
-            background: #c62828;
-            color: white;
-        }
-        
-        /* 検索・フィルター */
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .search-box input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
-        
-        .filter-select {
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
-        
-        .filter-select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        /* ローディング */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #999;
-        }
-        
-        .loading i {
-            font-size: 3rem;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* 空の状態 */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-        
-        .empty-state h3 {
-            font-size: 1.3rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        
-        /* レスポンシブ */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .main-content {
-                padding: 15px;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            table {
-                font-size: 0.85rem;
-            }
-            
-            th, td {
-                padding: 10px;
-            }
-        }
-        
-        /* カレンダー風の面談スケジュール */
-        .calendar-grid {
-            display: grid;
-            gap: 15px;
-        }
-        
-        .calendar-day {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-        }
-        
-        .calendar-date {
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .meeting-item {
-            background: white;
-            border-left: 4px solid #667eea;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-        
-        .meeting-time {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .meeting-user {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .meeting-type {
-            display: inline-block;
-            padding: 3px 8px;
-            background: #e3f2fd;
-            color: #1976d2;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-top: 5px;
-        }
-        
-        /* ========================================
-           管理者アカウント管理機能のスタイル
-           ======================================== */
-        .settings-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
-        .settings-tab {
-            padding: 12px 24px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            color: #6c757d;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            bottom: -2px;
-        }
-        
-        .settings-tab:hover {
-            color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .settings-tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-        
-        .settings-tab i {
-            margin-right: 8px;
-        }
-        
-        .settings-content {
-            display: none;
-        }
-        
-        .settings-content.active {
-            display: block;
-        }
-        
-        .admin-list {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
-        
-        .admin-list-header {
-            display: grid;
-            grid-template-columns: 40px 1fr 200px 150px 100px;
-            gap: 15px;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .admin-list-item {
-            display: grid;
-            grid-template-columns: 40px 1fr 200px 150px 100px;
-            gap: 15px;
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
-            align-items: center;
-            transition: background 0.2s ease;
-        }
-        
-        .admin-list-item:hover {
-            background: #f8f9fa;
-        }
-        
-        .admin-list-item:last-child {
-            border-bottom: none;
-        }
-        
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        
-        .admin-info h4 {
-            font-size: 1rem;
-            color: #212529;
-            margin-bottom: 4px;
-        }
-        
-        .admin-info p {
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-        
-        .role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .role-super {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .role-admin {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .role-document {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .role-meeting {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-        
-        .admin-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .btn-icon {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: none;
-        }
-        
-        .btn-icon.edit {
-            color: #667eea;
-        }
-        
-        .btn-icon.edit:hover {
-            background: rgba(102, 126, 234, 0.1);
-        }
-        
-        .btn-icon.delete {
-            color: #dc3545;
-        }
-        
-        .btn-icon.delete:hover {
-            background: rgba(220, 53, 69, 0.1);
-        }
-        
-        .btn-icon.delete:disabled {
-            color: #dee2e6;
-            cursor: not-allowed;
-        }
-        
-        .btn-icon.delete:disabled:hover {
-            background: none;
-        }
-        
-        /* モーダルのスタイル */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-        
-        .modal.show {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .modal-header {
-            padding: 25px 30px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h3 {
-            font-size: 1.3rem;
-            color: #212529;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .modal-header h3 i {
-            color: #667eea;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #6c757d;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            background: #f8f9fa;
-            color: #212529;
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #495057;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .form-group label i {
-            margin-right: 6px;
-            color: #667eea;
-            width: 16px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1.5px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .form-control:disabled {
-            background: #f8f9fa;
-            cursor: not-allowed;
-        }
-        
-        select.form-control {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 35px;
-        }
-        
-        .password-generated {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px dashed #dee2e6;
-        }
-        
-        .password-generated p {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-bottom: 8px;
-        }
-        
-        .password-value {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .password-value code {
-            flex: 1;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            color: #212529;
-            font-weight: 600;
-        }
-        
-        .btn-copy {
-            padding: 6px 12px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-copy:hover {
-            background: #5568d3;
-        }
-        
-        .alert {
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-        
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-        
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        
-        .modal-footer {
-            padding: 20px 30px;
-            border-top: 1px solid #e9ecef;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        
-        .btn-secondary {
-            padding: 10px 20px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        
-        .btn-primary {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-danger {
-            padding: 10px 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-        }
-        
-        .loading i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: #667eea;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理者ダッシュボード | 大学赴任者家族帯同支援プログラム</title>
+  <meta name="description" content="管理者専用ダッシュボード - 利用者管理、面談スケジュール、書類確認" />
+  <meta name="robots" content="noindex, nofollow" />
 
-/* ========================================
-   面談枠管理のスタイル
-   ======================================== */
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-.meeting-date-group {
-    margin-bottom: 30px;
-}
-
-.meeting-date-header {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 15px;
-    padding: 12px 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.meeting-date-header i {
-    font-size: 1.3rem;
-}
-
-.slot-count {
-    margin-left: auto;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 12px;
-    border-radius: 12px;
-}
-
-.meeting-slots-list {
-    display: grid;
-    gap: 15px;
-}
-
-.meeting-slot-card {
-    background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 150px 1fr 120px 80px;
-    gap: 20px;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.meeting-slot-card:hover {
-    border-color: #667eea;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-    transform: translateY(-2px);
-}
-
-.meeting-slot-card.booked {
-    background: #f8f9fa;
-    border-color: #dee2e6;
-}
-
-.meeting-slot-card.booked:hover {
-    border-color: #dee2e6;
-    box-shadow: none;
-    transform: none;
-}
-
-.slot-time {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #667eea;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.slot-time i {
-    font-size: 1.2rem;
-}
-
-.slot-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.slot-type,
-.slot-location,
-.slot-capacity {
-    font-size: 0.9rem;
-    color: #666;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.slot-type i,
-.slot-location i,
-.slot-capacity i {
-    width: 16px;
-    color: #667eea;
-}
-
-.slot-status {
-    text-align: center;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.status-badge.available {
-    background: #d4edda;
-    color: #155724;
-}
-
-.status-badge.booked {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-.slot-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.filter-bar {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.filter-select {
-    padding: 10px 15px;
-    border: 1.5px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.filter-select:hover {
-    border-color: #667eea;
-}
-
-.filter-select:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* モーダル内のフォーム調整 */
-#addSlotModal .form-group,
-#editSlotModal .form-group {
-    margin-bottom: 20px;
-}
-
-#addSlotModal .form-control,
-#editSlotModal .form-control {
-    padding: 10px 12px;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-    .meeting-slot-card {
-        grid-template-columns: 1fr;
-        gap: 15px;
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+      'Hiragino Sans', Meiryo, sans-serif;
+      background: #f5f7fa;
+      min-height: 100vh;
     }
-    
-    .slot-time {
-        font-size: 1rem;
-    }
-    
-    .slot-actions {
-        justify-content: flex-start;
-    }
-}
 
-    </style>
+    /* ヘッダー */
+    .header{
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left{ display:flex; align-items:center; gap:15px; }
+    .header-left i{ font-size:1.8rem; }
+    .header-title h1{ font-size:1.5rem; font-weight:600; }
+    .header-title p{ font-size:0.85rem; opacity:0.9; margin-top:3px; }
+    .header-right{ display:flex; align-items:center; gap:20px; }
+    .user-info{ display:flex; align-items:center; gap:10px; }
+    .user-avatar{
+      width:40px; height:40px; border-radius:50%;
+      background:white; display:flex; align-items:center; justify-content:center;
+      color:#667eea; font-weight:600;
+    }
+    .btn-logout{
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid white;
+      border-radius: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all .3s ease;
+      cursor: pointer;
+    }
+    .btn-logout:hover{ background:white; color:#667eea; }
+
+    /* レイアウト */
+    .container{ display:flex; min-height: calc(100vh - 70px); }
+
+    /* サイドバー */
+    .sidebar{
+      width:250px; background:white;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+      padding: 20px 0;
+    }
+    .sidebar-menu{ list-style:none; }
+    .sidebar-menu li{ margin-bottom:5px; }
+    .sidebar-menu a{
+      display:flex; align-items:center; gap:12px;
+      padding: 12px 25px;
+      color:#666; text-decoration:none;
+      transition: all .3s ease;
+    }
+    .sidebar-menu a:hover, .sidebar-menu a.active{
+      background: linear-gradient(90deg, #667eea 0%, transparent 100%);
+      color:#667eea;
+      border-left:4px solid #667eea;
+    }
+    .sidebar-menu i{ font-size:1.2rem; width:20px; }
+
+    /* メインコンテンツ */
+    .main-content{ flex:1; padding:30px; overflow-y:auto; }
+
+    /* 統計カード */
+    .stats-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:20px;
+      margin-bottom:30px;
+    }
+    .stat-card{
+      background:white;
+      border-radius:15px;
+      padding:25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display:flex; align-items:center; gap:20px;
+      transition: transform .3s ease;
+    }
+    .stat-card:hover{
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .stat-icon{
+      width:60px; height:60px;
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem;
+    }
+    .stat-icon.users{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; }
+    .stat-icon.meetings{ background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color:white; }
+    .stat-icon.documents{ background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color:white; }
+    .stat-icon.applications{ background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color:white; }
+    .stat-info h3{ font-size:2rem; color:#333; margin-bottom:5px; }
+    .stat-info p{ color:#999; font-size:0.9rem; }
+
+    /* セクション */
+    .section{
+      background:white;
+      border-radius:15px;
+      padding:25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom:30px;
+      display:none;
+    }
+    .section.active{ display:block; }
+    .section-header{
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:20px; padding-bottom:15px;
+      border-bottom:2px solid #f0f0f0;
+    }
+    .section-title{
+      font-size:1.5rem; color:#333;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-title i{ color:#667eea; }
+
+    /* ボタン */
+    .btn{
+      padding: 10px 20px;
+      border-radius: 8px;
+      border:none;
+      cursor:pointer;
+      font-size:0.9rem;
+      transition: all .3s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color:white;
+    }
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+    }
+    .btn-secondary{ background:#f5f7fa; color:#666; }
+    .btn-secondary:hover{ background:#e8ecf1; }
+    .btn-danger{ background:#c62828; color:white; }
+    .btn-danger:hover{ filter: brightness(0.95); }
+
+    /* テーブル */
+    .table-container{ overflow-x:auto; }
+    table{ width:100%; border-collapse:collapse; }
+    thead{ background:#f8f9fa; }
+    th{
+      padding:15px;
+      text-align:left;
+      font-weight:600;
+      color:#666;
+      font-size:0.9rem;
+      border-bottom:2px solid #e0e0e0;
+      white-space: nowrap;
+    }
+    td{
+      padding:15px;
+      border-bottom:1px solid #f0f0f0;
+      color:#333;
+      vertical-align: middle;
+    }
+    tbody tr{ transition: background .3s ease; }
+    tbody tr:hover{ background:#f8f9fa; }
+
+    /* バッジ */
+    .badge{
+      padding: 5px 12px;
+      border-radius:20px;
+      font-size:0.8rem;
+      font-weight:600;
+      display:inline-block;
+      white-space: nowrap;
+    }
+    .badge-success{ background:#d4edda; color:#155724; }
+    .badge-warning{ background:#fff3cd; color:#856404; }
+    .badge-info{ background:#d1ecf1; color:#0c5460; }
+    .badge-danger{ background:#f8d7da; color:#721c24; }
+
+    /* アクションボタン */
+    .action-btns{ display:flex; gap:8px; }
+    .btn-action{
+      width:32px; height:32px;
+      border-radius:6px;
+      border:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: all .3s ease;
+    }
+    .btn-view{ background:#e3f2fd; color:#1976d2; }
+    .btn-view:hover{ background:#1976d2; color:white; }
+    .btn-edit{ background:#fff3e0; color:#f57c00; }
+    .btn-edit:hover{ background:#f57c00; color:white; }
+    .btn-delete{ background:#ffebee; color:#c62828; }
+    .btn-delete:hover{ background:#c62828; color:white; }
+    .btn-action:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.3);
+    }
+
+    /* 検索・フィルター */
+    .filter-bar{
+      display:flex;
+      gap:15px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+      align-items: center;
+    }
+    .search-box{
+      flex:1;
+      min-width:250px;
+      position:relative;
+    }
+    .search-box input{
+      width:100%;
+      padding: 12px 15px 12px 45px;
+      border:2px solid #e0e0e0;
+      border-radius:8px;
+      font-size:0.95rem;
+      transition: border-color .3s ease;
+    }
+    .search-box input:focus{
+      outline:none;
+      border-color:#667eea;
+    }
+    .search-box i{
+      position:absolute;
+      left:15px;
+      top:50%;
+      transform: translateY(-50%);
+      color:#999;
+    }
+    .filter-select{
+      padding: 12px 15px;
+      border:2px solid #e0e0e0;
+      border-radius:8px;
+      font-size:0.95rem;
+      cursor:pointer;
+      transition: border-color .3s ease;
+      background: white;
+    }
+    .filter-select:focus{
+      outline:none;
+      border-color:#667eea;
+    }
+
+    /* ローディング */
+    .loading{ text-align:center; padding:50px; color:#999; }
+    .loading i{ font-size:3rem; animation: spin 1s linear infinite; }
+    @keyframes spin{ 100% { transform: rotate(360deg); } }
+
+    /* 空の状態 */
+    .empty-state{
+      text-align:center;
+      padding: 60px 20px;
+      color:#999;
+    }
+    .empty-state i{
+      font-size:4rem;
+      margin-bottom:20px;
+      opacity:0.3;
+    }
+    .empty-state h3{
+      font-size:1.3rem;
+      color:#666;
+      margin-bottom:10px;
+    }
+
+    /* カレンダー風 */
+    .calendar-grid{ display:grid; gap:15px; }
+    .calendar-day{ background:#f8f9fa; border-radius:10px; padding:15px; }
+    .calendar-date{
+      font-weight:600;
+      color:#667eea;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .meeting-item{
+      background:white;
+      border-left:4px solid #667eea;
+      padding:12px;
+      border-radius:6px;
+      margin-bottom:10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .meeting-time{ font-weight:600; color:#333; margin-bottom:5px; }
+    .meeting-user{ color:#666; font-size:0.9rem; }
+    .meeting-type{
+      display:inline-block;
+      padding:3px 8px;
+      background:#e3f2fd;
+      color:#1976d2;
+      border-radius:4px;
+      font-size:0.75rem;
+      margin-top:5px;
+    }
+
+    /* meetingSlots 表示（カード） */
+    .meeting-day-group{
+      background:#f8f9fa;
+      border-radius:12px;
+      padding:15px;
+      margin-bottom:15px;
+    }
+    .meeting-day-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+      font-weight:700;
+      color:#333;
+    }
+    .meeting-slot-card{
+      background:white;
+      border-radius:10px;
+      padding:12px 14px;
+      margin-bottom:10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border-left:4px solid #667eea;
+    }
+    .slot-left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width: 220px;
+    }
+    .slot-time{ font-weight:700; color:#333; }
+    .slot-meta{ color:#666; font-size:0.9rem; }
+    .slot-meta small{ color:#999; }
+    .slot-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .status-badge{
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status-badge.available{ background:#d4edda; color:#155724; }
+    .status-badge.booked{ background:#fff3cd; color:#856404; }
+    .capacity-badge{
+      background:#e3f2fd;
+      color:#1976d2;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:0.8rem;
+      font-weight:700;
+      white-space: nowrap;
+    }
+
+    /* モーダル */
+    .modal{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 20px;
+      z-index: 2000;
+    }
+    .modal.show{ display:flex; }
+    .modal-content{
+      width: min(720px, 96vw);
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow:hidden;
+    }
+    .modal-header{
+      padding: 16px 18px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #eee;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .modal-header h3{
+      font-size: 1.1rem;
+      color:#333;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .modal-close{
+      border:none;
+      background: transparent;
+      cursor:pointer;
+      font-size: 1.3rem;
+      color:#666;
+    }
+    .modal-body{ padding: 18px; }
+    .modal-footer{
+      padding: 14px 18px;
+      border-top: 1px solid #eee;
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      background: #fafafa;
+    }
+    .form-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-group{ margin-bottom: 12px; }
+    .form-group label{
+      display:block;
+      font-weight: 700;
+      color:#444;
+      margin-bottom: 6px;
+    }
+    .form-control{
+      width:100%;
+      padding: 11px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: white;
+    }
+    .form-control:focus{
+      outline: none;
+      border-color: #667eea;
+    }
+    .help-text{ color:#888; font-size: 0.9rem; margin-top: 6px; }
+
+    /* 設定タブ（管理者管理の見た目） */
+    .settings-tabs{
+      display:flex;
+      gap:10px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid #e9ecef;
+      flex-wrap: wrap;
+    }
+    .settings-tab{
+      padding: 10px 14px;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      font-weight: 700;
+      color:#666;
+      border-bottom: 3px solid transparent;
+    }
+    .settings-tab.active{
+      color:#667eea;
+      border-bottom-color:#667eea;
+    }
+    .role-badge{
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      display:inline-block;
+      white-space: nowrap;
+    }
+    .role-super{ background: #ede7f6; color:#5e35b1; }
+    .role-admin{ background: #e3f2fd; color:#1976d2; }
+    .role-document{ background: #fff3e0; color:#f57c00; }
+    .role-meeting{ background: #e8f5e9; color:#2e7d32; }
+    .role-unknown{ background: #f5f5f5; color:#666; }
+
+    /* レスポンシブ */
+    @media (max-width: 768px){
+      .sidebar{ display:none; }
+      .stats-grid{ grid-template-columns: 1fr; }
+      .main-content{ padding: 15px; }
+      .header{ flex-direction: column; gap: 15px; }
+      table{ font-size: 0.85rem; }
+      th, td{ padding: 10px; }
+      .form-row{ grid-template-columns: 1fr; }
+      .meeting-slot-card{ align-items:flex-start; }
+      .slot-right{ justify-content:flex-start; }
+    }
+  </style>
 </head>
+
 <body>
-    <!-- ヘッダー -->
-    <div class="header">
-        <div class="header-left">
-            <i class="fas fa-user-shield"></i>
-            <div class="header-title">
-                <h1>管理者ダッシュボード</h1>
-                <p>大学赴任者家族帯同支援プログラム</p>
-            </div>
+  <header class="header">
+    <div class="header-left">
+      <i class="fas fa-shield-alt"></i>
+      <div class="header-title">
+        <h1>管理者ダッシュボード</h1>
+        <p>大学赴任者家族帯同支援プログラム｜利用者管理・面談枠管理・書類確認</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="user-info">
+        <div class="user-avatar" id="adminAvatar">田</div>
+        <span id="adminName">田中様</span>
+      </div>
+      <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> ログアウト</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a href="#" class="active" onclick="showSection('overview')"><i class="fas fa-chart-line"></i> 概要</a></li>
+        <li><a href="#" onclick="showSection('users')"><i class="fas fa-users"></i> 利用者一覧</a></li>
+        <li><a href="#" onclick="showSection('meetings')"><i class="fas fa-calendar-alt"></i> 面談スケジュール</a></li>
+        <li><a href="#" onclick="showSection('documents')"><i class="fas fa-folder-open"></i> 書類管理</a></li>
+        <li><a href="#" onclick="showSection('stats')"><i class="fas fa-chart-pie"></i> 統計情報</a></li>
+        <li><a href="manual.html"><i class="fas fa-book"></i> マニュアル</a></li>
+        <li><a href="#" onclick="showSection('settings')"><i class="fas fa-cog"></i> 設定</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <!-- 統計カード -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon users"><i class="fas fa-users"></i></div>
+          <div class="stat-info"><h3 id="totalUsers">-</h3><p>登録利用者数</p></div>
         </div>
-        <div class="header-right">
-            <div class="user-info">
-                <div class="user-avatar">田</div>
-                <span id="adminName">田中様</span>
-            </div>
-            <button class="btn-logout" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i>
-                ログアウト
+        <div class="stat-card">
+          <div class="stat-icon meetings"><i class="fas fa-calendar-check"></i></div>
+          <div class="stat-info"><h3 id="totalMeetings">-</h3><p>面談予定数</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon documents"><i class="fas fa-file-alt"></i></div>
+          <div class="stat-info"><h3 id="totalDocuments">-</h3><p>アップロード書類</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon applications"><i class="fas fa-briefcase"></i></div>
+          <div class="stat-info"><h3 id="totalApplications">-</h3><p>応募中</p></div>
+        </div>
+      </div>
+
+      <!-- 概要 -->
+      <section class="section active" id="section-overview">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-chart-line"></i> 概要</div>
+          <div></div>
+        </div>
+        <div id="recentActivity" class="loading">
+          <i class="fas fa-spinner"></i>
+          <p style="margin-top: 10px;">読み込み中...</p>
+        </div>
+      </section>
+
+      <!-- 利用者一覧 -->
+      <section class="section" id="section-users">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-users"></i> 利用者一覧</div>
+          <button class="btn btn-primary" onclick="alert('利用者追加機能は今後実装予定です')">
+            <i class="fas fa-user-plus"></i> 新規登録
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input id="userSearch" type="text" placeholder="利用者名やメールで検索..." oninput="applyUserFilter()" />
+          </div>
+          <select id="userStatusFilter" class="filter-select" onchange="applyUserFilter()">
+            <option value="all">すべて</option>
+            <option value="active">アクティブ</option>
+            <option value="inactive">非アクティブ</option>
+          </select>
+        </div>
+
+        <div class="table-container" id="usersTable">
+          <div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>
+        </div>
+      </section>
+
+      <!-- 面談スケジュール -->
+      <section class="section" id="section-meetings">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-calendar-alt"></i> 面談スケジュール管理</div>
+          <button class="btn btn-primary" onclick="showAddSlotModal()">
+            <i class="fas fa-plus"></i> 面談枠を追加
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <select id="meetingDateFilter" class="filter-select" onchange="applyMeetingFilter()">
+            <option value="all">全日程</option>
+            <option value="upcoming">今後</option>
+            <option value="today">今日</option>
+            <option value="week">今週</option>
+            <option value="month">今月</option>
+          </select>
+          <select id="meetingStatusFilter" class="filter-select" onchange="applyMeetingFilter()">
+            <option value="all">すべて</option>
+            <option value="available">空き</option>
+            <option value="booked">予約済</option>
+          </select>
+        </div>
+
+        <div id="meetingSlotsContainer" class="loading">
+          <i class="fas fa-spinner"></i>
+          <p style="margin-top: 10px;">読み込み中...</p>
+        </div>
+      </section>
+
+      <!-- 書類管理 -->
+      <section class="section" id="section-documents">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-folder-open"></i> 書類管理</div>
+          <div></div>
+        </div>
+
+        <div class="filter-bar">
+          <select id="documentUserFilter" class="filter-select" onchange="applyDocumentFilter()">
+            <option value="">すべての利用者</option>
+          </select>
+          <select id="documentTypeFilter" class="filter-select" onchange="applyDocumentFilter()">
+            <option value="">すべての種類</option>
+            <option value="resume">履歴書</option>
+            <option value="cv">職務経歴書</option>
+            <option value="cover_letter">カバーレター</option>
+            <option value="certificate">資格証明書</option>
+            <option value="portfolio">ポートフォリオ</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <div class="table-container" id="documentsTable">
+          <div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>
+        </div>
+      </section>
+
+      <!-- 統計情報 -->
+      <section class="section" id="section-stats">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-chart-pie"></i> 統計情報</div>
+          <div></div>
+        </div>
+        <div class="empty-state">
+          <i class="fas fa-chart-pie"></i>
+          <h3>統計機能は今後拡充予定です</h3>
+          <p style="color:#999;">現在は上部のカウント表示をご利用ください。</p>
+        </div>
+      </section>
+
+      <!-- 設定 -->
+      <section class="section" id="section-settings">
+        <div class="section-header">
+          <div class="section-title"><i class="fas fa-cog"></i> 設定</div>
+          <div></div>
+        </div>
+
+        <div class="settings-tabs">
+          <button class="settings-tab active" onclick="showSettingsTab('admins')">管理者</button>
+          <button class="settings-tab" onclick="showSettingsTab('system')">システム</button>
+        </div>
+
+        <!-- 管理者タブ -->
+        <div id="settings-admins">
+          <div class="filter-bar" style="margin-top: 5px;">
+            <button class="btn btn-primary" onclick="showAddAdminModal()">
+              <i class="fas fa-user-shield"></i> 管理者を追加
             </button>
+            <button class="btn btn-secondary" onclick="loadAdmins()">
+              <i class="fas fa-rotate"></i> 再読み込み
+            </button>
+          </div>
+
+          <div id="adminsTable">
+            <div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>
+          </div>
+
+          <p class="help-text">
+            ※ 管理者の追加後、必要に応じて Firebase Authentication 側でも該当メールのユーザー作成をご検討ください。
+          </p>
         </div>
+
+        <!-- システムタブ -->
+        <div id="settings-system" style="display:none;">
+          <div class="empty-state">
+            <i class="fas fa-screwdriver-wrench"></i>
+            <h3>システム設定は準備中です</h3>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 面談枠追加モーダル -->
+  <div class="modal" id="addSlotModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-calendar-plus"></i> 面談枠を新規追加</h3>
+        <button class="modal-close" onclick="closeAddSlotModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="addSlotForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-calendar-day"></i> 日付 <span style="color:red">*</span></label>
+              <input type="date" id="slotDate" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-users"></i> 定員 <span style="color:red">*</span></label>
+              <input type="number" id="slotCapacity" class="form-control" min="1" max="10" value="1" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-clock"></i> 開始時間 <span style="color:red">*</span></label>
+              <input type="time" id="slotStartTime" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-clock"></i> 終了時間 <span style="color:red">*</span></label>
+              <input type="time" id="slotEndTime" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-comments"></i> 面談タイプ <span style="color:red">*</span></label>
+              <select id="slotType" class="form-control" required>
+                <option value="初回キャリア面談">初回キャリア面談</option>
+                <option value="フォローアップ面談">フォローアップ面談</option>
+                <option value="企業紹介面談">企業紹介面談</option>
+                <option value="応募書類添削">応募書類添削</option>
+                <option value="面接対策">面接対策</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color:red">*</span></label>
+              <select id="slotLocation" class="form-control" required>
+                <option value="オンライン（Zoom）">オンライン（Zoom）</option>
+                <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
+                <option value="対面">対面</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
+            <input type="url" id="slotMeetingLink" class="form-control" placeholder="https://..." />
+            <div class="help-text">追加枠は予約ページでユーザーが選択可能になります。</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeAddSlotModal()">キャンセル</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> 追加</button>
+        </div>
+      </form>
     </div>
-    
-    <!-- コンテナ -->
-    <div class="container">
-        <!-- サイドバー -->
-        <aside class="sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="#" class="active" onclick="showSection('overview')"><i class="fas fa-home"></i> 概要</a></li>
-                <li><a href="#" onclick="showSection('users')"><i class="fas fa-users"></i> 利用者一覧</a></li>
-                <li><a href="#" onclick="showSection('meetings')"><i class="fas fa-calendar-alt"></i> 面談スケジュール</a></li>
-                <li><a href="#" onclick="showSection('documents')"><i class="fas fa-file-alt"></i> 書類管理</a></li>
-                <li><a href="#" onclick="showSection('stats')"><i class="fas fa-chart-line"></i> 統計情報</a></li>
-                <li><a href="manual.html" target="_blank"><i class="fas fa-book"></i> マニュアル</a></li>
-                <li><a href="#" onclick="showSection('settings')"><i class="fas fa-cog"></i> 設定</a></li>
-            </ul>
-        </aside>
-        
-        <!-- メインコンテンツ -->
-        <main class="main-content">
-            <!-- 統計カード -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon users">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalUsers">-</h3>
-                        <p>登録利用者数</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon meetings">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalMeetings">-</h3>
-                        <p>面談予定数</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon documents">
-                        <i class="fas fa-folder-open"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalDocuments">-</h3>
-                        <p>アップロード書類</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon applications">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalApplications">-</h3>
-                        <p>応募中</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 概要セクション -->
-            <div id="overviewSection" class="section active">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-home"></i>
-                        システム概要
-                    </h2>
-                </div>
-                
-                <div id="recentActivity">
-                    <h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>読み込み中...</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 利用者一覧セクション -->
-            <div id="usersSection" class="section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-users"></i>
-                        利用者一覧
-                    </h2>
-                    <button class="btn btn-primary" onclick="alert('新規利用者登録機能（開発予定）')">
-                        <i class="fas fa-user-plus"></i>
-                        新規登録
-                    </button>
-                </div>
-                
-                <div class="filter-bar">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="userSearch" placeholder="名前、メールで検索..." onkeyup="filterUsers()">
-                    </div>
-                    <select class="filter-select" id="userStatusFilter" onchange="filterUsers()">
-                        <option value="">すべてのステータス</option>
-                        <option value="active">アクティブ</option>
-                        <option value="inactive">非アクティブ</option>
-                    </select>
-                </div>
-                
-                <div class="table-container" id="usersTable">
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>読み込み中...</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 面談スケジュールセクション -->
-            <!-- 面談スケジュール管理セクション -->
-            <div id="meetingsSection" class="section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-calendar-alt"></i>
-                        面談スケジュール管理
-                    </h2>
-                    <button class="btn btn-primary" onclick="showAddSlotModal()">
-                        <i class="fas fa-plus"></i>
-                        面談枠を追加
-                    </button>
-                </div>
-                
-                <!-- フィルター -->
-                <div class="filter-bar">
-                    <select class="filter-select" id="slotDateFilter" onchange="filterSlots()">
-                        <option value="all">すべての日程</option>
-                        <option value="upcoming">今後の予定</option>
-                        <option value="today">今日</option>
-                        <option value="week">今週</option>
-                        <option value="month">今月</option>
-                    </select>
-                    
-                    <select class="filter-select" id="slotStatusFilter" onchange="filterSlots()">
-                        <option value="all">すべてのステータス</option>
-                        <option value="available">空き</option>
-                        <option value="booked">予約済</option>
-                    </select>
-                </div>
-                
-                <!-- 面談枠一覧 -->
-                <div id="meetingSlotsContainer">
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>面談枠を読み込み中...</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 面談枠追加モーダル -->
-            <div id="addSlotModal" class="modal">
-                <div class="modal-content" style="max-width: 600px;">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-calendar-plus"></i> 新しい面談枠を追加</h3>
-                        <button class="modal-close" onclick="closeAddSlotModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addSlotForm">
-                            <div class="form-group">
-                                <label><i class="fas fa-calendar"></i> 日付 <span style="color: red;">*</span></label>
-                                <input type="date" id="slotDate" class="form-control" required>
-                            </div>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                <div class="form-group">
-                                    <label><i class="fas fa-clock"></i> 開始時間 <span style="color: red;">*</span></label>
-                                    <input type="time" id="slotStartTime" class="form-control" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label><i class="fas fa-clock"></i> 終了時間 <span style="color: red;">*</span></label>
-                                    <input type="time" id="slotEndTime" class="form-control" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-tag"></i> 面談タイプ <span style="color: red;">*</span></label>
-                                <select id="slotType" class="form-control" required>
-                                    <option value="初回キャリア面談">初回キャリア面談</option>
-                                    <option value="フォローアップ面談">フォローアップ面談</option>
-                                    <option value="企業紹介面談">企業紹介面談</option>
-                                    <option value="応募書類添削">応募書類添削</option>
-                                    <option value="面接対策">面接対策</option>
-                                    <option value="その他">その他</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color: red;">*</span></label>
-                                <select id="slotLocation" class="form-control" required>
-                                    <option value="オンライン（Zoom）">オンライン（Zoom）</option>
-                                    <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
-                                    <option value="対面（オフィス）">対面（オフィス）</option>
-                                    <option value="その他">その他</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
-                                <input type="url" id="slotMeetingLink" class="form-control" 
-                                       placeholder="https://zoom.us/j/...">
-                                <small style="color: #666; display: block; margin-top: 5px;">
-                                    ZoomやGoogle MeetのURLを入力（予約後にユーザーに表示されます）
-                                </small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-users"></i> 定員</label>
-                                <input type="number" id="slotCapacity" class="form-control" 
-                                       value="1" min="1" max="10" required>
-                            </div>
-                            
-                            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                                <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
-                                    <i class="fas fa-info-circle"></i>
-                                    追加した面談枠は、ユーザーが予約ページで選択できるようになります
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeAddSlotModal()">
-                            キャンセル
-                        </button>
-                        <button type="submit" form="addSlotForm" class="btn btn-primary">
-                            <i class="fas fa-plus"></i>
-                            追加
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 面談枠編集モーダル -->
-            <div id="editSlotModal" class="modal">
-                <div class="modal-content" style="max-width: 600px;">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-edit"></i> 面談枠の編集</h3>
-                        <button class="modal-close" onclick="closeEditSlotModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editSlotForm">
-                            <input type="hidden" id="editSlotId">
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-calendar"></i> 日付</label>
-                                <input type="date" id="editSlotDate" class="form-control" disabled>
-                                <small style="color: #666;">日付は変更できません</small>
-                            </div>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                <div class="form-group">
-                                    <label><i class="fas fa-clock"></i> 開始時間</label>
-                                    <input type="time" id="editSlotStartTime" class="form-control" disabled>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label><i class="fas fa-clock"></i> 終了時間</label>
-                                    <input type="time" id="editSlotEndTime" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <small style="color: #666; display: block; margin-bottom: 15px;">時間は変更できません</small>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-tag"></i> 面談タイプ <span style="color: red;">*</span></label>
-                                <select id="editSlotType" class="form-control" required>
-                                    <option value="初回キャリア面談">初回キャリア面談</option>
-                                    <option value="フォローアップ面談">フォローアップ面談</option>
-                                    <option value="企業紹介面談">企業紹介面談</option>
-                                    <option value="応募書類添削">応募書類添削</option>
-                                    <option value="面接対策">面接対策</option>
-                                    <option value="その他">その他</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color: red;">*</span></label>
-                                <select id="editSlotLocation" class="form-control" required>
-                                    <option value="オンライン（Zoom）">オンライン（Zoom）</option>
-                                    <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
-                                    <option value="対面（オフィス）">対面（オフィス）</option>
-                                    <option value="その他">その他</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
-                                <input type="url" id="editSlotMeetingLink" class="form-control" 
-                                       placeholder="https://zoom.us/j/...">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeEditSlotModal()">
-                            キャンセル
-                        </button>
-                        <button type="submit" form="editSlotForm" class="btn btn-primary">
-                            <i class="fas fa-save"></i>
-                            保存
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 面談枠削除確認モーダル -->
-            <div id="deleteSlotModal" class="modal">
-                <div class="modal-content" style="max-width: 450px;">
-                    <div class="modal-header" style="background: #ffebee; color: #c62828;">
-                        <h3><i class="fas fa-exclamation-triangle"></i> 面談枠の削除</h3>
-                        <button class="modal-close" onclick="closeDeleteSlotModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p style="color: #666; line-height: 1.6;" id="deleteSlotMessage"></p>
-                        <p style="color: #c62828; margin-top: 15px;">
-                            <i class="fas fa-exclamation-circle"></i>
-                            この操作は取り消せません。
-                        </p>
-                        <input type="hidden" id="deleteSlotId">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeDeleteSlotModal()">
-                            キャンセル
-                        </button>
-                        <button type="button" class="btn" style="background: #c62828; color: white;" onclick="confirmDeleteSlot()">
-                            <i class="fas fa-trash"></i>
-                            削除
-                        </button>
-                    </div>
-                </div>
-            </div>
+  </div>
 
-            <!-- 書類管理セクション -->
-            <div id="documentsSection" class="section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-file-alt"></i>
-                        書類管理
-                    </h2>
-                </div>
-                
-                <div class="filter-bar">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="documentSearch" placeholder="ファイル名、利用者名で検索..." onkeyup="filterDocuments()">
-                    </div>
-                    <select class="filter-select" id="documentTypeFilter" onchange="filterDocuments()">
-                        <option value="">すべての種類</option>
-                        <option value="resume">履歴書</option>
-                        <option value="cv">職務経歴書</option>
-                        <option value="cover_letter">カバーレター</option>
-                        <option value="certificate">資格証明書</option>
-                        <option value="portfolio">ポートフォリオ</option>
-                        <option value="other">その他</option>
-                    </select>
-                    <select class="filter-select" id="documentUserFilter" onchange="filterDocuments()">
-                        <option value="">すべての利用者</option>
-                    </select>
-                </div>
-                
-                <div class="table-container" id="documentsTable">
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>読み込み中...</p>
-                    </div>
-                </div>
+  <!-- 面談枠編集モーダル -->
+  <div class="modal" id="editSlotModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-pen"></i> 面談枠を編集</h3>
+        <button class="modal-close" onclick="closeEditSlotModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="editSlotForm">
+        <div class="modal-body">
+          <input type="hidden" id="editSlotId" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>日付</label>
+              <input type="text" id="editSlotDate" class="form-control" disabled />
             </div>
-            
-            <!-- 統計情報セクション -->
-            <div id="statsSection" class="section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-line"></i>
-                        統計情報
-                    </h2>
-                </div>
-                <div class="empty-state">
-                    <i class="fas fa-chart-bar"></i>
-                    <h3>統計機能は開発中です</h3>
-                    <p>グラフやレポート機能を追加予定です</p>
-                </div>
+            <div class="form-group">
+              <label>時間</label>
+              <input type="text" id="editSlotTime" class="form-control" disabled />
             </div>
-            
-            <!-- 設定セクション -->
-            <!-- 設定セクション -->
-            <div id="settingsSection" class="section">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <i class="fas fa-cog"></i>
-                        設定
-                    </h2>
-                </div>
-                
-                <!-- タブメニュー -->
-                <div class="settings-tabs">
-                    <button class="settings-tab active" onclick="showSettingsTab('admins')">
-                        <i class="fas fa-user-shield"></i>
-                        管理者アカウント
-                    </button>
-                    <button class="settings-tab" onclick="showSettingsTab('general')">
-                        <i class="fas fa-sliders-h"></i>
-                        基本設定
-                    </button>
-                    <button class="settings-tab" onclick="showSettingsTab('security')">
-                        <i class="fas fa-lock"></i>
-                        セキュリティ
-                    </button>
-                </div>
-                
-                <!-- 管理者アカウント管理 -->
-                <div id="adminsTab" class="settings-content active">
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="color: #333; margin-bottom: 15px;">現在の管理者</h3>
-                        <p style="color: #666; margin-bottom: 20px;">
-                            システムにアクセスできる管理者アカウントを管理します
-                        </p>
-                    </div>
-                    
-                    <div class="table-container" id="adminsTable">
-                        <div class="loading">
-                            <i class="fas fa-spinner"></i>
-                            <p>読み込み中...</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 30px;">
-                        <button class="btn btn-primary" onclick="showAddAdminModal()">
-                            <i class="fas fa-user-plus"></i>
-                            新しい管理者を追加
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 基本設定 -->
-                <div id="generalTab" class="settings-content">
-                    <div class="empty-state">
-                        <i class="fas fa-sliders-h"></i>
-                        <h3>基本設定は開発中です</h3>
-                        <p>システムの基本設定を管理できるようになります</p>
-                    </div>
-                </div>
-                
-                <!-- セキュリティ設定 -->
-                <div id="securityTab" class="settings-content">
-                    <div class="empty-state">
-                        <i class="fas fa-lock"></i>
-                        <h3>セキュリティ設定は開発中です</h3>
-                        <p>パスワードポリシーやセッション管理を設定できるようになります</p>
-                    </div>
-                </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-comments"></i> 面談タイプ <span style="color:red">*</span></label>
+              <select id="editSlotType" class="form-control" required>
+                <option value="初回キャリア面談">初回キャリア面談</option>
+                <option value="フォローアップ面談">フォローアップ面談</option>
+                <option value="企業紹介面談">企業紹介面談</option>
+                <option value="応募書類添削">応募書類添削</option>
+                <option value="面接対策">面接対策</option>
+                <option value="その他">その他</option>
+              </select>
             </div>
-            
-            <!-- 管理者追加モーダル -->
-            <div id="addAdminModal" class="modal">
-                <div class="modal-content" style="max-width: 500px;">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-user-plus"></i> 新しい管理者を追加</h3>
-                        <button class="modal-close" onclick="closeAddAdminModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addAdminForm">
-                            <div class="form-group">
-                                <label>メールアドレス <span style="color: red;">*</span></label>
-                                <input type="email" id="adminEmail" class="form-control" 
-                                       placeholder="admin@example.com" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>権限レベル <span style="color: red;">*</span></label>
-                                <select id="adminRole" class="form-control" required>
-                                    <option value="super_admin">スーパー管理者（全機能）</option>
-                                    <option value="admin">一般管理者（閲覧のみ）</option>
-                                    <option value="document_admin">書類管理者（書類管理のみ）</option>
-                                    <option value="meeting_admin">面談管理者（面談管理のみ）</option>
-                                </select>
-                                <small style="color: #666; display: block; margin-top: 5px;">
-                                    権限レベルによってアクセスできる機能が異なります
-                                </small>
-                            </div>
-                            
-                            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                                <p style="margin: 0; color: #1976d2; font-size: 0.9rem;">
-                                    <i class="fas fa-info-circle"></i>
-                                    追加後、該当のメールアドレスで Firebase Authentication にユーザーを手動で作成する必要があります
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeAddAdminModal()">
-                            キャンセル
-                        </button>
-                        <button type="submit" form="addAdminForm" class="btn btn-primary">
-                            <i class="fas fa-plus"></i>
-                            追加
-                        </button>
-                    </div>
-                </div>
+            <div class="form-group">
+              <label><i class="fas fa-map-marker-alt"></i> 場所 <span style="color:red">*</span></label>
+              <select id="editSlotLocation" class="form-control" required>
+                <option value="オンライン（Zoom）">オンライン（Zoom）</option>
+                <option value="オンライン（Google Meet）">オンライン（Google Meet）</option>
+                <option value="対面">対面</option>
+                <option value="その他">その他</option>
+              </select>
             </div>
-            
-            <!-- 管理者編集モーダル -->
-            <div id="editAdminModal" class="modal">
-                <div class="modal-content" style="max-width: 500px;">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-edit"></i> 管理者の編集</h3>
-                        <button class="modal-close" onclick="closeEditAdminModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editAdminForm">
-                            <input type="hidden" id="editAdminId">
-                            <div class="form-group">
-                                <label>メールアドレス</label>
-                                <input type="email" id="editAdminEmail" class="form-control" disabled>
-                                <small style="color: #666;">メールアドレスは変更できません</small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>権限レベル <span style="color: red;">*</span></label>
-                                <select id="editAdminRole" class="form-control" required>
-                                    <option value="super_admin">スーパー管理者（全機能）</option>
-                                    <option value="admin">一般管理者（閲覧のみ）</option>
-                                    <option value="document_admin">書類管理者（書類管理のみ）</option>
-                                    <option value="meeting_admin">面談管理者（面談管理のみ）</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeEditAdminModal()">
-                            キャンセル
-                        </button>
-                        <button type="submit" form="editAdminForm" class="btn btn-primary">
-                            <i class="fas fa-save"></i>
-                            保存
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 削除確認モーダル -->
-            <div id="deleteAdminModal" class="modal">
-                <div class="modal-content" style="max-width: 450px;">
-                    <div class="modal-header" style="background: #ffebee; color: #c62828;">
-                        <h3><i class="fas fa-exclamation-triangle"></i> 管理者の削除</h3>
-                        <button class="modal-close" onclick="closeDeleteAdminModal()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p style="color: #666; line-height: 1.6;">
-                            <strong id="deleteAdminEmail"></strong> を管理者から削除しますか?
-                        </p>
-                        <p style="color: #c62828; margin-top: 15px;">
-                            <i class="fas fa-exclamation-circle"></i>
-                            この操作は取り消せません。
-                        </p>
-                        <input type="hidden" id="deleteAdminId">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeDeleteAdminModal()">
-                            キャンセル
-                        </button>
-                        <button type="button" class="btn" style="background: #c62828; color: white;" onclick="confirmDeleteAdmin()">
-                            <i class="fas fa-trash"></i>
-                            削除
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-link"></i> ミーティングリンク（任意）</label>
+            <input type="url" id="editSlotMeetingLink" class="form-control" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeEditSlotModal()">キャンセル</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> 保存</button>
+        </div>
+      </form>
     </div>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { 
-            getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs, 
-            doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, Timestamp, serverTimestamp 
-        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        
-        // Firebase設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
-            authDomain: "university-relocation-support.firebaseapp.com",
-            projectId: "university-relocation-support",
-            storageBucket: "university-relocation-support.firebasestorage.app",
-            messagingSenderId: "849634495988",
-            appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
-            measurementId: "G-RJP20TC7DV"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+  </div>
 
-        // ================================
-        // role/ユーザードキュメント共通
-        // ================================
-        async function ensureUserDoc(user) {
-            if (!user) return null;
+  <!-- 管理者追加モーダル -->
+  <div class="modal" id="addAdminModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-shield"></i> 管理者を追加</h3>
+        <button class="modal-close" onclick="closeAddAdminModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="addAdminForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> メールアドレス <span style="color:red">*</span></label>
+            <input type="email" id="adminEmail" class="form-control" placeholder="admin@example.com" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-user-tag"></i> 権限レベル <span style="color:red">*</span></label>
+            <select id="adminRole" class="form-control" required>
+              <option value="super_admin">スーパー管理者</option>
+              <option value="admin">一般管理者</option>
+              <option value="document_admin">書類管理者</option>
+              <option value="meeting_admin">面談管理者</option>
+            </select>
+            <div class="help-text">※ この「admins」権限は、users/{uid}.role（admin/superadmin）とは別概念です。</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeAddAdminModal()">キャンセル</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> 追加</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            const uid = user.uid;
-            const email = user.email || '';
-            const userRef = doc(db, 'users', uid);
+  <!-- 管理者編集モーダル -->
+  <div class="modal" id="editAdminModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-pen"></i> 管理者を編集</h3>
+        <button class="modal-close" onclick="closeEditAdminModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="editAdminForm">
+        <div class="modal-body">
+          <input type="hidden" id="editAdminId" />
+          <div class="form-group">
+            <label>メールアドレス</label>
+            <input type="email" id="editAdminEmail" class="form-control" disabled />
+          </div>
+          <div class="form-group">
+            <label>権限レベル</label>
+            <select id="editAdminRole" class="form-control" required>
+              <option value="super_admin">スーパー管理者</option>
+              <option value="admin">一般管理者</option>
+              <option value="document_admin">書類管理者</option>
+              <option value="meeting_admin">面談管理者</option>
+            </select>
+          </div>
+          <div class="help-text">更新時に updatedAt / updatedBy を記録します。</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeEditAdminModal()">キャンセル</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> 保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            const snap = await getDoc(userRef);
-            if (snap.exists()) {
-                return snap.data();
-            }
+  <!-- 管理者削除モーダル -->
+  <div class="modal" id="deleteAdminModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-trash"></i> 管理者を削除</h3>
+        <button class="modal-close" onclick="closeDeleteAdminModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="deleteAdminId" />
+        <p>以下の管理者を削除します。よろしいですか？</p>
+        <p style="margin-top:10px; font-weight:800; color:#c62828;" id="deleteAdminEmail">-</p>
+        <p class="help-text">※ Firestoreから削除後、必要に応じて Firebase Authentication 側でのユーザー削除もご検討ください。</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeDeleteAdminModal()">キャンセル</button>
+        <button type="button" class="btn btn-danger" onclick="confirmDeleteAdmin()"><i class="fas fa-trash"></i> 削除</button>
+      </div>
+    </div>
+  </div>
 
-            // 未作成なら role=user で自動作成
-            const nameFromEmail = email ? email.split('@')[0] : 'user';
-            const newDoc = {
-                uid,
-                email,
-                name: nameFromEmail,
-                role: 'user',
-                createdAt: serverTimestamp()
-            };
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import {
+      getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs,
+      doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, Timestamp, serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-            await setDoc(userRef, newDoc, { merge: true });
-            return newDoc;
-        }
+    // Firebase設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+      authDomain: "university-relocation-support.firebaseapp.com",
+      projectId: "university-relocation-support",
+      storageBucket: "university-relocation-support.firebasestorage.app",
+      messagingSenderId: "849634495988",
+      appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+      measurementId: "G-RJP20TC7DV"
+    };
 
-        async function getUserRoleOrDefault(user) {
-            try {
-                const data = await ensureUserDoc(user);
-                const role = (data && data.role) ? data.role : 'user';
-                return role;
-            } catch (e) {
-                console.error('role取得/ユーザー自動作成エラー:', e);
-                return 'user'; // 安全側
-            }
-        }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        async function requireAdminRoleOrRedirect(user) {
-            if (!user) {
-                window.location.href = 'log-in.html';
-                return false;
-            }
+    // 互換用（ユーザー要件）
+    window.firebaseAuth = auth;
+    window.firebaseDB = db;
 
-            const role = await getUserRoleOrDefault(user);
+    // ================================
+    // role/ユーザードキュメント共通
+    // ================================
+    async function ensureUserDoc(user) {
+      if (!user) return null;
 
-            // 管理画面の許可: admin / superadmin
-            if (role !== 'admin' && role !== 'superadmin') {
-                alert('管理者権限がありません');
-                window.location.href = 'dashboard.html';
-                return false;
-            }
+      const uid = user.uid;
+      const email = user.email || '';
+      const userRef = doc(db, 'users', uid);
 
-            return true;
-        }
-        
-        let currentUser = null;
-        let allUsers = [];
-        let allDocuments = [];
-        let allMeetings = [];
-        
-        // 認証チェック
-        onAuthStateChanged(auth, async (user) => {
-            // ★ roleベースガード（ここが本件の中核）
-            const ok = await requireAdminRoleOrRedirect(user);
-            if (!ok) return;
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        return snap.data();
+      }
 
-            currentUser = user;
-            console.log('✅ 管理者認証成功:', user.email);
+      // 未作成なら role=user で自動作成
+      const nameFromEmail = email ? email.split('@')[0] : 'user';
+      const newDoc = {
+        uid,
+        email,
+        name: nameFromEmail,
+        role: 'user',
+        createdAt: serverTimestamp()
+      };
 
-            // 表示名
-            document.getElementById('adminName').textContent = user.email || '管理者';
+      await setDoc(userRef, newDoc, { merge: true });
+      return newDoc;
+    }
 
-            // データ読み込み
-            await loadAllData();
+    async function getUserRoleOrDefault(user) {
+      try {
+        const data = await ensureUserDoc(user);
+        const role = (data && data.role) ? data.role : 'user';
+        return role;
+      } catch (e) {
+        console.error('role取得/ユーザー自動作成エラー:', e);
+        return 'user'; // 安全側
+      }
+    }
+
+    async function requireAdminRoleOrRedirect(user) {
+      if (!user) {
+        window.location.href = 'log-in.html';
+        return false;
+      }
+
+      const role = await getUserRoleOrDefault(user);
+
+      // 管理画面の許可: admin / superadmin
+      if (role !== 'admin' && role !== 'superadmin') {
+        alert('管理者権限がありません');
+        window.location.href = 'dashboard.html';
+        return false;
+      }
+
+      return true;
+    }
+
+    let currentUser = null;
+    let allUsers = [];
+    let allDocuments = [];
+    let allMeetingSlots = [];
+    let allAdmins = [];
+
+    // 認証チェック
+    onAuthStateChanged(auth, async (user) => {
+      const ok = await requireAdminRoleOrRedirect(user);
+      if (!ok) return;
+
+      currentUser = user;
+      console.log('✅ 管理者認証成功:', user.email);
+
+      document.getElementById('adminName').textContent = user.email || '管理者';
+      document.getElementById('adminAvatar').textContent = (user.email || 'A').substring(0, 1).toUpperCase();
+
+      await loadAllData();
+    });
+
+    // すべてのデータを読み込み
+    async function loadAllData() {
+      try {
+        console.log('📥 データ読み込み開始...');
+
+        await loadDocuments();
+        await loadMeetingSlots();
+        await loadAdmins();
+
+        updateStats();
+        displayRecentActivity();
+
+        console.log('✅ データ読み込み完了');
+      } catch (error) {
+        console.error('❌ データ読み込みエラー:', error);
+      }
+    }
+
+    // 書類データ取得
+    async function loadDocuments() {
+      try {
+        const q = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
+        const snapshot = await getDocs(q);
+
+        allDocuments = [];
+        const userIds = new Set();
+
+        snapshot.forEach(d => {
+          const data = d.data();
+          allDocuments.push({ id: d.id, ...data });
+          if (data.userId) userIds.add(data.userId);
         });
-        
-        // すべてのデータを読み込み
-        async function loadAllData() {
-            try {
-                console.log('📥 データ読み込み開始...');
-                
-                // 書類データ取得
-                await loadDocuments();
-                
-                // 面談枠データ取得
-                await loadMeetingSlots();
-                
-                // 統計更新
-                updateStats();
-                
-                // 最近の活動表示
-                displayRecentActivity();
-                
-                console.log('✅ データ読み込み完了');
-            } catch (error) {
-                console.error('❌ データ読み込みエラー:', error);
-            }
-        }
-        
-        // 書類データ取得
-        async function loadDocuments() {
-            try {
-                const q = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
-                const snapshot = await getDocs(q);
-                
-                allDocuments = [];
-                const userIds = new Set();
-                
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    allDocuments.push({
-                        id: doc.id,
-                        ...data
-                    });
-                    if (data.userId) userIds.add(data.userId);
-                });
-                
-                console.log(`📄 書類: ${allDocuments.length}件`);
-                
-                // ユーザー情報を取得
-                await loadUsers(Array.from(userIds));
-                
-                // 書類テーブル表示
-                displayDocuments();
-                
-            } catch (error) {
-                console.error('❌ 書類読み込みエラー:', error);
-            }
-        }
-        
-        // ユーザー情報取得
-        async function loadUsers(userIds) {
-            try {
-                allUsers = [];
-                
-                for (const userId of userIds) {
-                    try {
-                        const userDoc = await getDoc(doc(db, 'users', userId));
-                        if (userDoc.exists()) {
-                            allUsers.push({
-                                id: userId,
-                                ...userDoc.data()
-                            });
-                        } else {
-                            // Firestore にユーザー情報がない場合、基本情報のみ
-                            allUsers.push({
-                                id: userId,
-                                email: userId,
-                                displayName: 'ユーザー' + userId.substring(0, 8)
-                            });
-                        }
-                    } catch (error) {
-                        console.warn(`⚠️ ユーザー ${userId} の情報取得失敗`);
-                    }
-                }
-                
-                console.log(`👥 ユーザー: ${allUsers.length}人`);
-                
-                // ユーザーテーブル表示
-                displayUsers();
-                
-                // ドキュメントフィルター用のユーザーリスト更新
-                updateUserFilterOptions();
-                
-            } catch (error) {
-                console.error('❌ ユーザー読み込みエラー:', error);
-            }
-        }
-        
-        // 統計更新
-        function updateStats() {
-            document.getElementById('totalUsers').textContent = allUsers.length;
-            document.getElementById('totalDocuments').textContent = allDocuments.length;
-            document.getElementById('totalMeetings').textContent = allMeetings.length;
-            document.getElementById('totalApplications').textContent = '0'; // 今後実装
-        }
-        
-        // 最近の活動表示
-        function displayRecentActivity() {
-            const container = document.getElementById('recentActivity');
-            
-            if (allDocuments.length === 0) {
-                container.innerHTML = `
-                    <h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>
-                    <div class="empty-state">
-                        <i class="fas fa-history"></i>
-                        <h3>まだアクティビティがありません</h3>
-                    </div>
-                `;
-                return;
-            }
-            
-            // 最新5件の書類アップロード
-            const recentDocs = allDocuments.slice(0, 5);
-            
-            let html = '<h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>';
-            html += '<div style="background: #f8f9fa; border-radius: 10px; padding: 20px;">';
-            
-            recentDocs.forEach(doc => {
-                const user = allUsers.find(u => u.id === doc.userId);
-                const userName = user ? (user.displayName || user.email) : 'ユーザー不明';
-                const timeAgo = getTimeAgo(doc.uploadedAt);
-                
-                html += `
-                    <div style="padding: 12px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">
-                        <i class="fas fa-file-upload" style="color: #667eea; font-size: 1.2rem;"></i>
-                        <div style="flex: 1;">
-                            <strong>${userName}</strong> が書類をアップロード: ${doc.fileName}
-                            <div style="color: #999; font-size: 0.85rem; margin-top: 3px;">${timeAgo}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            container.innerHTML = html;
-        }
-        
-        // 利用者一覧表示
-        function displayUsers() {
-            const container = document.getElementById('usersTable');
-            
-            if (allUsers.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <h3>利用者がいません</h3>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>氏名</th>
-                            <th>メールアドレス</th>
-                            <th>登録日</th>
-                            <th>書類数</th>
-                            <th>ステータス</th>
-                            <th>アクション</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            allUsers.forEach(user => {
-                const userDocs = allDocuments.filter(d => d.userId === user.id);
-                const displayName = user.displayName || user.email || 'ユーザー名不明';
-                const createdAt = user.createdAt ? formatDate(user.createdAt) : '-';
-                
-                html += `
-                    <tr>
-                        <td><strong>${displayName}</strong></td>
-                        <td>${user.email || '-'}</td>
-                        <td>${createdAt}</td>
-                        <td><span class="badge badge-info">${userDocs.length}件</span></td>
-                        <td><span class="badge badge-success">アクティブ</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-action btn-view" onclick="viewUser('${user.id}')" title="詳細">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-action btn-edit" onclick="editUser('${user.id}')" title="編集">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        }
-        
-        // 書類一覧表示
-        function displayDocuments() {
-            const container = document.getElementById('documentsTable');
-            
-            if (allDocuments.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <h3>書類がありません</h3>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ファイル名</th>
-                            <th>利用者</th>
-                            <th>種類</th>
-                            <th>サイズ</th>
-                            <th>アップロード日</th>
-                            <th>アクション</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            allDocuments.forEach(docItem => {
-                const user = allUsers.find(u => u.id === docItem.userId);
-                const userName = user ? (user.displayName || user.email) : 'ユーザー不明';
-                const typeName = getDocumentTypeName(docItem.documentType);
-                const fileSize = formatFileSize(docItem.fileSize);
-                const uploadDate = formatDate(docItem.uploadedAt);
-                
-                html += `
-                    <tr>
-                        <td><strong>${docItem.fileName}</strong></td>
-                        <td>${userName}</td>
-                        <td><span class="badge badge-info">${typeName}</span></td>
-                        <td>${fileSize}</td>
-                        <td>${uploadDate}</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-action btn-view" onclick="downloadDocument('${docItem.downloadURL}')" title="ダウンロード">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                                <button class="btn-action btn-view" onclick="viewDocumentDetails('${docItem.id}')" title="詳細">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        }
-        
-        // 面談スケジュール表示（サンプルデータ）
-        function displayMeetings() {
-            const container = document.getElementById('meetingSlotsContainer');
-            if (!container) return;
-            
-            const sampleMeetings = [
-                { date: '2026-01-15', time: '14:00-15:00', user: '山田太郎', type: '初回面談' },
-                { date: '2026-01-15', time: '16:00-17:00', user: '鈴木花子', type: 'フォローアップ' }
-            ];
-            
-            if (sampleMeetings.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar-times"></i>
-                        <h3>面談予定がありません</h3>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '<div class="calendar-grid">';
-            sampleMeetings.forEach(meeting => {
-                html += `
-                    <div class="calendar-day">
-                        <div class="calendar-date">
-                            <i class="fas fa-calendar-day"></i>
-                            ${formatDate(meeting.date)}
-                        </div>
-                        <div class="meeting-item">
-                            <div class="meeting-time">${meeting.time}</div>
-                            <div class="meeting-user">${meeting.user}</div>
-                            <span class="meeting-type">${meeting.type}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML = html;
-        }
-        
-        // ユーティリティ関数
-        function getDocumentTypeName(type) {
-            const types = {
-                resume: '履歴書',
-                cv: '職務経歴書',
-                cover_letter: 'カバーレター',
-                certificate: '資格証明書',
-                portfolio: 'ポートフォリオ',
-                other: 'その他'
-            };
-            return types[type] || 'その他';
-        }
-        
-        function formatFileSize(bytes) {
-            if (!bytes) return '-';
-            if (bytes < 1024) return bytes + ' B';
-            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-        }
-        
-        function formatDate(timestamp) {
-            if (!timestamp) return '-';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            return date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        }
-        
-        function getTimeAgo(timestamp) {
-            if (!timestamp) return '-';
-            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-            const now = new Date();
-            const diff = now - date;
-            const minutes = Math.floor(diff / 60000);
-            if (minutes < 60) return `${minutes}分前`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours}時間前`;
-            const days = Math.floor(hours / 24);
-            return `${days}日前`;
-        }
-        
-        function updateUserFilterOptions() {
-            const select = document.getElementById('documentUserFilter');
-            let html = '<option value="">すべての利用者</option>';
-            
-            allUsers.forEach(u => {
-                const displayName = u.displayName || u.email || 'ユーザー不明';
-                html += `<option value="${u.id}">${displayName}</option>`;
-            });
-            
-            select.innerHTML = html;
-        }
-        
 
-        // ========================================
-        // 管理者アカウント管理機能
-        // ========================================
+        console.log(`📄 書類: ${allDocuments.length}件`);
 
-let allAdmins = [];
+        await loadUsers(Array.from(userIds));
+        displayDocuments();
 
-// 管理者一覧の読み込み
-async function loadAdmins() {
-    try {
+      } catch (error) {
+        console.error('❌ 書類読み込みエラー:', error);
+        allDocuments = [];
+        displayDocuments();
+      }
+    }
+
+    // ユーザー情報取得
+    async function loadUsers(userIds) {
+      try {
+        allUsers = [];
+
+        for (const userId of userIds) {
+          try {
+            const userDocSnap = await getDoc(doc(db, 'users', userId));
+            if (userDocSnap.exists()) {
+              allUsers.push({ id: userId, ...userDocSnap.data() });
+            } else {
+              allUsers.push({
+                id: userId,
+                email: userId,
+                displayName: 'ユーザー' + userId.substring(0, 8)
+              });
+            }
+          } catch (e) {
+            console.warn(`⚠️ ユーザー ${userId} の情報取得失敗`, e);
+          }
+        }
+
+        console.log(`👥 ユーザー: ${allUsers.length}人`);
+
+        displayUsers();
+        updateUserFilterOptions();
+
+      } catch (error) {
+        console.error('❌ ユーザー読み込みエラー:', error);
+      }
+    }
+
+    // 統計更新
+    function updateStats() {
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      document.getElementById('totalDocuments').textContent = allDocuments.length;
+      document.getElementById('totalMeetings').textContent = allMeetingSlots.length;
+      document.getElementById('totalApplications').textContent = '0'; // 今後実装
+    }
+
+    // 最近の活動表示（最新5件の書類アップロード）
+    function displayRecentActivity() {
+      const container = document.getElementById('recentActivity');
+
+      if (allDocuments.length === 0) {
+        container.innerHTML = `
+          <h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>
+          <div class="empty-state">
+            <i class="fas fa-history"></i>
+            <h3>まだアクティビティがありません</h3>
+          </div>
+        `;
+        return;
+      }
+
+      const recentDocs = allDocuments.slice(0, 5);
+
+      let html = '<h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>';
+      html += '<div style="background: #f8f9fa; border-radius: 10px; padding: 20px;">';
+
+      recentDocs.forEach(docItem => {
+        const user = allUsers.find(u => u.id === docItem.userId);
+        const userName = user ? (user.displayName || user.email) : 'ユーザー不明';
+        const timeAgo = getTimeAgo(docItem.uploadedAt);
+
+        html += `
+          <div style="padding: 12px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">
+            <i class="fas fa-file-upload" style="color: #667eea; font-size: 1.2rem;"></i>
+            <div style="flex: 1;">
+              <strong>${escapeHtml(userName)}</strong> が書類をアップロード: ${escapeHtml(docItem.fileName || '')}
+              <div style="color: #999; font-size: 0.85rem; margin-top: 3px;">${escapeHtml(timeAgo)}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    // 利用者一覧表示
+    function displayUsers() {
+      const container = document.getElementById('usersTable');
+
+      if (allUsers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h3>利用者がいません</h3>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>氏名</th>
+              <th>メールアドレス</th>
+              <th>登録日</th>
+              <th>書類数</th>
+              <th>ステータス</th>
+              <th>アクション</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      allUsers.forEach(u => {
+        const userDocs = allDocuments.filter(d => d.userId === u.id);
+        const displayName = u.displayName || u.name || u.email || 'ユーザー名不明';
+        const createdAt = u.createdAt ? formatDate(u.createdAt) : '-';
+
+        html += `
+          <tr data-user-id="${escapeHtml(u.id)}">
+            <td><strong>${escapeHtml(displayName)}</strong></td>
+            <td>${escapeHtml(u.email || '-')}</td>
+            <td>${escapeHtml(createdAt)}</td>
+            <td><span class="badge badge-info">${userDocs.length}件</span></td>
+            <td><span class="badge badge-success">アクティブ</span></td>
+            <td>
+              <div class="action-btns">
+                <button class="btn-action btn-view" onclick="viewUser('${escapeJs(u.id)}')" title="詳細">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-action btn-edit" onclick="editUser('${escapeJs(u.id)}')" title="編集">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      applyUserFilter(); // 初期適用
+    }
+
+    // 書類一覧表示
+    function displayDocuments() {
+      const container = document.getElementById('documentsTable');
+
+      if (allDocuments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>書類がありません</h3>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ファイル名</th>
+              <th>利用者</th>
+              <th>種類</th>
+              <th>サイズ</th>
+              <th>アップロード日</th>
+              <th>アクション</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      allDocuments.forEach(docItem => {
+        const user = allUsers.find(u => u.id === docItem.userId);
+        const userName = user ? (user.displayName || user.name || user.email) : 'ユーザー不明';
+        const typeName = getDocumentTypeName(docItem.documentType);
+        const fileSize = formatFileSize(docItem.fileSize);
+        const uploadDate = formatDate(docItem.uploadedAt);
+
+        html += `
+          <tr data-doc-user="${escapeHtml(docItem.userId || '')}" data-doc-type="${escapeHtml(docItem.documentType || '')}">
+            <td><strong>${escapeHtml(docItem.fileName || '')}</strong></td>
+            <td>${escapeHtml(userName || '')}</td>
+            <td><span class="badge badge-info">${escapeHtml(typeName)}</span></td>
+            <td>${escapeHtml(fileSize)}</td>
+            <td>${escapeHtml(uploadDate)}</td>
+            <td>
+              <div class="action-btns">
+                <button class="btn-action btn-view" onclick="downloadDocument('${escapeJs(docItem.downloadURL || '')}')" title="ダウンロード">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="btn-action btn-view" onclick="viewDocumentDetails('${escapeJs(docItem.id)}')" title="詳細">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      applyDocumentFilter(); // 初期適用
+    }
+
+    // ===============
+    // meetingSlots 管理
+    // ===============
+    async function loadMeetingSlots() {
+      try {
+        console.log('📥 面談枠を読み込み中...');
+        const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
+        const snapshot = await getDocs(q);
+
+        allMeetingSlots = [];
+        snapshot.forEach(d => {
+          allMeetingSlots.push({ id: d.id, ...d.data() });
+        });
+
+        console.log(`🗓 面談枠: ${allMeetingSlots.length}件`);
+        displayMeetingSlots();
+
+      } catch (error) {
+        console.error('❌ 面談枠読み込みエラー:', error);
+        allMeetingSlots = [];
+        displayMeetingSlots();
+      }
+    }
+
+    function displayMeetingSlots() {
+      const container = document.getElementById('meetingSlotsContainer');
+      if (!container) return;
+
+      if (!allMeetingSlots || allMeetingSlots.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>面談枠がありません</h3>
+            <p style="color:#999;">右上の「面談枠を追加」から作成できます。</p>
+          </div>
+        `;
+        return;
+      }
+
+      // 日付でグルーピング
+      const groups = {};
+      allMeetingSlots.forEach(slot => {
+        const d = slot.date || formatDateForKey(slot.datetime);
+        if (!groups[d]) groups[d] = [];
+        groups[d].push(slot);
+      });
+
+      const dates = Object.keys(groups).sort();
+      let html = '';
+
+      dates.forEach(dateKey => {
+        html += `<div class="meeting-day-group">`;
+        html += `
+          <div class="meeting-day-header">
+            <div><i class="fas fa-calendar-day"></i> ${escapeHtml(dateKey)}</div>
+            <div style="color:#666;font-weight:600;">${groups[dateKey].length}件</div>
+          </div>
+        `;
+
+        groups[dateKey].forEach(slot => {
+          const startTime = slot.startTime || '';
+          const endTime = slot.endTime || '';
+          const type = slot.type || '未設定';
+          const location = slot.location || '未設定';
+          const maxCapacity = Number(slot.maxCapacity ?? slot.capacity ?? 1);
+          const currentBookings = Number(slot.currentBookings ?? 0);
+
+          const isBooked = currentBookings >= maxCapacity;
+          const statusBadge = isBooked
+            ? `<span class="status-badge booked">予約済</span>`
+            : `<span class="status-badge available">空き</span>`;
+
+          const canDelete = currentBookings <= 0;
+
+          html += `
+            <div class="meeting-slot-card">
+              <div class="slot-left">
+                <div class="slot-time">${escapeHtml(startTime)} - ${escapeHtml(endTime)}</div>
+                <div class="slot-meta">
+                  <span><i class="fas fa-comments"></i> ${escapeHtml(type)}</span>
+                  &nbsp;|&nbsp;
+                  <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(location)}</span>
+                  ${slot.meetingLink ? `<br><small><i class="fas fa-link"></i> ${escapeHtml(slot.meetingLink)}</small>` : ''}
+                </div>
+              </div>
+              <div class="slot-right">
+                ${statusBadge}
+                <span class="capacity-badge">${currentBookings}/${maxCapacity}</span>
+                <button class="btn-action btn-edit" onclick="showEditSlotModal('${escapeJs(slot.id)}')" title="編集">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-action btn-delete" onclick="showDeleteSlotModal('${escapeJs(slot.id)}')" title="${canDelete ? '削除' : '予約済みのため削除不可'}" ${canDelete ? '' : 'disabled'}>
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      });
+
+      container.innerHTML = html;
+
+      applyMeetingFilter(); // 初期適用
+    }
+
+    function generateHourlySlots(date, startTime, endTime, type, location, meetingLink, capacity, userId) {
+      const slots = [];
+      const start = new Date(`${date}T${startTime}:00`);
+      const end = new Date(`${date}T${endTime}:00`);
+      const HOUR_MS = 60 * 60 * 1000;
+
+      let current = new Date(start);
+      while (current < end) {
+        const next = new Date(current.getTime() + HOUR_MS);
+        if (next > end) break;
+
+        const slotStartTime = toHHMM(current);
+        const slotEndTime = toHHMM(next);
+
+        slots.push({
+          date: date,
+          startTime: slotStartTime,
+          endTime: slotEndTime,
+          datetime: Timestamp.fromDate(current),
+          type: type,
+          location: location,
+          meetingLink: meetingLink || '',
+          maxCapacity: Number(capacity || 1),
+          currentBookings: 0,
+          status: 'available',
+          createdBy: userId,
+          createdAt: serverTimestamp()
+        });
+
+        current = next;
+      }
+      return slots;
+    }
+
+    // 面談枠追加
+    function showAddSlotModal() {
+      const modal = document.getElementById('addSlotModal');
+      if (!modal) return;
+
+      // 今日 / 10:00-11:00 を初期値
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('slotDate').value = `${yyyy}-${mm}-${dd}`;
+      document.getElementById('slotStartTime').value = '10:00';
+      document.getElementById('slotEndTime').value = '11:00';
+      document.getElementById('slotCapacity').value = '1';
+
+      modal.classList.add('show');
+    }
+    function closeAddSlotModal(){ document.getElementById('addSlotModal')?.classList.remove('show'); }
+
+    document.getElementById('addSlotForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const date = document.getElementById('slotDate').value;
+      const startTime = document.getElementById('slotStartTime').value;
+      const endTime = document.getElementById('slotEndTime').value;
+      const type = document.getElementById('slotType').value;
+      const location = document.getElementById('slotLocation').value;
+      const meetingLink = document.getElementById('slotMeetingLink').value;
+      const capacity = Number(document.getElementById('slotCapacity').value || 1);
+
+      if (!date || !startTime || !endTime) {
+        alert('必須項目を入力してください');
+        return;
+      }
+
+      // 自動分割
+      const slots = generateHourlySlots(date, startTime, endTime, type, location, meetingLink, capacity, currentUser.uid);
+      if (slots.length === 0) {
+        alert('時間範囲が不正です（1時間単位で作成できません）');
+        return;
+      }
+
+      // 重複チェック（同一日・同一開始/終了）
+      const existingKeySet = new Set(
+        (allMeetingSlots || []).map(s => `${s.date || ''}_${s.startTime || ''}_${s.endTime || ''}`)
+      );
+
+      let created = 0;
+      let skipped = 0;
+
+      try {
+        for (const s of slots) {
+          const key = `${s.date}_${s.startTime}_${s.endTime}`;
+          if (existingKeySet.has(key)) {
+            skipped++;
+            continue;
+          }
+          await addDoc(collection(db, 'meetingSlots'), s);
+          created++;
+          existingKeySet.add(key);
+        }
+
+        alert(`✅ 面談枠を追加しました\n追加: ${created}件 / 重複スキップ: ${skipped}件`);
+        closeAddSlotModal();
+        await loadMeetingSlots();
+        updateStats();
+
+      } catch (error) {
+        console.error('❌ 面談枠追加エラー:', error);
+        alert('面談枠の追加に失敗しました: ' + error.message);
+      }
+    });
+
+    function showEditSlotModal(slotId) {
+      const slot = allMeetingSlots.find(s => s.id === slotId);
+      if (!slot) return;
+
+      document.getElementById('editSlotId').value = slotId;
+      document.getElementById('editSlotDate').value = slot.date || formatDateForKey(slot.datetime);
+      document.getElementById('editSlotTime').value = `${slot.startTime || ''} - ${slot.endTime || ''}`;
+      document.getElementById('editSlotType').value = slot.type || '初回キャリア面談';
+      document.getElementById('editSlotLocation').value = slot.location || 'オンライン（Zoom）';
+      document.getElementById('editSlotMeetingLink').value = slot.meetingLink || '';
+
+      document.getElementById('editSlotModal').classList.add('show');
+    }
+    function closeEditSlotModal(){ document.getElementById('editSlotModal')?.classList.remove('show'); }
+
+    document.getElementById('editSlotForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const slotId = document.getElementById('editSlotId').value;
+      const type = document.getElementById('editSlotType').value;
+      const location = document.getElementById('editSlotLocation').value;
+      const meetingLink = document.getElementById('editSlotMeetingLink').value;
+
+      try {
+        await updateDoc(doc(db, 'meetingSlots', slotId), {
+          type,
+          location,
+          meetingLink: meetingLink || '',
+          updatedAt: serverTimestamp(),
+          updatedBy: currentUser.uid
+        });
+        alert('✅ 面談枠を更新しました');
+        closeEditSlotModal();
+        await loadMeetingSlots();
+
+      } catch (error) {
+        console.error('❌ 面談枠更新エラー:', error);
+        alert('面談枠の更新に失敗しました: ' + error.message);
+      }
+    });
+
+    function showDeleteSlotModal(slotId) {
+      const slot = allMeetingSlots.find(s => s.id === slotId);
+      if (!slot) return;
+
+      const currentBookings = Number(slot.currentBookings ?? 0);
+      if (currentBookings > 0) {
+        alert('⚠️ 予約が入っている面談枠は削除できません');
+        return;
+      }
+
+      const ok = confirm(`面談枠を削除します。\n${slot.date || ''} ${slot.startTime || ''}-${slot.endTime || ''}\nよろしいですか？`);
+      if (!ok) return;
+
+      confirmDeleteSlot(slotId);
+    }
+
+    async function confirmDeleteSlot(slotId) {
+      try {
+        await deleteDoc(doc(db, 'meetingSlots', slotId));
+        alert('✅ 面談枠を削除しました');
+        await loadMeetingSlots();
+        updateStats();
+      } catch (error) {
+        console.error('❌ 面談枠削除エラー:', error);
+        alert('面談枠の削除に失敗しました: ' + error.message);
+      }
+    }
+
+    // ===============
+    // admins 管理（A案：フォールバック削除）
+    // ===============
+    async function loadAdmins() {
+      try {
         console.log('📥 管理者一覧を読み込み中...');
-        
         const q = query(collection(db, 'admins'), orderBy('createdAt', 'desc'));
         const snapshot = await getDocs(q);
-        
+
         allAdmins = [];
         snapshot.forEach(d => {
-            allAdmins.push({
-                id: d.id,
-                ...d.data()
-            });
+          allAdmins.push({ id: d.id, ...d.data() });
         });
-        
+
         console.log(`✅ 管理者: ${allAdmins.length}人`);
         displayAdmins();
-        
-    } catch (error) {
+
+      } catch (error) {
         console.error('❌ 管理者読み込みエラー:', error);
-        
-        if (error.code === 'permission-denied' || allAdmins.length === 0) {
-            console.log('⚠️ 管理者データがありません。コード内のリストを表示します');
-            displayAdminsFromCode();
+        // A案：ハードコードにフォールバックしない
+        const container = document.getElementById('adminsTable');
+        if (container) {
+          const msg = (error?.code === 'permission-denied')
+            ? '権限が不足しているため、管理者一覧を読み込めません（Firestore ルールをご確認ください）。'
+            : '管理者一覧の読み込みに失敗しました。';
+          container.innerHTML = `
+            <div style="background:#ffebee; padding: 15px; border-radius: 8px; border-left: 4px solid #c62828;">
+              <p style="margin:0; color:#c62828; font-weight:800;">
+                <i class="fas fa-triangle-exclamation"></i> ${escapeHtml(msg)}
+              </p>
+              <p style="margin-top:8px; color:#666; font-size:0.9rem;">
+                エラー: ${escapeHtml(error?.message || 'unknown')}
+              </p>
+            </div>
+          `;
         }
+      }
     }
-}
 
-// コード内の管理者リストを表示（Firestore未使用時）
-function displayAdminsFromCode() {
-    const adminEmails = [
-        'hiroaki@valueglow.jp',
-        'test@test.com',
-        'admin@valueglow.jp'
-    ];
-    
-    const container = document.getElementById('adminsTable');
-    
-    let html = `
-        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
-            <p style="margin: 0; color: #856404;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>注意:</strong> 現在、管理者情報はコード内にハードコードされています。
-                Firestoreに管理者コレクションを作成すると、動的に管理できるようになります。
-            </p>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>メールアドレス</th>
-                    <th>権限レベル</th>
-                    <th>登録日</th>
-                    <th>アクション</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-    
-    adminEmails.forEach((email) => {
-        const role = email.includes('test') ? 'admin' : 'super_admin';
-        const roleName = getRoleName(role);
-        const roleClass = getRoleClass(role);
-        const isSelf = email === currentUser?.email;
-        
-        html += `
-            <tr>
-                <td>
-                    <strong>${email}</strong>
-                    ${isSelf ? '<span class="badge badge-info" style="margin-left: 10px;">自分</span>' : ''}
-                </td>
-                <td><span class="role-badge ${roleClass}">${roleName}</span></td>
-                <td>-</td>
-                <td>
-                    <div class="action-btns">
-                        ${!isSelf ? `
-                            <button class="btn-action btn-edit" onclick="alert('Firestoreに管理者データを作成すると編集できます')" title="編集">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-action btn-delete" onclick="alert('Firestoreに管理者データを作成すると削除できます')" title="削除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        ` : `
-                            <span style="color: #999; font-size: 0.85rem;">-</span>
-                        `}
-                    </div>
-                </td>
-            </tr>
+    function displayAdmins() {
+      const container = document.getElementById('adminsTable');
+      if (!container) return;
+
+      if (!allAdmins || allAdmins.length === 0) {
+        // A案：ハードコードに逃げない
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-shield"></i>
+            <h3>管理者が未登録です</h3>
+            <p style="color:#999;">「管理者を追加」から admins コレクションに登録してください。</p>
+          </div>
         `;
-    });
-    
-    html += '</tbody></table>';
-    container.innerHTML = html;
-}
-
-// 管理者一覧の表示
-function displayAdmins() {
-    const container = document.getElementById('adminsTable');
-    
-    if (allAdmins.length === 0) {
-        displayAdminsFromCode();
         return;
-    }
-    
-    let html = `
+      }
+
+      let html = `
         <table>
-            <thead>
-                <tr>
-                    <th>メールアドレス</th>
-                    <th>権限レベル</th>
-                    <th>登録日</th>
-                    <th>アクション</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-    
-    allAdmins.forEach(admin => {
+          <thead>
+            <tr>
+              <th>メールアドレス</th>
+              <th>権限レベル</th>
+              <th>登録日</th>
+              <th>アクション</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      allAdmins.forEach(admin => {
         const roleName = getRoleName(admin.role);
         const roleClass = getRoleClass(admin.role);
         const createdAt = admin.createdAt ? formatDate(admin.createdAt) : '-';
         const isSelf = admin.email === currentUser?.email;
-        
-        html += `
-            <tr>
-                <td>
-                    <strong>${admin.email}</strong>
-                    ${isSelf ? '<span class="badge badge-info" style="margin-left: 10px;">自分</span>' : ''}
-                </td>
-                <td><span class="role-badge ${roleClass}">${roleName}</span></td>
-                <td>${createdAt}</td>
-                <td>
-                    <div class="action-btns">
-                        ${!isSelf ? `
-                            <button class="btn-action btn-edit" onclick="showEditAdminModal('${admin.id}')" title="編集">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-action btn-delete" onclick="showDeleteAdminModal('${admin.id}')" title="削除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        ` : `
-                            <span style="color: #999; font-size: 0.85rem;">-</span>
-                        `}
-                    </div>
-                </td>
-            </tr>
-        `;
-    });
-    
-    html += '</tbody></table>';
-    container.innerHTML = html;
-}
 
-// 権限名の取得
-function getRoleName(role) {
-    const roles = {
+        html += `
+          <tr>
+            <td>
+              <strong>${escapeHtml(admin.email || '')}</strong>
+              ${isSelf ? '<span class="badge badge-info" style="margin-left: 10px;">自分</span>' : ''}
+            </td>
+            <td><span class="role-badge ${roleClass}">${escapeHtml(roleName)}</span></td>
+            <td>${escapeHtml(createdAt)}</td>
+            <td>
+              <div class="action-btns">
+                ${!isSelf ? `
+                  <button class="btn-action btn-edit" onclick="showEditAdminModal('${escapeJs(admin.id)}')" title="編集">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn-action btn-delete" onclick="showDeleteAdminModal('${escapeJs(admin.id)}')" title="削除">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                ` : `
+                  <span style="color:#999; font-size:0.85rem;">-</span>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    function showAddAdminModal(){ document.getElementById('addAdminModal')?.classList.add('show'); }
+    function closeAddAdminModal(){ document.getElementById('addAdminModal')?.classList.remove('show'); }
+
+    document.getElementById('addAdminForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const email = document.getElementById('adminEmail').value.trim();
+      const role = document.getElementById('adminRole').value;
+
+      if (!email) { alert('メールアドレスを入力してください'); return; }
+
+      try {
+        const adminData = {
+          email,
+          role,
+          createdAt: new Date(),
+          createdBy: currentUser.uid
+        };
+        await addDoc(collection(db, 'admins'), adminData);
+
+        alert('✅ 管理者を追加しました\n\n注意: 必要に応じて Firebase Authentication でも該当ユーザー作成をご検討ください。');
+        closeAddAdminModal();
+        await loadAdmins();
+
+      } catch (error) {
+        console.error('❌ 管理者追加エラー:', error);
+        alert('管理者の追加に失敗しました: ' + error.message);
+      }
+    });
+
+    // 管理者編集
+    function showEditAdminModal(adminId) {
+      const admin = allAdmins.find(a => a.id === adminId);
+      if (!admin) return;
+
+      document.getElementById('editAdminId').value = adminId;
+      document.getElementById('editAdminEmail').value = admin.email || '';
+      document.getElementById('editAdminRole').value = admin.role || 'admin';
+
+      document.getElementById('editAdminModal').classList.add('show');
+    }
+    function closeEditAdminModal(){ document.getElementById('editAdminModal')?.classList.remove('show'); }
+
+    document.getElementById('editAdminForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const adminId = document.getElementById('editAdminId').value;
+      const role = document.getElementById('editAdminRole').value;
+
+      try {
+        await updateDoc(doc(db, 'admins', adminId), {
+          role: role,
+          updatedAt: new Date(),
+          updatedBy: currentUser.uid
+        });
+
+        alert('✅ 管理者情報を更新しました');
+        closeEditAdminModal();
+        await loadAdmins();
+
+      } catch (error) {
+        console.error('❌ 管理者更新エラー:', error);
+        alert('管理者情報の更新に失敗しました: ' + error.message);
+      }
+    });
+
+    // 管理者削除
+    function showDeleteAdminModal(adminId) {
+      const admin = allAdmins.find(a => a.id === adminId);
+      if (!admin) return;
+
+      if (admin.email === currentUser?.email) {
+        alert('⚠️ 自分自身を削除することはできません');
+        return;
+      }
+
+      document.getElementById('deleteAdminId').value = adminId;
+      document.getElementById('deleteAdminEmail').textContent = admin.email || '-';
+      document.getElementById('deleteAdminModal').classList.add('show');
+    }
+    function closeDeleteAdminModal(){ document.getElementById('deleteAdminModal')?.classList.remove('show'); }
+
+    async function confirmDeleteAdmin() {
+      const adminId = document.getElementById('deleteAdminId').value;
+
+      try {
+        await deleteDoc(doc(db, 'admins', adminId));
+        alert('✅ 管理者を削除しました\n\n注意: Firebase Authentication からもユーザーを削除することをお勧めします。');
+        closeDeleteAdminModal();
+        await loadAdmins();
+
+      } catch (error) {
+        console.error('❌ 管理者削除エラー:', error);
+        alert('管理者の削除に失敗しました: ' + error.message);
+      }
+    }
+
+    // ===============
+    // UI操作
+    // ===============
+    function showSection(sectionName) {
+      // サイドバー active
+      document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+      const activeLink = Array.from(document.querySelectorAll('.sidebar-menu a'))
+        .find(a => (a.getAttribute('onclick') || '').includes(`'${sectionName}'`));
+      if (activeLink) activeLink.classList.add('active');
+
+      // セクション切替
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(`section-${sectionName}`)?.classList.add('active');
+
+      if (sectionName === 'settings') {
+        // settings 表示時に admins をロード
+        loadAdmins();
+      }
+    }
+    window.showSection = showSection;
+
+    function showSettingsTab(tabName){
+      document.querySelectorAll('.settings-tab').forEach(b => b.classList.remove('active'));
+      if (tabName === 'admins') {
+        document.querySelectorAll('.settings-tab')[0]?.classList.add('active');
+        document.getElementById('settings-admins').style.display = '';
+        document.getElementById('settings-system').style.display = 'none';
+        loadAdmins();
+      } else {
+        document.querySelectorAll('.settings-tab')[1]?.classList.add('active');
+        document.getElementById('settings-admins').style.display = 'none';
+        document.getElementById('settings-system').style.display = '';
+      }
+    }
+    window.showSettingsTab = showSettingsTab;
+
+    // ログアウト
+    async function logout() {
+      const ok = confirm('ログアウトしますか？');
+      if (!ok) return;
+
+      try {
+        await signOut(auth);
+      } catch (e) {
+        console.warn('signOut失敗:', e);
+      }
+      window.location.href = 'log-in.html';
+    }
+    window.logout = logout;
+
+    // フィルタ（簡易）
+    function applyUserFilter(){
+      const q = (document.getElementById('userSearch')?.value || '').toLowerCase();
+      const status = document.getElementById('userStatusFilter')?.value || 'all';
+
+      document.querySelectorAll('#usersTable tbody tr').forEach(tr => {
+        const text = tr.innerText.toLowerCase();
+        const matchText = !q || text.includes(q);
+        const matchStatus = (status === 'all') ? true : true; // TODO: status連動
+        tr.style.display = (matchText && matchStatus) ? '' : 'none';
+      });
+    }
+    window.applyUserFilter = applyUserFilter;
+
+    function applyDocumentFilter(){
+      const userId = document.getElementById('documentUserFilter')?.value || '';
+      const type = document.getElementById('documentTypeFilter')?.value || '';
+
+      document.querySelectorAll('#documentsTable tbody tr').forEach(tr => {
+        const u = tr.getAttribute('data-doc-user') || '';
+        const t = tr.getAttribute('data-doc-type') || '';
+        const okU = !userId || userId === u;
+        const okT = !type || type === t;
+        tr.style.display = (okU && okT) ? '' : 'none';
+      });
+    }
+    window.applyDocumentFilter = applyDocumentFilter;
+
+    function applyMeetingFilter(){
+      const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
+      const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
+
+      // TODO: 仕様通りの詳細フィルタ（今後/今日/今週/今月、空き/予約済）を拡充
+      // いまは status のみ軽く適用（表示上はカードがまとめて生成されるため、厳密なDOMフィルタは後段で）
+      // ここでは「将来拡張のフック」として残す
+      void dateFilter; void statusFilter;
+    }
+    window.applyMeetingFilter = applyMeetingFilter;
+
+    // ダウンロード
+    function downloadDocument(url){
+      if (!url) { alert('ダウンロードURLがありません'); return; }
+      window.open(url, '_blank');
+    }
+    window.downloadDocument = downloadDocument;
+
+    function viewDocumentDetails(id){
+      alert('書類詳細は今後実装予定です（ID: ' + id + '）');
+    }
+    window.viewDocumentDetails = viewDocumentDetails;
+
+    function viewUser(id){
+      alert('利用者詳細は今後実装予定です（ID: ' + id + '）');
+    }
+    window.viewUser = viewUser;
+
+    function editUser(id){
+      alert('利用者編集は今後実装予定です（ID: ' + id + '）');
+    }
+    window.editUser = editUser;
+
+    // ユーティリティ
+    function getDocumentTypeName(type){
+      const types = {
+        resume: '履歴書',
+        cv: '職務経歴書',
+        cover_letter: 'カバーレター',
+        certificate: '資格証明書',
+        portfolio: 'ポートフォリオ',
+        other: 'その他'
+      };
+      return types[type] || 'その他';
+    }
+
+    function formatFileSize(bytes){
+      if (!bytes && bytes !== 0) return '-';
+      const b = Number(bytes);
+      if (b < 1024) return b + ' B';
+      if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+      return (b / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function formatDate(timestamp){
+      if (!timestamp) return '-';
+      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      return date.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' });
+    }
+
+    function getTimeAgo(timestamp){
+      if (!timestamp) return '-';
+      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 60) return `${minutes}分前`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours}時間前`;
+      const days = Math.floor(hours / 24);
+      return `${days}日前`;
+    }
+
+    function updateUserFilterOptions(){
+      const select = document.getElementById('documentUserFilter');
+      if (!select) return;
+
+      let html = '<option value="">すべての利用者</option>';
+      allUsers.forEach(u => {
+        const name = u.displayName || u.name || u.email || 'ユーザー不明';
+        html += `<option value="${escapeHtml(u.id)}">${escapeHtml(name)}</option>`;
+      });
+      select.innerHTML = html;
+    }
+
+    function getRoleName(role){
+      const map = {
         super_admin: 'スーパー管理者',
         admin: '一般管理者',
         document_admin: '書類管理者',
         meeting_admin: '面談管理者'
-    };
-    return roles[role] || role;
-}
-
-// 権限クラスの取得
-function getRoleClass(role) {
-    const classes = {
+      };
+      return map[role] || '未設定';
+    }
+    function getRoleClass(role){
+      const map = {
         super_admin: 'role-super',
         admin: 'role-admin',
         document_admin: 'role-document',
         meeting_admin: 'role-meeting'
-    };
-    return classes[role] || 'role-admin';
-}
-
-// 設定タブの切り替え
-window.showSettingsTab = function(tabName) {
-    document.querySelectorAll('.settings-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.settings-content').forEach(content => content.classList.remove('active'));
-    
-    event.target.closest('.settings-tab').classList.add('active');
-    document.getElementById(tabName + 'Tab').classList.add('active');
-    
-    if (tabName === 'admins' && allAdmins.length === 0) {
-        loadAdmins();
+      };
+      return map[role] || 'role-unknown';
     }
-};
 
-// 管理者追加モーダルを開く
-window.showAddAdminModal = function() {
-    document.getElementById('addAdminModal').classList.add('show');
-    document.getElementById('adminEmail').value = '';
-    document.getElementById('adminRole').value = 'admin';
-};
-
-// 管理者追加モーダルを閉じる
-window.closeAddAdminModal = function() {
-    document.getElementById('addAdminModal').classList.remove('show');
-};
-
-// 管理者追加フォーム送信
-document.getElementById('addAdminForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('adminEmail').value.trim();
-    const role = document.getElementById('adminRole').value;
-    
-    try {
-        const adminData = {
-            email: email,
-            role: role,
-            createdAt: new Date(),
-            createdBy: currentUser.uid
-        };
-        
-        await addDoc(collection(db, 'admins'), adminData);
-        
-        alert('✅ 管理者を追加しました\n\n次のステップ:\nFirebase Authentication でこのメールアドレスのユーザーアカウントを作成してください。');
-        
-        closeAddAdminModal();
-        loadAdmins();
-        
-    } catch (error) {
-        console.error('❌ 管理者追加エラー:', error);
-        alert('管理者の追加に失敗しました: ' + error.message);
+    function toHHMM(date){
+      const hh = String(date.getHours()).padStart(2,'0');
+      const mm = String(date.getMinutes()).padStart(2,'0');
+      return `${hh}:${mm}`;
     }
-});
 
-// 管理者編集モーダルを開く
-window.showEditAdminModal = function(adminId) {
-    const admin = allAdmins.find(a => a.id === adminId);
-    if (!admin) return;
-    
-    document.getElementById('editAdminId').value = adminId;
-    document.getElementById('editAdminEmail').value = admin.email;
-    document.getElementById('editAdminRole').value = admin.role;
-    document.getElementById('editAdminModal').classList.add('show');
-};
-
-// 管理者編集モーダルを閉じる
-window.closeEditAdminModal = function() {
-    document.getElementById('editAdminModal').classList.remove('show');
-};
-
-// 管理者編集フォーム送信
-document.getElementById('editAdminForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const adminId = document.getElementById('editAdminId').value;
-    const role = document.getElementById('editAdminRole').value;
-    
-    try {
-        await updateDoc(doc(db, 'admins', adminId), {
-            role: role,
-            updatedAt: new Date(),
-            updatedBy: currentUser.uid
-        });
-        
-        alert('✅ 管理者情報を更新しました');
-        
-        closeEditAdminModal();
-        loadAdmins();
-        
-    } catch (error) {
-        console.error('❌ 管理者更新エラー:', error);
-        alert('管理者情報の更新に失敗しました: ' + error.message);
+    function formatDateForKey(datetime){
+      if (!datetime) return '';
+      const d = datetime.toDate ? datetime.toDate() : new Date(datetime);
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${y}-${m}-${day}`;
     }
-});
 
-// 管理者削除モーダルを開く
-window.showDeleteAdminModal = function(adminId) {
-    const admin = allAdmins.find(a => a.id === adminId);
-    if (!admin) return;
-    
-    if (admin.email === currentUser.email) {
-        alert('⚠️ 自分自身を削除することはできません');
-        return;
+    function escapeHtml(str){
+      return String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
     }
-    
-    document.getElementById('deleteAdminId').value = adminId;
-    document.getElementById('deleteAdminEmail').textContent = admin.email;
-    document.getElementById('deleteAdminModal').classList.add('show');
-};
-
-// 管理者削除モーダルを閉じる
-window.closeDeleteAdminModal = function() {
-    document.getElementById('deleteAdminModal').classList.remove('show');
-};
-
-// 管理者削除の確認
-window.confirmDeleteAdmin = async function() {
-    const adminId = document.getElementById('deleteAdminId').value;
-    
-    try {
-        await deleteDoc(doc(db, 'admins', adminId));
-        
-        alert('✅ 管理者を削除しました\n\n注意: Firebase Authentication からもユーザーを削除することをお勧めします。');
-        
-        closeDeleteAdminModal();
-        loadAdmins();
-        
-    } catch (error) {
-        console.error('❌ 管理者削除エラー:', error);
-        alert('管理者の削除に失敗しました: ' + error.message);
+    function escapeJs(str){
+      return String(str ?? '').replaceAll('\\', '\\\\').replaceAll("'", "\\'");
     }
-};
-
-
-// ========================================
-// 面談枠管理機能
-// ========================================
-
-let allMeetingSlots = [];
-
-// 面談枠の読み込み
-async function loadMeetingSlots() {
-    try {
-        console.log('📥 面談枠を読み込み中...');
-        
-        const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
-        const snapshot = await getDocs(q);
-        
-        allMeetingSlots = [];
-        snapshot.forEach(d => {
-            allMeetingSlots.push({
-                id: d.id,
-                ...d.data()
-            });
-        });
-        
-        console.log(`✅ 面談枠: ${allMeetingSlots.length}件`);
-        displayMeetingSlots();
-        
-    } catch (error) {
-        console.error('❌ 面談枠読み込みエラー:', error);
-        document.getElementById('meetingSlotsContainer').innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-exclamation-circle"></i>
-                <h3>読み込みエラー</h3>
-                <p>面談枠の読み込みに失敗しました</p>
-            </div>
-        `;
-    }
-}
-
-// 面談枠の表示
-function displayMeetingSlots() {
-    const container = document.getElementById('meetingSlotsContainer');
-    
-    if (allMeetingSlots.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-calendar-times"></i>
-                <h3>面談枠がありません</h3>
-                <p>「面談枠を追加」ボタンから新しい面談枠を作成してください</p>
-            </div>
-        `;
-        return;
-    }
-    
-    const groupedSlots = {};
-    allMeetingSlots.forEach(slot => {
-        if (!groupedSlots[slot.date]) groupedSlots[slot.date] = [];
-        groupedSlots[slot.date].push(slot);
-    });
-    
-    let html = '';
-    
-    Object.keys(groupedSlots).sort().forEach(date => {
-        const slots = groupedSlots[date];
-        const dateObj = new Date(date + 'T00:00:00');
-        const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][dateObj.getDay()];
-        
-        html += `
-            <div class="meeting-date-group">
-                <h3 class="meeting-date-header">
-                    <i class="fas fa-calendar-day"></i>
-                    ${date}（${dayOfWeek}）
-                    <span class="slot-count">${slots.length}枠</span>
-                </h3>
-                <div class="meeting-slots-list">
-        `;
-        
-        slots.forEach(slot => {
-            const isBooked = slot.currentBookings >= slot.maxCapacity;
-            const statusBadge = isBooked 
-                ? '<span class="status-badge booked">予約済</span>' 
-                : '<span class="status-badge available">空き</span>';
-            
-            html += `
-                <div class="meeting-slot-card ${isBooked ? 'booked' : ''}">
-                    <div class="slot-time">
-                        <i class="fas fa-clock"></i>
-                        ${slot.startTime} - ${slot.endTime}
-                    </div>
-                    <div class="slot-info">
-                        <div class="slot-type">
-                            <i class="fas fa-tag"></i>
-                            ${slot.type}
-                        </div>
-                        <div class="slot-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            ${slot.location}
-                        </div>
-                        <div class="slot-capacity">
-                            <i class="fas fa-users"></i>
-                            予約: ${slot.currentBookings} / ${slot.maxCapacity}
-                        </div>
-                    </div>
-                    <div class="slot-status">
-                        ${statusBadge}
-                    </div>
-                    <div class="slot-actions">
-                        <button class="btn-icon edit" onclick="showEditSlotModal('${slot.id}')" title="編集">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-icon delete" onclick="showDeleteSlotModal('${slot.id}')" 
-                                title="削除" ${isBooked ? 'disabled' : ''}>
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        html += `
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
-}
-
-// 面談枠のフィルタリング
-function filterSlots() {
-    const dateFilter = document.getElementById('slotDateFilter').value;
-    const statusFilter = document.getElementById('slotStatusFilter').value;
-    console.log('🔍 フィルター:', dateFilter, statusFilter);
-    // TODO: 実装
-}
-
-// ========================================
-// 1時間ごとに面談枠を生成する関数
-// ========================================
-function generateHourlySlots(date, startTime, endTime, type, location, meetingLink, capacity, userId) {
-    const slots = [];
-    const start = new Date(`${date}T${startTime}:00`);
-    const end = new Date(`${date}T${endTime}:00`);
-    const HOUR_MS = 60 * 60 * 1000;
-    let current = new Date(start);
-    
-    console.log('🎯 面談枠を自動分割中...');
-    console.log(`日付: ${date}, 開始: ${startTime}, 終了: ${endTime}`);
-    
-    while (current < end) {
-        const next = new Date(current.getTime() + HOUR_MS);
-        if (next > end) break;
-        
-        const slotStartTime = current.toTimeString().substring(0, 5);
-        const slotEndTime = next.toTimeString().substring(0, 5);
-        
-        console.log(`  → 作成: ${slotStartTime} - ${slotEndTime}`);
-        
-        slots.push({
-            date: date,
-            startTime: slotStartTime,
-            endTime: slotEndTime,
-            datetime: Timestamp.fromDate(new Date(current)),
-            type: type,
-            location: location,
-            meetingLink: meetingLink || '',
-            maxCapacity: capacity,
-            currentBookings: 0,
-            status: 'available',
-            createdBy: userId,
-            createdAt: Timestamp.now()
-        });
-        
-        current = next;
-    }
-    
-    console.log(`✅ ${slots.length}個の面談枠を作成しました`);
-    return slots;
-}
-
-
-// 面談枠追加モーダルを開く
-window.showAddSlotModal = function() {
-    document.getElementById('addSlotModal').classList.add('show');
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-    document.getElementById('slotDate').value = dateString;
-    document.getElementById('slotDate').min = dateString;
-    document.getElementById('slotStartTime').value = '10:00';
-    document.getElementById('slotEndTime').value = '11:00';
-};
-
-// 面談枠追加モーダルを閉じる
-window.closeAddSlotModal = function() {
-    document.getElementById('addSlotModal').classList.remove('show');
-    document.getElementById('addSlotForm').reset();
-};
-
-// 面談枠追加フォーム送信（自動分割機能付き）
-document.getElementById('addSlotForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const date = document.getElementById('slotDate').value;
-    const startTime = document.getElementById('slotStartTime').value;
-    const endTime = document.getElementById('slotEndTime').value;
-    const type = document.getElementById('slotType').value;
-    const location = document.getElementById('slotLocation').value;
-    const meetingLink = document.getElementById('slotMeetingLink').value;
-    const capacity = parseInt(document.getElementById('slotCapacity').value);
-    
-    console.log('📝 面談枠追加フォーム送信');
-    console.log(`日付: ${date}, 開始: ${startTime}, 終了: ${endTime}`);
-    
-    if (startTime >= endTime) {
-        alert('⚠️ 終了時間は開始時間より後にしてください');
-        return;
-    }
-    
-    try {
-        const slots = generateHourlySlots(
-            date, startTime, endTime, type, location, meetingLink, capacity, currentUser.uid
-        );
-        
-        if (slots.length === 0) {
-            alert('⚠️ 面談枠を作成できませんでした。時間範囲を確認してください。');
-            return;
-        }
-        
-        const confirmMessage = `${slots.length}個の面談枠を作成します。\n\n` +
-            slots.map(s => `・${s.startTime} - ${s.endTime}`).join('\n') +
-            '\n\nよろしいですか？';
-        
-        if (!confirm(confirmMessage)) return;
-
-        console.log('📤 重複チェックとFirestoreへの追加を開始...');
-        let addedCount = 0;
-        let skipCount = 0;
-
-        for (const slotData of slots) {
-            const dupQ = query(
-                collection(db, 'meetingSlots'),
-                where('date', '==', slotData.date),
-                where('startTime', '==', slotData.startTime),
-                where('endTime', '==', slotData.endTime)
-            );
-
-            const dupSnap = await getDocs(dupQ);
-
-            if (dupSnap.empty) {
-                await addDoc(collection(db, 'meetingSlots'), slotData);
-                addedCount++;
-                console.log(`  [追加] ${slotData.date} ${slotData.startTime}-${slotData.endTime}`);
-            } else {
-                skipCount++;
-                console.log(`  [スキップ] 重複: ${slotData.date} ${slotData.startTime}-${slotData.endTime}`);
-            }
-        }
-
-        if (addedCount > 0) {
-            alert(`✅ ${addedCount}個の面談枠を追加しました` + (skipCount > 0 ? `（${skipCount}個は重複のためスキップ）` : ''));
-        } else {
-            alert(`⚠️ 追加された枠はありません（${skipCount}個が既に存在しています）`);
-        }
-        
-        console.log('✅ 全ての面談枠を追加完了');
-        
-        closeAddSlotModal();
-        loadMeetingSlots();
-        
-    } catch (error) {
-        console.error('❌ 面談枠追加エラー:', error);
-        alert('面談枠の追加に失敗しました: ' + error.message);
-    }
-});
-
-// 面談枠編集モーダルを開く
-window.showEditSlotModal = function(slotId) {
-    const slot = allMeetingSlots.find(s => s.id === slotId);
-    if (!slot) return;
-    
-    document.getElementById('editSlotId').value = slotId;
-    document.getElementById('editSlotDate').value = slot.date;
-    document.getElementById('editSlotStartTime').value = slot.startTime;
-    document.getElementById('editSlotEndTime').value = slot.endTime;
-    document.getElementById('editSlotType').value = slot.type;
-    document.getElementById('editSlotLocation').value = slot.location;
-    document.getElementById('editSlotMeetingLink').value = slot.meetingLink || '';
-    
-    document.getElementById('editSlotModal').classList.add('show');
-};
-
-// 面談枠編集モーダルを閉じる
-window.closeEditSlotModal = function() {
-    document.getElementById('editSlotModal').classList.remove('show');
-};
-
-// 面談枠編集フォーム送信
-document.getElementById('editSlotForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const slotId = document.getElementById('editSlotId').value;
-    const type = document.getElementById('editSlotType').value;
-    const location = document.getElementById('editSlotLocation').value;
-    const meetingLink = document.getElementById('editSlotMeetingLink').value;
-    
-    try {
-        await updateDoc(doc(db, 'meetingSlots', slotId), {
-            type: type,
-            location: location,
-            meetingLink: meetingLink || '',
-            updatedAt: new Date(),
-            updatedBy: currentUser.uid
-        });
-        
-        alert('✅ 面談枠を更新しました');
-        
-        closeEditSlotModal();
-        loadMeetingSlots();
-        
-    } catch (error) {
-        console.error('❌ 面談枠更新エラー:', error);
-        alert('面談枠の更新に失敗しました: ' + error.message);
-    }
-});
-
-// 面談枠削除モーダルを開く
-window.showDeleteSlotModal = function(slotId) {
-    const slot = allMeetingSlots.find(s => s.id === slotId);
-    if (!slot) return;
-    
-    if (slot.currentBookings > 0) {
-        alert('⚠️ 予約が入っている面談枠は削除できません');
-        return;
-    }
-    
-    document.getElementById('deleteSlotId').value = slotId;
-    document.getElementById('deleteSlotMessage').textContent = 
-        `${slot.date} ${slot.startTime}-${slot.endTime} の面談枠を削除しますか？`;
-    
-    document.getElementById('deleteSlotModal').classList.add('show');
-};
-
-// 面談枠削除モーダルを閉じる
-window.closeDeleteSlotModal = function() {
-    document.getElementById('deleteSlotModal').classList.remove('show');
-};
-
-// 面談枠削除確認
-window.confirmDeleteSlot = async function() {
-    const slotId = document.getElementById('deleteSlotId').value;
-    
-    try {
-        await deleteDoc(doc(db, 'meetingSlots', slotId));
-        
-        alert('✅ 面談枠を削除しました');
-        
-        closeDeleteSlotModal();
-        loadMeetingSlots();
-        
-    } catch (error) {
-        console.error('❌ 面談枠削除エラー:', error);
-        alert('面談枠の削除に失敗しました: ' + error.message);
-    }
-};
-
-        // グローバル関数
-        window.showSection = function(sectionName) {
-            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-            document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
-            
-            const sectionMap = {
-                overview: 'overviewSection',
-                users: 'usersSection',
-                meetings: 'meetingsSection',
-                documents: 'documentsSection',
-                stats: 'statsSection',
-                settings: 'settingsSection'
-            };
-            
-            const targetSection = document.getElementById(sectionMap[sectionName]);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                if (sectionName === 'meetings') {
-                    displayMeetings();
-                }
-            }
-            
-            event.target.classList.add('active');
-        };
-        
-        window.filterUsers = function() { console.log('ユーザーフィルター'); };
-        window.filterDocuments = function() { console.log('書類フィルター'); };
-        window.filterMeetings = function() { console.log('面談フィルター'); };
-        
-        window.viewUser = function(userId) {
-            alert(`ユーザー詳細表示（開発予定）\nUser ID: ${userId}`);
-        };
-        
-        window.editUser = function(userId) {
-            alert(`ユーザー編集（開発予定）\nUser ID: ${userId}`);
-        };
-        
-        window.downloadDocument = function(url) {
-            window.open(url, '_blank');
-        };
-        
-        window.viewDocumentDetails = function(docId) {
-            const docItem = allDocuments.find(d => d.id === docId);
-            if (docItem) {
-                const user = allUsers.find(u => u.id === docItem.userId);
-                const userName = user ? (user.displayName || user.email) : 'ユーザー不明';
-                alert(`書類詳細\n\nファイル名: ${docItem.fileName}\n利用者: ${userName}\nサイズ: ${formatFileSize(docItem.fileSize)}\nアップロード日: ${formatDate(docItem.uploadedAt)}`);
-            }
-        };
-        
-        window.logout = async function() {
-            if (confirm('ログアウトしますか？')) {
-                try {
-                    await signOut(auth);
-                    window.location.href = 'log-in.html';
-                } catch (error) {
-                    console.error('ログアウトエラー:', error);
-                    alert('ログアウトに失敗しました');
-                }
-            }
-        };
-        
-        window.firebaseAuth = auth;
-        window.firebaseDB = db;
-    </script>
+  </script>
 </body>
 </html>
