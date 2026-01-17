@@ -2839,14 +2839,38 @@ document.getElementById('addSlotForm')?.addEventListener('submit', async functio
             return;
         }
         
-        // 複数の枠を一括追加
-        console.log('📤 Firestoreに追加中...');
+        // 複数の枠を一括追加（重複チェック付き）
+        console.log('📤 重複チェックとFirestoreへの追加を開始...');
         let addedCount = 0;
+        let skipCount = 0;
+
         for (const slotData of slots) {
-            await addDoc(collection(db, 'meetingSlots'), slotData);
-            addedCount++;
-            console.log(`  ${addedCount}/${slots.length} 完了`);
-        }
+            // 重複チェック（date + startTime + endTime が同一の枠があるか）
+            const dupQ = query(
+            collection(db, 'meetingSlots'),
+            where('date', '==', slotData.date),
+            where('startTime', '==', slotData.startTime),
+            where('endTime', '==', slotData.endTime)
+        );
+
+    const dupSnap = await getDocs(dupQ);
+
+    if (dupSnap.empty) {
+        await addDoc(collection(db, 'meetingSlots'), slotData);
+        addedCount++;
+        console.log(`  [追加] ${slotData.date} ${slotData.startTime}-${slotData.endTime}`);
+    } else {
+        skipCount++;
+        console.log(`  [スキップ] 重複: ${slotData.date} ${slotData.startTime}-${slotData.endTime}`);
+    }
+}
+
+if (addedCount > 0) {
+    alert(`✅ ${addedCount}個の面談枠を追加しました` + (skipCount > 0 ? `（${skipCount}個は重複のためスキップ）` : ''));
+} else {
+    alert(`⚠️ 追加された枠はありません（${skipCount}個が既に存在しています）`);
+}
+
         
         alert(`✅ ${addedCount}個の面談枠を追加しました`);
         
