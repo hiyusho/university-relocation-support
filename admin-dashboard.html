@@ -2133,7 +2133,8 @@
         
         // 面談スケジュール表示（サンプルデータ）
         function displayMeetings() {
-            const container = document.getElementById('meetingsCalendar');
+            const container = document.getElementById('meetingSlotsContainer');
+            if (!container) return; // 念のため     
             
             // サンプルデータ（今後 Firestore から取得）
             const sampleMeetings = [
