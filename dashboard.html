@@ -8,33 +8,29 @@
     <meta name="keywords" content="マイページ,ダッシュボード,面談予約,企業紹介,応募書類,キャリア支援">
     <meta name="author" content="大学赴任者家族帯同支援プログラム">
     <meta name="robots" content="noindex, nofollow">
-    
+
     <!-- OGP -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="マイページ | 大学赴任者家族帯同支援プログラム">
     <meta property="og:description" content="あなた専用のマイページで、面談予約や応募状況を一元管理できます。">
     <meta property="og:url" content="https://hiyusho.github.io/university-relocation-support/dashboard.html">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://hiyusho.github.io/university-relocation-support/dashboard.html">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
                          'Hiragino Sans', Meiryo, sans-serif;
             background: #f5f7fa;
             min-height: 100vh;
         }
-        
+
         /* ヘッダー */
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -45,7 +41,7 @@
             top: 0;
             z-index: 100;
         }
-        
+
         .header-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -54,13 +50,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .header-left {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-        
+
         .logo {
             font-size: 1.2rem;
             font-weight: 700;
@@ -70,24 +66,22 @@
             align-items: center;
             gap: 10px;
         }
-        
-        .logo i {
-            font-size: 1.5rem;
-        }
-        
+
+        .logo i { font-size: 1.5rem; }
+
         .header-right {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 0.95rem;
         }
-        
+
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -100,7 +94,7 @@
             font-weight: 700;
             font-size: 1.1rem;
         }
-        
+
         .logout-btn {
             background: rgba(255, 255, 255, 0.2);
             color: white;
@@ -115,11 +109,9 @@
             align-items: center;
             gap: 8px;
         }
-        
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
+
+        .logout-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
         /* メインコンテナ */
         .main-container {
             max-width: 1400px;
@@ -129,7 +121,7 @@
             grid-template-columns: 250px 1fr;
             gap: 30px;
         }
-        
+
         /* サイドバー */
         .sidebar {
             background: white;
@@ -140,7 +132,7 @@
             position: sticky;
             top: 90px;
         }
-        
+
         .sidebar-title {
             font-size: 1rem;
             font-weight: 700;
@@ -149,15 +141,10 @@
             padding-bottom: 15px;
             border-bottom: 2px solid #f0f0f0;
         }
-        
-        .sidebar-menu {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            margin-bottom: 5px;
-        }
-        
+
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { margin-bottom: 5px; }
+
         .sidebar-menu a {
             display: flex;
             align-items: center;
@@ -169,30 +156,27 @@
             transition: all 0.3s ease;
             font-size: 0.95rem;
         }
-        
-        .sidebar-menu a:hover {
-            background: #f8f9fa;
-            color: #667eea;
-        }
-        
+
+        .sidebar-menu a:hover { background: #f8f9fa; color: #667eea; }
+
         .sidebar-menu a.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-        
+
         .sidebar-menu i {
             font-size: 1.1rem;
             width: 20px;
             text-align: center;
         }
-        
+
         /* コンテンツエリア */
         .content {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
-        
+
         /* ウェルカムカード */
         .welcome-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -201,24 +185,17 @@
             padding: 30px;
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
         }
-        
-        .welcome-card h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .welcome-card p {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-        
+
+        .welcome-card h1 { font-size: 1.8rem; margin-bottom: 10px; }
+        .welcome-card p { font-size: 0.95rem; opacity: 0.9; }
+
         /* カードグリッド */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-        
+
         .card {
             background: white;
             border-radius: 15px;
@@ -226,12 +203,12 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
-        
+
         .card:hover {
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             transform: translateY(-3px);
         }
-        
+
         .card-header {
             display: flex;
             align-items: center;
@@ -240,7 +217,7 @@
             padding-bottom: 15px;
             border-bottom: 2px solid #f0f0f0;
         }
-        
+
         .card-icon {
             width: 45px;
             height: 45px;
@@ -251,33 +228,15 @@
             font-size: 1.3rem;
             color: white;
         }
-        
-        .card-icon.schedule {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .card-icon.message {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        
-        .card-icon.company {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        .card-icon.document {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
-        
-        .card-icon.stats {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
-        
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-        }
-        
+
+        .card-icon.schedule { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-icon.message { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .card-icon.company { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .card-icon.document { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .card-icon.stats { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .card-title { font-size: 1.1rem; font-weight: 700; color: #333; }
+
         .card-count {
             background: #e3f2fd;
             color: #1976D2;
@@ -287,7 +246,7 @@
             font-weight: 600;
             margin-left: auto;
         }
-        
+
         /* 予定カード */
         .schedule-item {
             padding: 15px;
@@ -295,43 +254,13 @@
             border-radius: 10px;
             margin-bottom: 15px;
         }
-        
-        .schedule-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .schedule-date {
-            font-size: 0.85rem;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .schedule-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .schedule-info {
-            font-size: 0.9rem;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .schedule-info i {
-            color: #999;
-        }
-        
-        .schedule-actions {
-            margin-top: 12px;
-            display: flex;
-            gap: 10px;
-        }
-        
+        .schedule-item:last-child { margin-bottom: 0; }
+        .schedule-date { font-size: 0.85rem; color: #667eea; font-weight: 600; margin-bottom: 8px; }
+        .schedule-title { font-size: 1rem; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .schedule-info { font-size: 0.9rem; color: #666; display: flex; align-items: center; gap: 5px; }
+        .schedule-info i { color: #999; }
+        .schedule-actions { margin-top: 12px; display: flex; gap: 10px; }
+
         .btn-small {
             padding: 6px 15px;
             font-size: 0.85rem;
@@ -342,25 +271,11 @@
             text-decoration: none;
             display: inline-block;
         }
-        
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #5568d3;
-        }
-        
-        .btn-secondary {
-            background: #e0e0e0;
-            color: #666;
-        }
-        
-        .btn-secondary:hover {
-            background: #d0d0d0;
-        }
-        
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-secondary { background: #e0e0e0; color: #666; }
+        .btn-secondary:hover { background: #d0d0d0; }
+
         /* メッセージリスト */
         .message-item {
             padding: 15px;
@@ -368,100 +283,37 @@
             cursor: pointer;
             transition: background 0.3s ease;
         }
-        
-        .message-item:hover {
-            background: #f8f9fa;
-        }
-        
-        .message-item:last-child {
-            border-bottom: none;
-        }
-        
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .message-sender {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.95rem;
-        }
-        
-        .message-time {
-            font-size: 0.8rem;
-            color: #999;
-        }
-        
-        .message-preview {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.5;
-        }
-        
-        .message-unread {
-            background: #e3f2fd;
-        }
-        
+        .message-item:hover { background: #f8f9fa; }
+        .message-item:last-child { border-bottom: none; }
+        .message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .message-sender { font-weight: 600; color: #333; font-size: 0.95rem; }
+        .message-time { font-size: 0.8rem; color: #999; }
+        .message-preview { font-size: 0.9rem; color: #666; line-height: 1.5; }
+        .message-unread { background: #e3f2fd; }
         .unread-badge {
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: #f5576c;
             border-radius: 50%;
             margin-right: 8px;
         }
-        
+
         /* 企業リスト */
         .company-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            display: flex; align-items: center; gap: 15px;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
             margin-bottom: 12px;
         }
-        
-        .company-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .company-status {
-            width: 8px;
-            height: 40px;
-            border-radius: 4px;
-        }
-        
-        .status-passed {
-            background: #4caf50;
-        }
-        
-        .status-pending {
-            background: #ff9800;
-        }
-        
-        .status-new {
-            background: #2196F3;
-        }
-        
-        .company-info {
-            flex: 1;
-        }
-        
-        .company-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .company-status-text {
-            font-size: 0.85rem;
-            color: #666;
-        }
-        
+        .company-item:last-child { margin-bottom: 0; }
+        .company-status { width: 8px; height: 40px; border-radius: 4px; }
+        .status-passed { background: #4caf50; }
+        .status-pending { background: #ff9800; }
+        .status-new { background: #2196F3; }
+        .company-info { flex: 1; }
+        .company-name { font-weight: 600; color: #333; margin-bottom: 5px; }
+        .company-status-text { font-size: 0.85rem; color: #666; }
         .company-action {
             padding: 6px 15px;
             background: #667eea;
@@ -471,61 +323,26 @@
             font-size: 0.85rem;
             transition: all 0.3s ease;
         }
-        
-        .company-action:hover {
-            background: #5568d3;
-        }
-        
+        .company-action:hover { background: #5568d3; }
+
         /* 書類リスト */
         .document-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            display: flex; align-items: center; gap: 15px;
             padding: 12px 15px;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             margin-bottom: 10px;
             transition: all 0.3s ease;
         }
-        
-        .document-item:hover {
-            border-color: #667eea;
-            background: #f8f9fa;
-        }
-        
-        .document-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .document-icon {
-            font-size: 1.5rem;
-            color: #667eea;
-        }
-        
-        .document-info {
-            flex: 1;
-        }
-        
-        .document-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.95rem;
-            margin-bottom: 3px;
-        }
-        
-        .document-meta {
-            font-size: 0.8rem;
-            color: #999;
-        }
-        
-        .document-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
+        .document-item:hover { border-color: #667eea; background: #f8f9fa; }
+        .document-item:last-child { margin-bottom: 0; }
+        .document-icon { font-size: 1.5rem; color: #667eea; }
+        .document-info { flex: 1; }
+        .document-name { font-weight: 600; color: #333; font-size: 0.95rem; margin-bottom: 3px; }
+        .document-meta { font-size: 0.8rem; color: #999; }
+        .document-actions { display: flex; gap: 10px; }
         .btn-icon {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: 6px;
             border: none;
             background: #f0f0f0;
@@ -536,56 +353,41 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-        
-        .btn-icon:hover {
-            background: #667eea;
-            color: white;
-        }
-        
+        .btn-icon:hover { background: #667eea; color: white; }
+
         /* 統計カード */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
-        
         .stat-item {
             text-align: center;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
         }
-        
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
             color: #667eea;
             margin-bottom: 5px;
         }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
+        .stat-label { font-size: 0.9rem; color: #666; }
+
         /* 空の状態 */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: #999;
         }
-        
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 15px;
             opacity: 0.3;
         }
-        
-        .empty-state p {
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-        }
-        
+        .empty-state p { font-size: 0.95rem; margin-bottom: 15px; }
+
         /* ボタン */
         .btn {
             padding: 10px 24px;
@@ -598,23 +400,14 @@
             text-decoration: none;
             display: inline-block;
         }
-        
         .btn-outline {
             background: white;
             color: #667eea;
             border: 2px solid #667eea;
         }
-        
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .view-all {
-            text-align: center;
-            margin-top: 15px;
-        }
-        
+        .btn-outline:hover { background: #667eea; color: white; }
+
+        .view-all { text-align: center; margin-top: 15px; }
         .view-all a {
             color: #667eea;
             text-decoration: none;
@@ -624,49 +417,25 @@
             align-items: center;
             gap: 5px;
         }
-        
-        .view-all a:hover {
-            text-decoration: underline;
-        }
-        
+        .view-all a:hover { text-decoration: underline; }
+
         /* レスポンシブ */
         @media (max-width: 1024px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                position: static;
-            }
-            
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
             .sidebar-menu {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 10px;
             }
         }
-        
+
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .welcome-card h1 {
-                font-size: 1.5rem;
-            }
-            
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .user-info span {
-                display: none;
-            }
+            .header-container { flex-direction: column; gap: 15px; }
+            .welcome-card h1 { font-size: 1.5rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .user-info span { display: none; }
         }
     </style>
 </head>
@@ -730,7 +499,7 @@
                         </div>
                         <div class="card-title">次回の予定</div>
                     </div>
-                    
+
                     <div class="schedule-item">
                         <div class="schedule-date">2026年1月15日（水）14:00-15:00</div>
                         <div class="schedule-title">初回キャリア面談</div>
@@ -743,9 +512,9 @@
                             <button class="btn-small btn-secondary">予約変更</button>
                         </div>
                     </div>
-                    
+
                     <div class="view-all">
-                        <a href="meeting-booking.html ">
+                        <a href="meeting-booking.html">
                             すべての予定を見る
                             <i class="fas fa-chevron-right"></i>
                         </a>
@@ -761,7 +530,7 @@
                         <div class="card-title">メッセージ</div>
                         <span class="card-count">2件未読</span>
                     </div>
-                    
+
                     <div class="message-item message-unread">
                         <div class="message-header">
                             <div class="message-sender">
@@ -774,7 +543,7 @@
                             面談準備のお願い：当日までに履歴書と職務経歴書のご準備をお願いします...
                         </div>
                     </div>
-                    
+
                     <div class="message-item message-unread">
                         <div class="message-header">
                             <div class="message-sender">
@@ -787,7 +556,7 @@
                             新しい企業紹介があります。マイページでご確認ください。
                         </div>
                     </div>
-                    
+
                     <div class="view-all">
                         <a href="#messages">
                             すべてのメッセージを見る
@@ -808,7 +577,7 @@
                         <div class="card-title">紹介企業リスト</div>
                         <span class="card-count">3社</span>
                     </div>
-                    
+
                     <div class="company-item">
                         <div class="company-status status-passed"></div>
                         <div class="company-info">
@@ -817,7 +586,7 @@
                         </div>
                         <a href="#" class="company-action">詳細</a>
                     </div>
-                    
+
                     <div class="company-item">
                         <div class="company-status status-pending"></div>
                         <div class="company-info">
@@ -826,7 +595,7 @@
                         </div>
                         <a href="#" class="company-action">詳細</a>
                     </div>
-                    
+
                     <div class="company-item">
                         <div class="company-status status-new"></div>
                         <div class="company-info">
@@ -835,7 +604,7 @@
                         </div>
                         <a href="#" class="company-action">応募</a>
                     </div>
-                    
+
                     <div class="view-all">
                         <a href="#companies">
                             すべての企業を見る
@@ -853,7 +622,7 @@
                         <div class="card-title">応募書類</div>
                         <span class="card-count">3件</span>
                     </div>
-                    
+
                     <div class="document-item">
                         <i class="fas fa-file-pdf document-icon"></i>
                         <div class="document-info">
@@ -869,7 +638,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="document-item">
                         <i class="fas fa-file-pdf document-icon"></i>
                         <div class="document-info">
@@ -885,7 +654,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="document-item">
                         <i class="fas fa-file-pdf document-icon"></i>
                         <div class="document-info">
@@ -901,7 +670,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="view-all">
                         <a href="documents-upload.html">
                             <i class="fas fa-plus-circle"></i>
@@ -919,7 +688,7 @@
                     </div>
                     <div class="card-title">活動サマリー</div>
                 </div>
-                
+
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value">5</div>
@@ -938,7 +707,7 @@
                         <div class="stat-label">利用日数</div>
                     </div>
                 </div>
-                
+
                 <div class="view-all">
                     <a href="#reports">
                         詳細レポートを見る
@@ -951,15 +720,14 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase SDKのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { 
+        import {
             getFirestore, doc, getDoc, setDoc, serverTimestamp,
-            collection, query, where, orderBy, limit as firestoreLimit, getDocs, deleteDoc 
+            collection, query, where, orderBy, limit as firestoreLimit, getDocs, deleteDoc
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getStorage, ref as storageRef, deleteObject } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
-        
+
         // Firebase設定
         const firebaseConfig = {
             apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
@@ -970,8 +738,7 @@
             appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
             measurementId: "G-RJP20TC7DV"
         };
-        
-        // Firebaseの初期化
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -989,15 +756,13 @@
 
             const snap = await getDoc(userRef);
             if (snap.exists()) {
+                // role欠落を補正（破壊的変更は避け、読み出し側でデフォルト適用）
                 return snap.data();
             }
 
-            // 未作成なら role=user で自動作成
-            const nameFromEmail = email ? email.split('@')[0] : 'user';
             const newDoc = {
                 uid,
                 email,
-                name: nameFromEmail,
                 role: 'user',
                 createdAt: serverTimestamp()
             };
@@ -1009,15 +774,14 @@
         async function getUserRoleOrDefault(user) {
             try {
                 const data = await ensureUserDoc(user);
-                const role = (data && data.role) ? data.role : 'user';
-                return role;
+                return (data && data.role) ? data.role : 'user';
             } catch (e) {
                 console.error('role取得/ユーザー自動作成エラー:', e);
-                return 'user'; // 安全側
+                return 'user';
             }
         }
 
-        // dashboard 側のガード: 管理者なら admin-dashboard へ、未ログインは login へ
+        // dashboard側ガード
         async function handleDashboardAccessOrRedirect(user) {
             if (!user) {
                 window.location.href = 'log-in.html';
@@ -1026,195 +790,132 @@
 
             const role = await getUserRoleOrDefault(user);
 
+            // 管理者は管理画面へ
             if (role === 'admin' || role === 'superadmin') {
                 window.location.href = 'admin-dashboard.html';
                 return false;
             }
 
-            // それ以外は一般ユーザーとして表示継続
+            // それ以外（user/欠落）は表示継続
             return true;
         }
-        
-        // 認証状態の監視
+
+        // 認証状態監視
         onAuthStateChanged(auth, async (user) => {
             const ok = await handleDashboardAccessOrRedirect(user);
             if (!ok) return;
 
-            // ログイン済み（一般ユーザー扱い）
-            console.log('ログイン済みユーザー:', user.email);
-            
-            // Firestoreからユーザー情報を取得（ensureUserDoc で未作成なら作成済み）
+            // ユーザー情報を反映（users/{uid} 無ければ ensureUserDoc で作成済み）
             try {
                 const userData = await ensureUserDoc(user);
-                
-                // ユーザー名を表示
-                const userName = (userData && userData.name) ? userData.name : 'ユーザー';
+
+                const userName = (userData && userData.name) ? userData.name : (user.email ? user.email.split('@')[0] : 'ユーザー');
+
                 const welcomeTitle = document.querySelector('.welcome-card h1');
-                if (welcomeTitle) {
-                    welcomeTitle.textContent = `こんにちは、${userName}様`;
-                }
-                
-                // ユーザーアバターの初期文字を表示
+                if (welcomeTitle) welcomeTitle.textContent = `こんにちは、${userName}様 👋`;
+
                 const userAvatar = document.querySelector('.user-avatar');
-                if (userAvatar && userName) {
-                    userAvatar.textContent = userName.charAt(0);
-                }
-                
-                // ユーザー情報を表示
+                if (userAvatar && userName) userAvatar.textContent = userName.charAt(0);
+
                 const userInfoSpan = document.querySelector('.user-info span');
-                if (userInfoSpan) {
-                    userInfoSpan.textContent = userName;
-                }
-                
-                console.log('ユーザー情報取得成功:', userData);
-                
-                // 最新の書類を読み込む
+                if (userInfoSpan) userInfoSpan.textContent = userName;
+
                 await loadRecentDocuments(user.uid);
             } catch (error) {
                 console.error('ユーザー情報取得エラー:', error);
             }
         });
-        
+
         // ログアウト処理
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             const logoutBtn = document.querySelector('.logout-btn');
-            
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    
-                    const confirmed = confirm('ログアウトしますか？');
-                    if (confirmed) {
-                        try {
-                            await signOut(auth);
-                            console.log('ログアウト成功');
-                            window.location.href = 'log-in.html';
-                        } catch (error) {
-                            console.error('ログアウトエラー:', error);
-                            alert('ログアウトに失敗しました。もう一度お試しください。');
-                        }
-                    }
-                });
-            }
-            
-            // 開発中の注意メッセージ（一部機能用）
-            const interactiveElements = document.querySelectorAll('button:not(.logout-btn), a[href="#"], a[href^="#"]:not([href="#"])');
-            
-            interactiveElements.forEach(element => {
-                element.addEventListener('click', function(e) {
-                    // ログアウトボタンとトップへ戻るリンクは除外
-                    if (this.classList.contains('logout-btn') || this.href && this.href.includes('index.html')) {
-                        return;
-                    }
-                    
-                    if (this.href && (this.href.includes('career-consulting.html') || 
-                                     this.href.includes('job-search.html') ||
-                                     this.href.includes('skill-up.html') ||
-                                     this.href.includes('family-support.html'))) {
-                        return;
-                    }
-                    
-                    e.preventDefault();
-                    
-                    const actionName = this.textContent.trim() || this.title || '機能';
-                    alert(`🚧 開発中の機能です\n\n「${actionName}」は現在開発準備中です。\n完成後、Firebase連携により実際のデータ管理機能が有効になります。`);
-                });
+            if (!logoutBtn) return;
+
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const confirmed = confirm('ログアウトしますか？');
+                if (!confirmed) return;
+
+                try {
+                    await signOut(auth);
+                    window.location.href = 'log-in.html';
+                } catch (error) {
+                    console.error('ログアウトエラー:', error);
+                    alert('ログアウトに失敗しました。もう一度お試しください。');
+                }
             });
         });
-        
+
         // ============================================
-        // 書類管理機能
+        // 書類管理（最新3件表示）
         // ============================================
-        
-        // 最新の書類を読み込む
         async function loadRecentDocuments(userId) {
             try {
-                console.log('📄 書類を読み込み中...');
-                
                 const q = query(
                     collection(db, 'documents'),
                     where('userId', '==', userId),
                     orderBy('uploadedAt', 'desc'),
                     firestoreLimit(3)
                 );
-                
+
                 const querySnapshot = await getDocs(q);
                 const documents = [];
-                
                 querySnapshot.forEach((docSnap) => {
-                    documents.push({
-                        id: docSnap.id,
-                        ...docSnap.data()
-                    });
+                    documents.push({ id: docSnap.id, ...docSnap.data() });
                 });
-                
-                console.log('✅ 書類読み込み完了:', documents.length, '件');
-                
-                // HTML に表示
+
                 displayDocuments(documents);
-                
-                // 件数を更新
                 updateDocumentCount(documents.length);
-                
+
             } catch (error) {
-                console.error('❌ 書類読み込みエラー:', error);
+                console.error('書類読み込みエラー:', error);
                 displayEmptyState('読み込みエラー');
             }
         }
-        
-        // 書類を表示
+
         function displayDocuments(documents) {
             const card = document.querySelector('.card-icon.document')?.closest('.card');
-            if (!card) {
-                console.warn('書類カードが見つかりません');
-                return;
-            }
-            
-            // 既存の document-item を全て削除
-            const existingItems = card.querySelectorAll('.document-item');
-            existingItems.forEach(item => item.remove());
-            
-            // 既存の empty-state を削除
-            const existingEmpty = card.querySelector('.empty-state');
-            if (existingEmpty) existingEmpty.remove();
-            
+            if (!card) return;
+
+            // 既存 document-item / empty-state を除去
+            card.querySelectorAll('.document-item').forEach(el => el.remove());
+            card.querySelector('.empty-state')?.remove();
+
             const viewAllDiv = card.querySelector('.view-all');
-            
-            if (documents.length === 0) {
+
+            if (!documents || documents.length === 0) {
                 const emptyDiv = document.createElement('div');
                 emptyDiv.className = 'empty-state';
                 emptyDiv.style.padding = '30px 20px';
-                emptyDiv.style.textAlign = 'center';
-                emptyDiv.style.color = '#999';
                 emptyDiv.innerHTML = `
-                    <i class="fas fa-file-alt" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
-                    <p style="font-size: 0.95rem; margin-bottom: 15px;">まだ書類がアップロードされていません</p>
-                    <a href="documents-upload.html" class="btn btn-outline" style="font-size: 0.9rem; padding: 8px 20px; display: inline-block;">
+                    <i class="fas fa-file-alt"></i>
+                    <p>まだ書類がアップロードされていません</p>
+                    <a href="documents-upload.html" class="btn btn-outline" style="font-size:0.9rem; padding:8px 20px;">
                         <i class="fas fa-upload"></i> 最初の書類をアップロード
                     </a>
                 `;
                 card.insertBefore(emptyDiv, viewAllDiv);
                 return;
             }
-            
-            documents.forEach(doc => {
-                const item = createDocumentItem(doc);
+
+            documents.forEach(docItem => {
+                const item = createDocumentItem(docItem);
                 card.insertBefore(item, viewAllDiv);
             });
         }
-        
-        // 書類アイテムのHTML要素を作成
-        function createDocumentItem(doc) {
+
+        function createDocumentItem(docItem) {
             const div = document.createElement('div');
             div.className = 'document-item';
-            
-            const fileIcon = getFileIcon(doc.fileType || doc.fileName);
-            const fileSize = formatFileSize(doc.fileSize);
-            const uploadDate = formatDate(doc.uploadedAt);
-            
-            const safeFileName = escapeHtml(doc.fileName);
-            const safeDownloadURL = escapeHtml(doc.downloadURL || '');
-            
+
+            const fileIcon = getFileIcon(docItem.fileType || docItem.fileName);
+            const fileSize = formatFileSize(docItem.fileSize);
+            const uploadDate = formatDate(docItem.uploadedAt);
+
+            const safeFileName = escapeHtml(docItem.fileName || '');
+            const safeDownloadURL = escapeHtml(docItem.downloadURL || '');
+
             div.innerHTML = `
                 <i class="${fileIcon} document-icon"></i>
                 <div class="document-info">
@@ -1225,181 +926,155 @@
                     <button class="btn-icon" title="ダウンロード" data-action="download" data-url="${safeDownloadURL}">
                         <i class="fas fa-download"></i>
                     </button>
-                    <button class="btn-icon" title="削除" data-action="delete" data-id="${doc.id}" data-name="${safeFileName}">
+                    <button class="btn-icon" title="削除" data-action="delete" data-id="${escapeHtml(docItem.id)}" data-name="${safeFileName}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             `;
-            
-            // イベントリスナーを追加
-            const downloadBtn = div.querySelector('[data-action="download"]');
-            const deleteBtn = div.querySelector('[data-action="delete"]');
-            
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', function() {
-                    const url = this.getAttribute('data-url');
-                    downloadDocument(url);
-                });
-            }
-            
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const name = this.getAttribute('data-name');
-                    confirmDeleteDocument(id, name);
-                });
-            }
-            
+
+            div.querySelector('[data-action="download"]')?.addEventListener('click', function() {
+                downloadDocument(this.getAttribute('data-url'));
+            });
+
+            div.querySelector('[data-action="delete"]')?.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                confirmDeleteDocument(id, name);
+            });
+
             return div;
         }
-        
-        // ファイルアイコンを取得
+
+        function updateDocumentCount(count) {
+            const badge = document.querySelector('.card-icon.document')?.closest('.card')?.querySelector('.card-count');
+            if (badge) badge.textContent = `${count}件`;
+        }
+
+        function displayEmptyState(message) {
+            const card = document.querySelector('.card-icon.document')?.closest('.card');
+            if (!card) return;
+
+            card.querySelectorAll('.document-item').forEach(el => el.remove());
+            card.querySelector('.empty-state')?.remove();
+
+            const viewAllDiv = card.querySelector('.view-all');
+
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-state';
+            emptyDiv.style.padding = '30px 20px';
+            emptyDiv.innerHTML = `
+                <i class="fas fa-triangle-exclamation"></i>
+                <p>${escapeHtml(message || 'エラー')}</p>
+            `;
+            card.insertBefore(emptyDiv, viewAllDiv);
+        }
+
+        function downloadDocument(url) {
+            if (!url) {
+                alert('ダウンロードURLがありません');
+                return;
+            }
+            window.open(url, '_blank');
+        }
+
+        async function confirmDeleteDocument(docId, fileName) {
+            const ok = confirm(`書類を削除しますか？\n${fileName || ''}`);
+            if (!ok) return;
+
+            try {
+                // Firestore メタ削除
+                const docRef = doc(db, 'documents', docId);
+                const snap = await getDoc(docRef);
+                const data = snap.exists() ? snap.data() : null;
+
+                // Storage も削除（保存パスがある場合）
+                if (data && data.storagePath) {
+                    await deleteObject(storageRef(storage, data.storagePath));
+                }
+
+                await deleteDoc(docRef);
+
+                // 再読み込み
+                const user = auth.currentUser;
+                if (user) await loadRecentDocuments(user.uid);
+
+                alert('削除しました');
+            } catch (error) {
+                console.error('削除エラー:', error);
+                alert('削除に失敗しました: ' + error.message);
+            }
+        }
+
+        // 補助関数
         function getFileIcon(fileTypeOrName) {
             if (!fileTypeOrName) return 'fas fa-file';
-            
-            const type = fileTypeOrName.toLowerCase();
-            
+            const type = String(fileTypeOrName).toLowerCase();
             if (type.includes('pdf')) return 'fas fa-file-pdf';
             if (type.includes('word') || type.includes('.doc')) return 'fas fa-file-word';
             if (type.includes('image') || type.includes('.jpg') || type.includes('.png')) return 'fas fa-file-image';
-            
             return 'fas fa-file';
         }
-        
-        // ファイルサイズをフォーマット
+
         function formatFileSize(bytes) {
             if (!bytes || bytes === 0) return '不明';
             if (bytes < 1024) return bytes + ' B';
             if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
             return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
         }
-        
-        // 日付をフォーマット
+
         function formatDate(timestamp) {
             if (!timestamp) return '不明';
-            
             try {
                 const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
                 const year = date.getFullYear();
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const day = date.getDate().toString().padStart(2, '0');
-                
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
                 return `${year}/${month}/${day}`;
-            } catch (error) {
-                console.error('日付フォーマットエラー:', error);
+            } catch (e) {
                 return '不明';
             }
         }
-        
-        // HTMLエスケープ
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // 件数を更新
-        function updateDocumentCount(count) {
-            const countBadge = document.querySelector('.card-icon.document')?.closest('.card')?.querySelector('.card-count');
-            if (countBadge) {
-                countBadge.textContent = `${count}件`;
-            }
-        }
-        
-        // ダウンロード
-        function downloadDocument(downloadURL) {
-            if (!downloadURL) {
-                alert('ダウンロードURLが見つかりません');
-                return;
-            }
-            
-            console.log('🔗 Opening:', downloadURL);
-            window.open(downloadURL, '_blank');
-        }
-        
-        // 削除確認
-        async function confirmDeleteDocument(docId, fileName) {
-            const confirmed = confirm(`「${fileName}」を削除してもよろしいですか？\n\nこの操作は取り消せません。`);
-            
-            if (!confirmed) return;
-            
-            try {
-                console.log('🗑️ 削除開始:', docId);
-                
-                // Firestore からドキュメントを取得
-                const docRef = doc(db, 'documents', docId);
-                const docSnap = await getDoc(docRef);
-                
-                if (!docSnap.exists()) {
-                    alert('書類が見つかりません');
-                    return;
-                }
-                
-                const docData = docSnap.data();
-                
-                // Storage からファイルを削除
-                if (docData.storagePath) {
-                    const fileRef = storageRef(storage, docData.storagePath);
-                    await deleteObject(fileRef);
-                    console.log('✅ Storage からファイルを削除しました');
-                }
-                
-                // Firestore からドキュメントを削除
-                await deleteDoc(docRef);
-                console.log('✅ Firestore からメタデータを削除しました');
-                
-                alert('書類を削除しました');
-                
-                // 再読み込み
-                const user = auth.currentUser;
-                if (user) {
-                    await loadRecentDocuments(user.uid);
-                }
-                
-            } catch (error) {
-                console.error('❌ 削除エラー:', error);
-                alert('削除に失敗しました: ' + error.message);
-            }
-        }
-        
-        // 空の状態を表示
-        function displayEmptyState(message = '書類がありません') {
-            const card = document.querySelector('.card-icon.document')?.closest('.card');
-            if (!card) return;
-            
-            const existingItems = card.querySelectorAll('.document-item');
-            existingItems.forEach(item => item.remove());
-            
-            const existingEmpty = card.querySelector('.empty-state');
-            if (existingEmpty) existingEmpty.remove();
-            
-            const viewAllDiv = card.querySelector('.view-all');
-            const emptyDiv = document.createElement('div');
-            emptyDiv.className = 'empty-state';
-            emptyDiv.style.padding = '30px 20px';
-            emptyDiv.style.textAlign = 'center';
-            emptyDiv.style.color = '#999';
-            emptyDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 15px; display: block;"></i>
-                <p style="font-size: 0.95rem;">${escapeHtml(message)}</p>
-            `;
-            card.insertBefore(emptyDiv, viewAllDiv);
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
         }
 
-        // グローバルスコープに公開（デバッグ用）
+        // 開発中の注意メッセージ（現行実装の挙動維持）
+        document.addEventListener('DOMContentLoaded', function() {
+            const interactiveElements = document.querySelectorAll('button:not(.logout-btn), a[href="#"], a[href^="#"]:not([href="#"])');
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    if (this.classList.contains('logout-btn') || (this.href && this.href.includes('index.html'))) return;
+                    e.preventDefault();
+                    const actionName = this.textContent.trim() || this.title || '機能';
+                    alert(`🚧 開発中の機能です\n\n「${actionName}」は現在開発準備中です。\n完成後、Firebase連携により実際のデータ管理機能が有効になります。`);
+                });
+            });
+        });
+
+        // デバッグ用公開
         window.firebaseAuth = auth;
         window.firebaseDb = db;
     </script>
-    
-    <!-- JSON-LD構造化データ -->
+
+    <!-- JSON-LD 構造化データ -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "マイページ | 大学赴任者家族帯同支援プログラム",
-        "description": "大学赴任者家族帯同支援プログラムのマイページ",
-        "url": "https://hiyusho.github.io/university-relocation-support/dashboard.html"
+        "description": "大学赴任者家族帯同支援プログラムのマイページ。面談予約管理、企業紹介、応募書類管理などを一元管理できます。",
+        "url": "https://hiyusho.github.io/university-relocation-support/dashboard.html",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "大学赴任者家族帯同支援プログラム",
+            "url": "https://hiyusho.github.io/university-relocation-support/"
+        }
     }
     </script>
 </body>
