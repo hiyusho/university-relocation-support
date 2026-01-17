@@ -35,7 +35,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
                          'Hiragino Sans', Meiryo, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -487,7 +487,13 @@
     <script type="module">
         // Firebase SDKのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getAuth, signInWithEmailAndPassword, setPersistence, 
+            browserSessionPersistence, browserLocalPersistence 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, doc, getDoc, setDoc, serverTimestamp 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         
         // Firebase設定
         const firebaseConfig = {
@@ -503,6 +509,7 @@
         // Firebaseの初期化
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         
         // パスワード表示/非表示の切り替え
         const togglePassword = document.getElementById('togglePassword');
@@ -563,13 +570,38 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 
+                // Firestore: users/{uid} 取得 → 無ければ作成 → role判定
+                const userRef = doc(db, 'users', user.uid);
+                const snap = await getDoc(userRef);
+
+                let role = 'user';
+
+                if (!snap.exists()) {
+                    // 未作成なら role='user' で自動作成
+                    const newDoc = {
+                        uid: user.uid,
+                        email: user.email || email || '',
+                        role: 'user',
+                        createdAt: serverTimestamp()
+                    };
+                    await setDoc(userRef, newDoc, { merge: true });
+                    role = 'user';
+                } else {
+                    const data = snap.data() || {};
+                    role = data.role || 'user';
+                }
+                
                 // ログイン成功
                 showSuccess('ログインに成功しました！');
                 
-                // 1秒後にダッシュボードへリダイレクト
+                // role による遷移
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1000);
+                    if (role === 'admin' || role === 'superadmin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                }, 700);
                 
             } catch (error) {
                 console.error('Login error:', error);
@@ -624,6 +656,7 @@
         
         // グローバルスコープに公開（デバッグ用）
         window.firebaseAuth = auth;
+        window.firebaseDb = db;
     </script>
     
     <!-- JSON-LD構造化データ -->
