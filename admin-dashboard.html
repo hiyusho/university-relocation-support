@@ -2708,6 +2708,62 @@ function filterSlots() {
     console.log('🔍 フィルター:', dateFilter, statusFilter);
     // TODO: 実装
 }
+// ========================================
+// 1時間ごとに面談枠を生成する関数
+// ========================================
+// 1時間ごとに面談枠を生成する関数
+function generateHourlySlots(date, startTime, endTime, type, location, meetingLink, capacity, userId) {
+    const slots = [];
+    
+    // 開始時刻と終了時刻をDateオブジェクトに変換
+    const start = new Date(`${date}T${startTime}:00`);
+    const end = new Date(`${date}T${endTime}:00`);
+    
+    // 1時間 = 60分 = 60 * 60 * 1000 ミリ秒
+    const HOUR_MS = 60 * 60 * 1000;
+    
+    // 現在時刻
+    let current = new Date(start);
+    
+    console.log('🎯 面談枠を自動分割中...');
+    console.log(`日付: ${date}, 開始: ${startTime}, 終了: ${endTime}`);
+    
+    // 1時間ずつ枠を作成
+    while (current < end) {
+        const next = new Date(current.getTime() + HOUR_MS);
+        
+        // 終了時刻を超えないようにチェック
+        if (next > end) break;
+        
+        // HH:MM形式に変換
+        const slotStartTime = current.toTimeString().substring(0, 5);
+        const slotEndTime = next.toTimeString().substring(0, 5);
+        
+        console.log(`  → 作成: ${slotStartTime} - ${slotEndTime}`);
+        
+        slots.push({
+            date: date,
+            startTime: slotStartTime,
+            endTime: slotEndTime,
+            datetime: Timestamp.fromDate(new Date(current)),
+            type: type,
+            location: location,
+            meetingLink: meetingLink || '',
+            maxCapacity: capacity,
+            currentBookings: 0,
+            status: 'available',
+            createdBy: userId,
+            createdAt: Timestamp.now()
+        });
+        
+        current = next;
+    }
+    
+    console.log(`✅ ${slots.length}個の面談枠を作成しました`);
+    
+    return slots;
+}
+
 
 // 面談枠追加モーダルを開く
 window.showAddSlotModal = function() {
@@ -2731,6 +2787,7 @@ window.closeAddSlotModal = function() {
 };
 
 // 面談枠追加フォーム送信
+// 面談枠追加フォーム送信（自動分割機能付き）
 document.getElementById('addSlotForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -2742,6 +2799,9 @@ document.getElementById('addSlotForm')?.addEventListener('submit', async functio
     const meetingLink = document.getElementById('slotMeetingLink').value;
     const capacity = parseInt(document.getElementById('slotCapacity').value);
     
+    console.log('📝 面談枠追加フォーム送信');
+    console.log(`日付: ${date}, 開始: ${startTime}, 終了: ${endTime}`);
+    
     // バリデーション
     if (startTime >= endTime) {
         alert('⚠️ 終了時間は開始時間より後にしてください');
@@ -2749,28 +2809,47 @@ document.getElementById('addSlotForm')?.addEventListener('submit', async functio
     }
     
     try {
-        // Timestamp作成（日時を結合）
-        const datetimeString = `${date}T${startTime}:00`;
-        const datetime = new Date(datetimeString);
+        // 🎯 新機能: 1時間単位で自動分割
+        const slots = generateHourlySlots(
+            date, 
+            startTime, 
+            endTime, 
+            type, 
+            location, 
+            meetingLink, 
+            capacity,
+            currentUser.uid
+        );
         
-        const slotData = {
-            date: date,
-            startTime: startTime,
-            endTime: endTime,
-            datetime: datetime,
-            type: type,
-            location: location,
-            meetingLink: meetingLink || '',
-            maxCapacity: capacity,
-            currentBookings: 0,
-            status: 'available',
-            createdBy: currentUser.uid,
-            createdAt: new Date()
-        };
+        if (slots.length === 0) {
+            alert('⚠️ 面談枠を作成できませんでした。時間範囲を確認してください。');
+            return;
+        }
         
-        await addDoc(collection(db, 'meetingSlots'), slotData);
+        // 確認ダイアログ
+        const confirmMessage = `${slots.length}個の面談枠を作成します。\n\n` +
+            slots.map(s => `・${s.startTime} - ${s.endTime}`).join('\n') +
+            '\n\nよろしいですか？';
         
-        alert('✅ 面談枠を追加しました');
+        console.log('確認ダイアログ表示');
+        
+        if (!confirm(confirmMessage)) {
+            console.log('ユーザーがキャンセルしました');
+            return;
+        }
+        
+        // 複数の枠を一括追加
+        console.log('📤 Firestoreに追加中...');
+        let addedCount = 0;
+        for (const slotData of slots) {
+            await addDoc(collection(db, 'meetingSlots'), slotData);
+            addedCount++;
+            console.log(`  ${addedCount}/${slots.length} 完了`);
+        }
+        
+        alert(`✅ ${addedCount}個の面談枠を追加しました`);
+        
+        console.log('✅ 全ての面談枠を追加完了');
         
         closeAddSlotModal();
         loadMeetingSlots();
