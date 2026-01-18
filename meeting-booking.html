@@ -784,12 +784,12 @@
   import {
     getFirestore,
     collection, query, where, orderBy, getDocs,
-    doc, getDoc, addDoc,
+    doc, getDoc, addDoc, setDoc,
     Timestamp, serverTimestamp
   } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
   // ==========================
-  // Firebase Config
+  // Firebase Config（他ページと同一）
   // ==========================
   const firebaseConfig = {
     apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
@@ -823,8 +823,25 @@
   let currentYear = new Date().getFullYear();
   let currentMonth = new Date().getMonth();
 
-  let selectedDate = null;     // "YYYY-MM-DD"
-  let selectedGroup = null;    // 上記 group オブジェクト
+  let selectedDate = null;  // "YYYY-MM-DD"
+  let selectedGroup = null; // group object
+
+  // ==========================
+  // users/{uid} 自動作成（共通仕様）
+  // ==========================
+  async function ensureUserDoc(user) {
+    const ref = doc(db, 'users', user.uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: user.uid,
+        email: user.email || '',
+        role: 'user',
+        createdAt: serverTimestamp()
+      }, { merge: true });
+    }
+    return true;
+  }
 
   // ==========================
   // Auth Guard
@@ -836,6 +853,8 @@
     }
     currentUser = user;
 
+    await ensureUserDoc(user);
+
     await loadMeetingSlotsAndBuildGroups();
     renderCalendar();
   });
@@ -844,10 +863,10 @@
   // Utilities
   // ==========================
   function formatDateStr(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   }
 
   function escapeHtml(str) {
@@ -859,9 +878,9 @@
       .replaceAll("'", '&#039;');
   }
 
+  // groupKey 設計（日時×面談タイプ×場所）
+  // date/startTime/endTime/type/location を固定キーにする（Phase2へ移行しやすい）
   function buildGroupKey(slot) {
-    // 統合条件：日時×面談タイプ×場所（endTimeも含める）
-    // date/startTime/endTime/type/location は slot に入っている前提（現行 admin 側作成ロジックと整合）
     return `${slot.date}_${slot.startTime}_${slot.endTime}_${slot.type}_${slot.location}`;
   }
 
@@ -871,9 +890,8 @@
     return Math.max(0, maxCapacity - currentBookings);
   }
 
-  // 重み付きランダム：remaining 分だけ抽選確率を増やす
+  // 方式B：重み付きランダム（remaining が大きいslotほど当たりやすい）
   function pickRandomSlotIdWeighted(group) {
-    // group.slots = [{slotId, remaining}]
     const bag = [];
     for (const s of group.slots) {
       const r = Number(s.remaining ?? 0);
@@ -888,13 +906,13 @@
   // ==========================
   async function loadMeetingSlotsAndBuildGroups() {
     try {
-      console.log('📅 面談枠を読み込み中（統合表示用）...');
       document.getElementById('loading').style.display = 'block';
 
       const nowTs = Timestamp.fromDate(new Date());
 
-      // ★ meetingSlots 取得クエリ（public==true のみを対象）
-      // - status == available
+      // ✅ meetingSlots 取得クエリ（要件）
+      // - public == true
+      // - status == 'available'
       // - datetime >= now
       // - orderBy datetime asc
       const q = query(
@@ -908,11 +926,8 @@
       const snap = await getDocs(q);
 
       allSlots = [];
-      snap.forEach((d) => {
-        allSlots.push({ id: d.id, ...d.data() });
-      });
+      snap.forEach((d) => allSlots.push({ id: d.id, ...d.data() }));
 
-      // 集計
       groupedByKey = new Map();
       groupsByDate = new Map();
 
@@ -933,7 +948,7 @@
             endTime: slot.endTime,
             type: slot.type,
             location: slot.location,
-            datetime: slot.datetime,
+            datetime: slot.datetime, // ソート用
             remaining: 0,
             slots: []
           });
@@ -957,11 +972,10 @@
         groupsByDate.set(date, arr);
       }
 
-      console.log('✅ meetingSlots:', allSlots.length, '件 / groups:', groupedByKey.size, '件');
       document.getElementById('loading').style.display = 'none';
 
     } catch (error) {
-      console.error('❌ 面談枠読み込みエラー:', error);
+      console.error('面談枠読み込みエラー:', error);
       document.getElementById('loading').style.display = 'none';
       alert('面談枠の読み込みに失敗しました。時間をおいて再度お試しください。');
     }
@@ -981,45 +995,40 @@
     today.setHours(0,0,0,0);
 
     const grid = document.getElementById('calendarGrid');
-
-    // 既存セルを削除
     grid.querySelectorAll('.calendar-day').forEach(el => el.remove());
 
-    // 月初空白
     for (let i=0; i<firstDay; i++) {
       const empty = document.createElement('div');
       empty.className = 'calendar-day disabled';
       grid.appendChild(empty);
     }
 
-    // 日付セル
     for (let day=1; day<=daysInMonth; day++) {
       const date = new Date(currentYear, currentMonth, day);
       const dateStr = formatDateStr(date);
 
-      const dayCell = document.createElement('div');
-      dayCell.className = 'calendar-day';
-
       const groups = groupsByDate.get(dateStr) || [];
       const remainingTotal = groups.reduce((sum, g) => sum + Number(g.remaining || 0), 0);
 
+      const cell = document.createElement('div');
+      cell.className = 'calendar-day';
+
       if (date < today) {
-        dayCell.classList.add('disabled');
+        cell.classList.add('disabled');
       } else if (remainingTotal > 0) {
-        dayCell.classList.add('has-slots');
-        dayCell.onclick = () => selectDate(dateStr, date);
+        cell.classList.add('has-slots');
+        cell.onclick = () => selectDate(dateStr, date);
       } else {
-        dayCell.classList.add('disabled');
+        cell.classList.add('disabled');
       }
 
-      if (selectedDate === dateStr) dayCell.classList.add('selected');
+      if (selectedDate === dateStr) cell.classList.add('selected');
 
-      dayCell.innerHTML = `
+      cell.innerHTML = `
         <span class="day-number">${day}</span>
         ${remainingTotal > 0 ? `<span class="slots-indicator">● 残${remainingTotal}</span>` : ''}
       `;
-
-      grid.appendChild(dayCell);
+      grid.appendChild(cell);
     }
   }
 
@@ -1032,7 +1041,7 @@
   }
 
   // ==========================
-  // Time slots UI (Unified list)
+  // Unified time slots UI（統合表示）
   // ==========================
   function showTimeSlots(dateStr, dateObj) {
     const groups = groupsByDate.get(dateStr) || [];
@@ -1060,7 +1069,7 @@
       return;
     }
 
-    // ★統合表示：残数のみ（type/locationは枠の属性として表示、担当者内訳は非表示）
+    // ✅ 統合表示（残数のみを主表示。内訳は見せない）
     for (const g of groups) {
       const div = document.createElement('div');
       div.className = 'time-slot';
@@ -1075,9 +1084,7 @@
             <p><i class="fas fa-map-marker-alt"></i> ${escapeHtml(g.location)}</p>
           </div>
         </div>
-        <div class="slot-status status-available">
-          残り ${Number(g.remaining || 0)}
-        </div>
+        <div class="slot-status status-available">残り ${Number(g.remaining || 0)}</div>
       `;
       grid.appendChild(div);
     }
@@ -1106,16 +1113,16 @@
     `;
   }
 
-  // 戻る
   window.backToTimeSlots = function() {
     document.getElementById('bookingFormSection').style.display = 'none';
     document.getElementById('timeSlotsSection').style.display = 'block';
   };
 
   // ==========================
-  // Booking submit (Phase1: create meetingRequests)
-  // - weighted random slot selection
-  // - conflict retry up to 3
+  // Booking submit
+  // - 方式B：重み付きランダムでslotId選択
+  // - 競合時リトライ最大3回
+  // - meetingRequests に date/startTime/endTime/location を保存（YES前提）
   // ==========================
   document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1123,23 +1130,22 @@
 
     const notes = document.getElementById('notes').value.trim();
 
+    const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
+    const originalHtml = submitBtn.innerHTML;
+
     try {
-      // ボタン二重送信対策
-      const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
-      const originalHtml = submitBtn.innerHTML;
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
 
       const MAX_RETRY = 3;
 
-      // コピーして壊さないようにする（リトライ中に候補を削る）
-      let candidateSlots = selectedGroup.slots.map(s => ({...s}));
+      // 候補をローカルで保持（失敗したslotは候補から外す）
+      let candidateSlots = selectedGroup.slots.map(s => ({ ...s }));
 
       for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
-        // groupの候補を差し替え（重み付き抽選が効くように）
         const tmpGroup = { ...selectedGroup, slots: candidateSlots };
-
         const slotId = pickRandomSlotIdWeighted(tmpGroup);
+
         if (!slotId) break;
 
         // 直前に slot を再確認（競合対策）
@@ -1152,26 +1158,31 @@
         const slot = slotSnap.data();
         const remaining = Math.max(0, Number(slot.maxCapacity ?? 1) - Number(slot.currentBookings ?? 0));
 
-        // 公開＆利用可能＆在庫ありのときだけ申請を作る
+        // 直前チェック
         if (!(slot.public === true && slot.status === 'available' && remaining > 0)) {
-          // 埋まってた or 非公開になった
           candidateSlots = candidateSlots.filter(s => s.slotId !== slotId);
           continue;
         }
 
-        // meetingRequests 作成（担当未確定: requested）
+        // ✅ meetingRequests 作成（担当未確定: requested）
+        // meetingLinkは入れない（露出防止、assignment側で管理）
         await addDoc(collection(db, 'meetingRequests'), {
-          slotId: slotId,
+          slotId,
           userId: currentUser.uid,
           requestedType: selectedGroup.type,
+          location: selectedGroup.location,
+          date: selectedGroup.date,
+          startTime: selectedGroup.startTime,
+          endTime: selectedGroup.endTime,
           status: 'requested',
           requestedAt: serverTimestamp(),
           userMessage: notes || ''
         });
 
-        // UI：完了画面（受付済＝担当者調整中）
+        // 完了UI
         showConfirmationRequested();
-        // 再読み込み（残数反映は Phase1では完全ではないが、体感を良くする）
+
+        // 体感改善：再取得（ただしPhase1なので“残数の完全一致”は保証できない）
         await loadMeetingSlotsAndBuildGroups();
         renderCalendar();
 
@@ -1180,20 +1191,15 @@
         return;
       }
 
-      // 3回失敗
       alert('申し訳ありません。空き枠の確保に失敗しました（他の方の予約が重なった可能性があります）。別の枠をお試しください。');
-
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHtml;
 
     } catch (error) {
-      console.error('❌ 予約申請エラー:', error);
+      console.error('予約申請エラー:', error);
       alert('予約に失敗しました。もう一度お試しください。');
-      const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> 予約する';
-      }
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
     }
   });
 
@@ -1201,7 +1207,6 @@
     document.getElementById('bookingFormSection').style.display = 'none';
     document.getElementById('confirmationSection').style.display = 'block';
 
-    // 文言は「受付済（担当者調整中）」に寄せる
     const title = document.querySelector('#confirmationSection h2');
     const desc = document.querySelector('#confirmationSection p');
     if (title) title.textContent = '受付しました';
@@ -1248,7 +1253,7 @@
   }
 
   // ==========================
-  // Calendar navigation (global)
+  // Calendar navigation（既存HTMLのonclickに対応）
   // ==========================
   window.previousMonth = function() {
     if (currentMonth === 0) { currentMonth = 11; currentYear--; }
