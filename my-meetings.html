@@ -1,729 +1,769 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイ予約 - 留学生支援サービス</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>マイ予約 | 大学赴任者家族帯同支援プログラム</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+    .container { max-width: 1000px; margin: 0 auto; }
 
-        .header {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .header {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        .header h1 {
-            color: #333;
-            font-size: 24px;
-        }
+    .header h1 { color: #333; font-size: 24px; }
 
-        .header-actions {
-            display: flex;
-            gap: 10px;
-        }
+    .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+    }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+    .btn-secondary { background: #f5f5f5; color: #666; }
+    .btn-secondary:hover { background: #e0e0e0; }
 
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #666;
-        }
+    .content-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
 
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-        .content-box {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
+    .filter-btn {
+      padding: 8px 16px;
+      border: 2px solid #667eea;
+      background: white;
+      color: #667eea;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn.active { background: #667eea; color: white; }
+    .filter-btn:hover { background: #667eea; color: white; }
 
-        .filter-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+    .meetings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-        .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .meeting-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .meeting-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: #667eea; }
 
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-        }
+    .meeting-card.requested { border-left: 5px solid #ff9800; }
+    .meeting-card.assigned { border-left: 5px solid #2196F3; }
+    .meeting-card.confirmed { border-left: 5px solid #4CAF50; }
+    .meeting-card.cancelled { border-left: 5px solid #F44336; opacity: 0.75; }
 
-        .filter-btn:hover {
-            background: #667eea;
-            color: white;
-        }
+    .meeting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
 
-        .meetings-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    .meeting-type { font-size: 18px; font-weight: 600; color: #333; }
 
-        .meeting-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-            position: relative;
-        }
+    .meeting-status {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
 
-        .meeting-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #667eea;
-        }
+    .status-requested { background: #fff3e0; color: #ff9800; }
+    .status-assigned  { background: #e3f2fd; color: #1976d2; }
+    .status-confirmed { background: #E8F5E9; color: #2e7d32; }
+    .status-cancelled { background: #FFEBEE; color: #c62828; }
 
-        .meeting-card.scheduled {
-            border-left: 5px solid #4CAF50;
-        }
+    .meeting-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
 
-        .meeting-card.completed {
-            border-left: 5px solid #9E9E9E;
-            opacity: 0.8;
-        }
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+    }
+    .detail-item i { color: #667eea; width: 18px; text-align: center; }
 
-        .meeting-card.cancelled {
-            border-left: 5px solid #F44336;
-            opacity: 0.7;
-        }
+    .meeting-notes {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      color: #444;
+      font-size: 14px;
+      line-height: 1.6;
+    }
 
-        .meeting-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 15px;
-        }
+    .meeting-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
-        .meeting-type {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
+    .btn-action {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .meeting-status {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+    .btn-join { background: #4CAF50; color: white; }
+    .btn-join:hover { background: #45a049; }
 
-        .status-scheduled {
-            background: #E8F5E9;
-            color: #4CAF50;
-        }
+    .btn-cancel { background: #f44336; color: white; }
+    .btn-cancel:hover { background: #da190b; }
 
-        .status-completed {
-            background: #F5F5F5;
-            color: #9E9E9E;
-        }
+    .btn-disabled {
+      background: #ccc;
+      color: #777;
+      cursor: not-allowed;
+    }
 
-        .status-cancelled {
-            background: #FFEBEE;
-            color: #F44336;
-        }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+    .empty-state i { font-size: 48px; margin-bottom: 15px; color: #ddd; }
+    .empty-state h3 { margin-bottom: 10px; }
 
-        .meeting-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #667eea;
+    }
+    .loading i { font-size: 32px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #666;
-        }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .modal.active { display: flex; }
 
-        .detail-item i {
-            color: #667eea;
-            width: 20px;
-        }
+    .modal-content {
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .modal-header { margin-bottom: 14px; }
+    .modal-header h2 { color: #333; font-size: 20px; }
+    .modal-body { margin-bottom: 14px; color: #666; line-height: 1.6; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
 
-        .meeting-notes {
-            background: #f9f9f9;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .alert.active { display: block; }
+    .alert-success { background: #E8F5E9; color: #2e7d32; border-left: 4px solid #2e7d32; }
+    .alert-error   { background: #FFEBEE; color: #c62828; border-left: 4px solid #c62828; }
+    .alert-info    { background: #e3f2fd; color: #1565c0; border-left: 4px solid #1565c0; }
 
-        .meeting-notes strong {
-            color: #333;
-        }
-
-        .meeting-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-action {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .btn-join {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .btn-join:hover {
-            background: #45a049;
-        }
-
-        .btn-cancel {
-            background: #f44336;
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background: #da190b;
-        }
-
-        .btn-disabled {
-            background: #ccc;
-            color: #999;
-            cursor: not-allowed;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #ddd;
-        }
-
-        .empty-state h3 {
-            margin-bottom: 10px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #667eea;
-        }
-
-        .loading i {
-            font-size: 32px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .modal-header {
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            color: #333;
-            font-size: 22px;
-        }
-
-        .modal-body {
-            margin-bottom: 20px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .alert.active {
-            display: block;
-        }
-
-        .alert-success {
-            background: #E8F5E9;
-            color: #4CAF50;
-            border-left: 4px solid #4CAF50;
-        }
-
-        .alert-error {
-            background: #FFEBEE;
-            color: #F44336;
-            border-left: 4px solid #F44336;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .header-actions {
-                width: 100%;
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .meeting-details {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .header { flex-direction: column; align-items: stretch; }
+      .header-actions { width: 100%; }
+      .btn { width: 100%; text-align: center; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1><i class="fas fa-calendar-check"></i> マイ予約</h1>
-            <div class="header-actions">
-                <a href="meeting-booking.html" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> 新しい予約
-                </a>
-                <a href="dashboard.html" class="btn btn-secondary">
-                    <i class="fas fa-home"></i> ダッシュボード
-                </a>
-            </div>
-        </div>
+  <div class="container">
 
-        <!-- Content -->
-        <div class="content-box">
-            <!-- Alert messages -->
-            <div id="alert" class="alert"></div>
-
-            <!-- Filter bar -->
-            <div class="filter-bar">
-                <button class="filter-btn active" data-filter="all">
-                    <i class="fas fa-list"></i> すべて
-                </button>
-                <button class="filter-btn" data-filter="scheduled">
-                    <i class="fas fa-clock"></i> 予定
-                </button>
-                <button class="filter-btn" data-filter="completed">
-                    <i class="fas fa-check-circle"></i> 完了
-                </button>
-                <button class="filter-btn" data-filter="cancelled">
-                    <i class="fas fa-times-circle"></i> キャンセル
-                </button>
-            </div>
-
-            <!-- Loading state -->
-            <div id="loading" class="loading">
-                <i class="fas fa-spinner"></i>
-                <p>予約を読み込んでいます...</p>
-            </div>
-
-            <!-- Meetings list -->
-            <div id="meetingsList" class="meetings-list" style="display: none;">
-                <!-- Meetings will be rendered here -->
-            </div>
-
-            <!-- Empty state -->
-            <div id="emptyState" class="empty-state" style="display: none;">
-                <i class="fas fa-calendar-times"></i>
-                <h3>予約がありません</h3>
-                <p>まだ面談の予約がありません。</p>
-                <a href="meeting-booking.html" class="btn btn-primary" style="margin-top: 20px;">
-                    <i class="fas fa-plus"></i> 面談を予約する
-                </a>
-            </div>
-        </div>
+    <div class="header">
+      <h1><i class="fas fa-calendar-check"></i> マイ予約</h1>
+      <div class="header-actions">
+        <a href="meeting-booking.html" class="btn btn-primary"><i class="fas fa-plus"></i> 新しい予約</a>
+        <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-home"></i> ダッシュボード</a>
+      </div>
     </div>
 
-    <!-- Cancel Confirmation Modal -->
-    <div id="cancelModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-exclamation-triangle" style="color: #f44336;"></i> 予約をキャンセル</h2>
-            </div>
-            <div class="modal-body">
-                <p>この予約をキャンセルしてもよろしいですか？</p>
-                <p><strong>※ この操作は取り消せません。</strong></p>
-                <div id="cancelMeetingInfo" style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-                    <!-- Meeting info will be inserted here -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeCancelModal()">
-                    戻る
-                </button>
-                <button class="btn btn-cancel" onclick="confirmCancel()">
-                    <i class="fas fa-times"></i> キャンセル実行
-                </button>
-            </div>
-        </div>
+    <div class="content-box">
+      <div id="alert" class="alert"></div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-list"></i> すべて</button>
+        <button class="filter-btn" data-filter="requested"><i class="fas fa-hourglass-half"></i> 受付済</button>
+        <button class="filter-btn" data-filter="confirmed"><i class="fas fa-check-circle"></i> 担当確定</button>
+        <button class="filter-btn" data-filter="cancelled"><i class="fas fa-times-circle"></i> キャンセル</button>
+      </div>
+
+      <div id="loading" class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>予約を読み込んでいます...</p>
+      </div>
+
+      <div id="meetingsList" class="meetings-list" style="display:none;"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <i class="fas fa-calendar-times"></i>
+        <h3>予約がありません</h3>
+        <p>まだ面談の予約申請がありません。</p>
+        <a href="meeting-booking.html" class="btn btn-primary" style="margin-top: 20px;">
+          <i class="fas fa-plus"></i> 面談を予約する
+        </a>
+      </div>
     </div>
+  </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc, Timestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  <!-- Cancel Confirmation Modal -->
+  <div id="cancelModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="cancelTitle">
+      <div class="modal-header">
+        <h2 id="cancelTitle"><i class="fas fa-exclamation-triangle" style="color:#f44336;"></i> 予約をキャンセル</h2>
+      </div>
+      <div class="modal-body">
+        <p>この予約申請をキャンセルしてもよろしいですか？</p>
+        <p><strong>※ この操作は取り消せません。</strong></p>
+        <div id="cancelMeetingInfo" style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeCancelModal()">戻る</button>
+        <button class="btn-action btn-cancel" onclick="confirmCancel()"><i class="fas fa-times"></i> キャンセル実行</button>
+      </div>
+    </div>
+  </div>
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAEh5FqrTM0f3zvKPHgRWvGGMDKIIb8TL4",
-            authDomain: "university-relocation-support.firebaseapp.com",
-            projectId: "university-relocation-support"
-        };
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      orderBy,
+      limit,
+      getDocs,
+      doc,
+      getDoc,
+      updateDoc,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    // Firebase configuration（他ページと同一にしてください）
+    // ※このファイルは既存 my-meetings.html が別configになっていたため、プロジェクトで統一してください。
+    const firebaseConfig = {
+      apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
+      authDomain: "university-relocation-support.firebaseapp.com",
+      projectId: "university-relocation-support",
+      storageBucket: "university-relocation-support.firebasestorage.app",
+      messagingSenderId: "849634495988",
+      appId: "1:849634495988:web:013663976b0c4d6b4f7da1",
+      measurementId: "G-RJP20TC7DV"
+    };
 
-        let currentUser = null;
-        let allMeetings = [];
-        let currentFilter = 'all';
-        let selectedMeetingId = null;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // Authentication check
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                await loadMyMeetings();
-            } else {
-                window.location.href = 'log-in.html';
-            }
+    // ----------------------------
+    // Shared guard utilities（ダッシュボード群と同じ思想）
+    // ----------------------------
+    async function ensureUserDoc(user) {
+      const ref = doc(db, 'users', user.uid);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        await updateDoc(ref, {
+          // updateDocは存在しないDocに使えないため、setDocを使うのが一般的です。
+          // ただし既存プロジェクトではensureUserDocはadmin側等でsetDocを使っている想定。
+          // ここでは安全のため setDoc を使う実装にします。
+        });
+      }
+      return snap.exists() ? snap.data() : null;
+    }
+
+    async function ensureUserDocSafe(user) {
+      // setDoc を明示的に使う（doc不存在に対応）
+      const { setDoc, getDoc: _getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+      const ref = doc(db, 'users', user.uid);
+      const snap = await _getDoc(ref);
+
+      if (!snap.exists()) {
+        await setDoc(ref, {
+          uid: user.uid,
+          email: user.email || '',
+          role: 'user',
+          createdAt: serverTimestamp()
+        }, { merge: true });
+        const re = await _getDoc(ref);
+        return re.exists() ? re.data() : { uid: user.uid, email: user.email || '', role: 'user' };
+      }
+      return snap.data();
+    }
+
+    function showAlert(message, type = 'info') {
+      const alert = document.getElementById('alert');
+      alert.textContent = message;
+      alert.className = `alert alert-${type} active`;
+      setTimeout(() => alert.classList.remove('active'), 5000);
+    }
+
+    function toDateSafe(v) {
+      if (!v) return null;
+      if (typeof v.toDate === 'function') return v.toDate();
+      try { return new Date(v); } catch { return null; }
+    }
+
+    function formatDateTimeParts({ date, startTime, endTime }) {
+      // 既存データが date/startTime/endTime を持つ前提（meeting-booking側と整合）
+      const d = date ? date.replaceAll('-', '/') : '';
+      const t = (startTime && endTime) ? `${startTime} - ${endTime}` : '';
+      return { d, t };
+    }
+
+    // ----------------------------
+    // Data loading
+    // ----------------------------
+    let currentUser = null;
+    let allItems = []; // 表示用に整形済み
+    let currentFilter = 'all';
+    let selectedRequestId = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = 'log-in.html';
+        return;
+      }
+      currentUser = user;
+
+      // users/{uid} 自動作成（共通仕様）
+      await ensureUserDocSafe(user);
+
+      await loadMyRequestsAndAssignments();
+    });
+
+    async function loadMyRequestsAndAssignments() {
+      const loading = document.getElementById('loading');
+      const listEl = document.getElementById('meetingsList');
+      const emptyEl = document.getElementById('emptyState');
+
+      try {
+        loading.style.display = 'block';
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'none';
+
+        // 1) 自分の meetingRequests を取得（新しい順）
+        const reqRef = collection(db, 'meetingRequests');
+        const reqQ = query(
+          reqRef,
+          where('userId', '==', currentUser.uid),
+          orderBy('requestedAt', 'desc'),
+          limit(100)
+        );
+
+        const reqSnap = await getDocs(reqQ);
+        const requests = [];
+        reqSnap.forEach(d => requests.push({ id: d.id, ...d.data() }));
+
+        if (requests.length === 0) {
+          loading.style.display = 'none';
+          emptyEl.style.display = 'block';
+          return;
+        }
+
+        // 2) 自分の meetingAssignments を取得（あれば）
+        // ※「ユーザーは自分の分だけread」ルール前提
+        const asgRef = collection(db, 'meetingAssignments');
+        const asgQ = query(
+          asgRef,
+          where('userId', '==', currentUser.uid),
+          orderBy('assignedAt', 'desc'),
+          limit(200)
+        );
+        const asgSnap = await getDocs(asgQ);
+        const assignments = [];
+        asgSnap.forEach(d => assignments.push({ id: d.id, ...d.data() }));
+
+        // 3) requestId で突合（assignmentが requestId を持つ前提）
+        const assignmentByRequestId = new Map();
+        for (const a of assignments) {
+          if (a.requestId) assignmentByRequestId.set(a.requestId, a);
+        }
+
+        // 4) 表示用に整形
+        allItems = requests.map(r => {
+          const a = assignmentByRequestId.get(r.id);
+
+          // ユーザー向けステータス
+          // - requested: 受付済（担当者調整中）
+          // - cancelled: キャンセル
+          // - assigned/confirmed: 担当確定（URL表示）
+          const reqStatus = r.status || 'requested';
+          const isCancelled = reqStatus === 'cancelled';
+
+          const hasAssignment = !!a;
+          const hasMeetingLink = !!(a && a.meetingLink);
+
+          let uiStatusKey = 'requested';
+          let uiStatusLabel = '受付済（担当者調整中）';
+          if (isCancelled) {
+            uiStatusKey = 'cancelled';
+            uiStatusLabel = 'キャンセル';
+          } else if (hasAssignment) {
+            uiStatusKey = hasMeetingLink ? 'confirmed' : 'assigned';
+            uiStatusLabel = hasMeetingLink ? '担当確定（面談URLあり）' : '担当確定（準備中）';
+          }
+
+          const type = r.requestedType || r.type || '（未設定）';
+          const location = r.location || '（未設定）';
+
+          // meetingSlots側のdate/startTime/endTimeをrequestsにコピーしている前提（meeting-bookingで書くべき）
+          const date = r.date || '';
+          const startTime = r.startTime || '';
+          const endTime = r.endTime || '';
+
+          const { d, t } = formatDateTimeParts({ date, startTime, endTime });
+
+          return {
+            requestId: r.id,
+            slotId: r.slotId || null,
+            requestedAt: toDateSafe(r.requestedAt),
+            requestedType: type,
+            location,
+            date,
+            startTime,
+            endTime,
+            dateLabel: d,
+            timeLabel: t,
+            userMessage: r.userMessage || '',
+            requestStatus: reqStatus,
+            uiStatusKey,
+            uiStatusLabel,
+            assignment: a || null
+          };
         });
 
-        // Load user's meetings
-        async function loadMyMeetings() {
-            const loading = document.getElementById('loading');
-            const meetingsList = document.getElementById('meetingsList');
-            const emptyState = document.getElementById('emptyState');
+        loading.style.display = 'none';
+        listEl.style.display = 'flex';
+        displayItems(currentFilter);
 
-            try {
-                loading.style.display = 'block';
-                meetingsList.style.display = 'none';
-                emptyState.style.display = 'none';
+      } catch (e) {
+        console.error(e);
+        loading.style.display = 'none';
+        showAlert('予約の読み込みに失敗しました: ' + (e.message || e), 'error');
+      }
+    }
 
-                const meetingsRef = collection(db, 'meetings');
-                const q = query(
-                    meetingsRef,
-                    where('userId', '==', currentUser.uid),
-                    orderBy('datetime', 'desc')
-                );
+    function displayItems(filter) {
+      const listEl = document.getElementById('meetingsList');
+      const emptyEl = document.getElementById('emptyState');
 
-                const querySnapshot = await getDocs(q);
-                allMeetings = [];
-
-                querySnapshot.forEach((doc) => {
-                    allMeetings.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-
-                loading.style.display = 'none';
-
-                if (allMeetings.length === 0) {
-                    emptyState.style.display = 'block';
-                } else {
-                    meetingsList.style.display = 'flex';
-                    displayMeetings(currentFilter);
-                }
-            } catch (error) {
-                console.error('予約の読み込みエラー:', error);
-                showAlert('予約の読み込みに失敗しました: ' + error.message, 'error');
-                loading.style.display = 'none';
-            }
+      let items = allItems;
+      if (filter !== 'all') {
+        // filter: requested / confirmed / cancelled
+        if (filter === 'confirmed') {
+          items = allItems.filter(x => (x.uiStatusKey === 'confirmed' || x.uiStatusKey === 'assigned'));
+        } else {
+          items = allItems.filter(x => x.uiStatusKey === filter);
         }
+      }
 
-        // Display meetings based on filter
-        function displayMeetings(filter) {
-            const meetingsList = document.getElementById('meetingsList');
-            const emptyState = document.getElementById('emptyState');
-            
-            let filteredMeetings = allMeetings;
-            
-            if (filter !== 'all') {
-                filteredMeetings = allMeetings.filter(m => m.status === filter);
-            }
+      if (items.length === 0) {
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'block';
 
-            if (filteredMeetings.length === 0) {
-                meetingsList.style.display = 'none';
-                emptyState.style.display = 'block';
-                const emptyIcon = emptyState.querySelector('i');
-                const emptyTitle = emptyState.querySelector('h3');
-                const emptyText = emptyState.querySelector('p');
-                
-                if (filter === 'scheduled') {
-                    emptyIcon.className = 'fas fa-clock';
-                    emptyTitle.textContent = '予定された面談がありません';
-                    emptyText.textContent = '今後の予定はありません。';
-                } else if (filter === 'completed') {
-                    emptyIcon.className = 'fas fa-check-circle';
-                    emptyTitle.textContent = '完了した面談がありません';
-                    emptyText.textContent = '完了した面談はまだありません。';
-                } else if (filter === 'cancelled') {
-                    emptyIcon.className = 'fas fa-times-circle';
-                    emptyTitle.textContent = 'キャンセルした面談がありません';
-                    emptyText.textContent = 'キャンセルした面談はありません。';
-                }
-                return;
-            }
+        const icon = emptyEl.querySelector('i');
+        const title = emptyEl.querySelector('h3');
+        const text = emptyEl.querySelector('p');
 
-            meetingsList.style.display = 'flex';
-            emptyState.style.display = 'none';
-            meetingsList.innerHTML = '';
-
-            filteredMeetings.forEach(meeting => {
-                const card = createMeetingCard(meeting);
-                meetingsList.appendChild(card);
-            });
+        if (filter === 'requested') {
+          icon.className = 'fas fa-hourglass-half';
+          title.textContent = '受付済の予約がありません';
+          text.textContent = '現在、担当者調整中の予約はありません。';
+        } else if (filter === 'confirmed') {
+          icon.className = 'fas fa-check-circle';
+          title.textContent = '担当確定の予約がありません';
+          text.textContent = '担当確定（面談URL表示）の予約はまだありません。';
+        } else if (filter === 'cancelled') {
+          icon.className = 'fas fa-times-circle';
+          title.textContent = 'キャンセルした予約がありません';
+          text.textContent = 'キャンセル履歴はありません。';
+        } else {
+          icon.className = 'fas fa-calendar-times';
+          title.textContent = '予約がありません';
+          text.textContent = 'まだ面談の予約申請がありません。';
         }
+        return;
+      }
 
-        // Create meeting card
-        function createMeetingCard(meeting) {
-            const card = document.createElement('div');
-            card.className = `meeting-card ${meeting.status}`;
+      emptyEl.style.display = 'none';
+      listEl.style.display = 'flex';
+      listEl.innerHTML = '';
 
-            const statusText = {
-                'scheduled': '予定',
-                'completed': '完了',
-                'cancelled': 'キャンセル'
-            };
+      for (const item of items) {
+        listEl.appendChild(createCard(item));
+      }
+    }
 
-            const statusClass = `status-${meeting.status}`;
-            const meetingDatetime = meeting.datetime?.toDate ? meeting.datetime.toDate() : new Date(meeting.datetime);
-            const now = new Date();
-            const isPast = meetingDatetime < now;
-            const canCancel = meeting.status === 'scheduled' && !isPast;
-            const canJoin = meeting.status === 'scheduled' && meeting.meetingLink;
+    function createCard(item) {
+      const card = document.createElement('div');
+      card.className = `meeting-card ${item.uiStatusKey}`;
 
-            card.innerHTML = `
-                <div class="meeting-header">
-                    <div class="meeting-type">${meeting.type}</div>
-                    <div class="meeting-status ${statusClass}">${statusText[meeting.status]}</div>
-                </div>
-                <div class="meeting-details">
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>${meeting.date}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        <span>${meeting.startTime} - ${meeting.endTime}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>${meeting.location}</span>
-                    </div>
-                </div>
-                ${meeting.notes ? `
-                    <div class="meeting-notes">
-                        <strong>備考:</strong> ${meeting.notes}
-                    </div>
-                ` : ''}
-                <div class="meeting-actions">
-                    ${canJoin ? `
-                        <button class="btn-action btn-join" onclick="window.open('${meeting.meetingLink}', '_blank')">
-                            <i class="fas fa-video"></i> 面談に参加
-                        </button>
-                    ` : ''}
-                    ${canCancel ? `
-                        <button class="btn-action btn-cancel" onclick="window.openCancelModal('${meeting.id}')">
-                            <i class="fas fa-times"></i> キャンセル
-                        </button>
-                    ` : ''}
-                    ${meeting.status === 'cancelled' && meeting.cancelledAt ? `
-                        <span class="detail-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>キャンセル日時: ${meeting.cancelledAt.toDate ? meeting.cancelledAt.toDate().toLocaleString('ja-JP') : new Date(meeting.cancelledAt).toLocaleString('ja-JP')}</span>
-                        </span>
-                    ` : ''}
-                </div>
-            `;
+      const statusClass = `status-${item.uiStatusKey}`;
 
-            return card;
-        }
+      const canCancel = item.uiStatusKey === 'requested' && item.requestStatus !== 'cancelled';
+      const canJoin = item.uiStatusKey === 'confirmed' && item.assignment && item.assignment.meetingLink;
 
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                displayMeetings(currentFilter);
-            });
+      // 面談URLは assignment にのみ置く想定（meetingSlotsには置かない）
+      const meetingLink = canJoin ? item.assignment.meetingLink : '';
+
+      const requestedAtStr = item.requestedAt ? item.requestedAt.toLocaleString('ja-JP') : '（不明）';
+
+      card.innerHTML = `
+        <div class="meeting-header">
+          <div class="meeting-type">${escapeHtml(item.requestedType)}</div>
+          <div class="meeting-status ${statusClass}">${escapeHtml(item.uiStatusLabel)}</div>
+        </div>
+
+        <div class="meeting-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar-day"></i>
+            <span>${escapeHtml(item.dateLabel || item.date || '（日付未設定）')}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-clock"></i>
+            <span>${escapeHtml(item.timeLabel || '（時間未設定）')}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>${escapeHtml(item.location || '（場所未設定）')}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-receipt"></i>
+            <span>申請日時: ${escapeHtml(requestedAtStr)}</span>
+          </div>
+        </div>
+
+        ${item.userMessage ? `
+          <div class="meeting-notes">
+            <strong>備考（申請内容）:</strong><br/>
+            ${escapeHtml(item.userMessage)}
+          </div>
+        ` : ''}
+
+        ${item.uiStatusKey === 'confirmed' && item.assignment ? `
+          <div class="meeting-notes">
+            <strong>担当確定情報:</strong><br/>
+            <div style="margin-top:6px;">
+              <span style="color:#555;">ステータス:</span>
+              <span>${escapeHtml(item.assignment.status || 'assigned')}</span>
+            </div>
+            ${item.assignment.assignedAt ? `
+              <div style="margin-top:6px;">
+                <span style="color:#555;">確定日時:</span>
+                <span>${escapeHtml(toDateSafe(item.assignment.assignedAt)?.toLocaleString('ja-JP') || '')}</span>
+              </div>
+            ` : ''}
+            ${item.assignment.meetingLink ? `
+              <div style="margin-top:10px;">
+                <span style="color:#555;">面談URL:</span><br/>
+                <span style="word-break: break-all;">${escapeHtml(item.assignment.meetingLink)}</span>
+              </div>
+            ` : `
+              <div style="margin-top:10px;color:#1565c0;">
+                面談URLは準備中です。確定後に表示されます。
+              </div>
+            `}
+          </div>
+        ` : ''}
+
+        <div class="meeting-actions">
+          ${canJoin ? `
+            <button class="btn-action btn-join" onclick="window.openMeetingLink('${encodeAttr(meetingLink)}')">
+              <i class="fas fa-video"></i> 面談に参加
+            </button>
+          ` : ''}
+          ${canCancel ? `
+            <button class="btn-action btn-cancel" onclick="window.openCancelModal('${encodeAttr(item.requestId)}')">
+              <i class="fas fa-times"></i> キャンセル
+            </button>
+          ` : ''}
+          ${item.uiStatusKey === 'assigned' ? `
+            <span class="detail-item" style="color:#1565c0;">
+              <i class="fas fa-info-circle"></i>
+              <span>担当者は確定しています。URL準備中です。</span>
+            </span>
+          ` : ''}
+          ${item.uiStatusKey === 'requested' ? `
+            <span class="detail-item" style="color:#ff9800;">
+              <i class="fas fa-info-circle"></i>
+              <span>受付済（担当者調整中）</span>
+            </span>
+          ` : ''}
+        </div>
+      `;
+
+      return card;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+    function encodeAttr(str) {
+      return String(str ?? '').replaceAll("'", '&#039;');
+    }
+
+    // ----------------------------
+    // Filters
+    // ----------------------------
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        displayItems(currentFilter);
+      });
+    });
+
+    // ----------------------------
+    // Cancel modal (meetingRequests を cancelled に更新)
+    // ----------------------------
+    window.openCancelModal = function(requestId) {
+      selectedRequestId = requestId;
+      const item = allItems.find(x => x.requestId === requestId);
+      if (!item) return;
+
+      document.getElementById('cancelMeetingInfo').innerHTML = `
+        <div><strong>日時:</strong> ${escapeHtml(item.dateLabel || item.date || '（未設定）')} ${escapeHtml(item.timeLabel || '')}</div>
+        <div style="margin-top: 8px;"><strong>面談タイプ:</strong> ${escapeHtml(item.requestedType)}</div>
+        <div style="margin-top: 8px;"><strong>場所:</strong> ${escapeHtml(item.location)}</div>
+      `;
+
+      document.getElementById('cancelModal').classList.add('active');
+      document.getElementById('cancelModal').setAttribute('aria-hidden', 'false');
+    };
+
+    window.closeCancelModal = function() {
+      document.getElementById('cancelModal').classList.remove('active');
+      document.getElementById('cancelModal').setAttribute('aria-hidden', 'true');
+      selectedRequestId = null;
+    };
+
+    window.confirmCancel = async function() {
+      if (!selectedRequestId) return;
+
+      const item = allItems.find(x => x.requestId === selectedRequestId);
+      if (!item) return;
+
+      // 担当確定後は、ユーザー側キャンセル不可にする（運用方針）
+      if (item.uiStatusKey === 'confirmed' || item.uiStatusKey === 'assigned') {
+        showAlert('担当確定後のキャンセルは、運営側にお問い合わせください。', 'info');
+        closeCancelModal();
+        return;
+      }
+
+      try {
+        const ref = doc(db, 'meetingRequests', selectedRequestId);
+
+        // 最小権限＋フィールド制約（想定）:
+        // - user は status を requested -> cancelled のみ許可
+        await updateDoc(ref, {
+          status: 'cancelled',
+          cancelledAt: serverTimestamp()
         });
 
-        // Cancel modal functions
-        window.openCancelModal = function(meetingId) {
-            selectedMeetingId = meetingId;
-            const meeting = allMeetings.find(m => m.id === meetingId);
-            
-            if (meeting) {
-                document.getElementById('cancelMeetingInfo').innerHTML = `
-                    <div><strong>日時:</strong> ${meeting.date} ${meeting.startTime} - ${meeting.endTime}</div>
-                    <div style="margin-top: 8px;"><strong>面談タイプ:</strong> ${meeting.type}</div>
-                    <div style="margin-top: 8px;"><strong>場所:</strong> ${meeting.location}</div>
-                `;
-                
-                document.getElementById('cancelModal').classList.add('active');
-            }
-        };
+        showAlert('予約申請をキャンセルしました。', 'success');
+        closeCancelModal();
+        await loadMyRequestsAndAssignments();
+      } catch (e) {
+        console.error(e);
+        showAlert('キャンセルに失敗しました: ' + (e.message || e), 'error');
+      }
+    };
 
-        window.closeCancelModal = function() {
-            document.getElementById('cancelModal').classList.remove('active');
-            selectedMeetingId = null;
-        };
+    window.openMeetingLink = function(url) {
+      if (!url) return;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
 
-        window.confirmCancel = async function() {
-            if (!selectedMeetingId) return;
-
-            try {
-                const meetingRef = doc(db, 'meetings', selectedMeetingId);
-                await updateDoc(meetingRef, {
-                    status: 'cancelled',
-                    cancelledAt: Timestamp.now()
-                });
-
-                // Update currentBookings in slot
-                const meeting = allMeetings.find(m => m.id === selectedMeetingId);
-                if (meeting && meeting.slotId) {
-                    const slotRef = doc(db, 'meetingSlots', meeting.slotId);
-                    const slotDoc = await getDocs(query(collection(db, 'meetingSlots'), where('__name__', '==', meeting.slotId)));
-                    
-                    if (!slotDoc.empty) {
-                        const slotData = slotDoc.docs[0].data();
-                        await updateDoc(slotRef, {
-                            currentBookings: Math.max(0, (slotData.currentBookings || 1) - 1),
-                            status: 'available'
-                        });
-                    }
-                }
-
-                showAlert('予約をキャンセルしました', 'success');
-                closeCancelModal();
-                await loadMyMeetings();
-            } catch (error) {
-                console.error('キャンセルエラー:', error);
-                showAlert('キャンセルに失敗しました: ' + error.message, 'error');
-            }
-        };
-
-        // Show alert
-        function showAlert(message, type) {
-            const alert = document.getElementById('alert');
-            alert.textContent = message;
-            alert.className = `alert alert-${type} active`;
-            
-            setTimeout(() => {
-                alert.classList.remove('active');
-            }, 5000);
-        }
-
-        // Close modal on outside click
-        document.getElementById('cancelModal').addEventListener('click', (e) => {
-            if (e.target.id === 'cancelModal') {
-                closeCancelModal();
-            }
-        });
-    </script>
+    document.getElementById('cancelModal').addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'cancelModal') closeCancelModal();
+    });
+  </script>
 </body>
 </html>
