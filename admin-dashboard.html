@@ -2006,6 +2006,32 @@ window.closeAddSlotModal = function() {
     function escapeJs(str){
       return String(str ?? '').replaceAll('\\', '\\\\').replaceAll("'", "\\'");
     }
+    // ============================================================
+    // ページ読み込み完了後、ローディングを確実に消す
+    // ============================================================
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        // 全てのローディング要素を消す
+      const loadingSelectors = [
+          '.loading',
+          '.spinner',
+          '[class*="loading"]',
+          '[id*="loading"]',
+          '[id*="spinner"]',
+          '.fa-spinner',
+          '.fa-circle-notch'
+        ];
+    
+        loadingSelectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+          });
+        });
+    
+        console.log('✅ ローディング表示を強制的に消しました');
+      }, 3000); // 3秒後に実行（データ読み込み完了を待つ）
+    });
   </script>
 </body>
 </html>
