@@ -316,11 +316,11 @@
       doc,
       getDoc,
       updateDoc,
+      setDoc,
       serverTimestamp
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    // Firebase configuration（他ページと同一にしてください）
-    // ※このファイルは既存 my-meetings.html が別configになっていたため、プロジェクトで統一してください。
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyA6iFUhXOueccuoLJVU9ZSvXywHmj8zoR4",
       authDomain: "university-relocation-support.firebaseapp.com",
@@ -335,28 +335,9 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ----------------------------
-    // Shared guard utilities（ダッシュボード群と同じ思想）
-    // ----------------------------
-    async function ensureUserDoc(user) {
+    async function ensureUserDocSafe(user) {
       const ref = doc(db, 'users', user.uid);
       const snap = await getDoc(ref);
-
-      if (!snap.exists()) {
-        await updateDoc(ref, {
-          // updateDocは存在しないDocに使えないため、setDocを使うのが一般的です。
-          // ただし既存プロジェクトではensureUserDocはadmin側等でsetDocを使っている想定。
-          // ここでは安全のため setDoc を使う実装にします。
-        });
-      }
-      return snap.exists() ? snap.data() : null;
-    }
-
-    async function ensureUserDocSafe(user) {
-      // setDoc を明示的に使う（doc不存在に対応）
-      const { setDoc, getDoc: _getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-      const ref = doc(db, 'users', user.uid);
-      const snap = await _getDoc(ref);
 
       if (!snap.exists()) {
         await setDoc(ref, {
@@ -365,7 +346,7 @@
           role: 'user',
           createdAt: serverTimestamp()
         }, { merge: true });
-        const re = await _getDoc(ref);
+        const re = await getDoc(ref);
         return re.exists() ? re.data() : { uid: user.uid, email: user.email || '', role: 'user' };
       }
       return snap.data();
@@ -384,31 +365,38 @@
       try { return new Date(v); } catch { return null; }
     }
 
+    // ✅ 修正: タイムゾーンの問題を回避する日付フォーマット関数
+    function formatDateJP(dateStr) {
+      if (!dateStr) return '（日付未設定）';
+      // dateStr は "2026-01-22" 形式
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      
+      const year = parts[0];
+      const month = parseInt(parts[1], 10);
+      const day = parseInt(parts[2], 10);
+      
+      return `${year}/${month}/${day}`;
+    }
+
     function formatDateTimeParts({ date, startTime, endTime }) {
-      // 既存データが date/startTime/endTime を持つ前提（meeting-booking側と整合）
-      const d = date ? date.replaceAll('-', '/') : '';
+      const d = formatDateJP(date);  // ✅ 修正: 新しい関数を使用
       const t = (startTime && endTime) ? `${startTime} - ${endTime}` : '';
       return { d, t };
     }
 
-    // ----------------------------
-    // Data loading
-    // ----------------------------
     let currentUser = null;
-    let allItems = []; // 表示用に整形済み
+    let allItems = [];
     let currentFilter = 'all';
     let selectedRequestId = null;
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = 'log-in.html';
+        window.location.href = 'index.html';
         return;
       }
       currentUser = user;
-
-      // users/{uid} 自動作成（共通仕様）
       await ensureUserDocSafe(user);
-
       await loadMyRequestsAndAssignments();
     });
 
@@ -422,7 +410,6 @@
         listEl.style.display = 'none';
         emptyEl.style.display = 'none';
 
-        // 1) 自分の meetingRequests を取得（新しい順）
         const reqRef = collection(db, 'meetingRequests');
         const reqQ = query(
           reqRef,
@@ -441,8 +428,6 @@
           return;
         }
 
-        // 2) 自分の meetingAssignments を取得（あれば）
-        // ※「ユーザーは自分の分だけread」ルール前提
         const asgRef = collection(db, 'meetingAssignments');
         const asgQ = query(
           asgRef,
@@ -454,23 +439,15 @@
         const assignments = [];
         asgSnap.forEach(d => assignments.push({ id: d.id, ...d.data() }));
 
-        // 3) requestId で突合（assignmentが requestId を持つ前提）
         const assignmentByRequestId = new Map();
         for (const a of assignments) {
           if (a.requestId) assignmentByRequestId.set(a.requestId, a);
         }
 
-        // 4) 表示用に整形
         allItems = requests.map(r => {
           const a = assignmentByRequestId.get(r.id);
-
-          // ユーザー向けステータス
-          // - requested: 受付済（担当者調整中）
-          // - cancelled: キャンセル
-          // - assigned/confirmed: 担当確定（URL表示）
           const reqStatus = r.status || 'requested';
           const isCancelled = reqStatus === 'cancelled';
-
           const hasAssignment = !!a;
           const hasMeetingLink = !!(a && a.meetingLink);
 
@@ -486,8 +463,6 @@
 
           const type = r.requestedType || r.type || '（未設定）';
           const location = r.location || '（未設定）';
-
-          // meetingSlots側のdate/startTime/endTimeをrequestsにコピーしている前提（meeting-bookingで書くべき）
           const date = r.date || '';
           const startTime = r.startTime || '';
           const endTime = r.endTime || '';
@@ -530,7 +505,6 @@
 
       let items = allItems;
       if (filter !== 'all') {
-        // filter: requested / confirmed / cancelled
         if (filter === 'confirmed') {
           items = allItems.filter(x => (x.uiStatusKey === 'confirmed' || x.uiStatusKey === 'assigned'));
         } else {
@@ -580,13 +554,9 @@
       card.className = `meeting-card ${item.uiStatusKey}`;
 
       const statusClass = `status-${item.uiStatusKey}`;
-
       const canCancel = item.uiStatusKey === 'requested' && item.requestStatus !== 'cancelled';
       const canJoin = item.uiStatusKey === 'confirmed' && item.assignment && item.assignment.meetingLink;
-
-      // 面談URLは assignment にのみ置く想定（meetingSlotsには置かない）
       const meetingLink = canJoin ? item.assignment.meetingLink : '';
-
       const requestedAtStr = item.requestedAt ? item.requestedAt.toLocaleString('ja-JP') : '（不明）';
 
       card.innerHTML = `
@@ -688,9 +658,6 @@
       return String(str ?? '').replaceAll("'", '&#039;');
     }
 
-    // ----------------------------
-    // Filters
-    // ----------------------------
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -700,9 +667,6 @@
       });
     });
 
-    // ----------------------------
-    // Cancel modal (meetingRequests を cancelled に更新)
-    // ----------------------------
     window.openCancelModal = function(requestId) {
       selectedRequestId = requestId;
       const item = allItems.find(x => x.requestId === requestId);
@@ -730,7 +694,6 @@
       const item = allItems.find(x => x.requestId === selectedRequestId);
       if (!item) return;
 
-      // 担当確定後は、ユーザー側キャンセル不可にする（運用方針）
       if (item.uiStatusKey === 'confirmed' || item.uiStatusKey === 'assigned') {
         showAlert('担当確定後のキャンセルは、運営側にお問い合わせください。', 'info');
         closeCancelModal();
@@ -739,9 +702,6 @@
 
       try {
         const ref = doc(db, 'meetingRequests', selectedRequestId);
-
-        // 最小権限＋フィールド制約（想定）:
-        // - user は status を requested -> cancelled のみ許可
         await updateDoc(ref, {
           status: 'cancelled',
           cancelledAt: serverTimestamp()
