@@ -455,10 +455,41 @@
                 display: none;
             }
         }
+
+        /* 初期ローディング画面を隠す */
+        .initial-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .initial-loading.hidden {
+            display: none;
+        }
+
+        .initial-loading-content {
+            text-align: center;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 初期ローディング画面 -->
+    <div class="initial-loading" id="initialLoading">
+        <div class="initial-loading-content">
+            <div class="spinner"></div>
+            <p style="font-size: 1.2em; margin-top: 20px;">認証情報を確認中...</p>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;" id="mainContent">
         <!-- ヘッダー -->
         <div class="header">
             <h1>📅 面談予約</h1>
@@ -605,15 +636,33 @@
         let currentDate = new Date();
         let availableDates = new Set();
 
-        // 認証チェック
+        // 認証チェック（修正版）
+        let authChecked = false;
+        
         onAuthStateChanged(auth, (user) => {
+            authChecked = true;
+            
+            // ローディング画面を非表示
+            document.getElementById('initialLoading').classList.add('hidden');
+            
             if (user) {
                 currentUser = user;
                 console.log('✅ ログイン済み:', user.email);
+                
+                // メインコンテンツを表示
+                document.getElementById('mainContent').style.display = 'block';
+                
+                // 面談タイプを読み込み
                 loadMeetingTypes();
             } else {
                 console.log('❌ 未ログイン - ログインページへリダイレクト');
-                window.location.href = 'index.html';
+                
+                // 3秒待ってからリダイレクト（誤検知を防ぐ）
+                setTimeout(() => {
+                    if (!currentUser) {
+                        window.location.href = 'index.html';
+                    }
+                }, 3000);
             }
         });
 
