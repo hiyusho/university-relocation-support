@@ -317,7 +317,9 @@
       getDoc,
       updateDoc,
       setDoc,
-      serverTimestamp
+      serverTimestamp,
+      increment,
+      runTransaction
     } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
     // Firebase configuration
@@ -701,10 +703,38 @@
       }
 
       try {
-        const ref = doc(db, 'meetingRequests', selectedRequestId);
-        await updateDoc(ref, {
-          status: 'cancelled',
-          cancelledAt: serverTimestamp()
+        // ✅ 修正: トランザクションで meetingRequests と meetingSlots を同時更新
+        await runTransaction(db, async (transaction) => {
+          // meetingRequests をキャンセル状態に更新
+          const requestRef = doc(db, 'meetingRequests', selectedRequestId);
+          transaction.update(requestRef, {
+            status: 'cancelled',
+            cancelledAt: serverTimestamp()
+          });
+
+          // meetingSlots の currentBookings を減らす
+          if (item.slotId) {
+            const slotRef = doc(db, 'meetingSlots', item.slotId);
+            const slotDoc = await transaction.get(slotRef);
+            
+            if (slotDoc.exists()) {
+              const slotData = slotDoc.data();
+              const currentBookings = slotData.currentBookings || 0;
+              const maxCapacity = slotData.maxCapacity || 1;
+              
+              // currentBookings を減らす
+              const updateData = {
+                currentBookings: increment(-1)
+              };
+              
+              // 満席から空きありに変更
+              if (slotData.status === 'full' && currentBookings - 1 < maxCapacity) {
+                updateData.status = 'available';
+              }
+              
+              transaction.update(slotRef, updateData);
+            }
+          }
         });
 
         showAlert('予約申請をキャンセルしました。', 'success');
