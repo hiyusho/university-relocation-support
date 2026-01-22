@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面談予約 | パートナー帯同プログラム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #dee2e6;
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #dee2e6;
+            color: #6c757d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+            transform: scale(1.2);
+        }
+
+        .step.completed .step-number {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .calendar-day:hover:not(.disabled):not(.empty) {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .calendar-day.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .calendar-day.disabled {
+            background: #f8f9fa;
+            color: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.empty {
+            border: none;
+            cursor: default;
+        }
+
+        .calendar-day.has-slots::after {
+            content: '●';
+            color: #28a745;
+            font-size: 0.8em;
+            margin-top: 2px;
+        }
+
+        .calendar-day.selected.has-slots::after {
+            color: white;
+        }
+
+        .slot-list {
+            margin-top: 30px;
+        }
+
+        .slot-item {
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .slot-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateX(5px);
+        }
+
+        .slot-item.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .slot-item.full {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .slot-time {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .slot-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .slot-info-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #6c757d;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .month-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .month-nav button {
+            background: white;
+            border: 2px solid #dee2e6;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .month-nav button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .month-nav h3 {
+            color: #495057;
+        }
+
+        .confirmation {
+            background: #f0f4ff;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .confirmation h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-details {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .confirmation-item:last-child {
+            border-bottom: none;
+        }
+
+        .confirmation-label {
+            font-weight: bold;
+            width: 120px;
+            color: #495057;
+        }
+
+        .confirmation-value {
+            flex: 1;
+            color: #212529;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        #step1, #step2, #step3 {
+            display: none;
+        }
+
+        #step1.active, #step2.active, #step3.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .calendar {
+                gap: 5px;
+            }
+
+            .slot-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>📅 面談予約</h1>
+            <p>パートナー帯同プログラム</p>
+        </div>
+
+        <!-- ナビゲーション -->
+        <div class="nav">
+            <a href="dashboard.html">← ダッシュボードに戻る</a>
+            <a href="my-meetings.html">マイ予約を見る</a>
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="content">
+            <!-- ステップインジケーター -->
+            <div class="steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">面談タイプ選択</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">日程選択</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">確認・予約</div>
+                </div>
+            </div>
+
+            <!-- Step 1: 面談タイプ選択 -->
+            <div id="step1" class="active">
+                <h2 style="margin-bottom: 20px;">面談タイプを選択してください</h2>
+                <div class="alert alert-info">
+                    <strong>💡 ヒント:</strong> 初めての方は「初回キャリア面談」をお選びください
+                </div>
+                <div id="meetingTypeList" class="loading">
+                    <div class="spinner"></div>
+                    <p>面談タイプを読み込み中...</p>
+                </div>
+            </div>
+
+            <!-- Step 2: 日程選択 -->
+            <div id="step2">
+                <h2 style="margin-bottom: 20px;">日程を選択してください</h2>
+                
+                <div class="month-nav">
+                    <button id="prevMonth">← 前月</button>
+                    <h3 id="currentMonth"></h3>
+                    <button id="nextMonth">次月 →</button>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>📅 カレンダーの見方:</strong> 緑の点(●)が付いている日に面談枠があります
+                </div>
+
+                <div id="calendar" class="calendar"></div>
+
+                <div id="slotList" class="slot-list" style="display: none;">
+                    <h3 style="margin-bottom: 15px;">選択した日の面談枠</h3>
+                    <div id="slots"></div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">← 戻る</button>
+                    <button class="btn btn-primary" id="nextToConfirm" disabled>確認画面へ →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: 確認・予約 -->
+            <div id="step3">
+                <h2 style="margin-bottom: 20px;">予約内容の確認</h2>
+
+                <div class="confirmation">
+                    <h3>📝 予約内容</h3>
+                    <div class="confirmation-details">
+                        <div class="confirmation-item">
+                            <div class="confirmation-label">面談タイプ:</div>
+                            <div class="confirmation-value" id="confirmType"></div>
+                        </div>
+                        <div class="confirmation-item">
+                            <div class="confirmation-label">日時:</div>
+                            <div class="confirmation-value" id="confirmDate"></div>
+                        </div>
+                        <div class="confirmation-item">
+                            <div class="confirmation-label">場所:</div>
+                            <div class="confirmation-value" id="confirmLocation"></div>
+                        </div>
+                        <div class="confirmation-item">
+                            <div class="confirmation-label">担当者:</div>
+                            <div class="confirmation-value">調整後にお知らせします</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚠️ 注意事項:</strong><br>
+                        • 予約後のキャンセルは「マイ予約」ページから可能です<br>
+                        • 面談の3日前までにキャンセル・変更をお願いします<br>
+                        • オンライン面談のリンクは面談前日にメールでお送りします
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">← 戻る</button>
+                    <button class="btn btn-primary" id="submitBooking">予約を確定する</button>
+                </div>
+
+                <div id="bookingResult" style="display: none; margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import {
+            getFirestore,
+            collection, query, where, orderBy, getDocs,
+            doc, getDoc, addDoc, setDoc,
+            runTransaction, increment,
+            Timestamp, serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpWb5jcc3r10Ij90cvFIkbXpg8PkxqhFA",
+            authDomain: "university-relocation-support.firebaseapp.com",
+            projectId: "university-relocation-support",
+            storageBucket: "university-relocation-support.firebasestorage.app",
+            messagingSenderId: "48308414943",
+            appId: "1:48308414943:web:5c5e2fa32aac7f9db5ad03"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // グローバル変数
+        let currentUser = null;
+        let selectedType = null;
+        let selectedSlot = null;
+        let selectedSlotData = null;
+        let currentDate = new Date();
+        let availableDates = new Set();
+
+        // 認証チェック
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('✅ ログイン済み:', user.email);
+                loadMeetingTypes();
+            } else {
+                console.log('❌ 未ログイン - ログインページへリダイレクト');
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Step 1: 面談タイプ読み込み
+        async function loadMeetingTypes() {
+            const container = document.getElementById('meetingTypeList');
+            
+            try {
+                // meetingSlotsから利用可能な面談タイプを取得
+                const slotsRef = collection(db, 'meetingSlots');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const todayStr = today.toISOString().split('T')[0];
+
+                const q = query(
+                    slotsRef,
+                    where('date', '>=', todayStr),
+                    where('status', '==', 'available'),
+                    orderBy('date')
+                );
+
+                const snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <h3>現在予約可能な面談枠がありません</h3>
+                            <p>新しい面談枠が追加されるまでお待ちください</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // タイプごとに集計
+                const types = {};
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const type = data.type || data.meetingType || '一般面談';
+                    
+                    if (!types[type]) {
+                        types[type] = {
+                            count: 0,
+                            description: getTypeDescription(type)
+                        };
+                    }
+                    types[type].count++;
+                });
+
+                // HTML生成
+                let html = '<div style="display: grid; gap: 15px;">';
+                
+                for (const [type, info] of Object.entries(types)) {
+                    html += `
+                        <div class="slot-item" onclick="selectMeetingType('${type}')">
+                            <div class="slot-time">${getTypeIcon(type)} ${type}</div>
+                            <p style="color: #6c757d; margin: 10px 0;">${info.description}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <span class="badge badge-success">利用可能枠: ${info.count}件</span>
+                                <span style="color: #667eea; font-weight: bold;">選択する →</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error('❌ 面談タイプ読み込みエラー:', error);
+                container.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>⚠️ エラー:</strong> 面談タイプの読み込みに失敗しました<br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                '初回キャリア面談': '👋',
+                'キャリア相談': '💼',
+                '求職支援': '🔍',
+                '生活相談': '🏠',
+                'その他': '💬'
+            };
+            return icons[type] || '📋';
+        }
+
+        function getTypeDescription(type) {
+            const descriptions = {
+                '初回キャリア面談': '初めての方向け。キャリアの方向性や支援内容をご説明します',
+                'キャリア相談': 'キャリアプランの相談や仕事探しのアドバイス',
+                '求職支援': '求人情報の紹介や応募書類の添削',
+                '生活相談': '生活に関する各種相談',
+                'その他': '上記以外のご相談'
+            };
+            return descriptions[type] || '面談の詳細はお問い合わせください';
+        }
+
+        // 面談タイプ選択
+        window.selectMeetingType = function(type) {
+            selectedType = type;
+            console.log('✅ 選択された面談タイプ:', type);
+            goToStep(2);
+            loadCalendar();
+        };
+
+        // Step 2: カレンダー読み込み
+        async function loadCalendar() {
+            try {
+                // 利用可能な日付を取得
+                const slotsRef = collection(db, 'meetingSlots');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const todayStr = today.toISOString().split('T')[0];
+
+                const q = query(
+                    slotsRef,
+                    where('date', '>=', todayStr),
+                    where('status', '==', 'available'),
+                    where('type', '==', selectedType),
+                    orderBy('date')
+                );
+
+                const snapshot = await getDocs(q);
+                
+                availableDates = new Set();
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    availableDates.add(data.date);
+                });
+
+                renderCalendar();
+
+            } catch (error) {
+                console.error('❌ カレンダー読み込みエラー:', error);
+            }
+        }
+
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthLabel = document.getElementById('currentMonth');
+            
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            monthLabel.textContent = `${year}年 ${month + 1}月`;
+            
+            // カレンダーヘッダー
+            const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+            let html = '';
+            
+            weekDays.forEach(day => {
+                html += `<div class="calendar-header">${day}</div>`;
+            });
+            
+            // 月初の曜日
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            
+            // 空白セル
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+            
+            // 日付セル
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            for (let date = 1; date <= lastDate; date++) {
+                const currentDateObj = new Date(year, month, date);
+                const dateStr = currentDateObj.toISOString().split('T')[0];
+                
+                const isPast = currentDateObj < today;
+                const hasSlots = availableDates.has(dateStr);
+                
+                let className = 'calendar-day';
+                if (isPast) className += ' disabled';
+                if (hasSlots && !isPast) className += ' has-slots';
+                
+                const onclick = (hasSlots && !isPast) ? `onclick="selectDate('${dateStr}')"` : '';
+                
+                html += `
+                    <div class="${className}" ${onclick}>
+                        <div style="font-size: 1.2em;">${date}</div>
+                    </div>
+                `;
+            }
+            
+            calendar.innerHTML = html;
+        }
+
+        // 日付選択
+        window.selectDate = async function(dateStr) {
+            console.log('✅ 選択された日付:', dateStr);
+            
+            // 選択状態を更新
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // その日の面談枠を表示
+            await loadSlotsForDate(dateStr);
+        };
+
+        async function loadSlotsForDate(dateStr) {
+            const slotListContainer = document.getElementById('slotList');
+            const slotsContainer = document.getElementById('slots');
+            
+            slotListContainer.style.display = 'block';
+            slotsContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>面談枠を読み込み中...</p></div>';
+            
+            try {
+                const slotsRef = collection(db, 'meetingSlots');
+                const q = query(
+                    slotsRef,
+                    where('date', '==', dateStr),
+                    where('status', '==', 'available'),
+                    where('type', '==', selectedType),
+                    orderBy('startTime')
+                );
+
+                const snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    slotsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p>この日は空きがありません</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const slotId = doc.id;
+                    
+                    const available = (data.currentBookings || 0) < (data.maxCapacity || 1);
+                    const availableClass = available ? '' : 'full';
+                    const onclick = available ? `onclick="selectSlot('${slotId}')"` : '';
+                    
+                    html += `
+                        <div class="slot-item ${availableClass}" ${onclick} data-slot-id="${slotId}">
+                            <div class="slot-time">${data.startTime} - ${data.endTime}</div>
+                            <div class="slot-info">
+                                <div class="slot-info-item">
+                                    <span>📍</span>
+                                    <span>${data.location || 'オンライン'}</span>
+                                </div>
+                                <div class="slot-info-item">
+                                    <span>👥</span>
+                                    <span>定員: ${data.maxCapacity || 1}名</span>
+                                </div>
+                                <div class="slot-info-item">
+                                    <span>予約状況: ${data.currentBookings || 0}/${data.maxCapacity || 1}</span>
+                                </div>
+                            </div>
+                            ${available ? 
+                                '<span class="badge badge-success">空きあり</span>' : 
+                                '<span class="badge badge-danger">満席</span>'
+                            }
+                        </div>
+                    `;
+                });
+                
+                slotsContainer.innerHTML = html;
+
+            } catch (error) {
+                console.error('❌ 面談枠読み込みエラー:', error);
+                slotsContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>⚠️ エラー:</strong> 面談枠の読み込みに失敗しました
+                    </div>
+                `;
+            }
+        }
+
+        // 面談枠選択
+        window.selectSlot = async function(slotId) {
+            console.log('✅ 選択された面談枠:', slotId);
+            
+            // 選択状態を更新
+            document.querySelectorAll('.slot-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            selectedSlot = slotId;
+            
+            // 面談枠データを取得
+            try {
+                const slotDoc = await getDoc(doc(db, 'meetingSlots', slotId));
+                if (slotDoc.exists()) {
+                    selectedSlotData = slotDoc.data();
+                    document.getElementById('nextToConfirm').disabled = false;
+                }
+            } catch (error) {
+                console.error('❌ 面談枠データ取得エラー:', error);
+            }
+        };
+
+        // 確認画面へ
+        document.getElementById('nextToConfirm').addEventListener('click', function() {
+            if (!selectedSlot || !selectedSlotData) {
+                alert('面談枠を選択してください');
+                return;
+            }
+            
+            // 確認画面に情報を表示
+            document.getElementById('confirmType').textContent = selectedType;
+            document.getElementById('confirmDate').textContent = 
+                `${selectedSlotData.date} ${selectedSlotData.startTime} - ${selectedSlotData.endTime}`;
+            document.getElementById('confirmLocation').textContent = selectedSlotData.location || 'オンライン';
+            
+            goToStep(3);
+        });
+
+        // 予約確定
+        document.getElementById('submitBooking').addEventListener('click', async function() {
+            const button = this;
+            const resultDiv = document.getElementById('bookingResult');
+            
+            button.disabled = true;
+            button.textContent = '予約処理中...';
+            resultDiv.style.display = 'none';
+            
+            try {
+                // トランザクションで予約作成と面談枠更新を同時実行
+                await runTransaction(db, async (transaction) => {
+                    // 面談枠を取得
+                    const slotRef = doc(db, 'meetingSlots', selectedSlot);
+                    const slotDoc = await transaction.get(slotRef);
+                    
+                    if (!slotDoc.exists()) {
+                        throw new Error('面談枠が存在しません');
+                    }
+                    
+                    const slotData = slotDoc.data();
+                    const currentBookings = slotData.currentBookings || 0;
+                    const maxCapacity = slotData.maxCapacity || 1;
+                    
+                    // 空きがあるか確認
+                    if (currentBookings >= maxCapacity) {
+                        throw new Error('満席です');
+                    }
+                    
+                    // 予約ドキュメントを作成
+                    const meetingRef = doc(collection(db, 'meetingRequests'));
+                    transaction.set(meetingRef, {
+                        userId: currentUser.uid,
+                        userName: currentUser.displayName || currentUser.email,
+                        userEmail: currentUser.email,
+                        slotId: selectedSlot,
+                        meetingType: selectedType,
+                        slotDate: slotData.date,
+                        slotStartTime: slotData.startTime,
+                        slotEndTime: slotData.endTime,
+                        location: slotData.location || 'オンライン',
+                        status: 'requested',
+                        createdAt: serverTimestamp()
+                    });
+                    
+                    // 面談枠の予約数を更新
+                    const newBookings = currentBookings + 1;
+                    const updateData = {
+                        currentBookings: increment(1)
+                    };
+                    
+                    // 満席になった場合はstatusを更新
+                    if (newBookings >= maxCapacity) {
+                        updateData.status = 'full';
+                    }
+                    
+                    transaction.update(slotRef, updateData);
+                });
+                
+                // 成功
+                resultDiv.innerHTML = `
+                    <div style="background: #d4edda; border: 2px solid #28a745; border-radius: 12px; padding: 30px; text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">✅</div>
+                        <h3 style="color: #155724; margin-bottom: 15px;">予約が完了しました！</h3>
+                        <p style="color: #155724; margin-bottom: 20px;">
+                            予約内容の詳細はメールでお送りします<br>
+                            「マイ予約」ページから予約内容を確認できます
+                        </p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <a href="my-meetings.html" class="btn btn-primary">マイ予約を見る</a>
+                            <a href="dashboard.html" class="btn btn-secondary">ダッシュボードへ</a>
+                        </div>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                
+                button.style.display = 'none';
+                
+            } catch (error) {
+                console.error('❌ 予約失敗:', error);
+                
+                let errorMessage = '予約に失敗しました。';
+                if (error.message && error.message.includes('満席')) {
+                    errorMessage = 'この面談枠は満席です。別の日時を選択してください。';
+                } else if (error.message && error.message.includes('存在しません')) {
+                    errorMessage = '面談枠が見つかりません。ページを再読み込みしてください。';
+                } else {
+                    errorMessage = 'エラー: ' + error.message;
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>⚠️ ${errorMessage}</strong>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+                
+                button.disabled = false;
+                button.textContent = '予約を確定する';
+            }
+        });
+
+        // 月移動
+        document.getElementById('prevMonth').addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // ステップ移動
+        window.goToStep = function(stepNumber) {
+            // すべてのステップを非表示
+            document.querySelectorAll('#step1, #step2, #step3').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // 選択されたステップを表示
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+            
+            // ステップインジケーターを更新
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < stepNumber) {
+                    step.classList.add('completed');
+                } else if (index + 1 === stepNumber) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // ページトップにスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+    </script>
+</body>
+</html>
