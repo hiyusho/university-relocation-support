@@ -1164,59 +1164,7 @@
           continue;
         }
 
-        // ✅ meetingRequests 作成（担当未定: requested）
-        // meetingLinkは入れない（露出防止、assignment側で管理）
-        // トランザクションで予約作成と面談枠の更新を同時実行
-        await runTransaction(db, async (transaction) => {
-          // 1. 面談枠の現在のデータを取得
-          const slotRef = doc(db, 'meetingSlots', slotId);
-          const slotDoc = await transaction.get(slotRef);
-  
-          if (!slotDoc.exists()) {
-            throw new Error('面談枠が見つかりません');
-          }
-  
-          const slotData = slotDoc.data();
-  
-          // 2. 空きがあるかチェック
-          const currentBookings = slotData.currentBookings || 0;
-          const maxCapacity = slotData.maxCapacity || 1;
-  
-          if (currentBookings >= maxCapacity) {
-            throw new Error('満席');
-          }
-  
-          // 3. 予約ドキュメントを作成
-          const requestRef = doc(collection(db, 'meetingRequests'));
-          transaction.set(requestRef, {
-            slotId,
-            userId: currentUser.uid,
-            requestedType: selectedGroup.type,
-            location: selectedGroup.location,
-            date: selectedGroup.date,
-            startTime: selectedGroup.startTime,
-            endTime: selectedGroup.endTime,
-            status: 'requested',
-            requestedAt: serverTimestamp(),
-            userMessage: notes || ''
-          });
-  
-          // 4. 面談枠の currentBookings を +1
-          const newBookings = currentBookings + 1;
-          const updateData = {
-            currentBookings: increment(1)
-          };
-  
-          // 5. 満席になったら status を変更
-          if (newBookings >= maxCapacity) {
-            updateData.status = 'full';
-          }
-  
-          transaction.update(slotRef, updateData);
-        });
-
-
-        // ✅ meetingRequests 作成（担当未定: requested）
+// ✅ meetingRequests 作成（担当未定: requested）
 // meetingLinkは入れない（露出防止、assignment側で管理）
 try {
   // トランザクションで予約作成と面談枠の更新を同時実行
@@ -1273,6 +1221,46 @@ try {
   
   // 体感改善：再取得（ただしPhase1なので"残数の完全一致"は保証できない）
   await loadMeetingSlotsAndBuildGroups();
+  
+  // 成功時はループを抜ける
+  break;
+  
+} catch (error) {
+  console.error('❌ 予約エラー:', error);
+  
+  // エラーメッセージの表示
+  if (error.message === '満席') {
+    candidateSlots = candidateSlots.filter(s => s.slotId !== slotId);
+    if (attempt === MAX_RETRY) {
+      alert('申し訳ございません。この面談枠は満席になりました。\n他の日時をお選びください。');
+    }
+  } else if (error.message === '面談枠が見つかりません') {
+    candidateSlots = candidateSlots.filter(s => s.slotId !== slotId);
+    if (attempt === MAX_RETRY) {
+      alert('面談枠が見つかりませんでした。\nページを更新してもう一度お試しください。');
+    }
+  } else {
+    if (attempt === MAX_RETRY) {
+      alert('予約処理中にエラーが発生しました。\nもう一度お試しください。');
+    }
+  }
+  
+  // エラー時も再読み込み（最新状態を反映）
+  if (attempt === MAX_RETRY) {
+    await loadMeetingSlotsAndBuildGroups();
+  }
+}
+      } // for loop の閉じ括弧
+
+    } catch (finalError) {
+      console.error('予約処理の最終エラー:', finalError);
+      alert('予約処理中にエラーが発生しました。もう一度お試しください。');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+    }
+  });
+
   
 } catch (error) {
   console.error('❌ 予約エラー:', error);
