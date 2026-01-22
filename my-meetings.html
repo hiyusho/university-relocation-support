@@ -705,35 +705,40 @@
       try {
         // ✅ 修正: トランザクションで meetingRequests と meetingSlots を同時更新
         await runTransaction(db, async (transaction) => {
-          // meetingRequests をキャンセル状態に更新
+          // ✅ 重要: すべての読み取りを先に実行
           const requestRef = doc(db, 'meetingRequests', selectedRequestId);
+          let slotRef = null;
+          let slotDoc = null;
+          
+          if (item.slotId) {
+            slotRef = doc(db, 'meetingSlots', item.slotId);
+            slotDoc = await transaction.get(slotRef);  // ✅ 読み取りを先に
+          }
+
+          // ✅ すべての書き込みを後に実行
+          // meetingRequests をキャンセル状態に更新
           transaction.update(requestRef, {
             status: 'cancelled',
             cancelledAt: serverTimestamp()
           });
 
           // meetingSlots の currentBookings を減らす
-          if (item.slotId) {
-            const slotRef = doc(db, 'meetingSlots', item.slotId);
-            const slotDoc = await transaction.get(slotRef);
+          if (slotDoc && slotDoc.exists()) {
+            const slotData = slotDoc.data();
+            const currentBookings = slotData.currentBookings || 0;
+            const maxCapacity = slotData.maxCapacity || 1;
             
-            if (slotDoc.exists()) {
-              const slotData = slotDoc.data();
-              const currentBookings = slotData.currentBookings || 0;
-              const maxCapacity = slotData.maxCapacity || 1;
-              
-              // currentBookings を減らす
-              const updateData = {
-                currentBookings: increment(-1)
-              };
-              
-              // 満席から空きありに変更
-              if (slotData.status === 'full' && currentBookings - 1 < maxCapacity) {
-                updateData.status = 'available';
-              }
-              
-              transaction.update(slotRef, updateData);
+            // currentBookings を減らす
+            const updateData = {
+              currentBookings: increment(-1)
+            };
+            
+            // 満席から空きありに変更
+            if (slotData.status === 'full' && currentBookings - 1 < maxCapacity) {
+              updateData.status = 'available';
             }
+            
+            transaction.update(slotRef, updateData);
           }
         });
 
