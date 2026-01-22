@@ -765,6 +765,19 @@
             return descriptions[type] || '面談の詳細はお問い合わせください';
         }
 
+        // 日付を日本語形式にフォーマット (タイムゾーンの問題を回避)
+        function formatDateJP(dateStr) {
+            // dateStr は "2026-01-22" 形式
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return dateStr;
+            
+            const year = parts[0];
+            const month = parseInt(parts[1], 10);
+            const day = parseInt(parts[2], 10);
+            
+            return `${year}年${month}月${day}日`;
+        }
+
         // 面談タイプ選択
         window.selectMeetingType = function(type) {
             selectedType = type;
@@ -979,7 +992,7 @@
             // 確認画面に情報を表示
             document.getElementById('confirmType').textContent = selectedType;
             document.getElementById('confirmDate').textContent = 
-                `${selectedSlotData.date} ${selectedSlotData.startTime} - ${selectedSlotData.endTime}`;
+                `${formatDateJP(selectedSlotData.date)} ${selectedSlotData.startTime} - ${selectedSlotData.endTime}`;
             document.getElementById('confirmLocation').textContent = selectedSlotData.location || 'オンライン';
             
             goToStep(3);
