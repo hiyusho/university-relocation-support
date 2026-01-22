@@ -1022,12 +1022,17 @@
                         userEmail: currentUser.email,
                         slotId: selectedSlot,
                         meetingType: selectedType,
+                        requestedType: selectedType,  // my-meetings.html が期待するフィールド
                         slotDate: slotData.date,
+                        date: slotData.date,  // my-meetings.html が期待するフィールド
                         slotStartTime: slotData.startTime,
+                        startTime: slotData.startTime,  // my-meetings.html が期待するフィールド
                         slotEndTime: slotData.endTime,
+                        endTime: slotData.endTime,  // my-meetings.html が期待するフィールド
                         location: slotData.location || 'オンライン',
                         status: 'requested',
-                        createdAt: serverTimestamp()
+                        createdAt: serverTimestamp(),
+                        requestedAt: serverTimestamp()  // my-meetings.html が期待するフィールド
                     });
                     
                     // 面談枠の予約数を更新
