@@ -850,7 +850,8 @@
             
             for (let date = 1; date <= lastDate; date++) {
                 const currentDateObj = new Date(year, month, date);
-                const dateStr = currentDateObj.toISOString().split('T')[0];
+                // ✅ 修正: タイムゾーンの問題を回遼するため、直接文字列を作成
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
                 
                 const isPast = currentDateObj < today;
                 const hasSlots = availableDates.has(dateStr);
