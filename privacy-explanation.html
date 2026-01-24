@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>個人情報保護方針 | 大学赴任者パートナー帯同プログラム</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Yu Gothic', 'Hiragino Sans', 'Meiryo', sans-serif;
+      line-height: 1.8;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 60px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      color: #003366;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .header .subtitle {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .header .company {
+      font-size: 16px;
+      color: #667eea;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .header .date {
+      font-size: 14px;
+      color: #999;
+      margin-top: 10px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      color: #764ba2;
+      transform: translateX(-5px);
+    }
+
+    .back-link::before {
+      content: "← ";
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #003366;
+      margin: 40px 0 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #667eea;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: #1f497d;
+      margin: 30px 0 15px 0;
+      font-weight: bold;
+    }
+
+    h4 {
+      font-size: 18px;
+      color: #333;
+      margin: 25px 0 12px 0;
+      font-weight: bold;
+    }
+
+    p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin: 15px 0 15px 30px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .highlight {
+      background-color: #fff3cd;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+
+    .important {
+      background-color: #f8d7da;
+      border-left: 4px solid #dc3545;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .info-box {
+      background-color: #d1ecf1;
+      border-left: 4px solid #17a2b8;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    .success-box {
+      background-color: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    th {
+      background-color: #d9e2f3;
+      color: #003366;
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+      border: 1px solid #ccc;
+    }
+
+    td {
+      padding: 12px;
+      border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .code-block {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 15px 0;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .diagram {
+      background-color: #f9f9f9;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      font-family: 'Consolas', 'Monaco', monospace;
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    .contact-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      color: white;
+      border-bottom: 2px solid white;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .contact-info {
+      font-size: 16px;
+      line-height: 2;
+    }
+
+    .contact-info a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px solid rgba(255,255,255,0.5);
+      transition: all 0.3s;
+    }
+
+    .contact-info a:hover {
+      border-bottom-color: white;
+      opacity: 0.8;
+    }
+
+    .toc {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 25px;
+      margin: 30px 0;
+    }
+
+    .toc h3 {
+      color: #003366;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .toc ol {
+      margin-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 10px;
+    }
+
+    .toc a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .toc a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h3 {
+        font-size: 18px;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      th, td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="log-in.html" class="back-link">ログインページに戻る</a>
+
+    <div class="header">
+      <h1>個人情報保護に関する説明資料</h1>
+      <div class="subtitle">大学赴任者パートナー帯同プログラム</div>
+      <div class="company">株式会社バリューグロー</div>
+      <div class="date">作成日: 2026年1月22日</div>
+    </div>
+
+    <!-- 目次 -->
+    <div class="toc">
+      <h3>📑 目次</h3>
+      <ol>
+        <li><a href="#introduction">はじめに</a></li>
+        <li><a href="#system-overview">システム概要</a></li>
+        <li><a href="#personal-data">取り扱う個人情報</a></li>
+        <li><a href="#security-measures">個人情報保護の技術的対策</a></li>
+        <li><a href="#data-location">データ保存場所と信頼性</a></li>
+        <li><a href="#data-retention">データ保持と削除</a></li>
+        <li><a href="#operation">運用体制</a></li>
+        <li><a href="#incident">インシデント対応</a></li>
+        <li><a href="#audit">監査・確認方法</a></li>
+        <li><a href="#faq">よくある質問 (Q&A)</a></li>
+        <li><a href="#references">参考資料</a></li>
+      </ol>
+    </div>
+
+    <!-- 1. はじめに -->
+    <h2 id="introduction">1. はじめに</h2>
+    
+    <p>本資料は、大学赴任者パートナー帯同プログラムにおける予約システムで取り扱う個人情報の保護方針および技術的対策について説明するものです。</p>
+
+    <h3>1.1 本システムの目的</h3>
+    <p>本システムは、大学に赴任する教員・研究者のご家族（パートナー・配偶者など）の帯同支援を目的としており、<span class="highlight">ファミリー帯同者の個人情報保護を最優先</span>としています。</p>
+
+    <h3>1.2 対象範囲</h3>
+    <ul>
+      <li><strong>対象者</strong>: 大学赴任者のご家族（パートナー・配偶者など）</li>
+      <li><strong>対象外</strong>: 学生の個人情報は本システムでは取り扱いません</li>
+      <li><strong>適用大学</strong>: 本資料は特定の大学に限定せず、複数の大学で利用可能な汎用的な説明を提供します</li>
+    </ul>
+
+    <!-- 2. システム概要 -->
+    <h2 id="system-overview">2. システム概要</h2>
+
+    <h3>2.1 システム構成</h3>
+    <div class="diagram">利用者のブラウザ
+    ↓ HTTPS (TLS 1.3)
+GitHub Pages (静的ホスティング)
+    ↓ HTTPS (TLS 1.3)
+Google Firebase
+  ├─ Authentication (認証)
+  └─ Firestore (データベース)</div>
+
+    <h3>2.2 技術スタック</h3>
+    <table>
+      <tr>
+        <th>項目</th>
+        <th>技術</th>
+      </tr>
+      <tr>
+        <td>ホスティング</td>
+        <td>GitHub Pages (Microsoft運営)</td>
+      </tr>
+      <tr>
+        <td>認証基盤</td>
+        <td>Firebase Authentication</td>
+      </tr>
+      <tr>
+        <td>データベース</td>
+        <td>Cloud Firestore</td>
+      </tr>
+      <tr>
+        <td>データ保存場所</td>
+        <td>日本リージョン（東京）</td>
+      </tr>
+      <tr>
+        <td>通信暗号化</td>
+        <td>HTTPS/TLS 1.3</td>
+      </tr>
+    </table>
+
+    <!-- 3. 取り扱う個人情報 -->
+    <h2 id="personal-data">3. 取り扱う個人情報</h2>
+
+    <h3>3.1 認証情報</h3>
+    <table>
+      <tr>
+        <th>項目</th>
+        <th>説明</th>
+        <th>保護方法</th>
+      </tr>
+      <tr>
+        <td>メールアドレス</td>
+        <td>ログインID</td>
+        <td>暗号化保存</td>
+      </tr>
+      <tr>
+        <td>パスワード</td>
+        <td>認証用</td>
+        <td><strong>ハッシュ化</strong>（平文保存なし）</td>
+      </tr>
+      <tr>
+        <td>認証トークン</td>
+        <td>セッション管理</td>
+        <td>有効期限付き（1時間）</td>
+      </tr>
+    </table>
+
+    <div class="important">
+      <strong>重要:</strong> パスワードは<strong>bcrypt + PBKDF2</strong>により不可逆的にハッシュ化され、システム管理者を含め誰も復元できません。
+    </div>
+
+    <h3>3.2 基本情報</h3>
+    <ul>
+      <li><strong>氏名</strong>: 本人確認・予約者表示に使用</li>
+      <li><strong>所属大学</strong>: 管理区分・支援内容の決定に使用</li>
+      <li><strong>連絡先</strong>: 予約確認・キャンセル通知に使用</li>
+    </ul>
+
+    <h3>3.3 予約情報</h3>
+    <ul>
+      <li><strong>面談希望日時</strong>: キャリア相談・生活支援の予約管理</li>
+      <li><strong>面談タイプ</strong>: 初回キャリア面談、継続面談、生活相談など</li>
+      <li><strong>面談場所</strong>: オンライン/対面の区別</li>
+      <li><strong>申請内容</strong>: 相談内容の概要（任意）</li>
+    </ul>
+
+    <!-- 4. 個人情報保護の技術的対策 -->
+    <h2 id="security-measures">4. 個人情報保護の技術的対策</h2>
+
+    <h3>4.1 通信の暗号化</h3>
+    <ul>
+      <li><strong>HTTPS/TLS 1.3</strong>: すべての通信を暗号化</li>
+      <li><strong>証明書</strong>: GitHub Pages および Firebase が自動管理</li>
+      <li><strong>中間者攻撃の防止</strong>: HSTS (HTTP Strict Transport Security) 有効化</li>
+    </ul>
+
+    <h3>4.2 データ保存時の暗号化</h3>
+    <ul>
+      <li><strong>保存場所</strong>: Google Cloud 東京データセンター（asia-northeast1）</li>
+      <li><strong>暗号化方式</strong>: AES-256 による自動暗号化</li>
+      <li><strong>鍵管理</strong>: Google の KMS (Key Management Service) で管理</li>
+    </ul>
+
+    <h3>4.3 アクセス制御</h3>
+    
+    <h4>利用者レベル</h4>
+    <table>
+      <tr>
+        <th>権限</th>
+        <th>可能な操作</th>
+      </tr>
+      <tr>
+        <td>一般利用者</td>
+        <td><strong>自分の予約情報のみ</strong>閲覧・作成・キャンセル</td>
+      </tr>
+      <tr>
+        <td>管理者</td>
+        <td>全予約の閲覧・管理（承認・拒否・日程調整）</td>
+      </tr>
+    </table>
+
+    <h4>Firebase セキュリティルール（例）</h4>
+    <div class="code-block">// Firestore セキュリティルール
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 予約情報
+    match /meetingRequests/{requestId} {
+      // 本人のみ閲覧可能
+      allow read: if request.auth != null 
+                  && resource.data.userId == request.auth.uid;
+      
+      // 本人のみ作成可能
+      allow create: if request.auth != null 
+                    && request.resource.data.userId == request.auth.uid;
+      
+      // 管理者は全データ閲覧・更新可能
+      allow read, update: if request.auth != null 
+                          && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+  }
+}</div>
+
+    <h3>4.4 監査ログ</h3>
+    <ul>
+      <li><strong>Firebase Audit Logs</strong>: すべてのデータアクセスを記録</li>
+      <li><strong>保存期間</strong>: 90日間</li>
+      <li><strong>記録内容</strong>: アクセス日時、操作内容、IPアドレス、ユーザーID</li>
+    </ul>
+
+    <!-- 5. データ保存場所と信頼性 -->
+    <h2 id="data-location">5. データ保存場所と信頼性</h2>
+
+    <h3>5.1 データセンター</h3>
+    <ul>
+      <li><strong>所在地</strong>: Google Cloud 東京リージョン（asia-northeast1）</li>
+      <li><strong>物理セキュリティ</strong>: 24時間監視、多層認証、生体認証</li>
+      <li><strong>災害対策</strong>: 複数の可用性ゾーンに自動複製</li>
+    </ul>
+
+    <h3>5.2 認証・認定</h3>
+    <p>Google Cloud Platform は以下の国際基準に準拠しています。</p>
+    
+    <table>
+      <tr>
+        <th>認証・認定</th>
+        <th>説明</th>
+      </tr>
+      <tr>
+        <td>ISO/IEC 27001</td>
+        <td>情報セキュリティマネジメント</td>
+      </tr>
+      <tr>
+        <td>ISO/IEC 27017</td>
+        <td>クラウドサービスセキュリティ</td>
+      </tr>
+      <tr>
+        <td>ISO/IEC 27018</td>
+        <td>クラウドにおける個人情報保護</td>
+      </tr>
+      <tr>
+        <td>SOC 2 Type II</td>
+        <td>セキュリティ・可用性・機密性の監査</td>
+      </tr>
+      <tr>
+        <td>GDPR</td>
+        <td>EU一般データ保護規則</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <strong>参考:</strong> <a href="https://cloud.google.com/security/compliance" target="_blank" style="color: #17a2b8;">Google Cloud コンプライアンス</a>
+    </div>
+
+    <!-- 6. データ保持と削除 -->
+    <h2 id="data-retention">6. データ保持と削除</h2>
+
+    <h3>6.1 保持期間</h3>
+    <table>
+      <tr>
+        <th>データ種別</th>
+        <th>保持期間</th>
+      </tr>
+      <tr>
+        <td>アクティブユーザーのデータ</td>
+        <td>利用期間中</td>
+      </tr>
+      <tr>
+        <td>退職・離任後のデータ</td>
+        <td>3年間保持（統計分析用）</td>
+      </tr>
+      <tr>
+        <td>監査ログ</td>
+        <td>90日間</td>
+      </tr>
+    </table>
+
+    <h3>6.2 データ削除</h3>
+    
+    <h4>利用者からの削除依頼</h4>
+    <ol>
+      <li><strong>申請</strong>: システム管理者にメールで削除依頼</li>
+      <li><strong>確認</strong>: 本人確認（メールアドレス・氏名の照合）</li>
+      <li><strong>実行</strong>: 7営業日以内に完全削除</li>
+      <li><strong>確認</strong>: 削除完了通知をメールで送信</li>
+    </ol>
+
+    <h4>削除対象</h4>
+    <ul>
+      <li>認証情報（メールアドレス・パスワードハッシュ）</li>
+      <li>基本情報（氏名・所属）</li>
+      <li>予約履歴</li>
+      <li>監査ログ内の個人識別情報</li>
+    </ul>
+
+    <div class="important">
+      <strong>注意:</strong> 統計データ（匿名化済み）は削除対象外です。
+    </div>
+
+    <!-- 7. 運用体制 -->
+    <h2 id="operation">7. 運用体制</h2>
+
+    <h3>7.1 役割と責任</h3>
+    <table>
+      <tr>
+        <th>役割</th>
+        <th>責任範囲</th>
+      </tr>
+      <tr>
+        <td><strong>システム利用者</strong></td>
+        <td>自身のパスワード管理、不審なアクセスの報告</td>
+      </tr>
+      <tr>
+        <td><strong>システム管理者</strong></td>
+        <td>予約の承認・拒否、利用者サポート</td>
+      </tr>
+      <tr>
+        <td><strong>システム運用者</strong></td>
+        <td>インフラ管理、セキュリティ更新、監査ログ確認</td>
+      </tr>
+    </table>
+
+    <h3>7.2 データ最小化の原則</h3>
+    <ul>
+      <li><strong>必要最小限の情報のみ収集</strong>: 相談内容の詳細は任意入力</li>
+      <li><strong>匿名化</strong>: 統計分析時は個人識別情報を削除</li>
+      <li><strong>定期的なデータ棚卸</strong>: 不要なデータは自動削除</li>
+    </ul>
+
+    <h3>7.3 定期監査</h3>
+    <table>
+      <tr>
+        <th>頻度</th>
+        <th>確認項目</th>
+      </tr>
+      <tr>
+        <td><strong>月次</strong></td>
+        <td>アクセスログの異常検知、認証失敗の分析</td>
+      </tr>
+      <tr>
+        <td><strong>四半期</strong></td>
+        <td>セキュリティルールの見直し、権限の棚卸</td>
+      </tr>
+      <tr>
+        <td><strong>年次</strong></td>
+        <td>外部監査（第三者によるセキュリティ診断）</td>
+      </tr>
+    </table>
+
+    <!-- 8. インシデント対応 -->
+    <h2 id="incident">8. インシデント対応</h2>
+
+    <h3>8.1 インシデント対応フロー</h3>
+    <div class="diagram">検知
+  ↓
+影響範囲の特定
+  ↓
+必要に応じてシステム停止
+  ↓
+関係者への通知（24時間以内）
+  ↓
+原因調査・対策実施
+  ↓
+再発防止策の策定</div>
+
+    <h3>8.2 通知対象</h3>
+    <ul>
+      <li><strong>本人</strong>: データ漏洩の可能性がある場合</li>
+      <li><strong>大学担当者</strong>: システム全体に影響がある場合</li>
+      <li><strong>監督当局</strong>: 法令で義務付けられている場合</li>
+    </ul>
+
+    <h3>8.3 連絡先</h3>
+    <div class="info-box">
+      <strong>緊急連絡先:</strong> <a href="/cdn-cgi/l/email-protection#b2dadbc0ddd3d9dbf2c4d3dec7d7d5deddc59cd8c28dc1c7d0d8d7d1c68f513222550538543217513223573239560808543137571203560d2f5a1f055133195b241051332b51303951301651310151300551313551310151313a571203572338"><span class="__cf_email__" data-cfemail="137b7a617c72787a5365727f6676747f7c643d7963">[email&#160;protected]</span></a><br>
+      <strong>営業時間:</strong> 平日 9:00-17:00<br>
+      <strong>緊急時:</strong> 24時間対応（重大インシデント時）
+    </div>
+
+    <!-- 9. 監査・確認方法 -->
+    <h2 id="audit">9. 監査・確認方法</h2>
+
+    <h3>9.1 Firebase コンソールでの確認</h3>
+    <p>大学の担当者は、Firebase Console にアクセスして以下を確認できます。</p>
+
+    <h4>9.1.1 認証設定の確認</h4>
+    <div class="code-block">Firebase Console > Authentication > Sign-in method</div>
+    <ul>
+      <li>パスワードポリシー（最小8文字、英数字混在）</li>
+      <li>二段階認証の有効化状態</li>
+      <li>認証失敗のログ</li>
+    </ul>
+
+    <h4>9.1.2 セキュリティルールの確認</h4>
+    <div class="code-block">Firebase Console > Firestore Database > Rules</div>
+    <ul>
+      <li>アクセス制御ルールの内容</li>
+      <li>最終更新日時</li>
+      <li>ルールのテスト結果</li>
+    </ul>
+
+    <h4>9.1.3 アクセスログの確認</h4>
+    <div class="code-block">Firebase Console > Firestore Database > Usage</div>
+    <ul>
+      <li>読み取り/書き込みの回数</li>
+      <li>エラー発生状況</li>
+      <li>異常なアクセスパターンの検出</li>
+    </ul>
+
+    <h3>9.2 定期レポート</h3>
+    <table>
+      <tr>
+        <th>頻度</th>
+        <th>提供内容</th>
+      </tr>
+      <tr>
+        <td><strong>月次</strong></td>
+        <td>利用者数、予約件数、セキュリティイベント</td>
+      </tr>
+      <tr>
+        <td><strong>四半期</strong></td>
+        <td>セキュリティ監査結果、改善事項</td>
+      </tr>
+      <tr>
+        <td><strong>年次</strong></td>
+        <td>システム全体の評価、次年度の計画</td>
+      </tr>
+    </table>
+
+    <!-- 10. よくある質問 -->
+    <h2 id="faq">10. よくある質問 (Q&A)</h2>
+
+    <h3>Q1. 学生の個人情報は守られますか？</h3>
+    <div class="success-box">
+      <strong>A1:</strong> <strong>本システムは学生の個人情報を取り扱いません。</strong> 本システムは大学赴任者のご家族（パートナー・配偶者など）を対象としており、学生情報は対象外です。学生の個人情報は大学の学務システムで別途管理されます。
+    </div>
+
+    <h3>Q2. パートナー帯同者のデータは誰が見られますか？</h3>
+    <div class="success-box">
+      <strong>A2:</strong> 以下の通りアクセス制御を実施しています。
+      <ul>
+        <li><strong>本人</strong>: 自分の予約情報のみ閲覧可能</li>
+        <li><strong>システム管理者</strong>: 予約の承認・日程調整のために全データ閲覧可能</li>
+        <li><strong>大学担当者</strong>: 必要に応じて統計データ（匿名化済み）を閲覧可能</li>
+      </ul>
+    </div>
+
+    <h3>Q3. データを削除したい場合はどうすればよいですか？</h3>
+    <div class="success-box">
+      <strong>A3:</strong> システム管理者にメールで削除依頼を送付してください。本人確認後、7営業日以内に完全削除します。削除完了後、確認メールをお送りします。
+    </div>
+
+    <h3>Q4. パスワードを忘れた場合はどうなりますか？</h3>
+    <div class="success-box">
+      <strong>A4:</strong> パスワードリセット機能を利用してください。登録メールアドレスにリセットリンクが送信されます。<strong>システム管理者を含め、誰もパスワードの平文を確認できません</strong>（ハッシュ化されているため）。
+    </div>
+
+    <h3>Q5. データ漏洩のリスクはありますか？</h3>
+    <div class="success-box">
+      <strong>A5:</strong> 以下の対策により、リスクを最小化しています。
+      <ul>
+        <li><strong>技術的対策</strong>: HTTPS通信、データ暗号化、アクセス制御</li>
+        <li><strong>運用的対策</strong>: 定期監査、権限管理、インシデント対応体制</li>
+        <li><strong>物理的対策</strong>: Google データセンターの24時間監視</li>
+      </ul>
+      万が一データ漏洩が発生した場合、24時間以内に関係者に通知します。
+    </div>
+
+    <h3>Q6. 大学側で監査を実施できますか？</h3>
+    <div class="success-box">
+      <strong>A6:</strong> はい、可能です。以下の方法で監査を実施できます。
+      <ul>
+        <li><strong>Firebase Console へのアクセス権限</strong>を提供（読み取り専用）</li>
+        <li><strong>定期レポート</strong>の提出（月次・四半期・年次）</li>
+        <li><strong>第三者監査</strong>の受け入れ（事前調整が必要）</li>
+      </ul>
+    </div>
+
+    <!-- 11. 参考資料 -->
+    <h2 id="references">11. 参考資料</h2>
+
+    <h3>11.1 技術文書</h3>
+    <ul>
+      <li><a href="https://firebase.google.com/docs/auth" target="_blank">Firebase Authentication ドキュメント</a></li>
+      <li><a href="https://firebase.google.com/docs/firestore/security/get-started" target="_blank">Cloud Firestore セキュリティルール</a></li>
+      <li><a href="https://cloud.google.com/security" target="_blank">Google Cloud セキュリティ</a></li>
+    </ul>
+
+    <h3>11.2 関連法規</h3>
+    <ul>
+      <li><strong>個人情報保護法</strong>（日本）</li>
+      <li><strong>GDPR</strong>（EU一般データ保護規則）</li>
+      <li><strong>ISO/IEC 27001</strong>（情報セキュリティマネジメント）</li>
+    </ul>
+
+    <h3>11.3 システム関連リンク</h3>
+    <table>
+      <tr>
+        <th>項目</th>
+        <th>URL</th>
+      </tr>
+      <tr>
+        <td>本番環境（面談予約）</td>
+        <td><a href="https://hiyusho.github.io/university-relocation-support/meeting-booking.html" target="_blank">meeting-booking.html</a></td>
+      </tr>
+      <tr>
+        <td>本番環境（マイ予約）</td>
+        <td><a href="https://hiyusho.github.io/university-relocation-support/my-meetings.html" target="_blank">my-meetings.html</a></td>
+      </tr>
+      <tr>
+        <td>GitHub リポジトリ</td>
+        <td><a href="https://github.com/hiyusho/university-relocation-support" target="_blank">GitHub</a></td>
+      </tr>
+      <tr>
+        <td>Firebase Console</td>
+        <td><a href="https://console.firebase.google.com/project/university-relocation-support" target="_blank">Firebase</a></td>
+      </tr>
+    </table>
+
+    <!-- お問い合わせ -->
+    <div class="contact-section">
+      <h2>12. お問い合わせ</h2>
+      <div class="contact-info">
+        本資料に関するご質問・ご不明点がございましたら、以下までご連絡ください。<br><br>
+        <strong>株式会社バリューグロー</strong><br>
+        担当者: 田中 裕章（ユーショー）<br>
+        メール: <a href="/cdn-cgi/l/email-protection#82eaebf0ede3e9ebc2f4e3eef7e7e5eeedf5ace8f2bdf1f7e0e8e7e1f6bf670209663838640107672233663d1f6a2f356103296b142061031b61000961030867170d61030667120a61000d610319"><span class="__cf_email__" data-cfemail="9df5f4eff2fcf6f4ddebfcf1e8f8faf1f2eab3f7ed">[email&#160;protected]</span></a><br>
+        電話: 052-XXX-XXXX<br>
+        営業時間: 平日 9:00-17:00
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #eee; color: #999;">
+      <p><strong>文書バージョン:</strong> 1.0</p>
+      <p><strong>最終更新日:</strong> 2026年1月22日</p>
+      <p><strong>作成者:</strong> 株式会社バリューグロー</p>
+    </div>
+  </div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
