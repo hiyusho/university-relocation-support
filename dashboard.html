@@ -777,24 +777,26 @@
             }
         }
         
-        // 次回の予定をロード
+        // 次回の予定をロード（v4: 実際のFirestoreデータ構造に完全対応）
         async function loadNextMeeting(userId) {
             try {
+                console.log('[Dashboard v4] 次回の予定を読み込み中... userId:', userId);
                 const now = new Date();
+                
+                // シンプルなクエリ：userIdのみで検索（orderByなし）
                 const q = query(
                     collection(db, 'meetings'),
-                    where('userId', '==', userId),
-                    where('status', '==', 'requested'),
-                    orderBy('requestedAt', 'asc'),
-                    firestoreLimit(1)
+                    where('userId', '==', userId)
                 );
                 
                 const snapshot = await getDocs(q);
-                const container = document.getElementById('next-meeting-container');
+                console.log('[Dashboard v4] 取得した予定数:', snapshot.size);
                 
+                const container = document.getElementById('next-meeting-container');
                 if (!container) return;
                 
                 if (snapshot.empty) {
+                    console.log('[Dashboard v4] 予定データなし');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
                             <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
@@ -807,11 +809,80 @@
                     return;
                 }
                 
-                const meeting = snapshot.docs[0].data();
-                const meetingDate = meeting.requestedAt?.toDate();
+                // 未来の予定を収集してソート
+                const upcomingMeetings = [];
                 
-                // 過去の予定は表示しない
-                if (meetingDate && meetingDate < now) {
+                for (const doc of snapshot.docs) {
+                    const data = doc.data();
+                    console.log('[Dashboard v4] 予定チェック:', {
+                        id: doc.id,
+                        type: data.type,
+                        datetime: data.datetime,
+                        date: data.date,
+                        status: data.status
+                    });
+                    
+                    // キャンセル済みをスキップ
+                    if (data.status === 'cancelled') {
+                        console.log('[Dashboard v4] キャンセル済み、スキップ');
+                        continue;
+                    }
+                    
+                    // 日時をパース（複数のフィールド形式に対応）
+                    let meetingDate = null;
+                    
+                    // パターン1: datetime フィールド（文字列）
+                    if (data.datetime) {
+                        try {
+                            // "2026年1月20日 14:00:00 UTC+9" 形式をパース
+                            const dateStr = data.datetime.replace(/年|月/g, '-').replace(/日/g, '');
+                            meetingDate = new Date(dateStr);
+                            console.log('[Dashboard v4] datetime からパース:', meetingDate);
+                        } catch (e) {
+                            console.warn('[Dashboard v4] datetime パースエラー:', e);
+                        }
+                    }
+                    
+                    // パターン2: date + startTime フィールド
+                    if (!meetingDate && data.date && data.startTime) {
+                        try {
+                            const dateTimeStr = `${data.date}T${data.startTime}:00`;
+                            meetingDate = new Date(dateTimeStr);
+                            console.log('[Dashboard v4] date + startTime からパース:', meetingDate);
+                        } catch (e) {
+                            console.warn('[Dashboard v4] date + startTime パースエラー:', e);
+                        }
+                    }
+                    
+                    // パターン3: requestedAt フィールド（Timestamp）
+                    if (!meetingDate && data.requestedAt) {
+                        try {
+                            meetingDate = data.requestedAt.toDate();
+                            console.log('[Dashboard v4] requestedAt からパース:', meetingDate);
+                        } catch (e) {
+                            console.warn('[Dashboard v4] requestedAt パースエラー:', e);
+                        }
+                    }
+                    
+                    if (!meetingDate || isNaN(meetingDate.getTime())) {
+                        console.warn('[Dashboard v4] 有効な日時が取得できませんでした');
+                        continue;
+                    }
+                    
+                    // 未来の予定のみ
+                    if (meetingDate >= now) {
+                        console.log('[Dashboard v4] 未来の予定を発見:', meetingDate);
+                        upcomingMeetings.push({
+                            date: meetingDate,
+                            data: data
+                        });
+                    } else {
+                        console.log('[Dashboard v4] 過去の予定、スキップ:', meetingDate);
+                    }
+                }
+                
+                if (upcomingMeetings.length === 0) {
+                    console.log('[Dashboard v4] 未来の予定なし');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
                             <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
@@ -823,14 +894,31 @@
                     `;
                     return;
                 }
+                
+                // 日付順にソート
+                upcomingMeetings.sort((a, b) => a.date - b.date);
+                const nextMeeting = upcomingMeetings[0];
+                
+                console.log('[Dashboard v4] 次回の予定を表示:', nextMeeting.data.type || nextMeeting.data.requestType);
+                
+                // 日時フォーマット
+                const dateOptions = { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    weekday: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                const formattedDate = nextMeeting.date.toLocaleDateString('ja-JP', dateOptions);
                 
                 container.innerHTML = `
                     <div class="schedule-item">
-                        <div class="schedule-date">${formatMeetingDateTime(meeting.requestedAt)}</div>
-                        <div class="schedule-title">${escapeHtml(meeting.requestType || '面談')}</div>
+                        <div class="schedule-date">${formattedDate}</div>
+                        <div class="schedule-title">${escapeHtml(nextMeeting.data.type || nextMeeting.data.requestType || '面談')}</div>
                         <div class="schedule-info">
                             <i class="fas fa-video"></i>
-                            <span>${escapeHtml(meeting.meetingType || 'オンライン')}</span>
+                            <span>${escapeHtml(nextMeeting.data.location || nextMeeting.data.meetingType || 'オンライン')}</span>
                         </div>
                         <div class="schedule-actions">
                             <a href="my-meetings.html" class="btn-small btn-primary">詳細を見る</a>
@@ -838,15 +926,15 @@
                     </div>
                 `;
             } catch (error) {
-                console.error('予定読み込みエラー:', error);
-                console.error('エラー詳細:', error.code, error.message);
+                console.error('[Dashboard v4] 予定読み込みエラー:', error);
+                console.error('[Dashboard v4] エラー詳細:', error.code, error.message);
                 const container = document.getElementById('next-meeting-container');
                 if (container) {
                     let errorMsg = '読み込みエラー';
                     if (error.code === 'permission-denied') {
                         errorMsg = 'アクセス権限がありません';
                     } else if (error.code === 'failed-precondition') {
-                        errorMsg = 'インデックスが必要です';
+                        errorMsg = 'インデックスが必要です。Consoleのリンクをクリックしてください';
                     } else if (error.message) {
                         errorMsg = error.message.substring(0, 100);
                     }
