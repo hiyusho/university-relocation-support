@@ -486,7 +486,7 @@
             <!-- ウェルカムカード -->
             <div class="welcome-card">
                 <h1>こんにちは、田中様 👋</h1>
-                <p>最終ログイン: 2026年1月7日 10:30</p>
+                <p id="last-login-time">最終ログイン: 読み込み中...</p>
             </div>
 
             <!-- カードグリッド -->
@@ -500,18 +500,13 @@
                         <div class="card-title">次回の予定</div>
                     </div>
 
-                    <div class="schedule-item">
-                        <div class="schedule-date">2026年1月15日（水）14:00-15:00</div>
-                        <div class="schedule-title">初回キャリア面談</div>
-                        <div class="schedule-info">
-                            <i class="fas fa-video"></i>
-                            <span>オンライン（Zoom）</span>
-                        </div>
-                        <div class="schedule-actions">
-                            <button class="btn-small btn-primary">詳細を見る</button>
-                            <button class="btn-small btn-secondary">予約変更</button>
-                        </div>
+                    <div id="next-meeting-container">
+                    <!-- JavaScriptで動的に生成 -->
+                    <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p style="font-size: 0.95rem;">読み込み中...</p>
                     </div>
+                </div>
 
                     <div class="view-all">
                         <a href="meeting-booking.html">
@@ -531,27 +526,13 @@
                         <span class="card-count">2件未読</span>
                     </div>
 
-                    <div class="message-item message-unread">
-                        <div class="message-header">
-                            <div class="message-sender">
-                                <span class="unread-badge"></span>
-                                コンサルタント 山田
-                            </div>
-                            <div class="message-time">今日 9:30</div>
-                        </div>
-                        <div class="message-preview">
-                            面談準備のお願い：当日までに履歴書と職務経歴書のご準備をお願いします...
-                        </div>
+                    <div id="messages-container">
+                    <!-- JavaScriptで動的に生成 -->
+                    <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p style="font-size: 0.95rem;">読み込み中...</p>
                     </div>
-
-                    <div class="message-item message-unread">
-                        <div class="message-header">
-                            <div class="message-sender">
-                                <span class="unread-badge"></span>
-                                システム通知
-                            </div>
-                            <div class="message-time">昨日 16:20</div>
-                        </div>
+                </div>
                         <div class="message-preview">
                             新しい企業紹介があります。マイページでご確認ください。
                         </div>
@@ -578,26 +559,13 @@
                         <span class="card-count">3社</span>
                     </div>
 
-                    <div class="company-item">
-                        <div class="company-status status-passed"></div>
-                        <div class="company-info">
-                            <div class="company-name">ABC株式会社</div>
-                            <div class="company-status-text">書類選考通過 → 面接予定: 1/20</div>
-                        </div>
-                        <a href="#" class="company-action">詳細</a>
+                    <div id="companies-container">
+                    <!-- JavaScriptで動的に生成 -->
+                    <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                        <p style="font-size: 0.95rem;">読み込み中...</p>
                     </div>
-
-                    <div class="company-item">
-                        <div class="company-status status-pending"></div>
-                        <div class="company-info">
-                            <div class="company-name">XYZ株式会社</div>
-                            <div class="company-status-text">応募中（1/8応募）</div>
-                        </div>
-                        <a href="#" class="company-action">詳細</a>
-                    </div>
-
-                    <div class="company-item">
-                        <div class="company-status status-new"></div>
+                </div>
                         <div class="company-info">
                             <div class="company-name">DEF株式会社</div>
                             <div class="company-status-text">紹介済み（未応募）</div>
@@ -689,7 +657,7 @@
                     <div class="card-title">活動サマリー</div>
                 </div>
 
-                <div class="stats-grid">
+                <div class="stats-grid" id="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value">5</div>
                         <div class="stat-label">面談実施回数</div>
@@ -743,6 +711,373 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
+
+        
+        // ================================
+        // ダッシュボード動的データロード
+        // ================================
+        
+        // 日時フォーマット関数
+        function formatDateTime(date) {
+            if (!date) return '不明';
+            try {
+                const d = date instanceof Date ? date : date.toDate();
+                const year = d.getFullYear();
+                const month = d.getMonth() + 1;
+                const day = d.getDate();
+                const hours = String(d.getHours()).padStart(2, '0');
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+            } catch (e) {
+                return '不明';
+            }
+        }
+        
+        function formatMeetingDateTime(timestamp) {
+            if (!timestamp) return '日時未定';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                
+                const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+                const weekday = weekdays[date.getDay()];
+                
+                return `${year}年${month}月${day}日（${weekday}）${hours}:${minutes}`;
+            } catch (e) {
+                return '日時エラー';
+            }
+        }
+        
+        function formatRelativeTime(timestamp) {
+            if (!timestamp) return '不明';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+                
+                if (minutes < 1) return 'たった今';
+                if (minutes < 60) return `${minutes}分前`;
+                if (hours < 24) return `${hours}時間前`;
+                if (days === 0) return '今日';
+                if (days === 1) return '昨日';
+                if (days < 7) return `${days}日前`;
+                
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                return `${month}/${day}`;
+            } catch (e) {
+                return '不明';
+            }
+        }
+        
+        // 次回の予定をロード
+        async function loadNextMeeting(userId) {
+            try {
+                const now = new Date();
+                const q = query(
+                    collection(db, 'meetings'),
+                    where('userId', '==', userId),
+                    where('status', '==', 'requested'),
+                    orderBy('requestedAt', 'asc'),
+                    firestoreLimit(1)
+                );
+                
+                const snapshot = await getDocs(q);
+                const container = document.getElementById('next-meeting-container');
+                
+                if (!container) return;
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem; margin-bottom: 15px;">予定がありません</p>
+                            <a href="meeting-booking.html" class="btn btn-outline" style="font-size:0.9rem; padding:8px 20px;">
+                                <i class="fas fa-calendar-plus"></i> 面談を予約する
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const meeting = snapshot.docs[0].data();
+                const meetingDate = meeting.requestedAt?.toDate();
+                
+                // 過去の予定は表示しない
+                if (meetingDate && meetingDate < now) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem; margin-bottom: 15px;">予定がありません</p>
+                            <a href="meeting-booking.html" class="btn btn-outline" style="font-size:0.9rem; padding:8px 20px;">
+                                <i class="fas fa-calendar-plus"></i> 面談を予約する
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <div class="schedule-item">
+                        <div class="schedule-date">${formatMeetingDateTime(meeting.requestedAt)}</div>
+                        <div class="schedule-title">${escapeHtml(meeting.requestType || '面談')}</div>
+                        <div class="schedule-info">
+                            <i class="fas fa-video"></i>
+                            <span>${escapeHtml(meeting.meetingType || 'オンライン')}</span>
+                        </div>
+                        <div class="schedule-actions">
+                            <a href="my-meetings.html" class="btn-small btn-primary">詳細を見る</a>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('予定読み込みエラー:', error);
+                const container = document.getElementById('next-meeting-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem;">読み込みエラー</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // メッセージをロード
+        async function loadMessages(userId) {
+            try {
+                const q = query(
+                    collection(db, 'messages'),
+                    where('recipientId', '==', userId),
+                    where('read', '==', false),
+                    orderBy('createdAt', 'desc'),
+                    firestoreLimit(2)
+                );
+                
+                const snapshot = await getDocs(q);
+                const container = document.getElementById('messages-container');
+                const countBadge = document.querySelector('.card-icon.message')?.closest('.card')?.querySelector('.card-count');
+                
+                if (!container) return;
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-envelope-open" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem;">新着メッセージはありません</p>
+                        </div>
+                    `;
+                    if (countBadge) countBadge.textContent = '0件';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const msg = doc.data();
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message-item message-unread';
+                    messageDiv.innerHTML = `
+                        <div class="message-header">
+                            <div class="message-sender">
+                                <span class="unread-badge"></span>
+                                ${escapeHtml(msg.senderName || '送信者')}
+                            </div>
+                            <div class="message-time">${formatRelativeTime(msg.createdAt)}</div>
+                        </div>
+                        <div class="message-preview">
+                            ${escapeHtml((msg.content || '').substring(0, 50))}${msg.content && msg.content.length > 50 ? '...' : ''}
+                        </div>
+                    `;
+                    container.appendChild(messageDiv);
+                });
+                
+                if (countBadge) countBadge.textContent = `${snapshot.size}件未読`;
+            } catch (error) {
+                console.error('メッセージ読み込みエラー:', error);
+                const container = document.getElementById('messages-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem;">読み込みエラー</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // 企業リストをロード
+        async function loadCompanies(userId) {
+            try {
+                const q = query(
+                    collection(db, 'applications'),
+                    where('userId', '==', userId),
+                    orderBy('appliedAt', 'desc'),
+                    firestoreLimit(3)
+                );
+                
+                const snapshot = await getDocs(q);
+                const container = document.getElementById('companies-container');
+                const countBadge = document.querySelector('.card-icon.company')?.closest('.card')?.querySelector('.card-count');
+                
+                if (!container) return;
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-building" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem;">紹介企業はまだありません</p>
+                        </div>
+                    `;
+                    if (countBadge) countBadge.textContent = '0社';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                snapshot.forEach((doc) => {
+                    const app = doc.data();
+                    const companyDiv = document.createElement('div');
+                    companyDiv.className = 'company-item';
+                    
+                    const statusClass = getCompanyStatusClass(app.status);
+                    const statusText = getCompanyStatusText(app.status, app.appliedAt);
+                    
+                    companyDiv.innerHTML = `
+                        <div class="company-status ${statusClass}"></div>
+                        <div class="company-info">
+                            <div class="company-name">${escapeHtml(app.companyName || '企業名')}</div>
+                            <div class="company-status-text">${statusText}</div>
+                        </div>
+                        <a href="job-applications.html" class="company-action">詳細</a>
+                    `;
+                    container.appendChild(companyDiv);
+                });
+                
+                if (countBadge) countBadge.textContent = `${snapshot.size}社`;
+            } catch (error) {
+                console.error('企業リスト読み込みエラー:', error);
+                const container = document.getElementById('companies-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem;">読み込みエラー</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        function getCompanyStatusClass(status) {
+            const map = {
+                'passed': 'status-passed',
+                'interview': 'status-passed',
+                'pending': 'status-pending',
+                'applied': 'status-pending',
+                'new': 'status-new'
+            };
+            return map[status] || 'status-new';
+        }
+        
+        function getCompanyStatusText(status, appliedAt) {
+            const map = {
+                'passed': '書類選考通過',
+                'interview': '面接予定',
+                'pending': '応募中',
+                'applied': '応募中',
+                'new': '紹介済み'
+            };
+            let text = map[status] || '応募前';
+            
+            if (appliedAt) {
+                try {
+                    const date = appliedAt.toDate ? appliedAt.toDate() : new Date(appliedAt);
+                    const month = date.getMonth() + 1;
+                    const day = date.getDate();
+                    text += ` （${month}/${day}応募）`;
+                } catch (e) {
+                    // ignore
+                }
+            }
+            
+            return text;
+        }
+        
+        // 活動統計をロード
+        async function loadActivityStats(userId) {
+            try {
+                // 面談実施回数
+                const meetingsQuery = query(
+                    collection(db, 'meetings'),
+                    where('userId', '==', userId),
+                    where('status', '==', 'completed')
+                );
+                const meetingsSnapshot = await getDocs(meetingsQuery);
+                const meetingsCount = meetingsSnapshot.size;
+                
+                // 応募企業数
+                const applicationsQuery = query(
+                    collection(db, 'applications'),
+                    where('userId', '==', userId)
+                );
+                const applicationsSnapshot = await getDocs(applicationsQuery);
+                const applicationsCount = applicationsSnapshot.size;
+                
+                // 書類通過率
+                let passedCount = 0;
+                applicationsSnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.status === 'passed' || data.status === 'interview') {
+                        passedCount++;
+                    }
+                });
+                const passRate = applicationsCount > 0 
+                    ? Math.round((passedCount / applicationsCount) * 100) 
+                    : 0;
+                
+                // 利用日数
+                const userDoc = await getDoc(doc(db, 'users', userId));
+                const userData = userDoc.data();
+                const createdAt = userData?.createdAt?.toDate ? userData.createdAt.toDate() : null;
+                const daysUsed = createdAt 
+                    ? Math.max(1, Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24)))
+                    : 1;
+                
+                // 表示
+                const statsGrid = document.getElementById('stats-grid');
+                if (statsGrid) {
+                    statsGrid.innerHTML = `
+                        <div class="stat-item">
+                            <div class="stat-value">${meetingsCount}</div>
+                            <div class="stat-label">面談実施回数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${applicationsCount}</div>
+                            <div class="stat-label">応募企業数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${passRate}%</div>
+                            <div class="stat-label">書類通過率</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${daysUsed}</div>
+                            <div class="stat-label">利用日数</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('統計読み込みエラー:', error);
+            }
+        }
+
 
         // ================================
         // role/ユーザードキュメント共通
@@ -821,6 +1156,24 @@
                 if (userInfoSpan) userInfoSpan.textContent = userName;
 
                 await loadRecentDocuments(user.uid);
+                
+                // 最終ログイン時刻を更新
+                const lastLoginP = document.getElementById('last-login-time');
+                if (lastLoginP) {
+                    const now = new Date();
+                    const formatted = formatDateTime(now);
+                    lastLoginP.textContent = `最終ログイン: ${formatted}`;
+                    
+                    await setDoc(doc(db, 'users', user.uid), {
+                        lastLoginAt: serverTimestamp()
+                    }, { merge: true });
+                }
+
+                // 各セクションをロード
+                await loadNextMeeting(user.uid);
+                await loadMessages(user.uid);
+                await loadCompanies(user.uid);
+                await loadActivityStats(user.uid);
             } catch (error) {
                 console.error('ユーザー情報取得エラー:', error);
             }
@@ -997,6 +1350,24 @@
                 // 再読み込み
                 const user = auth.currentUser;
                 if (user) await loadRecentDocuments(user.uid);
+                
+                // 最終ログイン時刻を更新
+                const lastLoginP = document.getElementById('last-login-time');
+                if (lastLoginP) {
+                    const now = new Date();
+                    const formatted = formatDateTime(now);
+                    lastLoginP.textContent = `最終ログイン: ${formatted}`;
+                    
+                    await setDoc(doc(db, 'users', user.uid), {
+                        lastLoginAt: serverTimestamp()
+                    }, { merge: true });
+                }
+
+                // 各セクションをロード
+                await loadNextMeeting(user.uid);
+                await loadMessages(user.uid);
+                await loadCompanies(user.uid);
+                await loadActivityStats(user.uid);
 
                 alert('削除しました');
             } catch (error) {
@@ -1079,3 +1450,4 @@
     </script>
 </body>
 </html>
+
