@@ -780,7 +780,17 @@
         // 次回の予定をロード（v4: 実際のFirestoreデータ構造に完全対応）
         async function loadNextMeeting(userId) {
             try {
-                console.log('[Dashboard v4] 次回の予定を読み込み中... userId:', userId);
+                console.log('[Dashboard v5] 次回の予定を読み込み中... userId:', userId);
+                console.log('[Dashboard v5] 現在の認証ユーザー:', auth.currentUser?.uid);
+                
+                // ユーザーIDの不一致を検出
+                if (auth.currentUser && auth.currentUser.uid !== userId) {
+                    console.error('[Dashboard v5] ⚠️ 致命的エラー: 引数のuserIdと認証ユーザーが不一致！', {
+                        argument: userId,
+                        authenticated: auth.currentUser.uid
+                    });
+                    throw new Error('User ID mismatch');
+                }
                 const now = new Date();
                 
                 // シンプルなクエリ：userIdのみで検索（orderByなし）
@@ -790,13 +800,13 @@
                 );
                 
                 const snapshot = await getDocs(q);
-                console.log('[Dashboard v4] 取得した予定数:', snapshot.size);
+                console.log('[Dashboard v5] 取得した予定数:', snapshot.size);
                 
                 const container = document.getElementById('next-meeting-container');
                 if (!container) return;
                 
                 if (snapshot.empty) {
-                    console.log('[Dashboard v4] 予定データなし');
+                    console.log('[Dashboard v5] 予定データなし');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
                             <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
@@ -814,7 +824,7 @@
                 
                 for (const doc of snapshot.docs) {
                     const data = doc.data();
-                    console.log('[Dashboard v4] 予定チェック:', {
+                    console.log('[Dashboard v5] 予定チェック:', {
                         id: doc.id,
                         type: data.type,
                         datetime: data.datetime,
@@ -824,7 +834,7 @@
                     
                     // キャンセル済みをスキップ
                     if (data.status === 'cancelled') {
-                        console.log('[Dashboard v4] キャンセル済み、スキップ');
+                        console.log('[Dashboard v5] キャンセル済み、スキップ');
                         continue;
                     }
                     
@@ -837,9 +847,9 @@
                             // "2026年1月20日 14:00:00 UTC+9" 形式をパース
                             const dateStr = data.datetime.replace(/年|月/g, '-').replace(/日/g, '');
                             meetingDate = new Date(dateStr);
-                            console.log('[Dashboard v4] datetime からパース:', meetingDate);
+                            console.log('[Dashboard v5] datetime からパース:', meetingDate);
                         } catch (e) {
-                            console.warn('[Dashboard v4] datetime パースエラー:', e);
+                            console.warn('[Dashboard v5] datetime パースエラー:', e);
                         }
                     }
                     
@@ -848,9 +858,9 @@
                         try {
                             const dateTimeStr = `${data.date}T${data.startTime}:00`;
                             meetingDate = new Date(dateTimeStr);
-                            console.log('[Dashboard v4] date + startTime からパース:', meetingDate);
+                            console.log('[Dashboard v5] date + startTime からパース:', meetingDate);
                         } catch (e) {
-                            console.warn('[Dashboard v4] date + startTime パースエラー:', e);
+                            console.warn('[Dashboard v5] date + startTime パースエラー:', e);
                         }
                     }
                     
@@ -858,31 +868,31 @@
                     if (!meetingDate && data.requestedAt) {
                         try {
                             meetingDate = data.requestedAt.toDate();
-                            console.log('[Dashboard v4] requestedAt からパース:', meetingDate);
+                            console.log('[Dashboard v5] requestedAt からパース:', meetingDate);
                         } catch (e) {
-                            console.warn('[Dashboard v4] requestedAt パースエラー:', e);
+                            console.warn('[Dashboard v5] requestedAt パースエラー:', e);
                         }
                     }
                     
                     if (!meetingDate || isNaN(meetingDate.getTime())) {
-                        console.warn('[Dashboard v4] 有効な日時が取得できませんでした');
+                        console.warn('[Dashboard v5] 有効な日時が取得できませんでした');
                         continue;
                     }
                     
                     // 未来の予定のみ
                     if (meetingDate >= now) {
-                        console.log('[Dashboard v4] 未来の予定を発見:', meetingDate);
+                        console.log('[Dashboard v5] 未来の予定を発見:', meetingDate);
                         upcomingMeetings.push({
                             date: meetingDate,
                             data: data
                         });
                     } else {
-                        console.log('[Dashboard v4] 過去の予定、スキップ:', meetingDate);
+                        console.log('[Dashboard v5] 過去の予定、スキップ:', meetingDate);
                     }
                 }
                 
                 if (upcomingMeetings.length === 0) {
-                    console.log('[Dashboard v4] 未来の予定なし');
+                    console.log('[Dashboard v5] 未来の予定なし');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
                             <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
@@ -899,7 +909,7 @@
                 upcomingMeetings.sort((a, b) => a.date - b.date);
                 const nextMeeting = upcomingMeetings[0];
                 
-                console.log('[Dashboard v4] 次回の予定を表示:', nextMeeting.data.type || nextMeeting.data.requestType);
+                console.log('[Dashboard v5] 次回の予定を表示:', nextMeeting.data.type || nextMeeting.data.requestType);
                 
                 // 日時フォーマット
                 const dateOptions = { 
@@ -926,8 +936,8 @@
                     </div>
                 `;
             } catch (error) {
-                console.error('[Dashboard v4] 予定読み込みエラー:', error);
-                console.error('[Dashboard v4] エラー詳細:', error.code, error.message);
+                console.error('[Dashboard v5] 予定読み込みエラー:', error);
+                console.error('[Dashboard v5] エラー詳細:', error.code, error.message);
                 const container = document.getElementById('next-meeting-container');
                 if (container) {
                     let errorMsg = '読み込みエラー';
@@ -1249,16 +1259,57 @@
             return true;
         }
 
-        // 認証状態監視
+        // 認証状態監視（v5: 重複実行防止）
+        let isAuthProcessing = false;
+        let currentUserId = null;
+        
         onAuthStateChanged(auth, async (user) => {
-            const ok = await handleDashboardAccessOrRedirect(user);
-            if (!ok) return;
-
-            // ユーザー情報を反映（users/{uid} 無ければ ensureUserDoc で作成済み）
+            console.log('[Dashboard v5] onAuthStateChanged 発火:', {
+                user: user ? user.uid : 'null',
+                email: user ? user.email : 'null',
+                isAuthProcessing: isAuthProcessing,
+                currentUserId: currentUserId
+            });
+            
+            // 重複実行を防止
+            if (isAuthProcessing) {
+                console.warn('[Dashboard v5] 認証処理中のため、この呼び出しをスキップします');
+                return;
+            }
+            
+            // ユーザーIDの変化を検出
+            if (currentUserId && user && currentUserId !== user.uid) {
+                console.warn('[Dashboard v5] ⚠️ ユーザーIDが変化しました！', {
+                    old: currentUserId,
+                    new: user.uid
+                });
+            }
+            
+            isAuthProcessing = true;
+            
             try {
+                const ok = await handleDashboardAccessOrRedirect(user);
+                if (!ok) {
+                    isAuthProcessing = false;
+                    return;
+                }
+
+                currentUserId = user.uid;
+                console.log('[Dashboard v5] 認証済みユーザー:', {
+                    uid: user.uid,
+                    email: user.email
+                });
+
+                // ユーザー情報を反映（users/{uid} 無ければ ensureUserDoc で作成済み）
                 const userData = await ensureUserDoc(user);
+                console.log('[Dashboard v5] Firestoreからユーザー情報取得:', {
+                    name: userData?.name,
+                    email: userData?.email,
+                    role: userData?.role
+                });
 
                 const userName = (userData && userData.name) ? userData.name : (user.email ? user.email.split('@')[0] : 'ユーザー');
+                console.log('[Dashboard v5] 表示名:', userName);
 
                 const welcomeTitle = document.querySelector('.welcome-card h1');
                 if (welcomeTitle) welcomeTitle.textContent = `こんにちは、${userName}様 👋`;
@@ -1284,12 +1335,16 @@
                 }
 
                 // 各セクションをロード
+                console.log('[Dashboard v5] データ読み込み開始:', user.uid);
                 await loadNextMeeting(user.uid);
                 await loadMessages(user.uid);
                 await loadCompanies(user.uid);
                 await loadActivityStats(user.uid);
+                console.log('[Dashboard v5] すべてのデータ読み込み完了');
             } catch (error) {
-                console.error('ユーザー情報取得エラー:', error);
+                console.error('[Dashboard v5] ユーザー情報取得エラー:', error);
+            } finally {
+                isAuthProcessing = false;
             }
         });
 
