@@ -506,6 +506,42 @@
       .meeting-slot-card{ align-items:flex-start; }
       .slot-right{ justify-content:flex-start; }
     }
+        /* 予約リクエスト管理用スタイル */
+        .status-requested {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .status-assigned {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .status-confirmed {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .status-cancelled {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.85em;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .search-bar select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-left: 10px;
+        }
+
   </style>
 </head>
 
@@ -2032,6 +2068,309 @@ window.closeAddSlotModal = function() {
         console.log('✅ ローディング表示を強制的に消しました');
       }, 3000); // 3秒後に実行（データ読み込み完了を待つ）
     });
+        // ========================================
+        // 予約リクエスト管理機能 (Admin Dashboard v2)
+        // ========================================
+        
+        let allMeetingRequests = [];
+        let allMeetingAssignments = [];
+        
+        // 予約リクエスト一覧を表示
+        async function showMeetingRequests() {
+            console.log('[Admin v2] 予約リクエスト一覧を表示');
+            hideAllSections();
+            document.getElementById('meetingRequestsSection').style.display = 'block';
+            await loadMeetingRequests();
+        }
+        
+        // 予約リクエストを読み込み
+        async function loadMeetingRequests() {
+            console.log('[Admin v2] 予約リクエスト読み込み開始');
+            try {
+                // meetingRequests を取得
+                const requestsQuery = query(
+                    collection(db, 'meetingRequests'),
+                    orderBy('requestedAt', 'desc'),
+                    limit(100)
+                );
+                const requestsSnapshot = await getDocs(requestsQuery);
+                
+                allMeetingRequests = [];
+                requestsSnapshot.forEach((doc) => {
+                    allMeetingRequests.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                console.log('[Admin v2] 取得した予約リクエスト数:', allMeetingRequests.length);
+                
+                // meetingAssignments を取得
+                const assignmentsQuery = query(
+                    collection(db, 'meetingAssignments'),
+                    orderBy('assignedAt', 'desc'),
+                    limit(200)
+                );
+                const assignmentsSnapshot = await getDocs(assignmentsQuery);
+                
+                allMeetingAssignments = [];
+                assignmentsSnapshot.forEach((doc) => {
+                    allMeetingAssignments.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                console.log('[Admin v2] 取得した担当確定数:', allMeetingAssignments.length);
+                
+                // 統計を更新
+                document.getElementById('totalRequests').textContent = allMeetingRequests.length;
+                
+                // 一覧を表示
+                displayMeetingRequests();
+                
+            } catch (error) {
+                console.error('[Admin v2] 予約リクエスト読み込みエラー:', error);
+                alert('予約リクエストの読み込みに失敗しました: ' + error.message);
+            }
+        }
+        
+        // 予約リクエストを表示
+        function displayMeetingRequests() {
+            console.log('[Admin v2] 予約リクエスト表示開始');
+            const tbody = document.getElementById('requestsTableBody');
+            const searchTerm = document.getElementById('requestSearch')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('requestStatusFilter')?.value || 'all';
+            
+            let filteredRequests = allMeetingRequests;
+            
+            // ステータスフィルター
+            if (statusFilter !== 'all') {
+                filteredRequests = filteredRequests.filter(req => req.status === statusFilter);
+            }
+            
+            // 検索フィルター
+            if (searchTerm) {
+                filteredRequests = filteredRequests.filter(req => {
+                    const userName = req.userName?.toLowerCase() || '';
+                    const userEmail = req.userEmail?.toLowerCase() || '';
+                    return userName.includes(searchTerm) || userEmail.includes(searchTerm);
+                });
+            }
+            
+            console.log('[Admin v2] フィルター後の予約数:', filteredRequests.length);
+            
+            document.getElementById('requestsCount').textContent = filteredRequests.length;
+            
+            if (filteredRequests.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">予約リクエストがありません</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filteredRequests.map(request => {
+                // 担当確定情報を取得
+                const assignment = allMeetingAssignments.find(a => a.requestId === request.id);
+                
+                // ステータス表示
+                let statusBadge = '';
+                let statusClass = '';
+                switch (request.status) {
+                    case 'requested':
+                        statusBadge = '受付済';
+                        statusClass = 'status-requested';
+                        break;
+                    case 'assigned':
+                        statusBadge = '担当確定';
+                        statusClass = 'status-assigned';
+                        break;
+                    case 'confirmed':
+                        statusBadge = '面談確定';
+                        statusClass = 'status-confirmed';
+                        break;
+                    case 'cancelled':
+                        statusBadge = 'キャンセル';
+                        statusClass = 'status-cancelled';
+                        break;
+                    default:
+                        statusBadge = request.status || '不明';
+                        statusClass = '';
+                }
+                
+                // 日時表示
+                let dateTimeStr = '-';
+                if (request.date && request.startTime) {
+                    dateTimeStr = `${request.date} ${request.startTime}`;
+                } else if (request.datetime) {
+                    try {
+                        const dt = request.datetime.toDate();
+                        dateTimeStr = `${dt.getFullYear()}/${(dt.getMonth()+1).toString().padStart(2,'0')}/${dt.getDate().toString().padStart(2,'0')} ${dt.getHours().toString().padStart(2,'0')}:${dt.getMinutes().toString().padStart(2,'0')}`;
+                    } catch (e) {
+                        console.warn('[Admin v2] datetime parse error:', e);
+                    }
+                }
+                
+                // 申請日時
+                let requestedAtStr = '-';
+                if (request.requestedAt) {
+                    try {
+                        const rat = request.requestedAt.toDate();
+                        requestedAtStr = `${rat.getFullYear()}/${(rat.getMonth()+1).toString().padStart(2,'0')}/${rat.getDate().toString().padStart(2,'0')} ${rat.getHours().toString().padStart(2,'0')}:${rat.getMinutes().toString().padStart(2,'0')}`;
+                    } catch (e) {
+                        console.warn('[Admin v2] requestedAt parse error:', e);
+                    }
+                }
+                
+                // 操作ボタン
+                let actionButtons = '';
+                if (request.status === 'requested') {
+                    actionButtons = `<button class="btn-primary btn-sm" onclick="openAssignModal('${request.id}')">担当をアサイン</button>`;
+                } else if (assignment && assignment.meetingLink) {
+                    actionButtons = `<a href="${assignment.meetingLink}" target="_blank" class="btn-primary btn-sm">面談リンク</a>`;
+                }
+                
+                return `
+                    <tr>
+                        <td><span class="badge ${statusClass}">${statusBadge}</span></td>
+                        <td><code>${request.id}</code></td>
+                        <td>
+                            <div><strong>${escapeHtml(request.userName || '-')}</strong></div>
+                            <div style="font-size: 0.85em; color: #666;">${escapeHtml(request.userEmail || '-')}</div>
+                        </td>
+                        <td>${escapeHtml(request.requestedType || request.type || '-')}</td>
+                        <td>${escapeHtml(dateTimeStr)}</td>
+                        <td>${escapeHtml(request.location || '-')}</td>
+                        <td>${escapeHtml(requestedAtStr)}</td>
+                        <td>${actionButtons}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // フィルター適用
+        function filterRequests() {
+            displayMeetingRequests();
+        }
+        
+        // アサインモーダルを開く
+        function openAssignModal(requestId) {
+            console.log('[Admin v2] アサインモーダルを開く:', requestId);
+            const request = allMeetingRequests.find(r => r.id === requestId);
+            if (!request) {
+                alert('予約リクエストが見つかりません');
+                return;
+            }
+            
+            document.getElementById('assignRequestId').value = request.id;
+            document.getElementById('assignRequestIdDisplay').textContent = request.id;
+            document.getElementById('assignUserName').textContent = request.userName || '-';
+            document.getElementById('assignMeetingType').textContent = request.requestedType || request.type || '-';
+            
+            let dateTimeStr = '-';
+            if (request.date && request.startTime) {
+                dateTimeStr = `${request.date} ${request.startTime}`;
+            }
+            document.getElementById('assignDateTime').textContent = dateTimeStr;
+            
+            document.getElementById('assignMeetingLink').value = '';
+            document.getElementById('assignNotes').value = '';
+            
+            document.getElementById('assignModal').style.display = 'block';
+        }
+        
+        // アサインモーダルを閉じる
+        function closeAssignModal() {
+            document.getElementById('assignModal').style.display = 'none';
+        }
+        
+        // 担当をアサイン
+        async function assignToRequest(event) {
+            event.preventDefault();
+            
+            const requestId = document.getElementById('assignRequestId').value;
+            const meetingLink = document.getElementById('assignMeetingLink').value;
+            const notes = document.getElementById('assignNotes').value;
+            
+            console.log('[Admin v2] 担当アサイン開始:', requestId);
+            
+            if (!requestId || !meetingLink) {
+                alert('予約IDと面談リンクは必須です');
+                return;
+            }
+            
+            try {
+                const request = allMeetingRequests.find(r => r.id === requestId);
+                if (!request) {
+                    alert('予約リクエストが見つかりません');
+                    return;
+                }
+                
+                // meetingAssignments に追加
+                const assignmentData = {
+                    requestId: requestId,
+                    userId: request.userId,
+                    userName: request.userName,
+                    userEmail: request.userEmail,
+                    meetingType: request.requestedType || request.type,
+                    meetingLink: meetingLink,
+                    notes: notes || '',
+                    status: 'assigned',
+                    assignedAt: serverTimestamp(),
+                    assignedBy: auth.currentUser.uid
+                };
+                
+                await setDoc(doc(db, 'meetingAssignments', requestId), assignmentData);
+                
+                // meetingRequests のステータスを更新
+                await updateDoc(doc(db, 'meetingRequests', requestId), {
+                    status: 'assigned',
+                    assignedAt: serverTimestamp()
+                });
+                
+                console.log('[Admin v2] 担当アサイン完了:', requestId);
+                alert('担当アサインが完了しました！');
+                
+                closeAssignModal();
+                await loadMeetingRequests();
+                
+            } catch (error) {
+                console.error('[Admin v2] 担当アサインエラー:', error);
+                alert('担当アサインに失敗しました: ' + error.message);
+            }
+        }
+        
+        // HTML エスケープ
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+        
+        // ========================================
+        // 初期化時に統計を更新
+        // ========================================
+        
+        // 既存の loadStatistics 関数を拡張
+        const originalLoadStatistics = loadStatistics;
+        loadStatistics = async function() {
+            await originalLoadStatistics();
+            // 予約リクエスト数を取得
+            try {
+                const requestsQuery = query(collection(db, 'meetingRequests'), limit(1000));
+                const requestsSnapshot = await getDocs(requestsQuery);
+                document.getElementById('totalRequests').textContent = requestsSnapshot.size;
+            } catch (error) {
+                console.error('[Admin v2] 予約リクエスト数取得エラー:', error);
+                document.getElementById('totalRequests').textContent = 'エラー';
+            }
+        };
+        
+        console.log('[Admin v2] JavaScript 初期化完了');
+
   </script>
 </body>
 </html>
