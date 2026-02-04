@@ -2338,15 +2338,6 @@ window.closeAddSlotModal = function() {
             }
         }
         
-        // HTML エスケープ
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            return String(text).replace(/[&<>"']/g, m => map[m]);
-        }
         
         // ========================================
         // 初期化時に統計を更新
