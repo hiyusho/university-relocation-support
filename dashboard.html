@@ -802,7 +802,7 @@
                     requestsRef,
                     where('userId', '==', userId),
                     orderBy('requestedAt', 'desc'),
-                    limit(50)
+                    firestoreLimit(50)
                 );
                 
                 const snapshot = await getDocs(q);
@@ -839,7 +839,7 @@
                 const assignmentsQ = query(
                     assignmentsRef,
                     where('userId', '==', userId),
-                    limit(100)
+                    firestoreLimit(100)
                 );
                 
                 const assignmentsSnap = await getDocs(assignmentsQ);
