@@ -337,6 +337,8 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    console.log('[MyMeetings v2] 初期化完了');
+
     async function ensureUserDocSafe(user) {
       const ref = doc(db, 'users', user.uid);
       const snap = await getDoc(ref);
@@ -367,7 +369,7 @@
       try { return new Date(v); } catch { return null; }
     }
 
-    // ✅ 修正: タイムゾーンの問題を回避する日付フォーマット関数
+    // ✅ タイムゾーンの問題を回避する日付フォーマット関数
     function formatDateJP(dateStr) {
       if (!dateStr) return '（日付未設定）';
       // dateStr は "2026-01-22" 形式
@@ -382,7 +384,7 @@
     }
 
     function formatDateTimeParts({ date, startTime, endTime }) {
-      const d = formatDateJP(date);  // ✅ 修正: 新しい関数を使用
+      const d = formatDateJP(date);
       const t = (startTime && endTime) ? `${startTime} - ${endTime}` : '';
       return { d, t };
     }
@@ -394,15 +396,18 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
+        console.log('[MyMeetings v2] 未認証、ログインページへリダイレクト');
         window.location.href = 'index.html';
         return;
       }
       currentUser = user;
+      console.log('[MyMeetings v2] ログインユーザー:', user.uid, user.email);
       await ensureUserDocSafe(user);
       await loadMyRequestsAndAssignments();
     });
 
     async function loadMyRequestsAndAssignments() {
+      console.log('[MyMeetings v2] 予約データ読み込み開始');
       const loading = document.getElementById('loading');
       const listEl = document.getElementById('meetingsList');
       const emptyEl = document.getElementById('emptyState');
@@ -412,6 +417,7 @@
         listEl.style.display = 'none';
         emptyEl.style.display = 'none';
 
+        // ===== meetingRequests を取得 =====
         const reqRef = collection(db, 'meetingRequests');
         const reqQ = query(
           reqRef,
@@ -424,12 +430,16 @@
         const requests = [];
         reqSnap.forEach(d => requests.push({ id: d.id, ...d.data() }));
 
+        console.log('[MyMeetings v2] 取得した予約数:', requests.length);
+
         if (requests.length === 0) {
+          console.log('[MyMeetings v2] 予約データなし');
           loading.style.display = 'none';
           emptyEl.style.display = 'block';
           return;
         }
 
+        // ===== meetingAssignments を取得 =====
         const asgRef = collection(db, 'meetingAssignments');
         const asgQ = query(
           asgRef,
@@ -441,11 +451,14 @@
         const assignments = [];
         asgSnap.forEach(d => assignments.push({ id: d.id, ...d.data() }));
 
+        console.log('[MyMeetings v2] 担当確定情報:', assignments.length);
+
         const assignmentByRequestId = new Map();
         for (const a of assignments) {
           if (a.requestId) assignmentByRequestId.set(a.requestId, a);
         }
 
+        // ===== データを結合 =====
         allItems = requests.map(r => {
           const a = assignmentByRequestId.get(r.id);
           const reqStatus = r.status || 'requested';
@@ -490,18 +503,21 @@
           };
         });
 
+        console.log('[MyMeetings v2] データ結合完了:', allItems.length, '件');
+
         loading.style.display = 'none';
         listEl.style.display = 'flex';
         displayItems(currentFilter);
 
       } catch (e) {
-        console.error(e);
+        console.error('[MyMeetings v2] エラー:', e);
         loading.style.display = 'none';
         showAlert('予約の読み込みに失敗しました: ' + (e.message || e), 'error');
       }
     }
 
     function displayItems(filter) {
+      console.log('[MyMeetings v2] フィルタ適用:', filter);
       const listEl = document.getElementById('meetingsList');
       const emptyEl = document.getElementById('emptyState');
 
@@ -513,6 +529,8 @@
           items = allItems.filter(x => x.uiStatusKey === filter);
         }
       }
+
+      console.log('[MyMeetings v2] 表示件数:', items.length);
 
       if (items.length === 0) {
         listEl.style.display = 'none';
@@ -670,6 +688,7 @@
     });
 
     window.openCancelModal = function(requestId) {
+      console.log('[MyMeetings v2] キャンセルモーダルを開く:', requestId);
       selectedRequestId = requestId;
       const item = allItems.find(x => x.requestId === requestId);
       if (!item) return;
@@ -685,6 +704,7 @@
     };
 
     window.closeCancelModal = function() {
+      console.log('[MyMeetings v2] キャンセルモーダルを閉じる');
       document.getElementById('cancelModal').classList.remove('active');
       document.getElementById('cancelModal').setAttribute('aria-hidden', 'true');
       selectedRequestId = null;
@@ -693,47 +713,46 @@
     window.confirmCancel = async function() {
       if (!selectedRequestId) return;
 
+      console.log('[MyMeetings v2] キャンセル処理開始:', selectedRequestId);
+
       const item = allItems.find(x => x.requestId === selectedRequestId);
       if (!item) return;
 
       if (item.uiStatusKey === 'confirmed' || item.uiStatusKey === 'assigned') {
+        console.log('[MyMeetings v2] 担当確定後のキャンセルは不可');
         showAlert('担当確定後のキャンセルは、運営側にお問い合わせください。', 'info');
         closeCancelModal();
         return;
       }
 
       try {
-        // ✅ 修正: トランザクションで meetingRequests と meetingSlots を同時更新
+        // トランザクションで meetingRequests と meetingSlots を同時更新
         await runTransaction(db, async (transaction) => {
-          // ✅ 重要: すべての読み取りを先に実行
+          // すべての読み取りを先に実行
           const requestRef = doc(db, 'meetingRequests', selectedRequestId);
           let slotRef = null;
           let slotDoc = null;
           
           if (item.slotId) {
             slotRef = doc(db, 'meetingSlots', item.slotId);
-            slotDoc = await transaction.get(slotRef);  // ✅ 読み取りを先に
+            slotDoc = await transaction.get(slotRef);
           }
 
-          // ✅ すべての書き込みを後に実行
-          // meetingRequests をキャンセル状態に更新
+          // すべての書き込みを後に実行
           transaction.update(requestRef, {
             status: 'cancelled',
             cancelledAt: serverTimestamp()
           });
 
-          // meetingSlots の currentBookings を減らす
           if (slotDoc && slotDoc.exists()) {
             const slotData = slotDoc.data();
             const currentBookings = slotData.currentBookings || 0;
             const maxCapacity = slotData.maxCapacity || 1;
             
-            // currentBookings を減らす
             const updateData = {
               currentBookings: increment(-1)
             };
             
-            // 満席から空きありに変更
             if (slotData.status === 'full' && currentBookings - 1 < maxCapacity) {
               updateData.status = 'available';
             }
@@ -742,23 +761,27 @@
           }
         });
 
+        console.log('[MyMeetings v2] キャンセル完了');
         showAlert('予約申請をキャンセルしました。', 'success');
         closeCancelModal();
         await loadMyRequestsAndAssignments();
       } catch (e) {
-        console.error(e);
+        console.error('[MyMeetings v2] キャンセルエラー:', e);
         showAlert('キャンセルに失敗しました: ' + (e.message || e), 'error');
       }
     };
 
     window.openMeetingLink = function(url) {
       if (!url) return;
+      console.log('[MyMeetings v2] 面談リンクを開く:', url);
       window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     document.getElementById('cancelModal').addEventListener('click', (e) => {
       if (e.target && e.target.id === 'cancelModal') closeCancelModal();
     });
+
+    console.log('[MyMeetings v2] スクリプト読み込み完了');
   </script>
 </body>
 </html>
