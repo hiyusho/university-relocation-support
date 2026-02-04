@@ -722,8 +722,8 @@
         window.debugWhere = where;
         window.debugGetDocs = getDocs;
         
-        console.log('[Dashboard v6] デバッグ変数をグローバルに公開しました');
-        console.log('[Dashboard v6] 使用方法: window.debugAuth.currentUser で認証情報を確認できます');
+        console.log('[Dashboard v7] デバッグ変数をグローバルに公開しました');
+        console.log('[Dashboard v7] 使用方法: window.debugAuth.currentUser で認証情報を確認できます');
 
         
         // ================================
@@ -792,38 +792,28 @@
         
         // 次回の予定をロード（v4: 実際のFirestoreデータ構造に完全対応）
         async function loadNextMeeting(userId) {
+            console.log('[Dashboard v7] 次回の予定を読み込み中... userId:', userId);
+            const container = document.getElementById('next-meeting-container');
+            
             try {
-                console.log('[Dashboard v6] 次回の予定を読み込み中... userId:', userId);
-                console.log('[Dashboard v6] 現在の認証ユーザー:', auth.currentUser?.uid);
-                
-                // ユーザーIDの不一致を検出
-                if (auth.currentUser && auth.currentUser.uid !== userId) {
-                    console.error('[Dashboard v6] ⚠️ 致命的エラー: 引数のuserIdと認証ユーザーが不一致！', {
-                        argument: userId,
-                        authenticated: auth.currentUser.uid
-                    });
-                    throw new Error('User ID mismatch');
-                }
-                const now = new Date();
-                
-                // シンプルなクエリ：userIdのみで検索（orderByなし）
+                // ===== meetingRequests コレクションから予約を取得 =====
+                const requestsRef = collection(db, 'meetingRequests');
                 const q = query(
-                    collection(db, 'meetings'),
-                    where('userId', '==', userId)
+                    requestsRef,
+                    where('userId', '==', userId),
+                    orderBy('requestedAt', 'desc'),
+                    limit(50)
                 );
                 
                 const snapshot = await getDocs(q);
-                console.log('[Dashboard v6] 取得した予定数:', snapshot.size);
-                
-                const container = document.getElementById('next-meeting-container');
-                if (!container) return;
+                console.log('[Dashboard v7] 取得した予約数:', snapshot.size);
                 
                 if (snapshot.empty) {
-                    console.log('[Dashboard v6] 予定データなし');
+                    console.log('[Dashboard v7] 予約データなし');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
                             <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
-                            <p style="font-size: 0.95rem; margin-bottom: 15px;">予定がありません</p>
+                            <p style="font-size: 0.95rem; margin-bottom: 15px;">予約がありません</p>
                             <a href="meeting-booking.html" class="btn btn-outline" style="font-size:0.9rem; padding:8px 20px;">
                                 <i class="fas fa-calendar-plus"></i> 面談を予約する
                             </a>
@@ -832,148 +822,245 @@
                     return;
                 }
                 
-                // 未来の予定を収集してソート
+                // ===== 予約データを配列に変換 =====
+                const requests = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    requests.push({
+                        id: doc.id,
+                        ...data
+                    });
+                });
+                
+                console.log('[Dashboard v7] 全予約:', requests.length);
+                
+                // ===== meetingAssignments を取得（担当確定情報） =====
+                const assignmentsRef = collection(db, 'meetingAssignments');
+                const assignmentsQ = query(
+                    assignmentsRef,
+                    where('userId', '==', userId),
+                    limit(100)
+                );
+                
+                const assignmentsSnap = await getDocs(assignmentsQ);
+                const assignmentsByRequestId = new Map();
+                assignmentsSnap.forEach(doc => {
+                    const data = doc.data();
+                    if (data.requestId) {
+                        assignmentsByRequestId.set(data.requestId, data);
+                    }
+                });
+                
+                console.log('[Dashboard v7] 担当確定情報:', assignmentsByRequestId.size);
+                
+                // ===== 未来の予約をフィルタ =====
+                const now = new Date();
                 const upcomingMeetings = [];
                 
-                for (const doc of snapshot.docs) {
-                    const data = doc.data();
-                    console.log('[Dashboard v6] 予定チェック:', {
-                        id: doc.id,
-                        type: data.type,
-                        datetime: data.datetime,
-                        date: data.date,
-                        status: data.status
-                    });
-                    
-                    // キャンセル済みをスキップ
-                    if (data.status === 'cancelled') {
-                        console.log('[Dashboard v6] キャンセル済み、スキップ');
+                for (const request of requests) {
+                    // キャンセル済みを除外
+                    if (request.status === 'cancelled') {
+                        console.log('[Dashboard v7] キャンセル済み予約をスキップ:', request.id);
                         continue;
                     }
                     
-                    // 日時をパース（複数のフィールド形式に対応）
+                    // 日付をパース
                     let meetingDate = null;
                     
-                    // パターン1: datetime フィールド（文字列）
-                    if (data.datetime) {
+                    // date + startTime から日時を構築
+                    if (request.date && request.startTime) {
                         try {
-                            // "2026年1月20日 14:00:00 UTC+9" 形式をパース
-                            const dateStr = data.datetime.replace(/年|月/g, '-').replace(/日/g, '');
+                            const dateStr = `${request.date}T${request.startTime}:00+09:00`;
                             meetingDate = new Date(dateStr);
-                            console.log('[Dashboard v6] datetime からパース:', meetingDate);
+                            console.log('[Dashboard v7] date + startTime からパース:', dateStr, meetingDate);
                         } catch (e) {
-                            console.warn('[Dashboard v6] datetime パースエラー:', e);
+                            console.error('[Dashboard v7] date + startTime パースエラー:', e);
                         }
                     }
                     
-                    // パターン2: date + startTime フィールド
-                    if (!meetingDate && data.date && data.startTime) {
+                    // datetime フィールドがある場合（フォールバック）
+                    if (!meetingDate && request.datetime) {
                         try {
-                            const dateTimeStr = `${data.date}T${data.startTime}:00`;
-                            meetingDate = new Date(dateTimeStr);
-                            console.log('[Dashboard v6] date + startTime からパース:', meetingDate);
+                            if (typeof request.datetime.toDate === 'function') {
+                                meetingDate = request.datetime.toDate();
+                            }
                         } catch (e) {
-                            console.warn('[Dashboard v6] date + startTime パースエラー:', e);
+                            console.error('[Dashboard v7] datetime パースエラー:', e);
                         }
                     }
                     
-                    // パターン3: requestedAt フィールド（Timestamp）
-                    if (!meetingDate && data.requestedAt) {
+                    // requestedAt をフォールバック
+                    if (!meetingDate && request.requestedAt) {
                         try {
-                            meetingDate = data.requestedAt.toDate();
-                            console.log('[Dashboard v6] requestedAt からパース:', meetingDate);
+                            if (typeof request.requestedAt.toDate === 'function') {
+                                meetingDate = request.requestedAt.toDate();
+                            }
                         } catch (e) {
-                            console.warn('[Dashboard v6] requestedAt パースエラー:', e);
+                            console.error('[Dashboard v7] requestedAt パースエラー:', e);
                         }
                     }
                     
-                    if (!meetingDate || isNaN(meetingDate.getTime())) {
-                        console.warn('[Dashboard v6] 有効な日時が取得できませんでした');
+                    if (!meetingDate) {
+                        console.log('[Dashboard v7] 日付不明のためスキップ:', request.id);
                         continue;
                     }
                     
                     // 未来の予定のみ
-                    if (meetingDate >= now) {
-                        console.log('[Dashboard v6] 未来の予定を発見:', meetingDate);
+                    if (meetingDate > now) {
+                        const assignment = assignmentsByRequestId.get(request.id);
                         upcomingMeetings.push({
-                            date: meetingDate,
-                            data: data
+                            ...request,
+                            meetingDate,
+                            assignment: assignment || null
                         });
-                    } else {
-                        console.log('[Dashboard v6] 過去の予定、スキップ:', meetingDate);
                     }
                 }
                 
+                console.log('[Dashboard v7] 未来の予約:', upcomingMeetings.length);
+                
                 if (upcomingMeetings.length === 0) {
-                    console.log('[Dashboard v6] 未来の予定なし');
+                    console.log('[Dashboard v7] 未来の予約がありません');
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
-                            <i class="fas fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
-                            <p style="font-size: 0.95rem; margin-bottom: 15px;">予定がありません</p>
+                            <i class="fas fa-calendar-check" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                            <p style="font-size: 0.95rem; margin-bottom: 15px;">今後の予定はありません</p>
                             <a href="meeting-booking.html" class="btn btn-outline" style="font-size:0.9rem; padding:8px 20px;">
-                                <i class="fas fa-calendar-plus"></i> 面談を予約する
+                                <i class="fas fa-plus"></i> 新しい面談を予約
                             </a>
                         </div>
                     `;
                     return;
                 }
                 
-                // 日付順にソート
-                upcomingMeetings.sort((a, b) => a.date - b.date);
+                // ===== 日付順にソート（最も近い予定が先頭） =====
+                upcomingMeetings.sort((a, b) => a.meetingDate - b.meetingDate);
+                
+                // ===== 最も近い予定を表示 =====
                 const nextMeeting = upcomingMeetings[0];
+                console.log('[Dashboard v7] 次回の予定を表示:', nextMeeting.id);
                 
-                console.log('[Dashboard v6] 次回の予定を表示:', nextMeeting.data.type || nextMeeting.data.requestType);
+                // タイトル
+                const title = nextMeeting.requestedType || nextMeeting.type || '面談';
                 
-                // 日時フォーマット
-                const dateOptions = { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric', 
-                    weekday: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                };
-                const formattedDate = nextMeeting.date.toLocaleDateString('ja-JP', dateOptions);
+                // 日付・時刻の表示
+                let dateLabel = '';
+                let timeLabel = '';
                 
-                container.innerHTML = `
-                    <div class="schedule-item">
-                        <div class="schedule-date">${formattedDate}</div>
-                        <div class="schedule-title">${escapeHtml(nextMeeting.data.type || nextMeeting.data.requestType || '面談')}</div>
-                        <div class="schedule-info">
-                            <i class="fas fa-video"></i>
-                            <span>${escapeHtml(nextMeeting.data.location || nextMeeting.data.meetingType || 'オンライン')}</span>
-                        </div>
-                        <div class="schedule-actions">
-                            <a href="my-meetings.html" class="btn-small btn-primary">詳細を見る</a>
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('[Dashboard v6] 予定読み込みエラー:', error);
-                console.error('[Dashboard v6] エラー詳細:', error.code, error.message);
-                const container = document.getElementById('next-meeting-container');
-                if (container) {
-                    let errorMsg = '読み込みエラー';
-                    if (error.code === 'permission-denied') {
-                        errorMsg = 'アクセス権限がありません';
-                    } else if (error.code === 'failed-precondition') {
-                        errorMsg = 'インデックスが必要です。Consoleのリンクをクリックしてください';
-                    } else if (error.message) {
-                        errorMsg = error.message.substring(0, 100);
+                if (nextMeeting.date) {
+                    const parts = nextMeeting.date.split('-');
+                    if (parts.length === 3) {
+                        const year = parts[0];
+                        const month = parseInt(parts[1], 10);
+                        const day = parseInt(parts[2], 10);
+                        dateLabel = `${year}/${month}/${day}`;
+                    } else {
+                        dateLabel = nextMeeting.date;
                     }
-                    container.innerHTML = `
-                        <div class="empty-state" style="padding: 30px 20px; text-align: center; color: #999;">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; margin-bottom: 15px; color: #ff9800;"></i>
-                            <p style="font-size: 0.95rem; margin-bottom: 10px;">読み込みエラー</p>
-                            <p style="font-size: 0.85rem; color: #666;">${errorMsg}</p>
-                            <p style="font-size: 0.8rem; color: #999; margin-top: 10px;">
-                                開発者ツールのコンソールで詳細を確認してください
-                            </p>
+                }
+                
+                if (nextMeeting.startTime && nextMeeting.endTime) {
+                    timeLabel = `${nextMeeting.startTime} - ${nextMeeting.endTime}`;
+                }
+                
+                // 場所
+                const location = nextMeeting.location || '（場所未設定）';
+                
+                // ステータス
+                let statusLabel = '受付済（担当者調整中）';
+                let statusClass = 'status-requested';
+                let meetingLink = '';
+                
+                if (nextMeeting.assignment) {
+                    const hasLink = !!(nextMeeting.assignment.meetingLink);
+                    if (hasLink) {
+                        statusLabel = '担当確定（面談URLあり）';
+                        statusClass = 'status-confirmed';
+                        meetingLink = nextMeeting.assignment.meetingLink;
+                    } else {
+                        statusLabel = '担当確定（準備中）';
+                        statusClass = 'status-assigned';
+                    }
+                }
+                
+                // HTML を生成
+                let html = `
+                    <div class="meeting-card" style="border-left: 4px solid var(--primary-color); padding: 15px; border-radius: 8px; background: #f9f9f9;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                            <h3 style="margin: 0; color: #333; font-size: 18px;">${escapeHtml(title)}</h3>
+                            <span style="padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; background: #E8F5E9; color: #2e7d32;">${escapeHtml(statusLabel)}</span>
+                        </div>
+                        <div style="display: grid; gap: 10px; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                <i class="fas fa-calendar-day" style="color: var(--primary-color); width: 18px;"></i>
+                                <span>${escapeHtml(dateLabel)}</span>
+                            </div>
+                `;
+                
+                if (timeLabel) {
+                    html += `
+                            <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                <i class="fas fa-clock" style="color: var(--primary-color); width: 18px;"></i>
+                                <span>${escapeHtml(timeLabel)}</span>
+                            </div>
+                    `;
+                }
+                
+                html += `
+                            <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--primary-color); width: 18px;"></i>
+                                <span>${escapeHtml(location)}</span>
+                            </div>
+                        </div>
+                `;
+                
+                // 面談リンク
+                if (meetingLink) {
+                    html += `
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a href="${escapeHtml(meetingLink)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.9rem;">
+                                <i class="fas fa-video"></i> 面談に参加
+                            </a>
+                            <a href="my-meetings.html" class="btn btn-outline" style="font-size: 0.9rem;">
+                                <i class="fas fa-list"></i> すべての予約
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a href="my-meetings.html" class="btn btn-primary" style="font-size: 0.9rem;">
+                                <i class="fas fa-list"></i> すべての予約を見る
+                            </a>
                         </div>
                     `;
                 }
+                
+                html += `</div>`;
+                
+                // 他の予定がある場合は件数を表示
+                if (upcomingMeetings.length > 1) {
+                    html += `
+                        <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                            <i class="fas fa-info-circle"></i> 
+                            他に ${upcomingMeetings.length - 1} 件の予定があります
+                        </p>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('[Dashboard v7] エラー:', error);
+                container.innerHTML = `
+                    <div class="error-state" style="padding: 30px 20px; text-align: center; color: #f44336;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; margin-bottom: 15px;"></i>
+                        <p style="font-size: 0.95rem; margin-bottom: 10px;">予定の読み込みに失敗しました</p>
+                        <p style="font-size: 12px; color: #999;">${escapeHtml(error.message)}</p>
+                    </div>
+                `;
             }
         }
+
         
         // メッセージをロード
         async function loadMessages(userId) {
@@ -1277,7 +1364,7 @@
         let currentUserId = null;
         
         onAuthStateChanged(auth, async (user) => {
-            console.log('[Dashboard v6] onAuthStateChanged 発火:', {
+            console.log('[Dashboard v7] onAuthStateChanged 発火:', {
                 user: user ? user.uid : 'null',
                 email: user ? user.email : 'null',
                 isAuthProcessing: isAuthProcessing,
@@ -1286,13 +1373,13 @@
             
             // 重複実行を防止
             if (isAuthProcessing) {
-                console.warn('[Dashboard v6] 認証処理中のため、この呼び出しをスキップします');
+                console.warn('[Dashboard v7] 認証処理中のため、この呼び出しをスキップします');
                 return;
             }
             
             // ユーザーIDの変化を検出
             if (currentUserId && user && currentUserId !== user.uid) {
-                console.warn('[Dashboard v6] ⚠️ ユーザーIDが変化しました！', {
+                console.warn('[Dashboard v7] ⚠️ ユーザーIDが変化しました！', {
                     old: currentUserId,
                     new: user.uid
                 });
@@ -1308,21 +1395,21 @@
                 }
 
                 currentUserId = user.uid;
-                console.log('[Dashboard v6] 認証済みユーザー:', {
+                console.log('[Dashboard v7] 認証済みユーザー:', {
                     uid: user.uid,
                     email: user.email
                 });
 
                 // ユーザー情報を反映（users/{uid} 無ければ ensureUserDoc で作成済み）
                 const userData = await ensureUserDoc(user);
-                console.log('[Dashboard v6] Firestoreからユーザー情報取得:', {
+                console.log('[Dashboard v7] Firestoreからユーザー情報取得:', {
                     name: userData?.name,
                     email: userData?.email,
                     role: userData?.role
                 });
 
                 const userName = (userData && userData.name) ? userData.name : (user.email ? user.email.split('@')[0] : 'ユーザー');
-                console.log('[Dashboard v6] 表示名:', userName);
+                console.log('[Dashboard v7] 表示名:', userName);
 
                 const welcomeTitle = document.querySelector('.welcome-card h1');
                 if (welcomeTitle) welcomeTitle.textContent = `こんにちは、${userName}様 👋`;
@@ -1348,14 +1435,14 @@
                 }
 
                 // 各セクションをロード
-                console.log('[Dashboard v6] データ読み込み開始:', user.uid);
+                console.log('[Dashboard v7] データ読み込み開始:', user.uid);
                 await loadNextMeeting(user.uid);
                 await loadMessages(user.uid);
                 await loadCompanies(user.uid);
                 await loadActivityStats(user.uid);
-                console.log('[Dashboard v6] すべてのデータ読み込み完了');
+                console.log('[Dashboard v7] すべてのデータ読み込み完了');
             } catch (error) {
-                console.error('[Dashboard v6] ユーザー情報取得エラー:', error);
+                console.error('[Dashboard v7] ユーザー情報取得エラー:', error);
             } finally {
                 isAuthProcessing = false;
             }
