@@ -1223,25 +1223,6 @@ window.closeAddSlotModal = function() {
       await loadAllData();
     });
 
-    // すべてのデータを読み込み
-    async function loadAllData() {
-      try {
-        console.log('📥 データ読み込み開始...');
-
-        await loadDocuments();
-        await loadMeetingSlots();
-        await loadAdmins();
-
-        updateStats();
-        displayRecentActivity();
-
-        console.log('✅ データ読み込み完了');
-      } catch (error) {
-        console.error('❌ データ読み込みエラー:', error);
-      }
-    }
-
-    // 書類データ取得
     async function loadDocuments() {
       try {
         const q = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
@@ -1266,9 +1247,7 @@ window.closeAddSlotModal = function() {
         allDocuments = [];
         displayDocuments();
       }
-    }
 
-    // ユーザー情報取得
     async function loadUsers(userIds) {
       try {
         allUsers = [];
@@ -1285,6 +1264,58 @@ window.closeAddSlotModal = function() {
                 displayName: 'ユーザー' + userId.substring(0, 8)
               });
             }
+
+    async function loadMeetingSlots() {
+      const container = document.getElementById('meetingSlotsContainer');
+      
+      try {
+        // ローディング表示
+        if (container) {
+          container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>';
+        }
+
+    function displayMeetingSlots() {
+      const container = document.getElementById('meetingSlotsContainer');
+      if (!container) return;
+      
+      // ローディング状態を強制削除（スピナーが残らないように）
+      const loadingElements = container.querySelectorAll('.loading');
+      loadingElements.forEach(el => el.remove());
+
+      if (!allMeetingSlots || allMeetingSlots.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>面談枠がありません</h3>
+            <p style="color:#999;">右上の「面談枠を追加」から作成できます。</p>
+          </div>
+        `;
+        return;
+      }
+
+
+        // すべてのデータを読み込み
+    async function loadAllData() {
+      try {
+        console.log('📥 データ読み込み開始...');
+
+        if (typeof loadDocuments === "function") await loadDocuments();
+        if (typeof loadMeetingSlots === "function") await loadMeetingSlots();
+        await loadAdmins();
+
+        updateStats();
+        displayRecentActivity();
+
+        console.log('✅ データ読み込み完了');
+      } catch (error) {
+        console.error('❌ データ読み込みエラー:', error);
+      }
+    }
+
+    // 書類データ取得
+    }
+
+    // ユーザー情報取得
           } catch (e) {
             console.warn(`⚠️ ユーザー ${userId} の情報取得失敗`, e);
           }
@@ -1475,14 +1506,6 @@ window.closeAddSlotModal = function() {
     // ===============
     // meetingSlots 管理
     // ===============
-    async function loadMeetingSlots() {
-      const container = document.getElementById('meetingSlotsContainer');
-      
-      try {
-        // ローディング表示
-        if (container) {
-          container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>';
-        }
         
         console.log('📥 面談枠を読み込み中...');
         const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
@@ -1511,24 +1534,6 @@ window.closeAddSlotModal = function() {
       }
     }
 
-    function displayMeetingSlots() {
-      const container = document.getElementById('meetingSlotsContainer');
-      if (!container) return;
-      
-      // ローディング状態を強制削除（スピナーが残らないように）
-      const loadingElements = container.querySelectorAll('.loading');
-      loadingElements.forEach(el => el.remove());
-
-      if (!allMeetingSlots || allMeetingSlots.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-calendar-times"></i>
-            <h3>面談枠がありません</h3>
-            <p style="color:#999;">右上の「面談枠を追加」から作成できます。</p>
-          </div>
-        `;
-        return;
-      }
 
       // 現在日時を取得（日本時間）
       const now = new Date();
@@ -2642,3 +2647,4 @@ window.closeAddSlotModal = function() {
   </script>
 </body>
 </html>
+
