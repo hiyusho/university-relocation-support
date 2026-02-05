@@ -1459,7 +1459,14 @@ window.closeAddSlotModal = function() {
     // meetingSlots 管理
     // ===============
     async function loadMeetingSlots() {
+      const container = document.getElementById('meetingSlotsContainer');
+      
       try {
+        // ローディング表示
+        if (container) {
+          container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>';
+        }
+        
         console.log('📥 面談枠を読み込み中...');
         const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
         const snapshot = await getDocs(q);
@@ -1474,8 +1481,16 @@ window.closeAddSlotModal = function() {
 
       } catch (error) {
         console.error('❌ 面談枠読み込みエラー:', error);
+        if (container) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h3>読み込みエラー</h3>
+              <p style="color:#999;">${error.message}</p>
+            </div>
+          `;
+        }
         allMeetingSlots = [];
-        displayMeetingSlots();
       }
     }
 
@@ -1494,9 +1509,49 @@ window.closeAddSlotModal = function() {
         return;
       }
 
+      // 現在日時を取得（日本時間）
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 今日の0時0分0秒
+      
+      // 過去の面談を除外してフィルタリング
+      const upcomingSlots = allMeetingSlots.filter(slot => {
+        try {
+          // datetime フィールドがある場合
+          if (slot.datetime) {
+            const slotDate = slot.datetime.toDate ? slot.datetime.toDate() : new Date(slot.datetime);
+            return slotDate >= today;
+          }
+          
+          // date フィールドがある場合（YYYY-MM-DD 形式）
+          if (slot.date) {
+            const slotDate = new Date(slot.date);
+            return slotDate >= today;
+          }
+          
+          // どちらもない場合は表示しない
+          return false;
+        } catch (e) {
+          console.warn('日付パースエラー:', slot, e);
+          return false;
+        }
+      });
+      
+      console.log(`🗓 全面談枠: ${allMeetingSlots.length}件, 今後の面談: ${upcomingSlots.length}件`);
+      
+      if (upcomingSlots.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-calendar-check"></i>
+            <h3>今後の面談枠がありません</h3>
+            <p style="color:#999;">過去の面談枠: ${allMeetingSlots.length}件（非表示）<br>右上の「面談枠を追加」から新しい枠を作成できます。</p>
+          </div>
+        `;
+        return;
+      }
+
       // 日付でグルーピング
       const groups = {};
-      allMeetingSlots.forEach(slot => {
+      upcomingSlots.forEach(slot => {
         const d = slot.date || formatDateForKey(slot.datetime);
         if (!groups[d]) groups[d] = [];
         groups[d].push(slot);
