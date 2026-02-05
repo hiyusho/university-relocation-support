@@ -1346,30 +1346,6 @@ window.closeAddSlotModal = function() {
       container.innerHTML = html;
     }
 
-      const recentDocs = allDocuments.slice(0, 5);
-
-      let html = '<h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>';
-      html += '<div style="background: #f8f9fa; border-radius: 10px; padding: 20px;">';
-
-      recentDocs.forEach(docItem => {
-        const user = allUsers.find(u => u.id === docItem.userId);
-        const userName = user ? (user.displayName || user.email) : 'ユーザー不明';
-        const timeAgo = getTimeAgo(docItem.uploadedAt);
-
-        html += `
-          <div style="padding: 12px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">
-            <i class="fas fa-file-upload" style="color: #667eea; font-size: 1.2rem;"></i>
-            <div style="flex: 1;">
-              <strong>${escapeHtml(userName)}</strong> が書類をアップロード: ${escapeHtml(docItem.fileName || '')}
-              <div style="color: #999; font-size: 0.85rem; margin-top: 3px;">${escapeHtml(timeAgo)}</div>
-            </div>
-          </div>
-        `;
-      });
-
-      html += '</div>';
-      container.innerHTML = html;
-
     // 利用者一覧表示
     function displayUsers() {
       const container = document.getElementById('usersTable');
