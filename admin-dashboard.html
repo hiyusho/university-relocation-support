@@ -1210,7 +1210,24 @@ window.closeAddSlotModal = function() {
     let allAdmins = [];
 
     // 認証チェック
-    onAuthStateChanged(auth, async (user) => {
+    async function loadAllData() {
+      try {
+        console.log('📥 データ読み込み開始...');
+
+        if (typeof loadDocuments === "function") await loadDocuments();
+        if (typeof loadMeetingSlots === "function") await loadMeetingSlots();
+        await loadAdmins();
+
+        updateStats();
+        displayRecentActivity();
+
+        console.log('✅ データ読み込み完了');
+      } catch (error) {
+        console.error('❌ データ読み込みエラー:', error);
+      }
+    }
+
+        onAuthStateChanged(auth, async (user) => {
       const ok = await requireAdminRoleOrRedirect(user);
       if (!ok) return;
 
@@ -1295,22 +1312,6 @@ window.closeAddSlotModal = function() {
 
 
         // すべてのデータを読み込み
-    async function loadAllData() {
-      try {
-        console.log('📥 データ読み込み開始...');
-
-        if (typeof loadDocuments === "function") await loadDocuments();
-        if (typeof loadMeetingSlots === "function") await loadMeetingSlots();
-        await loadAdmins();
-
-        updateStats();
-        displayRecentActivity();
-
-        console.log('✅ データ読み込み完了');
-      } catch (error) {
-        console.error('❌ データ読み込みエラー:', error);
-      }
-    }
 
     // 書類データ取得
     }
@@ -2647,4 +2648,3 @@ window.closeAddSlotModal = function() {
   </script>
 </body>
 </html>
-
