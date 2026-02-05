@@ -272,9 +272,6 @@
     .loading{ text-align:center; padding:50px; color:#999; }
     .loading i{ font-size:3rem; animation: spin 1s linear infinite; }
     @keyframes spin{ 100% { transform: rotate(360deg); } }
-    
-    /* ローディング完了後にスピナーを非表示 */
-    .section:not(.loading) .loading { display: none !important; }
 
     /* 空の状態 */
     .empty-state{
@@ -497,56 +494,6 @@
     .role-meeting{ background: #e8f5e9; color:#2e7d32; }
     .role-unknown{ background: #f5f5f5; color:#666; }
 
-
-    /* 予約リクエスト管理用スタイル */
-    .status-requested {
-      background-color: #3498db;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-    
-    .status-assigned {
-      background-color: #f39c12;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-    
-    .status-confirmed {
-      background-color: #27ae60;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-    
-    .status-cancelled {
-      background-color: #95a5a6;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-block;
-    }
-    
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 0.85em;
-      text-decoration: none;
-      display: inline-block;
-      border-radius: 6px;
-    }
-
     /* レスポンシブ */
     @media (max-width: 768px){
       .sidebar{ display:none; }
@@ -587,7 +534,6 @@
         <li><a href="#" onclick="showSection('users')"><i class="fas fa-users"></i> 利用者一覧</a></li>
         <li><a href="#" onclick="showSection('meetings')"><i class="fas fa-calendar-alt"></i> 面談スケジュール</a></li>
         <li><a href="#" onclick="showSection('documents')"><i class="fas fa-folder-open"></i> 書類管理</a></li>
-        <li><a href="#" onclick="showSection('meeting-requests')"><i class="fas fa-calendar-check"></i> 予約リクエスト</a></li>
         <li><a href="#" onclick="showSection('stats')"><i class="fas fa-chart-pie"></i> 統計情報</a></li>
         <li><a href="manual.html"><i class="fas fa-book"></i> マニュアル</a></li>
         <li><a href="#" onclick="showSection('settings')"><i class="fas fa-cog"></i> 設定</a></li>
@@ -612,10 +558,6 @@
         <div class="stat-card">
           <div class="stat-icon applications"><i class="fas fa-briefcase"></i></div>
           <div class="stat-info"><h3 id="totalApplications">-</h3><p>応募中</p></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"><i class="fas fa-calendar-check"></i></div>
-          <div class="stat-info"><h3 id="totalRequests">-</h3><p>予約リクエスト</p></div>
         </div>
       </div>
 
@@ -724,35 +666,6 @@
           <i class="fas fa-chart-pie"></i>
           <h3>統計機能は今後拡充予定です</h3>
           <p style="color:#999;">現在は上部のカウント表示をご利用ください。</p>
-        </div>
-      </section>
-
-
-      <!-- 予約リクエスト管理 -->
-      <section class="section" id="section-meeting-requests">
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-calendar-check"></i> 予約リクエスト管理</div>
-          <button class="btn btn-secondary" onclick="loadMeetingRequests()">
-            <i class="fas fa-rotate"></i> 再読み込み
-          </button>
-        </div>
-
-        <div class="filter-bar">
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input id="requestSearch" type="text" placeholder="ユーザー名、メールアドレスで検索..." oninput="filterRequests()" />
-          </div>
-          <select id="requestStatusFilter" class="filter-select" onchange="filterRequests()">
-            <option value="all">すべて</option>
-            <option value="requested">受付済</option>
-            <option value="assigned">担当確定</option>
-            <option value="confirmed">面談確定</option>
-            <option value="cancelled">キャンセル</option>
-          </select>
-        </div>
-
-        <div class="table-container" id="requestsTable">
-          <div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>
         </div>
       </section>
 
@@ -1008,69 +921,6 @@
         <button type="button" class="btn btn-danger" onclick="confirmDeleteAdmin()"><i class="fas fa-trash"></i> 削除</button>
       </div>
     </div>
-
-  </div>
-
-  <!-- 担当者アサインモーダル -->
-  <div class="modal" id="assignModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3><i class="fas fa-user-check"></i> 担当者をアサイン</h3>
-        <button class="modal-close" onclick="closeAssignModal()"><i class="fas fa-times"></i></button>
-      </div>
-      <form id="assignForm">
-        <div class="modal-body">
-          <input type="hidden" id="assignRequestId" />
-          
-          <div class="form-group">
-            <label>予約ID</label>
-            <p id="assignRequestIdDisplay" style="font-weight:bold; color:#667eea;"></p>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label>ユーザー名</label>
-              <p id="assignUserName" style="font-weight:600;"></p>
-            </div>
-            <div class="form-group">
-              <label>メールアドレス</label>
-              <p id="assignUserEmail" style="color:#666; font-size:0.9rem;"></p>
-            </div>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label>面談タイプ</label>
-              <p id="assignMeetingType" style="font-weight:600;"></p>
-            </div>
-            <div class="form-group">
-              <label>希望日時</label>
-              <p id="assignDateTime" style="font-weight:600;"></p>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label>場所</label>
-            <p id="assignLocation" style="color:#666;"></p>
-          </div>
-          
-          <div class="form-group">
-            <label><i class="fas fa-link"></i> 面談リンク（Zoom URL など） <span style="color:red">*</span></label>
-            <input type="url" id="assignMeetingLink" class="form-control" placeholder="https://zoom.us/j/..." required />
-            <div class="help-text">ユーザーが予約確認画面で表示できるリンクを入力してください</div>
-          </div>
-          
-          <div class="form-group">
-            <label><i class="fas fa-comment"></i> メモ（任意）</label>
-            <textarea id="assignNotes" class="form-control" rows="3" placeholder="面談に関する注意事項など..."></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeAssignModal()">キャンセル</button>
-          <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> アサインを確定</button>
-        </div>
-      </form>
-    </div>
   </div>
 
   <!-- Firebase SDK -->
@@ -1126,20 +976,6 @@ window.closeAddSlotModal = function() {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
-    // ログアウト関数（グローバルスコープで定義）
-    window.logout = async function() {
-      const ok = confirm('ログアウトしますか？');
-      if (!ok) return;
-      try {
-        await signOut(auth);
-      } catch (e) {
-        console.warn('signOut失敗:', e);
-      }
-      window.location.href = 'log-in.html';
-    };
-
-
 
     // 互換用（ユーザー要件）
     window.firebaseAuth = auth;
@@ -1210,85 +1046,7 @@ window.closeAddSlotModal = function() {
     let allAdmins = [];
 
     // 認証チェック
-    async function loadAllData() {
-      try {
-        console.log('📥 データ読み込み開始...');
-
-        if (typeof loadDocuments === "function") await loadDocuments();
-        if (typeof loadMeetingSlots === "function") await loadMeetingSlots();
-        await loadAdmins();
-
-        updateStats();
-        displayRecentActivity();
-
-        console.log('✅ データ読み込み完了');
-      } catch (error) {
-        console.error('❌ データ読み込みエラー:', error);
-      }
-    }
-    // 書類一覧表示
-    function displayDocuments() {
-      const container = document.getElementById('documentsTable');
-
-      if (allDocuments.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-folder-open"></i>
-            <h3>書類がありません</h3>
-          </div>
-        `;
-        return;
-      }
-
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>ファイル名</th>
-              <th>利用者</th>
-              <th>種類</th>
-              <th>サイズ</th>
-              <th>アップロード日</th>
-              <th>アクション</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      allDocuments.forEach(docItem => {
-        const user = allUsers.find(u => u.id === docItem.userId);
-        const userName = user ? (user.displayName || user.name || user.email) : 'ユーザー不明';
-        const typeName = getDocumentTypeName(docItem.documentType);
-        const fileSize = formatFileSize(docItem.fileSize);
-        const uploadDate = formatDate(docItem.uploadedAt);
-
-        html += `
-          <tr data-doc-user="${escapeHtml(docItem.userId || '')}" data-doc-type="${escapeHtml(docItem.documentType || '')}">
-            <td><strong>${escapeHtml(docItem.fileName || '')}</strong></td>
-            <td>${escapeHtml(userName || '')}</td>
-            <td><span class="badge badge-info">${escapeHtml(typeName)}</span></td>
-            <td>${escapeHtml(fileSize)}</td>
-            <td>${escapeHtml(uploadDate)}</td>
-            <td>
-              <div class="action-btns">
-                <button class="btn-action btn-view" onclick="downloadDocument('${escapeJs(docItem.downloadURL || '')}')" title="ダウンロード">
-                  <i class="fas fa-download"></i>
-                </button>
-                <button class="btn-action btn-view" onclick="viewDocumentDetails('${escapeJs(docItem.id)}')" title="詳細">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-
-      html += '</tbody></table>';
-      container.innerHTML = html;
-
-      applyDocumentFilter(); // 初期適用
-    }
-        onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (user) => {
       const ok = await requireAdminRoleOrRedirect(user);
       if (!ok) return;
 
@@ -1301,6 +1059,25 @@ window.closeAddSlotModal = function() {
       await loadAllData();
     });
 
+    // すべてのデータを読み込み
+    async function loadAllData() {
+      try {
+        console.log('📥 データ読み込み開始...');
+
+        await loadDocuments();
+        await loadMeetingSlots();
+        await loadAdmins();
+
+        updateStats();
+        displayRecentActivity();
+
+        console.log('✅ データ読み込み完了');
+      } catch (error) {
+        console.error('❌ データ読み込みエラー:', error);
+      }
+    }
+
+    // 書類データ取得
     async function loadDocuments() {
       try {
         const q = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
@@ -1325,7 +1102,9 @@ window.closeAddSlotModal = function() {
         allDocuments = [];
         displayDocuments();
       }
+    }
 
+    // ユーザー情報取得
     async function loadUsers(userIds) {
       try {
         allUsers = [];
@@ -1342,42 +1121,6 @@ window.closeAddSlotModal = function() {
                 displayName: 'ユーザー' + userId.substring(0, 8)
               });
             }
-
-    async function loadMeetingSlots() {
-      const container = document.getElementById('meetingSlotsContainer');
-      
-      try {
-        // ローディング表示
-        if (container) {
-          container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>';
-        }
-
-    function displayMeetingSlots() {
-      const container = document.getElementById('meetingSlotsContainer');
-      if (!container) return;
-      
-      // ローディング状態を強制削除（スピナーが残らないように）
-      const loadingElements = container.querySelectorAll('.loading');
-      loadingElements.forEach(el => el.remove());
-
-      if (!allMeetingSlots || allMeetingSlots.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-calendar-times"></i>
-            <h3>面談枠がありません</h3>
-            <p style="color:#999;">右上の「面談枠を追加」から作成できます。</p>
-          </div>
-        `;
-        return;
-      }
-
-
-        // すべてのデータを読み込み
-
-    // 書類データ取得
-    }
-
-    // ユーザー情報取得
           } catch (e) {
             console.warn(`⚠️ ユーザー ${userId} の情報取得失敗`, e);
           }
@@ -1502,12 +1245,74 @@ window.closeAddSlotModal = function() {
       applyUserFilter(); // 初期適用
     }
 
+    // 書類一覧表示
+    function displayDocuments() {
+      const container = document.getElementById('documentsTable');
 
+      if (allDocuments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>書類がありません</h3>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ファイル名</th>
+              <th>利用者</th>
+              <th>種類</th>
+              <th>サイズ</th>
+              <th>アップロード日</th>
+              <th>アクション</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      allDocuments.forEach(docItem => {
+        const user = allUsers.find(u => u.id === docItem.userId);
+        const userName = user ? (user.displayName || user.name || user.email) : 'ユーザー不明';
+        const typeName = getDocumentTypeName(docItem.documentType);
+        const fileSize = formatFileSize(docItem.fileSize);
+        const uploadDate = formatDate(docItem.uploadedAt);
+
+        html += `
+          <tr data-doc-user="${escapeHtml(docItem.userId || '')}" data-doc-type="${escapeHtml(docItem.documentType || '')}">
+            <td><strong>${escapeHtml(docItem.fileName || '')}</strong></td>
+            <td>${escapeHtml(userName || '')}</td>
+            <td><span class="badge badge-info">${escapeHtml(typeName)}</span></td>
+            <td>${escapeHtml(fileSize)}</td>
+            <td>${escapeHtml(uploadDate)}</td>
+            <td>
+              <div class="action-btns">
+                <button class="btn-action btn-view" onclick="downloadDocument('${escapeJs(docItem.downloadURL || '')}')" title="ダウンロード">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="btn-action btn-view" onclick="viewDocumentDetails('${escapeJs(docItem.id)}')" title="詳細">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      applyDocumentFilter(); // 初期適用
+    }
 
     // ===============
     // meetingSlots 管理
     // ===============
-        
+    async function loadMeetingSlots() {
+      try {
         console.log('📥 面談枠を読み込み中...');
         const q = query(collection(db, 'meetingSlots'), orderBy('datetime', 'asc'));
         const snapshot = await getDocs(q);
@@ -1522,55 +1327,21 @@ window.closeAddSlotModal = function() {
 
       } catch (error) {
         console.error('❌ 面談枠読み込みエラー:', error);
-        if (container) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-exclamation-triangle"></i>
-              <h3>読み込みエラー</h3>
-              <p style="color:#999;">${error.message}</p>
-            </div>
-          `;
-        }
         allMeetingSlots = [];
+        displayMeetingSlots();
       }
     }
 
+    function displayMeetingSlots() {
+      const container = document.getElementById('meetingSlotsContainer');
+      if (!container) return;
 
-      // 現在日時を取得（日本時間）
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 今日の0時0分0秒
-      
-      // 過去の面談を除外してフィルタリング
-      const upcomingSlots = allMeetingSlots.filter(slot => {
-        try {
-          // datetime フィールドがある場合
-          if (slot.datetime) {
-            const slotDate = slot.datetime.toDate ? slot.datetime.toDate() : new Date(slot.datetime);
-            return slotDate >= today;
-          }
-          
-          // date フィールドがある場合（YYYY-MM-DD 形式）
-          if (slot.date) {
-            const slotDate = new Date(slot.date);
-            return slotDate >= today;
-          }
-          
-          // どちらもない場合は表示しない
-          return false;
-        } catch (e) {
-          console.warn('日付パースエラー:', slot, e);
-          return false;
-        }
-      });
-      
-      console.log(`🗓 全面談枠: ${allMeetingSlots.length}件, 今後の面談: ${upcomingSlots.length}件`);
-      
-      if (upcomingSlots.length === 0) {
+      if (!allMeetingSlots || allMeetingSlots.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
-            <i class="fas fa-calendar-check"></i>
-            <h3>今後の面談枠がありません</h3>
-            <p style="color:#999;">過去の面談枠: ${allMeetingSlots.length}件（非表示）<br>右上の「面談枠を追加」から新しい枠を作成できます。</p>
+            <i class="fas fa-calendar-times"></i>
+            <h3>面談枠がありません</h3>
+            <p style="color:#999;">右上の「面談枠を追加」から作成できます。</p>
           </div>
         `;
         return;
@@ -1578,7 +1349,7 @@ window.closeAddSlotModal = function() {
 
       // 日付でグルーピング
       const groups = {};
-      upcomingSlots.forEach(slot => {
+      allMeetingSlots.forEach(slot => {
         const d = slot.date || formatDateForKey(slot.datetime);
         if (!groups[d]) groups[d] = [];
         groups[d].push(slot);
@@ -2063,318 +1834,19 @@ window.closeAddSlotModal = function() {
     }
     window.showSettingsTab = showSettingsTab;
 
+    // ログアウト
+    async function logout() {
+      const ok = confirm('ログアウトしますか？');
+      if (!ok) return;
 
-    
-    // ========================================
-    // 予約リクエスト管理機能 (Admin Dashboard v2)
-    // ========================================
-    
-    let allMeetingRequests = [];
-    let allMeetingAssignments = [];
-    
-    // 予約リクエスト一覧を読み込み
-    window.loadMeetingRequests = async function() {
-      console.log('[Admin v2] 予約リクエスト読み込み開始');
-      const container = document.getElementById('requestsTable');
-      if (!container) return;
-      
-      container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p style="margin-top:10px;">読み込み中...</p></div>';
-      
       try {
-        // meetingRequests を取得
-        const requestsQuery = query(
-          collection(db, 'meetingRequests'),
-          orderBy('requestedAt', 'desc'),
-          firestoreLimit(100)
-        );
-        const requestsSnapshot = await getDocs(requestsQuery);
-        
-        allMeetingRequests = [];
-        requestsSnapshot.forEach((docSnap) => {
-          allMeetingRequests.push({
-            id: docSnap.id,
-            ...docSnap.data()
-          });
-        });
-        
-        console.log('[Admin v2] 取得した予約リクエスト数:', allMeetingRequests.length);
-        
-        // meetingAssignments を取得
-        const assignmentsQuery = query(
-          collection(db, 'meetingAssignments'),
-          orderBy('assignedAt', 'desc'),
-          firestoreLimit(200)
-        );
-        const assignmentsSnapshot = await getDocs(assignmentsQuery);
-        
-        allMeetingAssignments = [];
-        assignmentsSnapshot.forEach((docSnap) => {
-          allMeetingAssignments.push({
-            id: docSnap.id,
-            ...docSnap.data()
-          });
-        });
-        
-        console.log('[Admin v2] 取得した担当確定数:', allMeetingAssignments.length);
-        
-        // 統計を更新
-        document.getElementById('totalRequests').textContent = allMeetingRequests.length;
-        
-        // 一覧を表示
-        displayMeetingRequests();
-        
-      } catch (error) {
-        console.error('[Admin v2] 予約リクエスト読み込みエラー:', error);
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>読み込みエラー</h3><p>' + error.message + '</p></div>';
+        await signOut(auth);
+      } catch (e) {
+        console.warn('signOut失敗:', e);
       }
-    };
-    
-    // 予約リクエストを表示
-    function displayMeetingRequests() {
-      console.log('[Admin v2] 予約リクエスト表示開始');
-      const container = document.getElementById('requestsTable');
-      if (!container) return;
-      
-      const searchTerm = document.getElementById('requestSearch')?.value.toLowerCase() || '';
-      const statusFilter = document.getElementById('requestStatusFilter')?.value || 'all';
-      
-      let filteredRequests = allMeetingRequests;
-      
-      // ステータスフィルター
-      if (statusFilter !== 'all') {
-        filteredRequests = filteredRequests.filter(req => req.status === statusFilter);
-      }
-      
-      // 検索フィルター
-      if (searchTerm) {
-        filteredRequests = filteredRequests.filter(req => {
-          const userName = req.userName?.toLowerCase() || '';
-          const userEmail = req.userEmail?.toLowerCase() || '';
-          return userName.includes(searchTerm) || userEmail.includes(searchTerm);
-        });
-      }
-      
-      console.log('[Admin v2] フィルター後の予約数:', filteredRequests.length);
-      
-      if (filteredRequests.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-times"></i><h3>予約リクエストがありません</h3></div>';
-        return;
-      }
-      
-      let tableHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>ステータス</th>
-              <th>予約ID</th>
-              <th>ユーザー</th>
-              <th>面談タイプ</th>
-              <th>希望日時</th>
-              <th>場所</th>
-              <th>申請日時</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-      
-      filteredRequests.forEach(request => {
-        // 担当確定情報を取得
-        const assignment = allMeetingAssignments.find(a => a.requestId === request.id);
-        
-        // ステータス表示
-        let statusBadge = '';
-        let statusClass = '';
-        switch (request.status) {
-          case 'requested':
-            statusBadge = '受付済';
-            statusClass = 'status-requested';
-            break;
-          case 'assigned':
-            statusBadge = '担当確定';
-            statusClass = 'status-assigned';
-            break;
-          case 'confirmed':
-            statusBadge = '面談確定';
-            statusClass = 'status-confirmed';
-            break;
-          case 'cancelled':
-            statusBadge = 'キャンセル';
-            statusClass = 'status-cancelled';
-            break;
-          default:
-            statusBadge = request.status || '不明';
-            statusClass = '';
-        }
-        
-        // 日時表示
-        let dateTimeStr = '-';
-        if (request.date && request.startTime) {
-          dateTimeStr = `${request.date} ${request.startTime}`;
-        } else if (request.datetime) {
-          try {
-            const dt = request.datetime.toDate();
-            dateTimeStr = `${dt.getFullYear()}/${(dt.getMonth()+1).toString().padStart(2,'0')}/${dt.getDate().toString().padStart(2,'0')} ${dt.getHours().toString().padStart(2,'0')}:${dt.getMinutes().toString().padStart(2,'0')}`;
-          } catch (e) {
-            console.warn('[Admin v2] datetime parse error:', e);
-          }
-        }
-        
-        // 申請日時
-        let requestedAtStr = '-';
-        if (request.requestedAt) {
-          try {
-            const rat = request.requestedAt.toDate();
-            requestedAtStr = `${rat.getFullYear()}/${(rat.getMonth()+1).toString().padStart(2,'0')}/${rat.getDate().toString().padStart(2,'0')} ${rat.getHours().toString().padStart(2,'0')}:${rat.getMinutes().toString().padStart(2,'0')}`;
-          } catch (e) {
-            console.warn('[Admin v2] requestedAt parse error:', e);
-          }
-        }
-        
-        // 操作ボタン
-        let actionButtons = '';
-        if (request.status === 'requested') {
-          actionButtons = `<button class="btn btn-primary btn-sm" onclick="openAssignModal('${request.id}')"><i class="fas fa-user-check"></i> 担当をアサイン</button>`;
-        } else if (assignment && assignment.meetingLink) {
-          actionButtons = `<a href="${escapeHtml(assignment.meetingLink)}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> 面談リンク</a>`;
-        }
-        
-        tableHTML += `
-          <tr>
-            <td><span class="badge ${statusClass}">${statusBadge}</span></td>
-            <td><code style="font-size:0.85em;">${request.id.substring(0,12)}...</code></td>
-            <td>
-              <div style="font-weight:600;">${escapeHtml(request.userName || '-')}</div>
-              <div style="font-size:0.85em;color:#666;">${escapeHtml(request.userEmail || '-')}</div>
-            </td>
-            <td>${escapeHtml(request.requestedType || request.type || '-')}</td>
-            <td>${escapeHtml(dateTimeStr)}</td>
-            <td>${escapeHtml(request.location || '-')}</td>
-            <td>${escapeHtml(requestedAtStr)}</td>
-            <td>${actionButtons}</td>
-          </tr>
-        `;
-      });
-      
-      tableHTML += '</tbody></table>';
-      container.innerHTML = tableHTML;
+      window.location.href = 'log-in.html';
     }
-    
-    // フィルター適用
-    window.filterRequests = function() {
-      displayMeetingRequests();
-    };
-    
-    // アサインモーダルを開く
-    window.openAssignModal = function(requestId) {
-      console.log('[Admin v2] アサインモーダルを開く:', requestId);
-      const request = allMeetingRequests.find(r => r.id === requestId);
-      if (!request) {
-        alert('予約リクエストが見つかりません');
-        return;
-      }
-      
-      document.getElementById('assignRequestId').value = request.id;
-      document.getElementById('assignRequestIdDisplay').textContent = request.id;
-      document.getElementById('assignUserName').textContent = request.userName || '-';
-      document.getElementById('assignUserEmail').textContent = request.userEmail || '-';
-      document.getElementById('assignMeetingType').textContent = request.requestedType || request.type || '-';
-      
-      let dateTimeStr = '-';
-      if (request.date && request.startTime) {
-        dateTimeStr = `${request.date} ${request.startTime}`;
-      }
-      document.getElementById('assignDateTime').textContent = dateTimeStr;
-      document.getElementById('assignLocation').textContent = request.location || '-';
-      
-      document.getElementById('assignMeetingLink').value = '';
-      document.getElementById('assignNotes').value = '';
-      
-      document.getElementById('assignModal').classList.add('show');
-    };
-    
-    // アサインモーダルを閉じる
-    window.closeAssignModal = function() {
-      document.getElementById('assignModal').classList.remove('show');
-    };
-    
-    // 担当をアサイン
-    document.getElementById('assignForm')?.addEventListener('submit', async function(event) {
-      event.preventDefault();
-      
-      const requestId = document.getElementById('assignRequestId').value;
-      const meetingLink = document.getElementById('assignMeetingLink').value;
-      const notes = document.getElementById('assignNotes').value;
-      
-      console.log('[Admin v2] 担当アサイン開始:', requestId);
-      
-      if (!requestId || !meetingLink) {
-        alert('予約IDと面談リンクは必須です');
-        return;
-      }
-      
-      try {
-        const request = allMeetingRequests.find(r => r.id === requestId);
-        if (!request) {
-          alert('予約リクエストが見つかりません');
-          return;
-        }
-        
-        // meetingAssignments に追加
-        const assignmentData = {
-          requestId: requestId,
-          userId: request.userId,
-          userName: request.userName,
-          userEmail: request.userEmail,
-          meetingType: request.requestedType || request.type,
-          meetingLink: meetingLink,
-          notes: notes || '',
-          status: 'assigned',
-          assignedAt: serverTimestamp(),
-          assignedBy: auth.currentUser.uid
-        };
-        
-        await setDoc(doc(db, 'meetingAssignments', requestId), assignmentData);
-        
-        // meetingRequests のステータスを更新
-        await updateDoc(doc(db, 'meetingRequests', requestId), {
-          status: 'assigned',
-          assignedAt: serverTimestamp()
-        });
-        
-        console.log('[Admin v2] 担当アサイン完了:', requestId);
-        alert('担当アサインが完了しました！');
-        
-        closeAssignModal();
-        await loadMeetingRequests();
-        
-      } catch (error) {
-        console.error('[Admin v2] 担当アサインエラー:', error);
-        alert('担当アサインに失敗しました: ' + error.message);
-      }
-    });
-    
-    // ========================================
-    // 初期化時に統計を更新
-    // ========================================
-    
-    // 既存の loadStatistics 関数を拡張
-    const originalLoadStatistics = loadStatistics;
-    loadStatistics = async function() {
-      await originalLoadStatistics();
-      // 予約リクエスト数を取得
-      try {
-        const requestsQuery = query(collection(db, 'meetingRequests'), firestoreLimit(1000));
-        const requestsSnapshot = await getDocs(requestsQuery);
-        document.getElementById('totalRequests').textContent = requestsSnapshot.size;
-      } catch (error) {
-        console.error('[Admin v2] 予約リクエスト数取得エラー:', error);
-        document.getElementById('totalRequests').textContent = 'エラー';
-      }
-    };
-    
-    console.log('[Admin v2] JavaScript 初期化完了');
-
+    window.logout = logout;
 
     // フィルタ（簡易）
     function applyUserFilter(){
@@ -2404,99 +1876,14 @@ window.closeAddSlotModal = function() {
     }
     window.applyDocumentFilter = applyDocumentFilter;
 
-    // フィルター適用中フラグ
-    let isFilteringMeetings = false;
-    
     function applyMeetingFilter(){
-      // 無限ループ防止
-      if (isFilteringMeetings) {
-        console.warn('⚠️ フィルター処理中のため、重複呼び出しをスキップ');
-        return;
-      }
-      
-      isFilteringMeetings = true;
-      
-      try {
-        const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
-        const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
-        
-        console.log(`🔍 フィルター適用: 日付=${dateFilter}, ステータス=${statusFilter}`);
-        
-        if (!allMeetingSlots || allMeetingSlots.length === 0) {
-          displayMeetingSlots();
-          return;
-        }
-      
-      // 現在日時を取得
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const todayEnd = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 今日の終わり
-      const weekEnd = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000); // 1週間後
-      const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0); // 今月末
-      
-      // 日付フィルター
-      let filteredSlots = allMeetingSlots.filter(slot => {
-        try {
-          let slotDate;
-          
-          // datetime フィールドがある場合
-          if (slot.datetime) {
-            slotDate = slot.datetime.toDate ? slot.datetime.toDate() : new Date(slot.datetime);
-          } 
-          // date フィールドがある場合
-          else if (slot.date) {
-            slotDate = new Date(slot.date);
-          } 
-          else {
-            return false;
-          }
-          
-          // 日付フィルター適用
-          switch (dateFilter) {
-            case 'upcoming':
-              return slotDate >= today;
-            case 'today':
-              return slotDate >= today && slotDate < todayEnd;
-            case 'week':
-              return slotDate >= today && slotDate < weekEnd;
-            case 'month':
-              return slotDate >= today && slotDate <= monthEnd;
-            case 'all':
-            default:
-              return slotDate >= today; // デフォルトは今後のみ
-          }
-        } catch (e) {
-          console.warn('日付フィルターエラー:', slot, e);
-          return false;
-        }
-      });
-      
-      // ステータスフィルター
-      if (statusFilter !== 'all') {
-        filteredSlots = filteredSlots.filter(slot => {
-          const maxCapacity = Number(slot.maxCapacity ?? slot.capacity ?? 1);
-          const currentBookings = Number(slot.currentBookings ?? 0);
-          const isBooked = currentBookings >= maxCapacity;
-          
-          if (statusFilter === 'available') {
-            return !isBooked;
-          } else if (statusFilter === 'booked') {
-            return isBooked;
-          }
-          return true;
-        });
-      }
-      
-      console.log(`🔍 フィルター後: ${filteredSlots.length}/${allMeetingSlots.length}件`);
-      
-      // 一時的に allMeetingSlots を上書きして表示
-      const originalSlots = allMeetingSlots;
-      allMeetingSlots = filteredSlots;
-      displayMeetingSlots();
-      allMeetingSlots = originalSlots;
-      } finally {
-        isFilteringMeetings = false;
-      }
+      const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
+      const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
+
+      // TODO: 仕様通りの詳細フィルタ（今後/今日/今週/今月、空き/予約済）を拡充
+      // いまは status のみ軽く適用（表示上はカードがまとめて生成されるため、厳密なDOMフィルタは後段で）
+      // ここでは「将来拡張のフック」として残す
+      void dateFilter; void statusFilter;
     }
     window.applyMeetingFilter = applyMeetingFilter;
 
