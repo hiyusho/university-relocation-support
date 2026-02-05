@@ -1226,7 +1226,68 @@ window.closeAddSlotModal = function() {
         console.error('❌ データ読み込みエラー:', error);
       }
     }
+    // 書類一覧表示
+    function displayDocuments() {
+      const container = document.getElementById('documentsTable');
 
+      if (allDocuments.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <h3>書類がありません</h3>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ファイル名</th>
+              <th>利用者</th>
+              <th>種類</th>
+              <th>サイズ</th>
+              <th>アップロード日</th>
+              <th>アクション</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      allDocuments.forEach(docItem => {
+        const user = allUsers.find(u => u.id === docItem.userId);
+        const userName = user ? (user.displayName || user.name || user.email) : 'ユーザー不明';
+        const typeName = getDocumentTypeName(docItem.documentType);
+        const fileSize = formatFileSize(docItem.fileSize);
+        const uploadDate = formatDate(docItem.uploadedAt);
+
+        html += `
+          <tr data-doc-user="${escapeHtml(docItem.userId || '')}" data-doc-type="${escapeHtml(docItem.documentType || '')}">
+            <td><strong>${escapeHtml(docItem.fileName || '')}</strong></td>
+            <td>${escapeHtml(userName || '')}</td>
+            <td><span class="badge badge-info">${escapeHtml(typeName)}</span></td>
+            <td>${escapeHtml(fileSize)}</td>
+            <td>${escapeHtml(uploadDate)}</td>
+            <td>
+              <div class="action-btns">
+                <button class="btn-action btn-view" onclick="downloadDocument('${escapeJs(docItem.downloadURL || '')}')" title="ダウンロード">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="btn-action btn-view" onclick="viewDocumentDetails('${escapeJs(docItem.id)}')" title="詳細">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      applyDocumentFilter(); // 初期適用
+    }
         onAuthStateChanged(auth, async (user) => {
       const ok = await requireAdminRoleOrRedirect(user);
       if (!ok) return;
@@ -1441,68 +1502,7 @@ window.closeAddSlotModal = function() {
       applyUserFilter(); // 初期適用
     }
 
-    // 書類一覧表示
-    function displayDocuments() {
-      const container = document.getElementById('documentsTable');
 
-      if (allDocuments.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-folder-open"></i>
-            <h3>書類がありません</h3>
-          </div>
-        `;
-        return;
-      }
-
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>ファイル名</th>
-              <th>利用者</th>
-              <th>種類</th>
-              <th>サイズ</th>
-              <th>アップロード日</th>
-              <th>アクション</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      allDocuments.forEach(docItem => {
-        const user = allUsers.find(u => u.id === docItem.userId);
-        const userName = user ? (user.displayName || user.name || user.email) : 'ユーザー不明';
-        const typeName = getDocumentTypeName(docItem.documentType);
-        const fileSize = formatFileSize(docItem.fileSize);
-        const uploadDate = formatDate(docItem.uploadedAt);
-
-        html += `
-          <tr data-doc-user="${escapeHtml(docItem.userId || '')}" data-doc-type="${escapeHtml(docItem.documentType || '')}">
-            <td><strong>${escapeHtml(docItem.fileName || '')}</strong></td>
-            <td>${escapeHtml(userName || '')}</td>
-            <td><span class="badge badge-info">${escapeHtml(typeName)}</span></td>
-            <td>${escapeHtml(fileSize)}</td>
-            <td>${escapeHtml(uploadDate)}</td>
-            <td>
-              <div class="action-btns">
-                <button class="btn-action btn-view" onclick="downloadDocument('${escapeJs(docItem.downloadURL || '')}')" title="ダウンロード">
-                  <i class="fas fa-download"></i>
-                </button>
-                <button class="btn-action btn-view" onclick="viewDocumentDetails('${escapeJs(docItem.id)}')" title="詳細">
-                  <i class="fas fa-eye"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-
-      html += '</tbody></table>';
-      container.innerHTML = html;
-
-      applyDocumentFilter(); // 初期適用
-    }
 
     // ===============
     // meetingSlots 管理
