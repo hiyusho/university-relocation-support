@@ -272,6 +272,9 @@
     .loading{ text-align:center; padding:50px; color:#999; }
     .loading i{ font-size:3rem; animation: spin 1s linear infinite; }
     @keyframes spin{ 100% { transform: rotate(360deg); } }
+    
+    /* ローディング完了後にスピナーを非表示 */
+    .section:not(.loading) .loading { display: none !important; }
 
     /* 空の状態 */
     .empty-state{
@@ -1497,6 +1500,10 @@ window.closeAddSlotModal = function() {
     function displayMeetingSlots() {
       const container = document.getElementById('meetingSlotsContainer');
       if (!container) return;
+      
+      // ローディング状態を強制削除（スピナーが残らないように）
+      const loadingElements = container.querySelectorAll('.loading');
+      loadingElements.forEach(el => el.remove());
 
       if (!allMeetingSlots || allMeetingSlots.length === 0) {
         container.innerHTML = `
@@ -2394,11 +2401,81 @@ window.closeAddSlotModal = function() {
     function applyMeetingFilter(){
       const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
       const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
-
-      // TODO: 仕様通りの詳細フィルタ（今後/今日/今週/今月、空き/予約済）を拡充
-      // いまは status のみ軽く適用（表示上はカードがまとめて生成されるため、厳密なDOMフィルタは後段で）
-      // ここでは「将来拡張のフック」として残す
-      void dateFilter; void statusFilter;
+      
+      console.log(`🔍 フィルター適用: 日付=${dateFilter}, ステータス=${statusFilter}`);
+      
+      if (!allMeetingSlots || allMeetingSlots.length === 0) {
+        displayMeetingSlots();
+        return;
+      }
+      
+      // 現在日時を取得
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayEnd = new Date(today.getTime() + 24 * 60 * 60 * 1000); // 今日の終わり
+      const weekEnd = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000); // 1週間後
+      const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0); // 今月末
+      
+      // 日付フィルター
+      let filteredSlots = allMeetingSlots.filter(slot => {
+        try {
+          let slotDate;
+          
+          // datetime フィールドがある場合
+          if (slot.datetime) {
+            slotDate = slot.datetime.toDate ? slot.datetime.toDate() : new Date(slot.datetime);
+          } 
+          // date フィールドがある場合
+          else if (slot.date) {
+            slotDate = new Date(slot.date);
+          } 
+          else {
+            return false;
+          }
+          
+          // 日付フィルター適用
+          switch (dateFilter) {
+            case 'upcoming':
+              return slotDate >= today;
+            case 'today':
+              return slotDate >= today && slotDate < todayEnd;
+            case 'week':
+              return slotDate >= today && slotDate < weekEnd;
+            case 'month':
+              return slotDate >= today && slotDate <= monthEnd;
+            case 'all':
+            default:
+              return slotDate >= today; // デフォルトは今後のみ
+          }
+        } catch (e) {
+          console.warn('日付フィルターエラー:', slot, e);
+          return false;
+        }
+      });
+      
+      // ステータスフィルター
+      if (statusFilter !== 'all') {
+        filteredSlots = filteredSlots.filter(slot => {
+          const maxCapacity = Number(slot.maxCapacity ?? slot.capacity ?? 1);
+          const currentBookings = Number(slot.currentBookings ?? 0);
+          const isBooked = currentBookings >= maxCapacity;
+          
+          if (statusFilter === 'available') {
+            return !isBooked;
+          } else if (statusFilter === 'booked') {
+            return isBooked;
+          }
+          return true;
+        });
+      }
+      
+      console.log(`🔍 フィルター後: ${filteredSlots.length}/${allMeetingSlots.length}件`);
+      
+      // 一時的に allMeetingSlots を上書きして表示
+      const originalSlots = allMeetingSlots;
+      allMeetingSlots = filteredSlots;
+      displayMeetingSlots();
+      allMeetingSlots = originalSlots;
     }
     window.applyMeetingFilter = applyMeetingFilter;
 
