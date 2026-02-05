@@ -2003,7 +2003,7 @@ window.closeAddSlotModal = function() {
         const requestsQuery = query(
           collection(db, 'meetingRequests'),
           orderBy('requestedAt', 'desc'),
-          limit(100)
+          firestoreLimit(100)
         );
         const requestsSnapshot = await getDocs(requestsQuery);
         
@@ -2021,7 +2021,7 @@ window.closeAddSlotModal = function() {
         const assignmentsQuery = query(
           collection(db, 'meetingAssignments'),
           orderBy('assignedAt', 'desc'),
-          limit(200)
+          firestoreLimit(200)
         );
         const assignmentsSnapshot = await getDocs(assignmentsQuery);
         
@@ -2282,7 +2282,7 @@ window.closeAddSlotModal = function() {
       await originalLoadStatistics();
       // 予約リクエスト数を取得
       try {
-        const requestsQuery = query(collection(db, 'meetingRequests'), limit(1000));
+        const requestsQuery = query(collection(db, 'meetingRequests'), firestoreLimit(1000));
         const requestsSnapshot = await getDocs(requestsQuery);
         document.getElementById('totalRequests').textContent = requestsSnapshot.size;
       } catch (error) {
