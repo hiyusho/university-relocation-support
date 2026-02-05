@@ -1127,6 +1127,20 @@ window.closeAddSlotModal = function() {
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // ログアウト関数（グローバルスコープで定義）
+    window.logout = async function() {
+      const ok = confirm('ログアウトしますか？');
+      if (!ok) return;
+      try {
+        await signOut(auth);
+      } catch (e) {
+        console.warn('signOut失敗:', e);
+      }
+      window.location.href = 'log-in.html';
+    };
+
+
+
     // 互換用（ユーザー要件）
     window.firebaseAuth = auth;
     window.firebaseDB = db;
@@ -2355,20 +2369,6 @@ window.closeAddSlotModal = function() {
     
     console.log('[Admin v2] JavaScript 初期化完了');
 
-    // logout 関数の定義を確認
-    // ログアウト
-    async function logout() {
-      const ok = confirm('ログアウトしますか？');
-      if (!ok) return;
-
-      try {
-        await signOut(auth);
-      } catch (e) {
-        console.warn('signOut失敗:', e);
-      }
-      window.location.href = 'log-in.html';
-    }
-    window.logout = logout;
 
     // フィルタ（簡易）
     function applyUserFilter(){
