@@ -2398,16 +2398,28 @@ window.closeAddSlotModal = function() {
     }
     window.applyDocumentFilter = applyDocumentFilter;
 
+    // フィルター適用中フラグ
+    let isFilteringMeetings = false;
+    
     function applyMeetingFilter(){
-      const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
-      const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
-      
-      console.log(`🔍 フィルター適用: 日付=${dateFilter}, ステータス=${statusFilter}`);
-      
-      if (!allMeetingSlots || allMeetingSlots.length === 0) {
-        displayMeetingSlots();
+      // 無限ループ防止
+      if (isFilteringMeetings) {
+        console.warn('⚠️ フィルター処理中のため、重複呼び出しをスキップ');
         return;
       }
+      
+      isFilteringMeetings = true;
+      
+      try {
+        const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
+        const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
+        
+        console.log(`🔍 フィルター適用: 日付=${dateFilter}, ステータス=${statusFilter}`);
+        
+        if (!allMeetingSlots || allMeetingSlots.length === 0) {
+          displayMeetingSlots();
+          return;
+        }
       
       // 現在日時を取得
       const now = new Date();
@@ -2476,6 +2488,9 @@ window.closeAddSlotModal = function() {
       allMeetingSlots = filteredSlots;
       displayMeetingSlots();
       allMeetingSlots = originalSlots;
+      } finally {
+        isFilteringMeetings = false;
+      }
     }
     window.applyMeetingFilter = applyMeetingFilter;
 
