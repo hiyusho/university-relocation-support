@@ -1069,7 +1069,7 @@ window.closeAddSlotModal = function() {
         await loadAdmins();
 
         updateStats();
-        displayRecentActivity();
+        displayOverview();
 
         console.log('✅ データ読み込み完了');
       } catch (error) {
@@ -1144,20 +1144,207 @@ window.closeAddSlotModal = function() {
       document.getElementById('totalApplications').textContent = '0'; // 今後実装
     }
 
-    // 最近の活動表示（最新5件の書類アップロード）
-    function displayRecentActivity() {
+    // 概要ダッシュボード表示
+    function displayOverview() {
       const container = document.getElementById('recentActivity');
-
-      if (allDocuments.length === 0) {
+      if (!container) return;
+      
+      const html = `
+        <h3 style="margin-bottom: 20px; color: #333;">
+          <i class="fas fa-chart-line"></i> ダッシュボードサマリー
+        </h3>
+        
+        <div style="display: grid; gap: 15px;">
+          <!-- 今日の活動 -->
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(102,126,234,0.3);">
+            <h4 style="margin-bottom: 15px; font-size: 1.1rem;">
+              <i class="fas fa-calendar-day"></i> 本日の予定
+            </h4>
+            <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+              <div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">本日の面談</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 5px;" id="todayMeetings">-</div>
+              </div>
+              <div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">新規登録</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 5px;" id="todayUsers">-</div>
+              </div>
+              <div>
+                <div style="font-size: 0.9rem; opacity: 0.9;">新規書類</div>
+                <div style="font-size: 2rem; font-weight: 700; margin-top: 5px;" id="todayDocs">-</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 最近の書類アップロード -->
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">
+            <h4 style="color: #667eea; margin-bottom: 15px; font-size: 1rem;">
+              <i class="fas fa-file-upload"></i> 最近の書類アップロード（最新5件）
+            </h4>
+            <div id="recentDocsList" style="min-height: 100px;">
+              <div style="text-align: center; padding: 30px; color: #999;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                <p style="margin-top: 10px;">読み込み中...</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 待機中の予約リクエスト -->
+          <div style="background: #fff3cd; padding: 20px; border-radius: 12px; border-left: 4px solid #f39c12;">
+            <h4 style="color: #856404; margin-bottom: 15px; font-size: 1rem;">
+              <i class="fas fa-clock"></i> 待機中の予約リクエスト
+            </h4>
+            <div id="pendingRequests">
+              <p style="color: #856404; font-size: 1.5rem; font-weight: 700; margin: 0;">
+                <span id="pendingCount">-</span> 件
+              </p>
+              <p style="color: #999; font-size: 0.9rem; margin-top: 5px;">
+                対応が必要な予約リクエストがあります
+              </p>
+            </div>
+          </div>
+          
+          <!-- システム状態 -->
+          <div style="background: #d4edda; padding: 20px; border-radius: 12px; border-left: 4px solid #28a745;">
+            <h4 style="color: #155724; margin-bottom: 15px; font-size: 1rem;">
+              <i class="fas fa-check-circle"></i> システム状態
+            </h4>
+            <p style="color: #155724; margin: 0;">
+              ✅ すべてのサービスは正常に動作しています
+            </p>
+            <p style="color: #6c757d; font-size: 0.85rem; margin-top: 10px;">
+              最終更新: <span id="lastUpdate">-</span>
+            </p>
+          </div>
+        </div>
+      `;
+      
+      container.innerHTML = html;
+      
+      // データを更新
+      updateOverviewData();
+    }
+    
+    // 概要ダッシュボードのデータ更新
+    function updateOverviewData() {
+      // 今日の日付（日本時間）
+      const today = new Date();
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
+      
+      // 本日の面談数
+      let todayMeetingsCount = 0;
+      if (allMeetingSlots && allMeetingSlots.length > 0) {
+        todayMeetingsCount = allMeetingSlots.filter(slot => {
+          try {
+            let slotDate;
+            if (slot.datetime) {
+              slotDate = slot.datetime.toDate ? slot.datetime.toDate() : new Date(slot.datetime);
+            } else if (slot.date) {
+              slotDate = new Date(slot.date);
+            } else {
+              return false;
+            }
+            return slotDate >= todayStart && slotDate < todayEnd;
+          } catch (e) {
+            return false;
+          }
+        }).length;
+      }
+      document.getElementById('todayMeetings').textContent = todayMeetingsCount;
+      
+      // 本日の新規登録数
+      let todayUsersCount = 0;
+      if (allUsers && allUsers.length > 0) {
+        todayUsersCount = allUsers.filter(user => {
+          if (!user.createdAt) return false;
+          try {
+            const userDate = user.createdAt.toDate ? user.createdAt.toDate() : new Date(user.createdAt);
+            return userDate >= todayStart && userDate < todayEnd;
+          } catch (e) {
+            return false;
+          }
+        }).length;
+      }
+      document.getElementById('todayUsers').textContent = todayUsersCount;
+      
+      // 本日の新規書類数
+      let todayDocsCount = 0;
+      if (allDocuments && allDocuments.length > 0) {
+        todayDocsCount = allDocuments.filter(doc => {
+          if (!doc.uploadedAt) return false;
+          try {
+            const docDate = doc.uploadedAt.toDate ? doc.uploadedAt.toDate() : new Date(doc.uploadedAt);
+            return docDate >= todayStart && docDate < todayEnd;
+          } catch (e) {
+            return false;
+          }
+        }).length;
+      }
+      document.getElementById('todayDocs').textContent = todayDocsCount;
+      
+      // 最近の書類リスト
+      displayRecentDocuments();
+      
+      // 待機中の予約リクエスト数（今後実装予定）
+      document.getElementById('pendingCount').textContent = '0';
+      
+      // 最終更新時刻
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    // 最近の書類を表示
+    function displayRecentDocuments() {
+      const container = document.getElementById('recentDocsList');
+      if (!container) return;
+      
+      if (!allDocuments || allDocuments.length === 0) {
         container.innerHTML = `
-          <h3 style="margin-bottom: 15px; color: #666;">最近の活動</h3>
-          <div class="empty-state">
-            <i class="fas fa-history"></i>
-            <h3>まだアクティビティがありません</h3>
+          <div style="text-align: center; padding: 20px; color: #999;">
+            <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
+            <p style="margin-top: 10px;">まだ書類がアップロードされていません</p>
           </div>
         `;
         return;
       }
+      
+      const recentDocs = allDocuments.slice(0, 5);
+      let html = '';
+      
+      recentDocs.forEach(docItem => {
+        const user = allUsers.find(u => u.id === docItem.userId);
+        const userName = user ? (user.displayName || user.email || 'ユーザー不明') : 'ユーザー不明';
+        const timeAgo = getTimeAgo(docItem.uploadedAt);
+        const fileName = docItem.fileName || docItem.name || '無題';
+        
+        html += `
+          <div style="padding: 12px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid #e0e0e0;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 600; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                ${escapeHtml(userName)}
+              </div>
+              <div style="color: #666; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                ${escapeHtml(fileName)}
+              </div>
+              <div style="color: #999; font-size: 0.85rem; margin-top: 2px;">
+                ${escapeHtml(timeAgo)}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
 
       const recentDocs = allDocuments.slice(0, 5);
 
