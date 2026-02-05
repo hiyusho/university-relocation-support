@@ -610,7 +610,7 @@
         <div class="filter-bar">
           <select id="meetingDateFilter" class="filter-select" onchange="applyMeetingFilter()">
             <option value="all">全日程</option>
-            <option value="upcoming">今後</option>
+            <option value="upcoming" selected>今後</option>
             <option value="today">今日</option>
             <option value="week">今週</option>
             <option value="month">今月</option>
@@ -2037,13 +2037,130 @@ window.closeAddSlotModal = function() {
     window.applyDocumentFilter = applyDocumentFilter;
 
     function applyMeetingFilter(){
-      const dateFilter = document.getElementById('meetingDateFilter')?.value || 'all';
+      const dateFilter = document.getElementById('meetingDateFilter')?.value || 'upcoming';
       const statusFilter = document.getElementById('meetingStatusFilter')?.value || 'all';
-
-      // TODO: 仕様通りの詳細フィルタ（今後/今日/今週/今月、空き/予約済）を拡充
-      // いまは status のみ軽く適用（表示上はカードがまとめて生成されるため、厳密なDOMフィルタは後段で）
-      // ここでは「将来拡張のフック」として残す
-      void dateFilter; void statusFilter;
+      
+      console.log(`🔍 フィルター適用: 日付=${dateFilter}, ステータス=${statusFilter}`);
+      
+      // Get all meeting slot cards
+      const allCards = document.querySelectorAll('.meeting-day-group');
+      
+      // Get today's date in Japan timezone
+      const now = new Date();
+      const japanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+      const today = new Date(japanTime.getFullYear(), japanTime.getMonth(), japanTime.getDate());
+      const todayEnd = new Date(today);
+      todayEnd.setHours(23, 59, 59, 999);
+      
+      const weekEnd = new Date(today);
+      weekEnd.setDate(today.getDate() + 7);
+      
+      const monthEnd = new Date(today);
+      monthEnd.setMonth(today.getMonth() + 1);
+      
+      let visibleCount = 0;
+      
+      allCards.forEach(dayGroup => {
+        const dateHeader = dayGroup.querySelector('.meeting-day-header');
+        if (!dateHeader) return;
+        
+        const dateText = dateHeader.textContent.match(/\d{4}-\d{2}-\d{2}/)?.[0];
+        if (!dateText) return;
+        
+        const groupDate = new Date(dateText + 'T00:00:00');
+        
+        // Apply date filter
+        let passDateFilter = false;
+        if (dateFilter === 'all') {
+          passDateFilter = true;
+        } else if (dateFilter === 'upcoming') {
+          passDateFilter = groupDate >= today;
+        } else if (dateFilter === 'today') {
+          passDateFilter = groupDate >= today && groupDate <= todayEnd;
+        } else if (dateFilter === 'week') {
+          passDateFilter = groupDate >= today && groupDate < weekEnd;
+        } else if (dateFilter === 'month') {
+          passDateFilter = groupDate >= today && groupDate < monthEnd;
+        }
+        
+        if (!passDateFilter) {
+          dayGroup.style.display = 'none';
+          return;
+        }
+        
+        // Apply status filter to individual slots
+        const slotCards = dayGroup.querySelectorAll('.meeting-slot-card');
+        let visibleSlotsInGroup = 0;
+        
+        slotCards.forEach(card => {
+          const capacityBadge = card.querySelector('.capacity-badge');
+          if (!capacityBadge) return;
+          
+          const capacityText = capacityBadge.textContent.trim();
+          const match = capacityText.match(/(\d+)\/(\d+)/);
+          if (!match) return;
+          
+          const currentBookings = parseInt(match[1]);
+          const maxCapacity = parseInt(match[2]);
+          const isBooked = currentBookings >= maxCapacity;
+          
+          let passStatusFilter = false;
+          if (statusFilter === 'all') {
+            passStatusFilter = true;
+          } else if (statusFilter === 'available') {
+            passStatusFilter = !isBooked;
+          } else if (statusFilter === 'booked') {
+            passStatusFilter = isBooked;
+          }
+          
+          if (passStatusFilter) {
+            card.style.display = '';
+            visibleSlotsInGroup++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        
+        // Hide the entire day group if no slots are visible
+        if (visibleSlotsInGroup > 0) {
+          dayGroup.style.display = '';
+          visibleCount += visibleSlotsInGroup;
+          
+          // Update the count in the header
+          const countElement = dateHeader.querySelector('div:last-child');
+          if (countElement) {
+            countElement.textContent = `${visibleSlotsInGroup}件`;
+          }
+        } else {
+          dayGroup.style.display = 'none';
+        }
+      });
+      
+      console.log(`🔍 フィルター結果: ${visibleCount}件の面談枠を表示`);
+      
+      // Show empty state if no meetings match
+      const container = document.getElementById('meetingSlotsContainer');
+      if (container && visibleCount === 0) {
+        const hasCards = allCards.length > 0;
+        if (hasCards) {
+          // Add a temporary message
+          let existingMsg = container.querySelector('.filter-empty-message');
+          if (!existingMsg) {
+            existingMsg = document.createElement('div');
+            existingMsg.className = 'filter-empty-message';
+            existingMsg.style.cssText = 'text-align:center;padding:40px;color:#999;';
+            existingMsg.innerHTML = '<i class="fas fa-filter" style="font-size:2rem;opacity:0.3;"></i><p style="margin-top:10px;">選択した条件に一致する面談枠がありません</p>';
+            container.appendChild(existingMsg);
+          }
+          existingMsg.style.display = 'block';
+        }
+      } else {
+        // Remove empty message if it exists
+        const existingMsg = container?.querySelector('.filter-empty-message');
+        if (existingMsg) {
+          existingMsg.style.display = 'none';
+        }
+      }
     }
     window.applyMeetingFilter = applyMeetingFilter;
 
