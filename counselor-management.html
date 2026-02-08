@@ -52,38 +52,6 @@
             box-shadow: 0 4px 12px rgba(44, 95, 158, 0.4);
         }
 
-        /* デバッグ情報表示 */
-        .debug-info {
-            background: #f0f7ff;
-            border: 2px solid var(--primary-color, #2c5f9e);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-
-        .debug-info h3 {
-            margin: 0 0 10px 0;
-            color: var(--primary-color, #2c5f9e);
-            font-size: 16px;
-        }
-
-        .debug-info p {
-            margin: 5px 0;
-            color: #333;
-        }
-
-        .debug-success {
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        .debug-error {
-            color: #dc3545;
-            font-weight: bold;
-        }
-
         /* 担当者一覧カード */
         .counselors-grid {
             display: grid;
@@ -519,15 +487,6 @@
 
     <!-- メインコンテンツ -->
     <main class="counselor-management-container">
-        <!-- デバッグ情報 -->
-        <div id="debugInfo" class="debug-info">
-            <h3>🔍 デバッグ情報</h3>
-            <p id="debugStatus">ステータス: 認証チェック中...</p>
-            <p id="debugUser">ユーザー: 確認中...</p>
-            <p id="debugUID">UID: 確認中...</p>
-            <p id="debugAdmin">管理者チェック: 確認中...</p>
-        </div>
-
         <div class="page-header">
             <h1>
                 <i class="fas fa-user-tie"></i>
@@ -625,7 +584,7 @@
         import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, where, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase設定
+        // Firebase設定（実際の設定に置き換えてください）
         const firebaseConfig = {
             apiKey: "AIzaSyC7em3K8cI_R-OzzwO0e9xtQuhngh5sqDU",
             authDomain: "university-relocation-support.firebaseapp.com",
@@ -639,102 +598,35 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let currentCounselorId = null;
-        let allCounselors = [];
+        let currentCounselorId = null;  // 編集中の担当者ID
+        let allCounselors = [];  // 全担当者データ
 
-        // デバッグ情報を更新
-        const updateDebug = (field, message, isSuccess = null) => {
-            const element = document.getElementById(field);
-            if (element) {
-                element.innerHTML = message;
-                if (isSuccess === true) {
-                    element.className = 'debug-success';
-                } else if (isSuccess === false) {
-                    element.className = 'debug-error';
-                }
-            }
-        };
-
-        // 管理者チェック（デバッグ付き）
+        // 管理者チェック
         const checkAdminAccess = async () => {
-            console.log('🔍 管理者チェック開始');
-            updateDebug('debugStatus', 'ステータス: 管理者チェック中...');
-
             const user = auth.currentUser;
             if (!user) {
-                console.log('❌ ユーザーが未ログイン');
-                updateDebug('debugStatus', 'ステータス: 未ログイン', false);
-                updateDebug('debugUser', 'ユーザー: 未ログイン', false);
-                
-                alert('ログインが必要です');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
+                window.location.href = 'index.html';
                 return false;
             }
 
-            console.log('✅ ユーザーログイン済み:', user.email);
-            updateDebug('debugUser', `ユーザー: ${user.email}`, true);
-            updateDebug('debugUID', `UID: ${user.uid}`, true);
-
-            try {
-                console.log('🔍 admins コレクションをチェック...');
-                const adminDoc = await getDoc(doc(db, 'admins', user.uid));
-                
-                if (!adminDoc.exists()) {
-                    console.log('❌ admins コレクションにUIDが見つかりません');
-                    updateDebug('debugAdmin', '管理者チェック: ❌ 管理者権限なし（admins コレクションに未登録）', false);
-                    updateDebug('debugStatus', 'ステータス: 権限エラー', false);
-                    
-                    alert(`管理者権限がありません\n\nあなたのUID: ${user.uid}\n\nこのUIDをFirestoreの「admins」コレクションに登録してください。`);
-                    
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 3000);
-                    return false;
-                }
-
-                console.log('✅ 管理者権限確認済み');
-                const adminData = adminDoc.data();
-                updateDebug('debugAdmin', `管理者チェック: ✅ 権限あり (role: ${adminData.role || 'admin'})`, true);
-                updateDebug('debugStatus', 'ステータス: ✅ 認証成功', true);
-                
-                return true;
-            } catch (error) {
-                console.error('❌ 管理者チェックエラー:', error);
-                updateDebug('debugAdmin', `管理者チェック: ❌ エラー (${error.message})`, false);
-                updateDebug('debugStatus', 'ステータス: エラー発生', false);
-                
-                alert('管理者チェック中にエラーが発生しました: ' + error.message);
+            const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+            if (!adminDoc.exists()) {
+                alert('管理者権限がありません');
+                window.location.href = 'index.html';
                 return false;
             }
+            return true;
         };
 
         // 認証状態の監視
         onAuthStateChanged(auth, async (user) => {
-            console.log('🔥 Firebase 認証状態変更:', user ? user.email : '未ログイン');
-            
             if (user) {
-                updateDebug('debugUser', `ユーザー: ${user.email}`, true);
-                updateDebug('debugUID', `UID: ${user.uid}`, true);
-                
                 const isAdmin = await checkAdminAccess();
                 if (isAdmin) {
-                    console.log('✅ 管理者アクセス許可 → 担当者データを読み込み');
                     loadCounselors();
-                } else {
-                    console.log('❌ 管理者アクセス拒否');
                 }
             } else {
-                console.log('❌ ユーザー未ログイン → ログインページへリダイレクト');
-                updateDebug('debugStatus', 'ステータス: 未ログイン', false);
-                updateDebug('debugUser', 'ユーザー: 未ログイン', false);
-                updateDebug('debugUID', 'UID: なし', false);
-                
-                alert('ログインが必要です');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
+                window.location.href = 'index.html';
             }
         });
 
@@ -765,7 +657,6 @@
         // 担当者一覧を読み込み
         const loadCounselors = async () => {
             try {
-                console.log('📋 担当者データを読み込み中...');
                 document.getElementById('loadingState').style.display = 'block';
                 document.getElementById('counselorsContainer').style.display = 'none';
                 document.getElementById('emptyState').style.display = 'none';
@@ -782,7 +673,7 @@
                     });
                 });
 
-                console.log(`✅ 面談担当者: ${allCounselors.length}名`);
+                console.log(`📋 面談担当者: ${allCounselors.length}名`);
 
                 document.getElementById('loadingState').style.display = 'none';
 
@@ -795,7 +686,7 @@
             } catch (error) {
                 console.error('❌ 担当者読み込みエラー:', error);
                 document.getElementById('loadingState').style.display = 'none';
-                alert('担当者の読み込みに失敗しました: ' + error.message);
+                alert('担当者の読み込みに失敗しました');
             }
         };
 
@@ -971,7 +862,7 @@
                 loadCounselors();
             } catch (error) {
                 console.error('❌ 保存エラー:', error);
-                alert('保存に失敗しました: ' + error.message);
+                alert('保存に失敗しました');
             }
         });
 
@@ -987,7 +878,7 @@
                 loadCounselors();
             } catch (error) {
                 console.error('❌ 削除エラー:', error);
-                alert('削除に失敗しました: ' + error.message);
+                alert('削除に失敗しました');
             }
         };
     </script>
