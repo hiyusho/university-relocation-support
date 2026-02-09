@@ -1641,6 +1641,82 @@ window.logout = async function() {
                             ...data
                         });
                     }
+                  });
+
+                console.log(`✅ 一般ユーザー: ${regularUsers.length} 件（管理者を除外）`);
+
+                if (regularUsers.length === 0) {
+                    // データが空の場合
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <h3>登録ユーザーがいません</h3>
+                            <p>管理者以外のユーザーが登録されていません。</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // テーブルを作成
+                let tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>名前</th>
+                                <th>メールアドレス</th>
+                                <th>ロール</th>
+                                <th>登録日</th>
+                                <th>ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                let index = 1;
+                regularUsers.forEach((user) => {
+                    const name = user.name || '未設定';
+                    const email = user.email || '未設定';
+                    const role = user.role || 'user';
+                    const createdAt = user.createdAt ? user.createdAt.toDate().toLocaleDateString('ja-JP') : '不明';
+                    const isActive = user.isActive !== false; // デフォルトは true
+
+                    tableHTML += `
+                        <tr>
+                            <td>${index}</td>
+                            <td>${name}</td>
+                            <td>${email}</td>
+                            <td>${role}</td>
+                            <td>${createdAt}</td>
+                            <td>
+                                <span class="badge ${isActive ? 'badge-active' : 'badge-inactive'}">
+                                    ${isActive ? 'アクティブ' : '非アクティブ'}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                    index++;
+                });
+
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = tableHTML;
+                console.log('✅ ユーザー一覧の表示完了');
+
+            } catch (error) {
+                console.error('❌ ユーザー読み込みエラー:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>エラーが発生しました</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
     //  try {
     //    console.log('👥 ユーザー情報を読み込み中...');
     //    allUsers = [];
@@ -1661,7 +1737,7 @@ window.logout = async function() {
     //      } else {
     //        console.log(`🛡️ 管理者を除外: ${data.email || docSnapshot.id} (role: ${data.role})`);
     //      }
-        });
+    //    });
 
         console.log(`✅ 一般ユーザー: ${allUsers.length}人（管理者を除く）`);
 
