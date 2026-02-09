@@ -579,9 +579,8 @@
     </div>
 
     <!-- Firebase SDK -->
-    <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
@@ -597,6 +596,16 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // ★★★ 認証状態の永続化を明示的に設定 ★★★
+        console.log('🔧 Firebase 認証の永続化を設定中...');
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => {
+                console.log('✅ 認証の永続化設定完了');
+            })
+            .catch((error) => {
+                console.error('❌ 認証の永続化設定エラー:', error);
+            });
 
         let currentCounselorId = null;
         let allCounselors = [];
