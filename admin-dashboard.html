@@ -2112,11 +2112,19 @@ window.logout = async function() {
       if (!ok) return;
 
       try {
+        console.log('🔓 ログアウト処理開始...');
+        if (!auth) {
+          console.error('❌ auth が未定義です');
+          alert('ログアウトに失敗しました');
+          return;
+        }
         await signOut(auth);
+        console.log('✅ ログアウト成功');
+        window.location.href = 'log-in.html';
       } catch (e) {
-        console.warn('signOut失敗:', e);
+        console.error('❌ ログアウトエラー:', e);
+        alert('ログアウトに失敗しました');
       }
-      window.location.href = 'log-in.html';
     }
     window.logout = logout;
 
