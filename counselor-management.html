@@ -602,7 +602,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, getDocs, addDoc, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -620,35 +620,34 @@
         const db = getFirestore(app);
         console.log('✅ Firebase 初期化完了');
 
-        // ★★★ 認証チェック ★★★
+
+
+        // ★★★ 認証チェック（シンプル版） ★★★
         const auth = getAuth(app);
+        
+        // 認証状態の永続化
+        setPersistence(auth, browserLocalPersistence)
+            .then(() => {
+                console.log('✅ 認証の永続化設定完了');
+            })
+            .catch((error) => {
+                console.error('❌ 認証の永続化設定エラー:', error);
+            });
+        
         console.log('🔐 認証チェック開始...');
         
-        // 認証状態をチェック
+        // 認証状態チェック
         onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // 未ログインの場合
+            if (user) {
+                console.log('✅ ログイン済み:', user.email);
+                console.log('   UID:', user.uid);
+                // ログイン済み → 何もしない（ページ読み込みを続行）
+            } else {
                 console.log('❌ 未ログイン - admin-dashboard.html へリダイレクト');
                 alert('ログインが必要です。管理画面からログインしてください。');
                 window.location.href = 'admin-dashboard.html';
-                return;
             }
-            
-            // ログイン済み
-            console.log('✅ ログイン済み:', user.email);
-            console.log('   UID:', user.uid);
-            
-            // ページの初期化処理を実行
-            initializePage();
         });
-        
-        // ページ初期化（ログイン確認後に実行）
-        function initializePage() {
-            console.log('📄 ページ初期化開始');
-            
-            // 登録ユーザー一覧を表示
-            loadUsers();
-        }
 
         // チェックボックスのトグル
         window.toggleCheckbox = function(element) {
@@ -862,7 +861,7 @@
         // ページ読み込み時にユーザー一覧を表示
         window.addEventListener('DOMContentLoaded', () => {
             console.log('📄 ページ読み込み完了');
-            // loadUsers(); // 認証後に initializePage() から呼び出されます
+            loadUsers(); // ユーザー一覧を読み込み
         });
     </script>
 </body>
