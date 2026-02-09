@@ -1617,26 +1617,50 @@ window.logout = async function() {
     // ユーザー情報取得
     // ユーザー情報取得（修正版: users コレクション全体を取得）
     async function loadUsers() {
-      try {
-        console.log('👥 ユーザー情報を読み込み中...');
-        allUsers = [];
+            console.log('📋 ユーザー一覧を読み込み中...');
+            const container = document.getElementById('usersTableContainer');
+
+            try {
+                // users コレクションからデータを取得
+                const usersRef = collection(db, 'users');
+                const q = query(usersRef, orderBy('createdAt', 'desc'));
+                const querySnapshot = await getDocs(q);
+
+                console.log(`✅ ${querySnapshot.size} 件のユーザーを取得`);
+
+                // 管理者以外のユーザーをフィルタリング
+                const regularUsers = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const role = data.role || 'user';
+                    
+                    // admin と superadmin を除外
+                    if (role !== 'admin' && role !== 'superadmin') {
+                        regularUsers.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    }
+    //  try {
+    //    console.log('👥 ユーザー情報を読み込み中...');
+    //    allUsers = [];
 
         // users コレクション全体を取得
-        const usersRef = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersRef);
+    //    const usersRef = collection(db, 'users');
+    //    const usersSnapshot = await getDocs(usersRef);
 
-        usersSnapshot.forEach(docSnapshot => {
-          const data = docSnapshot.data();
+    //    usersSnapshot.forEach(docSnapshot => {
+    //      const data = docSnapshot.data();
           
           // 管理者を除外（role が admin または superadmin 以外を表示）
-          if (data.role !== 'admin' && data.role !== 'superadmin') {
-            allUsers.push({
-              id: docSnapshot.id,
-              ...data
-            });
-          } else {
-            console.log(`🛡️ 管理者を除外: ${data.email || docSnapshot.id} (role: ${data.role})`);
-          }
+    //      if (data.role !== 'admin' && data.role !== 'superadmin') {
+    //        allUsers.push({
+    //          id: docSnapshot.id,
+    //          ...data
+    //        });
+    //      } else {
+    //        console.log(`🛡️ 管理者を除外: ${data.email || docSnapshot.id} (role: ${data.role})`);
+    //      }
         });
 
         console.log(`✅ 一般ユーザー: ${allUsers.length}人（管理者を除く）`);
