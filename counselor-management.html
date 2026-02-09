@@ -612,102 +612,103 @@
         let allCounselors = [];
 
         // ★★★ admins コレクション中心の管理者チェック ★★★
-        async function checkAdminAccess(user) {
-            console.log('🔍 管理者チェック開始（admins コレクション）');
+// ============================================================
+// admin-dashboard.html と同じ認証ロジック
+// ============================================================
 
-            if (!user) {
-                console.log('❌ ユーザーが未ログイン → log-in.html へリダイレクト');
-                alert('ログインが必要です');
-                window.location.href = 'log-in.html';
-                return false;
-            }
+// ★★★ users コレクション中心の認証（admin-dashboard.html と統一）★★★
+async function ensureUserDoc(user) {
+    if (!user) return null;
 
-            console.log('✅ ユーザーログイン済み:', user.email, 'UID:', user.uid);
+    const uid = user.uid;
+    const email = user.email || '';
+    const userRef = doc(db, 'users', uid);
 
-            try {
-                console.log('🔍 admins コレクションをチェック中...');
-                const adminDoc = await getDoc(doc(db, 'admins', user.uid));
-                
-                if (!adminDoc.exists()) {
-                    console.log('❌ admins コレクションにUIDが見つかりません');
-                    
-                    alert(`管理者権限がありません\n\nあなたのメールアドレス: ${user.email}\nUID: ${user.uid}\n\nこのUIDをFirestoreの「admins」コレクションに登録してください。`);
-                    
-                    window.location.href = 'dashboard.html';
-                    return false;
-                }
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+        return snap.data();
+    }
 
-                console.log('✅ 管理者権限確認済み');
-                const adminData = adminDoc.data();
-                console.log('管理者情報:', adminData);
-                
-                // デバッグパネルに情報を表示
-                const debugUidDisplay = document.getElementById('debugUid');
-                const debugEmailDisplay = document.getElementById('debugEmail');
-                const debugRoleDisplay = document.getElementById('debugRole');
-                const debugAdminDocDisplay = document.getElementById('debugAdminDoc');
-                
-                if (debugUidDisplay) debugUidDisplay.textContent = `UID: ${user.uid}`;
-                if (debugEmailDisplay) debugEmailDisplay.textContent = `Email: ${user.email}`;
-                if (debugRoleDisplay) debugRoleDisplay.textContent = `Role: ${adminData.roleLevel || 'admin'}`;
-                if (debugAdminDocDisplay) debugAdminDocDisplay.textContent = `Admin Doc: ✅ 存在`;
-                
-                return true;
-            } catch (error) {
-                console.error('❌ 管理者チェックエラー:', error);
-                alert('管理者チェック中にエラーが発生しました: ' + error.message);
-                return false;
-            }
-        }
+    // 未作成なら role=user で自動作成
+    const nameFromEmail = email ? email.split('@')[0] : 'user';
+    const newDoc = {
+        uid,
+        email,
+        name: nameFromEmail,
+        role: 'user',
+        createdAt: serverTimestamp()
+    };
 
-        // 認証状態の監視
-        let authCheckStarted = false;
+    await setDoc(userRef, newDoc, { merge: true });
+    return newDoc;
+}
+
+async function getUserRoleOrDefault(user) {
+    try {
+        const data = await ensureUserDoc(user);
+        const role = (data && data.role) ? data.role : 'user';
+        return role;
+    } catch (e) {
+        console.error('role取得/ユーザー自動作成エラー:', e);
+        return 'user'; // 安全側
+    }
+}
+
+async function requireAdminRoleOrRedirect(user) {
+    if (!user) {
+        console.log('❌ ユーザー未ログイン → log-in.html へリダイレクト');
+        alert('ログインが必要です');
+        window.location.href = 'log-in.html';
+        return false;
+    }
+
+    const role = await getUserRoleOrDefault(user);
+    console.log('👤 ユーザーロール:', role);
+
+    // 管理画面の許可: admin / superadmin
+    if (role !== 'admin' && role !== 'superadmin') {
+        console.log('❌ 管理者権限なし → dashboard.html へリダイレクト');
+        alert('管理者権限がありません');
+        window.location.href = 'dashboard.html';
+        return false;
+    }
+
+    console.log('✅ 管理者権限確認済み:', role);
+    return true;
+}
+
+// ============================================================
+// 認証監視（admin-dashboard.html と統一）
+// ============================================================
+console.log('📌 認証監視スクリプト開始');
+
+onAuthStateChanged(auth, async (user) => {
+    console.log('🔥 Firebase 認証状態変更:', user ? user.email : '未ログイン');
+
+    const ok = await requireAdminRoleOrRedirect(user);
+    if (!ok) {
+        console.log('❌ 認証失敗 → リダイレクト');
+        return;
+    }
+
+    console.log('✅ 認証成功 → 担当者データを読み込み');
+    
+    // デバッグパネル更新
+    if (user) {
+        const debugUid = document.getElementById('debugUid');
+        const debugEmail = document.getElementById('debugEmail');
+        const debugRole = document.getElementById('debugRole');
         
-        onAuthStateChanged(auth, async (user) => {
-            console.log('🔥 Firebase 認証状態変更:', user ? user.email : '未ログイン');
-            
-            // 初回チェック開始を記録
-            if (!authCheckStarted) {
-                authCheckStarted = true;
-                console.log('⏳ 初回認証チェック開始...');
-            }
-            
-            if (user) {
-                console.log('✅ ユーザー検出:', user.email, 'UID:', user.uid);
-                
-                const isAdmin = await checkAdminAccess(user);
-                if (isAdmin) {
-                    console.log('✅ 管理者アクセス許可 → 担当者データを読み込み');
-                    loadCounselors();
-                } else {
-                    console.log('❌ 管理者アクセス拒否');
-                }
-            } else {
-                console.log('❌ ユーザー未ログイン');
-                
-                // 少し待ってから再度確認 (認証状態の取得が遅い場合があるため)
-                setTimeout(() => {
-                    const currentUser = auth.currentUser;
-                    if (!currentUser) {
-                        console.log('⏰ 再確認: ユーザー未ログイン → log-in.html へリダイレクト');
-                        alert('ログインが必要です');
-                        window.location.href = 'log-in.html';
-                    } else {
-                        console.log('✅ 再確認: ユーザーログイン済み', currentUser.email);
-                        // 認証状態が遅れて取得された場合、再度チェック
-                        checkAdminAccess(currentUser).then(isAdmin => {
-                            if (isAdmin) {
-                                loadCounselors();
-                            }
-                        });
-                    }
-                }, 1000); // 1秒待機
-            }
-        });
-
-        // ログアウト
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            if (confirm('ログアウトしますか？')) {
+        if (debugUid) debugUid.textContent = user.uid;
+        if (debugEmail) debugEmail.textContent = user.email;
+        
+        const role = await getUserRoleOrDefault(user);
+        if (debugRole) debugRole.textContent = role;
+    }
+    
+    // 担当者データを読み込み
+    loadCounselors();
+});
                 await signOut(auth);
                 window.location.href = 'index.html';
             }
