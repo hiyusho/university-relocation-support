@@ -602,10 +602,9 @@
         let allCounselors = [];
 
         // ★★★ admins コレクション中心の管理者チェック ★★★
-        async function checkAdminAccess() {
+        async function checkAdminAccess(user) {
             console.log('🔍 管理者チェック開始（admins コレクション）');
 
-            const user = auth.currentUser;
             if (!user) {
                 console.log('❌ ユーザーが未ログイン → log-in.html へリダイレクト');
                 alert('ログインが必要です');
@@ -632,6 +631,17 @@
                 const adminData = adminDoc.data();
                 console.log('管理者情報:', adminData);
                 
+                // デバッグパネルに情報を表示
+                const debugUidDisplay = document.getElementById('debugUid');
+                const debugEmailDisplay = document.getElementById('debugEmail');
+                const debugRoleDisplay = document.getElementById('debugRole');
+                const debugAdminDocDisplay = document.getElementById('debugAdminDoc');
+                
+                if (debugUidDisplay) debugUidDisplay.textContent = `UID: ${user.uid}`;
+                if (debugEmailDisplay) debugEmailDisplay.textContent = `Email: ${user.email}`;
+                if (debugRoleDisplay) debugRoleDisplay.textContent = `Role: ${adminData.roleLevel || 'admin'}`;
+                if (debugAdminDocDisplay) debugAdminDocDisplay.textContent = `Admin Doc: ✅ 存在`;
+                
                 return true;
             } catch (error) {
                 console.error('❌ 管理者チェックエラー:', error);
@@ -645,7 +655,7 @@
             console.log('🔥 Firebase 認証状態変更:', user ? user.email : '未ログイン');
             
             if (user) {
-                const isAdmin = await checkAdminAccess();
+                const isAdmin = await checkAdminAccess(user);
                 if (isAdmin) {
                     console.log('✅ 管理者アクセス許可 → 担当者データを読み込み');
                     loadCounselors();
