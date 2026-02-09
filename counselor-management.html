@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>面談担当者管理 - 大学赴任者家族帯同支援プログラム</title>
+    <title>面談担当者管理ツール - 大学赴任者家族帯同支援プログラム</title>
     <meta name="description" content="面談担当者の管理画面">
     <meta name="robots" content="noindex, nofollow">
 
@@ -81,11 +81,71 @@
             color: #667eea;
         }
 
+        /* レイアウト */
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* 左サイドバー */
+        .sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 25px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            color: #667eea;
+            border-left: 4px solid #667eea;
+            padding-left: 21px;
+        }
+
+        .menu-btn.active {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, transparent 100%);
+            color: #667eea;
+            border-left: 4px solid #667eea;
+            padding-left: 21px;
+            font-weight: 600;
+        }
+
+        .menu-btn i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
         /* メインコンテンツ */
-        .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
         }
 
         .section {
@@ -93,6 +153,11 @@
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
         }
 
         .section-header {
@@ -114,6 +179,114 @@
 
         .section-title i {
             color: #667eea;
+        }
+
+        /* フォーム */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* チェックボックスグループ */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .checkbox-item.checked {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        /* ボタン */
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* テーブル */
@@ -222,10 +395,38 @@
             color: #721c24;
         }
 
+        /* 成功メッセージ */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        .success-message i {
+            font-size: 1.5rem;
+        }
+
         /* レスポンシブ */
         @media (max-width: 768px) {
-            .container {
-                padding: 0 15px;
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .content-area {
+                padding: 20px 15px;
             }
 
             .section {
@@ -254,7 +455,7 @@
         <div class="header-left">
             <i class="fas fa-user-tie"></i>
             <div class="header-title">
-                <h1>面談担当者管理</h1>
+                <h1>面談担当者管理ツール</h1>
                 <p>大学赴任者家族帯同支援プログラム</p>
             </div>
         </div>
@@ -266,29 +467,141 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
-    <div class="container">
-        <section class="section">
-            <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-users"></i>
-                    登録ユーザー一覧
-                </div>
-            </div>
+    <!-- メインレイアウト -->
+    <div class="main-layout">
+        <!-- 左サイドバー -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <button class="menu-btn active" onclick="showSection('users')">
+                        <i class="fas fa-users"></i>
+                        <span>登録ユーザー管理</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="menu-btn" onclick="showSection('registration')">
+                        <i class="fas fa-user-plus"></i>
+                        <span>面談担当者登録</span>
+                    </button>
+                </li>
+            </ul>
+        </aside>
 
-            <div class="table-container" id="usersTableContainer">
-                <div class="loading">
-                    <i class="fas fa-spinner"></i>
-                    <p class="loading-text">データを読み込み中...</p>
+        <!-- 右コンテンツエリア -->
+        <main class="content-area">
+            <!-- 登録ユーザー管理セクション -->
+            <section class="section active" id="section-users">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="fas fa-users"></i>
+                        登録ユーザー一覧
+                    </div>
                 </div>
-            </div>
-        </section>
+
+                <div class="table-container" id="usersTableContainer">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p class="loading-text">データを読み込み中...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 面談担当者登録セクション -->
+            <section class="section" id="section-registration">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="fas fa-user-plus"></i>
+                        面談担当者登録
+                    </div>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>面談担当者を登録しました！</span>
+                </div>
+
+                <form id="counselorForm">
+                    <!-- 氏名 -->
+                    <div class="form-group">
+                        <label for="counselorName">
+                            面談担当者氏名
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="counselorName" 
+                            class="form-control" 
+                            placeholder="例: 山田太郎"
+                            required
+                        >
+                    </div>
+
+                    <!-- メールアドレス -->
+                    <div class="form-group">
+                        <label for="counselorEmail">
+                            メールアドレス
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="counselorEmail" 
+                            class="form-control" 
+                            placeholder="例: yamada@example.com"
+                            required
+                        >
+                    </div>
+
+                    <!-- 面談可能項目 -->
+                    <div class="form-group">
+                        <label>
+                            面談可能項目
+                            <span class="required">*</span>
+                        </label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" id="skill8" value="8">
+                                <label for="skill8">初期面談</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" id="skill4" value="4">
+                                <label for="skill4">就職サポート面談</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" id="skill2" value="2">
+                                <label for="skill2">就職応募書類サポート面談</label>
+                            </div>
+                            <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" id="skill1" value="1">
+                                <label for="skill1">キャリアアップ面談</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- superAdmin -->
+                    <div class="form-group">
+                        <label>権限設定</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" id="isSuperAdmin">
+                                <label for="isSuperAdmin">スーパー管理者として登録</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 登録ボタン -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        登録する
+                    </button>
+                </form>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, getDocs, addDoc, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -306,7 +619,43 @@
         const db = getFirestore(app);
         console.log('✅ Firebase 初期化完了');
 
-        // ユーザー一覧を読み込み
+        // チェックボックスのトグル
+        window.toggleCheckbox = function(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                element.classList.add('checked');
+            } else {
+                element.classList.remove('checked');
+            }
+        };
+
+        // セクション切り替え
+        window.showSection = function(sectionName) {
+            console.log('🔄 セクション切り替え:', sectionName);
+            
+            // すべてのセクションを非表示
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // すべてのメニューボタンの active を解除
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 指定されたセクションを表示
+            const targetSection = document.getElementById(`section-${sectionName}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // クリックされたボタンに active を追加
+            event?.target.closest('.menu-btn')?.classList.add('active');
+        };
+
+        // ユーザー一覧を読み込み（管理者を除外）
         async function loadUsers() {
             console.log('📋 ユーザー一覧を読み込み中...');
             const container = document.getElementById('usersTableContainer');
@@ -319,13 +668,30 @@
 
                 console.log(`✅ ${querySnapshot.size} 件のユーザーを取得`);
 
-                if (querySnapshot.empty) {
+                // 管理者以外のユーザーをフィルタリング
+                const regularUsers = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const role = data.role || 'user';
+                    
+                    // admin と superadmin を除外
+                    if (role !== 'admin' && role !== 'superadmin') {
+                        regularUsers.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    }
+                });
+
+                console.log(`✅ 一般ユーザー: ${regularUsers.length} 件（管理者を除外）`);
+
+                if (regularUsers.length === 0) {
                     // データが空の場合
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-users"></i>
                             <h3>登録ユーザーがいません</h3>
-                            <p>まだユーザーが登録されていません。</p>
+                            <p>管理者以外のユーザーが登録されていません。</p>
                         </div>
                     `;
                     return;
@@ -348,13 +714,12 @@
                 `;
 
                 let index = 1;
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const name = data.name || '未設定';
-                    const email = data.email || '未設定';
-                    const role = data.role || 'user';
-                    const createdAt = data.createdAt ? data.createdAt.toDate().toLocaleDateString('ja-JP') : '不明';
-                    const isActive = data.isActive !== false; // デフォルトは true
+                regularUsers.forEach((user) => {
+                    const name = user.name || '未設定';
+                    const email = user.email || '未設定';
+                    const role = user.role || 'user';
+                    const createdAt = user.createdAt ? user.createdAt.toDate().toLocaleDateString('ja-JP') : '不明';
+                    const isActive = user.isActive !== false; // デフォルトは true
 
                     tableHTML += `
                         <tr>
@@ -392,6 +757,76 @@
                 `;
             }
         }
+
+        // フォーム送信処理
+        document.getElementById('counselorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            console.log('📝 フォーム送信開始...');
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登録中...';
+            
+            try {
+                // フォームデータを取得
+                const name = document.getElementById('counselorName').value.trim();
+                const email = document.getElementById('counselorEmail').value.trim();
+                
+                // 面談可能項目の合計を計算（2進法）
+                let skillsValue = 0;
+                if (document.getElementById('skill8').checked) skillsValue += 8;
+                if (document.getElementById('skill4').checked) skillsValue += 4;
+                if (document.getElementById('skill2').checked) skillsValue += 2;
+                if (document.getElementById('skill1').checked) skillsValue += 1;
+                
+                // スーパー管理者チェック
+                const isSuperAdmin = document.getElementById('isSuperAdmin').checked;
+                
+                console.log('📊 登録データ:', {
+                    name,
+                    email,
+                    skillsValue,
+                    isSuperAdmin
+                });
+                
+                // Firestore に保存
+                const counselorData = {
+                    name: name,
+                    email: email,
+                    availableSkills: skillsValue,
+                    roleLevel: isSuperAdmin ? 'super_admin' : 'admin',
+                    createdAt: serverTimestamp(),
+                    isActive: true
+                };
+                
+                const docRef = await addDoc(collection(db, 'admins'), counselorData);
+                
+                console.log('✅ 登録成功:', docRef.id);
+                
+                // 成功メッセージを表示
+                const successMessage = document.getElementById('successMessage');
+                successMessage.classList.add('show');
+                
+                // フォームをリセット
+                document.getElementById('counselorForm').reset();
+                document.querySelectorAll('.checkbox-item').forEach(item => {
+                    item.classList.remove('checked');
+                });
+                
+                // 3秒後にメッセージを非表示
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 3000);
+                
+            } catch (error) {
+                console.error('❌ 登録エラー:', error);
+                alert('登録中にエラーが発生しました: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> 登録する';
+            }
+        });
 
         // ページ読み込み時にユーザー一覧を表示
         window.addEventListener('DOMContentLoaded', () => {
