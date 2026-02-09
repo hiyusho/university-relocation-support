@@ -1028,20 +1028,11 @@ window.showSettingsTab = function(tabName) {
 window.logout = async function() {
   if (confirm('ログアウトしますか？')) {
     try {
-      console.log('🔓 ログアウト処理開始...');
-      
-      // 既に初期化済みの window.firebaseAuth を使用
-      if (window.firebaseAuth) {
-        const { signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-        await signOut(window.firebaseAuth);
-        console.log('✅ ログアウト成功');
-        window.location.href = 'log-in.html';
-      } else {
-        console.error('❌ Firebase Auth が初期化されていません');
-        alert('ログアウトに失敗しました');
-      }
+      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+      await signOut(getAuth());
+      window.location.href = 'log-in.html';
     } catch (error) {
-      console.error('❌ ログアウトエラー:', error);
+      console.error('ログアウトエラー:', error);
       alert('ログアウトに失敗しました');
     }
   }
@@ -1069,19 +1060,6 @@ window.logout = async function() {
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // ★★★ 認証状態の永続化を明示的に設定 ★★★
-    console.log('🔧 Firebase 認証の永続化を設定中...');
-    import { setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-    setPersistence(auth, browserLocalPersistence)
-        .then(() => {
-          console.log('✅ 認証の永続化設定完了');
-        })
-        .catch((error) => {
-            console.error('❌ 認証の永続化設定エラー:', error);
-        });
-
     const db = getFirestore(app);
 
     // 互換用（ユーザー要件）
