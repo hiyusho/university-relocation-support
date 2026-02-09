@@ -602,6 +602,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getFirestore, collection, getDocs, addDoc, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -618,6 +619,36 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         console.log('✅ Firebase 初期化完了');
+
+        // ★★★ 認証チェック ★★★
+        const auth = getAuth(app);
+        console.log('🔐 認証チェック開始...');
+        
+        // 認証状態をチェック
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // 未ログインの場合
+                console.log('❌ 未ログイン - admin-dashboard.html へリダイレクト');
+                alert('ログインが必要です。管理画面からログインしてください。');
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
+            
+            // ログイン済み
+            console.log('✅ ログイン済み:', user.email);
+            console.log('   UID:', user.uid);
+            
+            // ページの初期化処理を実行
+            initializePage();
+        });
+        
+        // ページ初期化（ログイン確認後に実行）
+        function initializePage() {
+            console.log('📄 ページ初期化開始');
+            
+            // 登録ユーザー一覧を表示
+            loadUsers();
+        }
 
         // チェックボックスのトグル
         window.toggleCheckbox = function(element) {
@@ -831,7 +862,7 @@
         // ページ読み込み時にユーザー一覧を表示
         window.addEventListener('DOMContentLoaded', () => {
             console.log('📄 ページ読み込み完了');
-            loadUsers();
+            // loadUsers(); // 認証後に initializePage() から呼び出されます
         });
     </script>
 </body>
