@@ -1028,11 +1028,20 @@ window.showSettingsTab = function(tabName) {
 window.logout = async function() {
   if (confirm('ログアウトしますか？')) {
     try {
-      const { getAuth, signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-      await signOut(getAuth());
-      window.location.href = 'log-in.html';
+      console.log('🔓 ログアウト処理開始...');
+      
+      // 既に初期化済みの window.firebaseAuth を使用
+      if (window.firebaseAuth) {
+        const { signOut } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+        await signOut(window.firebaseAuth);
+        console.log('✅ ログアウト成功');
+        window.location.href = 'log-in.html';
+      } else {
+        console.error('❌ Firebase Auth が初期化されていません');
+        alert('ログアウトに失敗しました');
+      }
     } catch (error) {
-      console.error('ログアウトエラー:', error);
+      console.error('❌ ログアウトエラー:', error);
       alert('ログアウトに失敗しました');
     }
   }
