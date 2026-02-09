@@ -651,10 +651,20 @@
         }
 
         // 認証状態の監視
+        let authCheckStarted = false;
+        
         onAuthStateChanged(auth, async (user) => {
             console.log('🔥 Firebase 認証状態変更:', user ? user.email : '未ログイン');
             
+            // 初回チェック開始を記録
+            if (!authCheckStarted) {
+                authCheckStarted = true;
+                console.log('⏳ 初回認証チェック開始...');
+            }
+            
             if (user) {
+                console.log('✅ ユーザー検出:', user.email, 'UID:', user.uid);
+                
                 const isAdmin = await checkAdminAccess(user);
                 if (isAdmin) {
                     console.log('✅ 管理者アクセス許可 → 担当者データを読み込み');
@@ -663,9 +673,25 @@
                     console.log('❌ 管理者アクセス拒否');
                 }
             } else {
-                console.log('❌ ユーザー未ログイン → log-in.html へリダイレクト');
-                alert('ログインが必要です');
-                window.location.href = 'log-in.html';
+                console.log('❌ ユーザー未ログイン');
+                
+                // 少し待ってから再度確認 (認証状態の取得が遅い場合があるため)
+                setTimeout(() => {
+                    const currentUser = auth.currentUser;
+                    if (!currentUser) {
+                        console.log('⏰ 再確認: ユーザー未ログイン → log-in.html へリダイレクト');
+                        alert('ログインが必要です');
+                        window.location.href = 'log-in.html';
+                    } else {
+                        console.log('✅ 再確認: ユーザーログイン済み', currentUser.email);
+                        // 認証状態が遅れて取得された場合、再度チェック
+                        checkAdminAccess(currentUser).then(isAdmin => {
+                            if (isAdmin) {
+                                loadCounselors();
+                            }
+                        });
+                    }
+                }, 1000); // 1秒待機
             }
         });
 
