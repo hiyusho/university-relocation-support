@@ -1092,7 +1092,7 @@ window.closeAddSlotModal = function() {
 
         console.log(`📄 書類: ${allDocuments.length}件`);
 
-        await loadUsers(Array.from(userIds));
+        await loadUsers(); // 修正: users コレクション全体を取得
         displayDocuments();
 
       } catch (error) {
@@ -1103,37 +1103,40 @@ window.closeAddSlotModal = function() {
     }
 
     // ユーザー情報取得
-    async function loadUsers(userIds) {
+    // ユーザー情報取得（修正版: users コレクション全体を取得）
+    async function loadUsers() {
       try {
+        console.log('👥 ユーザー情報を読み込み中...');
         allUsers = [];
 
-        for (const userId of userIds) {
-          try {
-            const userDocSnap = await getDoc(doc(db, 'users', userId));
-            if (userDocSnap.exists()) {
-              allUsers.push({ id: userId, ...userDocSnap.data() });
-            } else {
-              allUsers.push({
-                id: userId,
-                email: userId,
-                displayName: 'ユーザー' + userId.substring(0, 8)
-              });
-            }
-          } catch (e) {
-            console.warn(`⚠️ ユーザー ${userId} の情報取得失敗`, e);
-          }
-        }
+        // users コレクション全体を取得
+        const usersRef = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersRef);
 
-        console.log(`👥 ユーザー: ${allUsers.length}人`);
+        usersSnapshot.forEach(docSnapshot => {
+          const data = docSnapshot.data();
+          
+          // 管理者を除外（role が admin または superadmin 以外を表示）
+          if (data.role !== 'admin' && data.role !== 'superadmin') {
+            allUsers.push({
+              id: docSnapshot.id,
+              ...data
+            });
+          } else {
+            console.log(`🛡️ 管理者を除外: ${data.email || docSnapshot.id} (role: ${data.role})`);
+          }
+        });
+
+        console.log(`✅ 一般ユーザー: ${allUsers.length}人（管理者を除く）`);
 
         displayUsers();
         updateUserFilterOptions();
 
       } catch (error) {
         console.error('❌ ユーザー読み込みエラー:', error);
+        alert('ユーザー情報の読み込みに失敗しました: ' + error.message);
       }
     }
-
     // 統計更新
     function updateStats() {
       document.getElementById('totalUsers').textContent = allUsers.length;
