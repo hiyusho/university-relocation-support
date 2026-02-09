@@ -1062,6 +1062,19 @@ window.logout = async function() {
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // ★★★ 認証状態の永続化を明示的に設定 ★★★
+    console.log('🔧 Firebase 認証の永続化を設定中...');
+    import { setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+          console.log('✅ 認証の永続化設定完了');
+        })
+        .catch((error) => {
+            console.error('❌ 認証の永続化設定エラー:', error);
+        });
+
+    const db = getFirestore(app);
+
     // 互換用（ユーザー要件）
     window.firebaseAuth = auth;
     window.firebaseDB = db;
