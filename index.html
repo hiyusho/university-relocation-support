@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-7">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>大学赴任者パートナー帯同プログラム </title>
         <!-- SEO Meta Tags -->
@@ -148,6 +148,12 @@
             }
         }
 
+        /* YouTube 動画埋め込みのスタイル調整 */
+        .video-container iframe {
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 
     <!-- Structured Data (JSON-LD) -->
@@ -249,11 +255,17 @@
                         就職支援、スキルアップ、住居情報、医療・教育情報など、安心して新生活を始めるための情報が揃っています。
                     </p>
                     <div class="video-container">
-                        <a href="https://www.youtube.com/channel/UCjgRr4MVUFnhjgqug5bWt0Q" target="_blank" rel="noopener noreferrer" class="video-placeholder">
-                            <i class="fas fa-play-circle"></i>
-                            <p>名古屋での生活紹介動画</p>
-                            <small style="font-size: 12px; opacity: 0.9; margin-top: 10px; display: block;">提供:Network2010</small>
-                        </a>
+                        <!-- ✅ YouTube 動画埋め込み（中部地区の歴史） -->
+                        <iframe 
+                            width="100%" 
+                            height="400" 
+                            src="https://www.youtube.com/embed/LkII1foJd7Y" 
+                            title="中部地区の歴史" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                        <p style="text-align: center; margin-top: 10px; font-size: 14px; color: #666;">中部地区の歴史</p>
                     </div>
                 </div>
             </section>
