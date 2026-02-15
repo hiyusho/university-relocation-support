@@ -647,42 +647,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 活動サマリー -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon stats">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <div class="card-title">活動サマリー</div>
-                </div>
-
-                <div class="stats-grid" id="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">面談実施回数</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">応募企業数</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">67%</div>
-                        <div class="stat-label">書類通過率</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">21</div>
-                        <div class="stat-label">利用日数</div>
-                    </div>
-                </div>
-
-                <div class="view-all">
-                    <a href="#reports">
-                        詳細レポートを見る
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -1234,75 +1198,7 @@
             
             return text;
         }
-        
-        // 活動統計をロード
-        async function loadActivityStats(userId) {
-            try {
-                // 面談実施回数
-                const meetingsQuery = query(
-                    collection(db, 'meetings'),
-                    where('userId', '==', userId),
-                    where('status', '==', 'completed')
-                );
-                const meetingsSnapshot = await getDocs(meetingsQuery);
-                const meetingsCount = meetingsSnapshot.size;
-                
-                // 応募企業数
-                const applicationsQuery = query(
-                    collection(db, 'applications'),
-                    where('userId', '==', userId)
-                );
-                const applicationsSnapshot = await getDocs(applicationsQuery);
-                const applicationsCount = applicationsSnapshot.size;
-                
-                // 書類通過率
-                let passedCount = 0;
-                applicationsSnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    if (data.status === 'passed' || data.status === 'interview') {
-                        passedCount++;
-                    }
-                });
-                const passRate = applicationsCount > 0 
-                    ? Math.round((passedCount / applicationsCount) * 100) 
-                    : 0;
-                
-                // 利用日数
-                const userDoc = await getDoc(doc(db, 'users', userId));
-                const userData = userDoc.data();
-                const createdAt = userData?.createdAt?.toDate ? userData.createdAt.toDate() : null;
-                const daysUsed = createdAt 
-                    ? Math.max(1, Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24)))
-                    : 1;
-                
-                // 表示
-                const statsGrid = document.getElementById('stats-grid');
-                if (statsGrid) {
-                    statsGrid.innerHTML = `
-                        <div class="stat-item">
-                            <div class="stat-value">${meetingsCount}</div>
-                            <div class="stat-label">面談実施回数</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${applicationsCount}</div>
-                            <div class="stat-label">応募企業数</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${passRate}%</div>
-                            <div class="stat-label">書類通過率</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${daysUsed}</div>
-                            <div class="stat-label">利用日数</div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('統計読み込みエラー:', error);
-            }
-        }
-
-
+ 
         // ================================
         // role/ユーザードキュメント共通
         // ================================
@@ -1439,7 +1335,6 @@
                 await loadNextMeeting(user.uid);
                 await loadMessages(user.uid);
                 await loadCompanies(user.uid);
-                await loadActivityStats(user.uid);
                 console.log('[Dashboard v7] すべてのデータ読み込み完了');
             } catch (error) {
                 console.error('[Dashboard v7] ユーザー情報取得エラー:', error);
@@ -1636,8 +1531,6 @@
                 await loadNextMeeting(user.uid);
                 await loadMessages(user.uid);
                 await loadCompanies(user.uid);
-                await loadActivityStats(user.uid);
-
                 alert('削除しました');
             } catch (error) {
                 console.error('削除エラー:', error);
