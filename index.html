@@ -28,6 +28,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+    :root {
+    --main-color: #379B63;
+    --main-dark: #2F7D52;
+    --main-light: #E8F5EE;
+    --accent-color: #1F5C3F;
+    }
         /* コンテナの幅制限 */
         .container {
             max-width: 1400px;
@@ -35,7 +41,7 @@
             padding: 0 1rem;
             box-sizing: border-box;
         }
-
+    
         /* ヘッダーの調整 */
         header {
             max-width: 1400px;
@@ -99,7 +105,184 @@
                 width: 100% !important;
             }
         }
+    /* ===== カラー変更 ===== */
 
+.site-title,
+.section-title {
+    color: var(--main-color);
+}
+
+.cta-button,
+.register-btn {
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+    color: white;
+}
+
+.cta-button:hover {
+    background-color: var(--main-dark);
+}
+
+.login-btn {
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+}
+
+.login-btn:hover {
+    background-color: var(--main-color);
+    color: white;
+}
+
+.nav-item a:hover {
+    color: var(--main-color);
+}
+
+.service-item i,
+.pillar i,
+.target-card i {
+    color: var(--main-color);
+}
+/* ===== グリーン統一の追加上書き ===== */
+
+.hero-title,
+.sidebar-title,
+.widget h3,
+.main-content h2,
+.main-content h3 {
+    color: var(--main-color) !important;
+}
+
+.nav-item a i,
+.info-links i,
+.action-btn i {
+    color: var(--main-color) !important;
+}
+
+.sidebar,
+.right-sidebar .widget,
+.hero-section,
+.section,
+.quick-actions {
+    border-color: var(--main-color-light) !important;
+}
+
+.widget h3,
+.sidebar-title {
+    border-bottom: 2px solid var(--main-color) !important;
+}
+
+.nav-item a:hover,
+.nav-subitem a:hover,
+.info-links a:hover,
+.news-list a:hover {
+    color: var(--main-color) !important;
+}
+
+.news-widget h3,
+.info-widget h3 {
+    color: var(--main-color) !important;
+}
+
+.news-widget,
+.info-widget,
+.sidebar,
+.quick-actions {
+    box-shadow: 0 4px 12px rgba(55, 155, 99, 0.12) !important;
+}
+hr,
+.sidebar-title,
+.widget h3 {
+    border-color: var(--main-color) !important;
+}
+/* ===== 残っているオレンジ・青の上書き ===== */
+
+/* カードやサービス項目の見出し */
+.pillar h4,
+.service-item h4,
+.service-item h4 a,
+.target-card h4,
+.program-intro h3,
+.support-targets h3,
+.services h3,
+.steps h3 {
+    color: var(--main-color) !important;
+}
+
+/* セクション見出しの下線 */
+.section-title::after,
+.section h2::after,
+.section h3::after {
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+}
+
+/* 水平線っぽく見えている区切り */
+.support-targets,
+.services,
+.steps,
+.program-intro {
+    border-color: var(--main-color-light) !important;
+}
+
+/* 詳細リンクや矢印リンクの青を緑へ */
+.service-item a,
+.service-item a:visited,
+.main-content a,
+.main-content a:visited {
+    color: var(--main-color) !important;
+}
+
+/* ホバー時も緑系に */
+.service-item a:hover,
+.main-content a:hover {
+    color: var(--main-dark) !important;
+}
+
+/* カード内アイコン */
+.service-item i,
+.pillar i,
+.target-card i,
+.step i {
+    color: var(--main-color) !important;
+}
+
+/* ステップ番号 */
+.step-number {
+    background-color: var(--main-color) !important;
+    color: white !important;
+}
+
+/* 矢印 */
+.step-arrow {
+    color: var(--main-color) !important;
+}
+<i class="fas fa-arrow-right" style="font-size: 0.8em; color: #379B63;"></i>
+/* ===== ステップ部分のオレンジを修正 ===== */
+
+.step h4 {
+    color: var(--main-color) !important;
+}
+
+/* 念のため全体もカバー */
+.step-container h4 {
+    color: var(--main-color) !important;
+}
+/* ===== セクション下のオレンジ線を上書き ===== */
+
+/* パターン①：borderで作られている場合 */
+.section-title {
+    border-bottom: 2px solid var(--main-color) !important;
+}
+
+/* パターン②：after疑似要素で作られている場合 */
+.section-title::after {
+    background-color: var(--main-color) !important;
+}
+
+/* 念のため広めにカバー */
+.section h2::after {
+    background-color: var(--main-color) !important;
+}
     </style>
 
     <!-- Structured Data (JSON-LD) -->
@@ -286,7 +469,7 @@
                          <div class="service-item">
                             <i class="fas fa-user-check"></i>
                             <h4><a href="career-consulting.html" style="color: inherit; text-decoration: none;">キャリアカウンセリング・就職相談 <i class="fas fa-arrow-right" style="font-size: 0.8em; color: #2563eb;"></i></a></h4>
-                            <p>国家資格キャリアコンサルタントが無料でサポート <a href="career-consulting.html" style="color: #2563eb; font-weight: 600; text-decoration: none;">詳細・申し込み →</a></p>
+                            <p>国家資格キャリアコンサルタントが無料でサポート <a href="career-consulting.html" style="color: #379B63; font-weight: 600; text-decoration: none;">詳細・申し込み →</a></p>
                         </div>
 
                         <div class="service-item">
